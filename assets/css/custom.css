@@ -1,0 +1,8 @@
+.sidebar-wrapper .menu .sidebar-item.active .sidebar-link {
+    background-color: #cc0000 !important;
+}
+
+.sidebar-wrapper .sidebar-header img {
+    width: 100% !important;
+    height: auto !important;
+}

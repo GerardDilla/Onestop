@@ -5,11 +5,65 @@
         <div class="card-body row">
 
             <!-- STUDENT INFORMATION TAB -->
+            <div class="col-md-12">
+                <div class="row">
+                    <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION</h6>
+                    <div class="col-md-6">
+                        
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>FIRST NAME:</td>
+                                    <td>JUAN</td>
+                                </tr>
+                                <tr>
+                                    <td>MIDDLE NAME:</td>
+                                    <td>DELA</td>
+                                </tr>
+                                <tr>
+                                    <td>LAST NAME:</td>
+                                    <td>CRUZ</td>
+                                </tr>
+                                <tr>
+                                    <td>REFERENCE NUMBER:</td>
+                                    <td>123456</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                    <HR>
+                    <h6 class="col-md-12">CONFIRM YOUR COURSE</h6>
+                    <small class="col-md-12">Choose one of your preferred courses</small>
+                    <div class="col-md-6">
+                        <BR>
+                        <fieldset class="form-group">
+                            <select class="form-select" id="basicSelect">
+                                <option>PREFERRED COURSES</option>
+                                <option>BSIT</option>
+                                <option>BSBA</option>
+                                <option>ABMMA</option>
+                            </select>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <select class="form-select" id="basicSelect">
+                                <option>COURSE MAJOR</option>
+                                <option>BSIT</option>
+                                <option>BSBA</option>
+                                <option>ABMMA</option>
+                            </select>
+                        </fieldset>
+                    </div>
+                </div>
+                <br>
+            </div>
             <!-- /STUDENT INFORMATION TAB -->
 
             <!-- ADVISING TAB -->
             <div class="col-md-12">
                 <div class="row">
+                    <hr>
                     <h6 class="col-md-12" style="margin-bottom:15px">1. COMPLETE THE FOLLOWING:</h6>
                     <div class="col-md-6 mb-4">
                         <div class="input-group mb-3">
@@ -126,12 +180,12 @@
                         <br>
 
                         <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked="">
-                        <label class="btn btn-outline-primary" for="success-outlined">
+                        <label class="btn btn-sm btn-outline-primary" for="success-outlined">
                             INSTALLMENT
                         </label>
 
                         <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="danger-outlined">
+                        <label class="btn btn-sm btn-outline-primary" for="danger-outlined">
                             FULL PAYMENT
                         </label>
 
@@ -263,7 +317,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <table class="table table-striped">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th></th>

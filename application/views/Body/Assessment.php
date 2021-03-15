@@ -138,9 +138,9 @@
 
         </div>
 </section>
-<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/simple-datatables/simple-datatables.js"></script>
 <script>
     // Simple Datatable
     let table1 = document.querySelector('#table1');

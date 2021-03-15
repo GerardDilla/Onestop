@@ -12,6 +12,13 @@ class view_directory
 		$data['title'] = 'Self Assessment';
 		return $data;
 	}
+
+	public function bell_test_directory()
+	{
+		$data['view'] = $this->body.'BELL_TEST';
+		$data['title'] = 'Bell Testing Bay';
+		return $data;
+	}
 	
 
 }

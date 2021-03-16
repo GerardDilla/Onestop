@@ -6,12 +6,15 @@
     width: 100% !important;
     height: auto !important;
 }
+.sidebar-wrapper .sidebar-header .logo a {
+    width: 100% !important;
+}
 
 div#main{
     margin-left:300px;
     transition: all .5s ease-out;
   }
-span:after{
+/* span:after{
     content:' ';
     position:absolute;
     left:0;
@@ -21,4 +24,4 @@ span:after{
     transform-origin:0;
     background:white;
 }
-
+ */

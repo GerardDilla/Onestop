@@ -5,13 +5,13 @@ class MY_Controller extends CI_Controller {
 
 
     protected $title;
-    protected $data;
+    // protected $data;
 
 	function __construct() {
 
         parent::__construct();
         $this->load->library('view_directory');
-        $this->data = array();
+        // $this->data = array();
         $this->title = 'Default';
     }
 	

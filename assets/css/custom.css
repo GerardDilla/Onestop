@@ -6,12 +6,14 @@
     width: 100% !important;
     height: auto !important;
 }
+.sidebar-wrapper .sidebar-header .logo a {
+    width: 100% !important;
+}
 
 div#main{
     margin-left:300px;
     transition: all .5s ease-out;
   }
-
 /* span:after{
     content:' ';
     position:absolute;
@@ -21,8 +23,5 @@ div#main{
     z-index:1;
     transform-origin:0;
     background:white;
-} */
-/* .login-page{
-    background-color:blue;
-} */
-
+}
+ */

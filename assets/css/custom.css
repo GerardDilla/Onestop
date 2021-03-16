@@ -11,7 +11,8 @@ div#main{
     margin-left:300px;
     transition: all .5s ease-out;
   }
-span:after{
+
+/* span:after{
     content:' ';
     position:absolute;
     left:0;
@@ -20,5 +21,8 @@ span:after{
     z-index:1;
     transform-origin:0;
     background:white;
-}
+} */
+/* .login-page{
+    background-color:blue;
+} */
 

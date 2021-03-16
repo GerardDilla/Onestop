@@ -14,17 +14,41 @@ body{
       align-items: center;
     }
     .logo-white{
-      height:100px; 
-      width:auto;
+      /* height:110px;  */
+      width:80%;
+      max-width: 100%;
       position: absolute;
-      top: 50px;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%)
+      /* top: 20%; */
+      /* margin:0 auto; */
+      /* object-fit: none; */
+      /* object-position: 50% 50%; */
     }
     .main-title{
       position:absolute;
       top:50%;
     }
     .login-page .form-holder .info{
-      background-color:#e57373;
+      /* background-color:#e57373; */
+      background-color:transparent;
+    }
+    .bg-white{
+      background-color:transparent;
+    }
+    .form.d-flex{
+      background-color:transparent;
+    }
+    .form-holder.has-shadow{
+      background:url('white.png');
+      -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+      -moz-box-shadow:    2px 2px 4px rgba(0,0,0,0.5);  /* Firefox 3.5 - 3.6 */
+      box-shadow:         2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .first_row{
+      max-height:150px;
+      /* m-height:150px; */
     }
     @media screen and (max-width: 1091px) {
       
@@ -34,7 +58,7 @@ body{
         top:30%;
       }
       .logo-white{
-        top: 0px;
+        
       }
     }
     @media screen and (max-width: 475px) {
@@ -60,7 +84,6 @@ body{
         top:30%;
       }
       .logo-white{
-        top: 0px;
       }
     }
     @media screen and (max-width: 360px) {
@@ -125,4 +148,7 @@ body{
   }
   .login-page::before{
     color:black;
+  }
+  div.login-page{
+    background:url('red_bg1.png');
   }

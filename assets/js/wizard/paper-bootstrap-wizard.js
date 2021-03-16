@@ -9,13 +9,13 @@ $(document).ready(function () {
         'nextSelector': '.btn-next',
         'previousSelector': '.btn-previous',
 
-        onNext: function (tab, navigation, index) {
-            var $valid = $('.wizard-card form').valid();
-            if (!$valid) {
-                $validator.focusInvalid();
-                return false;
-            }
-        },
+        // onNext: function (tab, navigation, index) {
+        //     var $valid = $('.wizard-card form').valid();
+        //     if (!$valid) {
+        //         $validator.focusInvalid();
+        //         return false;
+        //     }
+        // },
 
         onInit: function (tab, navigation, index) {
 
@@ -29,7 +29,7 @@ $(document).ready(function () {
 
         onTabClick: function (tab, navigation, index) {
 
-            var $valid = $('.wizard-card form').valid();
+            // var $valid = $('.wizard-card form').valid();
 
             if (!$valid) {
                 return false;
@@ -46,13 +46,13 @@ $(document).ready(function () {
             var $wizard = navigation.closest('.wizard-card');
 
             // If it's the last tab then hide the last button and show the finish instead
-            if ($current >= $total) {
-                $($wizard).find('.btn-next').hide();
-                $($wizard).find('.btn-finish').show();
-            } else {
-                $($wizard).find('.btn-next').show();
-                $($wizard).find('.btn-finish').hide();
-            }
+            // if ($current >= $total) {
+            //     $($wizard).find('.btn-next').hide();
+            //     $($wizard).find('.btn-finish').show();
+            // } else {
+            //     $($wizard).find('.btn-next').show();
+            //     $($wizard).find('.btn-finish').hide();
+            // }
 
             //update progress
             var move_distance = 100 / $total;

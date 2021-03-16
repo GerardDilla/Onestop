@@ -65,10 +65,10 @@
                                 <?php $this->load->view($this->data['advising']); ?>
                             </div>
                             <div class="tab-pane" id="registration">
-                                testing 3
+                                
                             </div>
                             <div class="tab-pane" id="payment">
-                                testing 4
+                                <?php $this->load->view($this->data['payment']); ?>
                             </div>
                         </div>
                         <!-- /Inside Content -->

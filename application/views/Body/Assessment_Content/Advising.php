@@ -2,14 +2,14 @@
     <hr>
     <div class="row">
         <div class="col-md-12">
-            <h6>2. CHOOSE SUBJECTS</h6>
+            <h6>1. CHOOSE SUBJECTS</h6>
             <br>
             <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
             <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
         </div>
     </div>
     <br>
-    <table class="table table-striped" id="queueTable">
+    <table class="table table-striped" id="queueTable" style="display: block; overflow: auto;">
         <thead>
             <tr>
                 <th>Sched Code</th>
@@ -61,7 +61,7 @@
     <hr>
     <div class="row">
         <div class="col-md-12">
-            <h6>3. SELECT PAYMENT PLAN</h6>
+            <h6>2. SELECT PAYMENT PLAN</h6>
             <br>
             <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked="">
             <label class="btn btn-sm btn-outline-primary" for="success-outlined">

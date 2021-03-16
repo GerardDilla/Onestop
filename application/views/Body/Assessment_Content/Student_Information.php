@@ -3,7 +3,7 @@
         <div class="row">
             <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION</h6>
             <div class="col-md-6">
-                <table class="table">
+                <table class="table" style="display: block; overflow: auto;">
                     <tbody>
                         <tr>
                             <td>FIRST NAME:</td>

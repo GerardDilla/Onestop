@@ -12,6 +12,8 @@ class view_directory
 		$data['title'] = 'Self Assessment';
 		return $data;
 	}
+	
+
 	public function login()
 	{
 		$data['view'] = $this->body.'Login/Login';

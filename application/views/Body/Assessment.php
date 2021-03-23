@@ -1,7 +1,22 @@
+
+<script>
+iziToast.show({
+    theme: 'dark',
+    icon: 'icon-person',
+    // color:'red',
+    // backgroundColor:'#99B9C1',
+    // messageColor:'blue',
+    title: 'Hey',
+    message: 'Welcome!',
+    position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+    progressBarColor: '#cc0000',
+    image: "<?php echo base_url('assets/vendors/login_asset/img/sdcalogo.png')?>",
+});
+</script>
 <!-- <?php $this->load->helper('string'); echo random_string('alnum', 20); ?> -->
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
-<link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
+<link href="<?php echo base_url('') ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
 
 <section class="section">
     <div class="card">

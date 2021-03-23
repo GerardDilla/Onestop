@@ -152,3 +152,9 @@ body{
   div.login-page{
     background:url('red_bg1.png');
   }
+  input.input-material{
+    background:transparent;
+  }
+  .form.d-flex{
+    background:transparent;
+  }

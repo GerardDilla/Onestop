@@ -8,17 +8,11 @@
                 <div class="logo">
                 <image class="logo-white anim1" src="<?php echo base_url('assets/vendors/login_asset/img/DOSE_FINAL DESIGN.png');?>">
                 </div>
-                <h1 class="main-title anim1">
-                    One Stop Enrollment
-                <!-- Steps to reset password<br><br> -->
-                <!-- <font class="steps">1. Type your email in Forgot Password page.</font><br>
-                <font class="steps">1. Type your email in Forgot Password page.</font><br> -->
-                </h1>
             </div>
             </div>
         </div>
         <!-- Form Panel    -->
-        <div class="col-lg-6 col-md-12 bg-white second_row login-row">
+        <div class="col-lg-6 col-md-12 second_row login-row">
             <div class="form d-flex">
             <div class="content">
                 <form method="post" class="form-validate">
@@ -77,7 +71,7 @@ function back(){
 //     gsap.from('.page-2',{opacity:0,duration:1,y:-50});
 // }
 function openEffect(){
-    gsap.from('.login-page',{opacity:0,duration:1,y:-50});
+    gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
@@ -90,6 +84,6 @@ function closeEffect(){
     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     // gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    gsap.to('.login-page',{opacity:0,duration:1,y:-50,delay:1,onComplete:function(){goToLink()}});
+    gsap.to('.form-holder',{opacity:0,duration:1,y:-50,delay:1,onComplete:function(){goToLink()}});
 }
 </script>

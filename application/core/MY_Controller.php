@@ -11,6 +11,10 @@ class MY_Controller extends CI_Controller {
 
         parent::__construct();
         $this->load->library('view_directory');
+        $this->load->library('session');
+        $this->load->database();
+        $this->load->model('MainModel','mainmodel');
+        $this->load->library('encryption');
         // $this->data = array();
         $this->title = 'Default';
     }

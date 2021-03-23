@@ -5,3 +5,4 @@
 <script src="<?php echo base_url(); ?>assets/js/pages/dashboard.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
+<script src="<?php echo base_url('assets/js/iziToast.min.js'); ?>"></script>

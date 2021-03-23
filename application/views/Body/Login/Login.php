@@ -1,15 +1,22 @@
-<style>
-/* ::-webkit-input-placeholder{
-    color:#ddd;
-    font-size:40px;
-} */
-/* .label-color{
-    color:blue;
-} */
-input.input-material{
-    background:transparent;
+<!-- <script>
+    iziToast.warning({
+          title: 'Error:',
+          message: ' Incorrect Username or Password!!',
+          position: 'topCenter',
+      });
+</script> -->
+<?php
+if($this->session->flashdata('msg')!=''){
+    echo "<script>
+    iziToast.warning({
+        title: 'Error: ',
+        message: '".$this->session->flashdata('msg')."',
+        position: 'topCenter',
+    });
+    </script>";
+    $this->session->set_flashdata('msg','');
 }
-</style>
+?>
 <div class="page login-page page-1">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
@@ -28,7 +35,7 @@ input.input-material{
         <div class="col-lg-6 col-md-12 second_row login-row" style="background:transparent">
             <div class="form d-flex" style="background:transparent">
             <div class="content">
-                <form method="post" class="form-validate">
+                <form method="post" class="form-validate" action="<?php echo base_url('main/loginProcess')?>">
                 <div class="col-md-12" style="margin-bottom:20px">
                     <h1 class="anim2">Sign In</h1>
                 </div>

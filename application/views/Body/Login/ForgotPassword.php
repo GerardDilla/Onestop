@@ -8,18 +8,15 @@
                 <div class="logo">
                 <image class="logo-white anim1" src="<?php echo base_url('assets/vendors/login_asset/img/DOSE_FINAL DESIGN.png');?>">
                 </div>
-                <h1 class="main-title anim1">
+                <!-- <h1 class="main-title anim1">
                     One Stop Enrollment
-                <!-- Steps to reset password<br><br> -->
-                <!-- <font class="steps">1. Type your email in Forgot Password page.</font><br>
-                <font class="steps">1. Type your email in Forgot Password page.</font><br> -->
-                </h1>
+                </h1> -->
             </div>
             </div>
         </div>
         <!-- Form Panel    -->
-        <div class="col-lg-6 col-md-12 bg-white second_row login-row">
-            <div class="form d-flex">
+        <div class="col-lg-6 col-md-12 second_row login-row">
+            <div class="form d-flex" style="background:transparent">
             <div class="content">
                 <form method="post" class="form-validate">
                 <div class="col-md-12" style="margin-bottom:40px">

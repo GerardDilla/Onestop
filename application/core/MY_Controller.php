@@ -5,13 +5,13 @@ class MY_Controller extends CI_Controller {
 
 
     protected $title;
-    protected $data;
+    // protected $data;
 
 	function __construct() {
 
         parent::__construct();
         $this->load->library('view_directory');
-        $this->data = array();
+        // $this->data = array();
         $this->title = 'Default';
     }
 	
@@ -30,13 +30,15 @@ class MY_Controller extends CI_Controller {
 
     }
 
-    public function login_template()
+    public function login_template($body = array('view' => ''))
     {
-     
-        //    $this->template['header'] = $this->load->view('login/Login_header.php');
-        //    $this->template['body'] = $this->load->view('login/Admin_login.php');
-        //    $this->template['sidebar'] = $this->load->view('login/Login_footer.php');
-
+        $directory = 'Layout/Login/';
+        $this->template['Title'] = $this->data['tab_active'] = $body['title'] ? $body['title'] : $this->title;
+        $this->template['Header'] = $this->load->view($directory.'Header.php', $this->data, true);
+        $this->template['Body'] = $this->load->view($body['view'], $this->data, true);
+        $this->template['Script'] = $this->load->view($directory.'Script.php', $this->data, true);
+        $this->template['Footer'] = $this->load->view($directory.'Footer.php', $this->data, true);
+        $this->load->view($directory.'Template', $this->template);
     }
 
 		

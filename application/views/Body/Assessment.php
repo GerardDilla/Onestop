@@ -1,401 +1,100 @@
+<!-- <?php $this->load->helper('string'); echo random_string('alnum', 20); ?> -->
+<!-- Unused css
+    <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
+<link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
+
 <section class="section">
     <div class="card">
-        <div class="card-header">
-        </div>
-        <div class="card-body row">
-
-            <!-- STUDENT INFORMATION TAB -->
-            <div class="col-md-12">
-                <div class="row">
-                    <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION</h6>
-                    <div class="col-md-6">
-                        
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>FIRST NAME:</td>
-                                    <td>JUAN</td>
-                                </tr>
-                                <tr>
-                                    <td>MIDDLE NAME:</td>
-                                    <td>DELA</td>
-                                </tr>
-                                <tr>
-                                    <td>LAST NAME:</td>
-                                    <td>CRUZ</td>
-                                </tr>
-                                <tr>
-                                    <td>REFERENCE NUMBER:</td>
-                                    <td>123456</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                        <br>
-                    </div>
-                    <HR>
-                    <h6 class="col-md-12">CONFIRM YOUR COURSE</h6>
-                    <small class="col-md-12">Choose one of your preferred courses</small>
-                    <div class="col-md-6">
-                        <BR>
-                        <fieldset class="form-group">
-                            <select class="form-select" id="basicSelect">
-                                <option>PREFERRED COURSES</option>
-                                <option>BSIT</option>
-                                <option>BSBA</option>
-                                <option>ABMMA</option>
-                            </select>
-                        </fieldset>
-                        <fieldset class="form-group">
-                            <select class="form-select" id="basicSelect">
-                                <option>COURSE MAJOR</option>
-                                <option>BSIT</option>
-                                <option>BSBA</option>
-                                <option>ABMMA</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-                <br>
-            </div>
-            <!-- /STUDENT INFORMATION TAB -->
-
-            <!-- ADVISING TAB -->
-            <div class="col-md-12">
-                <div class="row">
-                    <hr>
-                    <h6 class="col-md-12" style="margin-bottom:15px">1. COMPLETE THE FOLLOWING:</h6>
-                    <div class="col-md-6 mb-4">
-                        <div class="input-group mb-3">
-                            <label class="input-group-text" for="inputGroupSelect01">School Year</label>
-                            <select class="form-select" id="inputGroupSelect01">
-                                <option selected>Choose...</option>
-                                <option value="1">2020-2021</option>
-                                <option value="2">2020-2021</option>
-                                <option value="3">2020-2021</option>
-                            </select>
+        <!-- <div class="card-header">
+        </div> -->
+        <div class="row">
+            <!-- Wizard container -->
+            <div class="wizard-container">
+                <div class="card wizard-card" data-color="red" id="wizardProfile">
+                    <form action="" method="">
+                        <div class="wizard-navigation">
+                            <div class="progress-with-circle">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
+                            </div>
+                            <!-- Progress Nav -->
+                            <ul>
+                                <li>
+                                    <a href="#student_information" data-toggle="tab">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-person-lines-fill" id="bi_resize"></i>
+                                        </div>
+                                        STUDENT INFORMATION
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#advising" data-toggle="tab">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-clipboard-plus" id="bi_resize"></i>
+                                        </div>
+                                        ADVISING
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#registration" data-toggle="tab">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-file-text" id="bi_resize"></i>
+                                        </div>
+                                        REGISTRATION
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#payment" data-toggle="tab">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-cash-stack" id="bi_resize"></i>
+                                        </div>
+                                        PAYMENT
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- /Progress Nav -->
                         </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="input-group mb-3">
-                            <label class="input-group-text" for="inputGroupSelect01">Semester</label>
-                            <select class="form-select" id="inputGroupSelect01">
-                                <option selected>Choose...</option>
-                                <option value="1">FIRST</option>
-                                <option value="2">SECOND</option>
-                                <option value="3">SUMMER</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="input-group mb-3">
-                            <label class="input-group-text" for="inputGroupSelect01">Curriculum</label>
-                            <select class="form-select" id="inputGroupSelect01">
-                                <option selected>Choose...</option>
-                                <option value="1">FIRST</option>
-                                <option value="2">SECOND</option>
-                                <option value="3">SUMMER</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="input-group mb-3">
-                            <label class="input-group-text" for="inputGroupSelect01">Section</label>
-                            <select class="form-select" id="inputGroupSelect01">
-                                <option selected>Choose...</option>
-                                <option value="1">FIRST</option>
-                                <option value="2">SECOND</option>
-                                <option value="3">SUMMER</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <hr>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h6>2. CHOOSE SUBJECTS</h6>
                         <br>
-                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
-                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
-                    </div>
-                </div>
-                <br>
-                <table class="table table-striped" id="queueTable">
-                    <thead>
-                        <tr>
-                            <th>Sched Code</th>
-                            <th>Course Code</th>
-                            <th>Course Title</th>
-                            <th>Section</th>
-                            <th>Units</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>20202021</td>
-                            <td>ITC123</td>
-                            <td>Programming Fundamentals</td>
-                            <td>BSIT1A</td>
-                            <td>5</td>
-                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>20202022</td>
-                            <td>ITC123</td>
-                            <td>Programming Fundamentals</td>
-                            <td>BSIT1A</td>
-                            <td>5</td>
-                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>20202023</td>
-                            <td>ITC123</td>
-                            <td>Programming Fundamentals</td>
-                            <td>BSIT1A</td>
-                            <td>5</td>
-                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>20202023</td>
-                            <td>ITC123</td>
-                            <td>Programming Fundamentals</td>
-                            <td>BSIT1A</td>
-                            <td>5</td>
-                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="col-md-12">
-                <hr>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h6>3. SELECT PAYMENT PLAN</h6>
                         <br>
-
-                        <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked="">
-                        <label class="btn btn-sm btn-outline-primary" for="success-outlined">
-                            INSTALLMENT
-                        </label>
-
-                        <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
-                        <label class="btn btn-sm btn-outline-primary" for="danger-outlined">
-                            FULL PAYMENT
-                        </label>
-
-                    </div>
-
-                    <div class="col-md-6">
                         <br>
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <td>OTHER FEES:</td>
-                                    <td>10000</td>
-                                </tr>
-                                <tr>
-                                    <td>MISC FEES</td>
-                                    <td>10000</td>
-                                </tr>
-                                <tr>
-                                    <td>LAB FEES</td>
-                                    <td>10000</td>
-                                </tr>
-                                <tr>
-                                    <td>TUITION FEES</td>
-                                    <td>10000</td>
-                                </tr>
-                                <tr>
-                                    <td>TOTAL FEES:</td>
-                                    <td>10000</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <!-- Inside Content -->
+                        <div class="tab-content">
+                            <div class="tab-pane" id="student_information">
+                                <?php $this->load->view($this->data['student_information']); ?>
+                            </div>
+                            <div class="tab-pane" id="advising">
+                                <?php $this->load->view($this->data['advising']); ?>
+                            </div>
+                            <div class="tab-pane" id="registration">
+                                
+                            </div>
+                            <div class="tab-pane" id="payment">
+                                <?php $this->load->view($this->data['payment']); ?>
+                            </div>
+                        </div>
+                        <!-- /Inside Content -->
+                        <!-- For Button Next 
+                            <div class="wizard-footer">
+                                <div class="pull-right">
+                                    <input type='button' class='btn btn-next btn-fill btn-warning btn-wd' name='next' value='Next' />
+                                    <input type='button' class='btn btn-finish btn-fill btn-warning btn-wd' name='finish' value='Finish' />
+                                </div>
 
-
-                    </div>
+                                <div class="pull-left">
+                                    <input type='button' class='btn btn-previous btn-default btn-wd' name='previous' value='Previous' />
+                                </div>
+                                <div class="clearfix"></div>
+                            </div> 
+                        -->
+                    </form>
                 </div>
             </div>
-            <!-- /ADVISING TAB -->
-
-            <!-- PRE REGISTRATION TAB -->
-            <!-- /PRE REGISTRATION TAB -->
-
-            <!-- PAYMENT TAB -->
-            <!-- /PAYMENT TAB -->
-
+            <!-- /wizard container -->
         </div>
-
-        <!-- Modal Contents -->
-
-        <!-- Subject Choices -->
-        <div class="modal fade text-left w-100" id="subjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel16">ADD SUBJECTS</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <i data-feather="x"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <table class="table table-striped" id="subjectTable">
-                            <thead>
-                                <tr>
-                                    <th>Sched Code</th>
-                                    <th>Course Code</th>
-                                    <th>Course Title</th>
-                                    <th>Section</th>
-                                    <th>Units</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>20202021</td>
-                                    <td>ITC123</td>
-                                    <td>Programming Fundamentals</td>
-                                    <td>BSIT1A</td>
-                                    <td>5</td>
-                                    <td><a href="#" class="btn btn-primary">Add Subject</a></td>
-                                </tr>
-                                <tr>
-                                    <td>20202022</td>
-                                    <td>ITC123</td>
-                                    <td>Programming Fundamentals</td>
-                                    <td>BSIT1A</td>
-                                    <td>5</td>
-                                    <td><a href="#" class="btn btn-primary">Add Subject</a></td>
-                                </tr>
-                                <tr>
-                                    <td>20202023</td>
-                                    <td>ITC123</td>
-                                    <td>Programming Fundamentals</td>
-                                    <td>BSIT1A</td>
-                                    <td>5</td>
-                                    <td><a href="#" class="btn btn-primary">Add Subject</a></td>
-                                </tr>
-                                <tr>
-                                    <td>20202023</td>
-                                    <td>ITC123</td>
-                                    <td>Programming Fundamentals</td>
-                                    <td>BSIT1A</td>
-                                    <td>5</td>
-                                    <td><a href="#" class="btn btn-primary">Add Subject</a></td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Schedule Plotting -->
-        <div class="modal fade text-left w-100" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel16">SCHEDULE PLOT</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <i data-feather="x"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>MON</th>
-                                    <th>TUE</th>
-                                    <th>WED</th>
-                                    <th>THURS</th>
-                                    <th>FRI</th>
-                                    <th>SAT</th>
-                                    <th>SUN</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>7:00 AM</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                </tr>
-                                <tr>
-                                    <th>7:30 AM</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                </tr>
-                                <tr>
-                                    <th>8:00 AM</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                </tr>
-                                <tr>
-                                    <th>8:30 AM</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                    <th> </th>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </section>
-<script src="<?php echo base_url(); ?>assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/vendors/simple-datatables/simple-datatables.js"></script>
-<script>
-    // Simple Datatable
-    let queueTable = document.querySelector('#queueTable');
-    let dataTable1 = new simpleDatatables.DataTable(queueTable);
-
-    // Simple Datatable
-    let subjectTable = document.querySelector('#subjectTable');
-    let dataTable2 = new simpleDatatables.DataTable(subjectTable);
-</script>
+<!--   Core JS Files   -->
+<script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url() ?>assets/js/wizard/jquery.bootstrap.wizard.js" type="text/javascript"></script>
+<!--  Plugin for the Wizard -->
+<script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript"></script>

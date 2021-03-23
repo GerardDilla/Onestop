@@ -19,6 +19,7 @@ iziToast.show({
 <link href="<?php echo base_url('') ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
 
 <section class="section">
+    
     <div class="card">
         <!-- <div class="card-header">
         </div> -->
@@ -73,19 +74,20 @@ iziToast.show({
                         <br>
                         <!-- Inside Content -->
                         <div class="tab-content">
-                            <div class="tab-pane" id="student_information">
+                            <div class="tab-pane container" id="student_information">
                                 <?php $this->load->view($this->data['student_information']); ?>
                             </div>
-                            <div class="tab-pane" id="advising">
+                            <div class="tab-pane container" id="advising">
                                 <?php $this->load->view($this->data['advising']); ?>
                             </div>
-                            <div class="tab-pane" id="registration">
-                                
+                            <div class="tab-pane container" id="registration">
+
                             </div>
-                            <div class="tab-pane" id="payment">
+                            <div class="tab-pane container" id="payment">
                                 <?php $this->load->view($this->data['payment']); ?>
                             </div>
                         </div>
+
                         <!-- /Inside Content -->
                         <!-- For Button Next 
                             <div class="wizard-footer">
@@ -106,6 +108,9 @@ iziToast.show({
             <!-- /wizard container -->
         </div>
     </div>
+    <?php $this->load->view('Body/Assessment_Content/Advising_Modals'); ?>
+
+
 </section>
 <!--   Core JS Files   -->
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>

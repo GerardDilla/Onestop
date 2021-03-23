@@ -10,14 +10,23 @@ class MainModel extends CI_Model {
     }
     public function checkKey($key){
         $this->db->where('automated_code',$key);
+        $this->db->where('automated_code !=','');
         return $this->db->get('student_account')->row_array();
     }
     public function changeUserPass($key,$data){
         $this->db->where('automated_code',$key);
         $this->db->update('student_account', $data);
     }
+    public function changeKey($email,$data){
+        $this->db->where('email',$email);
+        $this->db->update('student_account', $data);
+    }
     public function checkEmail($email){
         $this->db->where('email',$email);
         return $this->db->get('student_account')->row_array();
+    }
+    public function getAllStudAccount(){
+        $this->db->where('automated_code !=','');
+        return $this->db->get('student_account')->result_array();
     }
 }

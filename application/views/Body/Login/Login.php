@@ -16,6 +16,22 @@ if($this->session->flashdata('msg')!=''){
     </script>";
     $this->session->set_flashdata('msg','');
 }
+else if($this->session->flashdata('success')!=''){
+    echo "<script>
+    iziToast.show({
+    icon: 'bi bi-check2-square',
+    title: 'Success',
+    message: `".$this->session->flashdata('success')."`,
+    position: 'topCenter',
+    progressBarColor: '#cc0000',
+    onClosing: function(instance, toast, closedBy){
+    },
+    onClosed: function(instance, toast, closedBY){
+        
+    }
+});</script>";
+    $this->session->set_flashdata('success','');
+}
 ?>
 <div class="page login-page page-1">
     <div class="container d-flex align-items-center">

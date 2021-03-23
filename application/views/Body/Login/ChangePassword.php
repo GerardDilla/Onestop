@@ -15,10 +15,11 @@
         <div class="col-lg-6 col-md-12 second_row login-row">
             <div class="form d-flex">
             <div class="content">
-                <form method="post" class="form-validate">
-                <!-- <div class="col-md-12" style="margin-bottom:40px">
-                    <h1>Forgot Password</h1>
-                </div> -->
+                <form method="post" class="form-validate" action="<?php echo base_url('main/changePasswordProcess') ?>">
+                <input type="hidden" name="JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=" value="<?php echo $key;?>">
+                <div class="col-md-12" style="margin-bottom:40px">
+                    <h1>Password Reset</h1>
+                </div>
                 <div class="form-group anim3">
                     <input required autocomplete="off" id="login-new" type="password" name="new_password" required data-msg="Please enter your new password" class="pr-password input-material">
                     <label for="login-new" class="label-material" style="color:black;font-weight:bold;">New Password</label>

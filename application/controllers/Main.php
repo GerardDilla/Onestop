@@ -62,10 +62,80 @@ class Main extends MY_Controller {
 	public function forgotPassword(){
 		$this->login_template($this->view_directory->forgotPassword());
 	}
-	public function changePassword(){
-		$this->login_template($this->view_directory->changePassword());
+	public function sendEmail(){
+		$this->load->helper('string');
+		try{
+			$data = $this->mainmodel->checkEmail($this->input->post('email'));
+			if(!empty($data)){
+				$codes = $this->mainmodel->getAllStudAccount();
+				$generate_code = random_string('alnum', 20);
+				foreach($codes as $list){
+					if($generate_code==$list['automated_code']){
+						$generate_code = random_string('alnum', 20);
+					}
+				}
+				$this->mainmodel->changeKey($this->input->post('email'),array('automated_code' => $generate_code ));
+				$encrypt_code = $this->encryption->encrypt($generate_code);
+				$this->email($data['First_name'].' '.$data['Last_Name'],'jfabregas@sdca.edu.ph','St. Dominic College of Asia',$this->input->post('email'),'Forgot Password','Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}');
+				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
+				$this->session->set_flashdata('success',"We've sent a confirmation link on your email. Click the link to reset your password.");
+				redirect(base_url('/'));
+			}
+			else{
+				// echo array('type'=>'error','msg' => 'You input a wrong email!!');
+				$this->session->set_flashdata('msg','You input a wrong email!!');
+				redirect(base_url('main/forgotPassword'));
+			}
+			
+		}
+		catch(\Exception $e){
+			$this->session->set_flashdata('msg',$e);
+			redirect(base_url('main/forgotPassword'));
+		}
+	}
+	public function forgotPasswordProcess(){
+	}
+	public function changePassword($key = ''){
+		if(!empty($key)){
+			$this->data['key'] = $key;
+			$key = $this->encryption->decrypt($key);
+			$data = $this->mainmodel->checkKey($key);
+			// print_r($data);
+			// exit;
+			if(!empty($data)){
+				$this->login_template($this->view_directory->changePassword());
+			}
+			else{
+				$this->session->set_flashdata('msg','Incorrect key!!');
+				redirect(base_url('/'));
+			}
+		}
+		else{
+			$this->session->set_flashdata('msg','Incorrect key!!');
+			redirect(base_url('/'));
+		}
+	}
+	public function changePasswordProcess(){
+		try{
+			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
+			$password = $this->input->post('new_password');
+			$key = $this->encryption->decrypt($key);
+
+			// exit;
+			$this->mainmodel->changeUserPass($key,array(
+				'password' => $password,
+				'automated_code' => ''
+			));
+			$this->session->set_flashdata('success','You have successfully changed your password.!!');
+			redirect(base_url('/'));
+		}
+		catch(\Exception $e){
+			$this->session->set_flashdata('msg',$e);
+			redirect(base_url('/'));
+		}
 	}
 	public function changeUserPass($key = ''){
+		// exit;
 		if(!empty($key)){
 			$this->data['key'] = $key;
 			$key = $this->encryption->decrypt($key);
@@ -84,27 +154,7 @@ class Main extends MY_Controller {
 		}
 		
 	}
-	public function sendEmail(){
-		try{
-			$data = $this->mainmodel->checkEmail($this->input->get('email'));
-			if(!empty($data)){
-				$this->email("Jhon Norman Fabregas",'jfabregas@sdca.edu.ph','St. Dominic College of Asia','jhonnormanfabregas@gmail.com','Forgot Password','Click this link to reset your password. {unwrap}http://example.com/a_long_link_that_should_not_be_wrapped.html{/unwrap}');
-				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
-				$this->session->set_flashdata('success',"We've sent a confirmation link on your email. Click the link to reset your password.");
-				redirect(base_url('main/forgotPassword'));
-			}
-			else{
-				// echo array('type'=>'error','msg' => 'You input a wrong email!!');
-				$this->session->set_flashdata('msg','You input a wrong email!!');
-				redirect(base_url('main/forgotPassword'));
-			}
-			
-		}
-		catch(\Exception $e){
-			$this->session->set_flashdata('msg',$e);
-			redirect(base_url('main/forgotPassword'));
-		}
-	}
+	
 	public function changeUserPassProcess(){
 		try{
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
@@ -120,7 +170,6 @@ class Main extends MY_Controller {
 		catch(\Exception $e){
 			$this->session->set_flashdata('msg',$e);
 			redirect(base_url('/'));
-			// <>
 		}
 	}
 	public function selfassesment(){
@@ -134,5 +183,8 @@ class Main extends MY_Controller {
 	}
 	public function logout(){
 		redirect(base_url('/'));
+	}
+	public function decode(){
+		// $this->encrypt->set_mode(MCRYPT_MODE_CFB);
 	}
 }

@@ -11,18 +11,19 @@ if($this->session->flashdata('msg')!=''){
 }
 else if($this->session->flashdata('success')!=''){
     echo "<script>
-    iziToast.show({
-    icon: 'bi bi-check2-square',
-    title: 'Success',
-    message: `".$this->session->flashdata('success')."`,
-    position: 'topCenter',
-    progressBarColor: '#cc0000',
-    onClosing: function(instance, toast, closedBy){
-    },
-    onClosed: function(instance, toast, closedBY){
-        alert('closed');
-    }
-});</script>";
+        iziToast.show({
+        icon: 'bi bi-check2-square',
+        title: 'Success',
+        message: `".$this->session->flashdata('success')."`,
+        position: 'topCenter',
+        progressBarColor: '#cc0000',
+        onClosing: function(instance, toast, closedBy){
+        },
+        onClosed: function(instance, toast, closedBY){
+            // alert('closed');
+            back();
+        }
+    });</script>";
     $this->session->set_flashdata('success','');
 }
 ?>
@@ -119,7 +120,7 @@ function submitForm(){
     });
 }
 function openEffect(){
-    gsap.from('.login-page',{opacity:0,duration:1,y:-50});
+    gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
@@ -132,6 +133,6 @@ function closeEffect(){
     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    gsap.to('.login-page',{opacity:0,duration:1,y:-50,delay:.5,onComplete:function(){goToLink()}});
+    gsap.to('.form-holder',{opacity:0,duration:1,y:-50,delay:.5,onComplete:function(){goToLink()}});
 }
 </script>

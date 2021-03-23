@@ -54,3 +54,4 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['main/changeUserPass/$1'] = 'main/changeUserPass';
+$route['main/changeUserPass/$2'] = 'main/changePassword';

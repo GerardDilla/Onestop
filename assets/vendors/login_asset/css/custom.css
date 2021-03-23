@@ -1,160 +1,157 @@
 body{
-    font-family: 'Montserrat', sans-serif;
-    background-image: white;
-    background-attachment: fixed;
-    /* background-color:red; */
-    /* color:red; */
+  font-family: 'Montserrat', sans-serif;
+  background-image: white;
+  background-attachment: fixed;
+  /* background-color:red; */
+  /* color:red; */
+}
+  .login-page .form-holder .form form{
+    max-width:100%;
   }
-    .login-page .form-holder .form form{
-      max-width:100%;
-    }
-    .title-content{
-      width:100%;
-      display: flex;
-      align-items: center;
-    }
-    .logo-white{
-      /* height:110px;  */
-      width:80%;
-      max-width: 100%;
-      position: absolute;
-      top:50%;
-      left:50%;
-      transform:translate(-50%,-50%)
-      /* top: 20%; */
-      /* margin:0 auto; */
-      /* object-fit: none; */
-      /* object-position: 50% 50%; */
-    }
-    .main-title{
-      position:absolute;
-      top:50%;
-    }
-    .login-page .form-holder .info{
-      /* background-color:#e57373; */
-      background-color:transparent;
-    }
-    .bg-white{
-      background-color:transparent;
-    }
-    .form.d-flex{
-      background-color:transparent;
-    }
-    .form-holder.has-shadow{
-      background:url('white.png');
-      -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-      -moz-box-shadow:    2px 2px 4px rgba(0,0,0,0.5);  /* Firefox 3.5 - 3.6 */
-      box-shadow:         2px 2px 4px rgba(0,0,0,0.5);
-    }
-    .first_row{
-      max-height:150px;
-      /* m-height:150px; */
-    }
-    @media screen and (max-width: 1091px) {
-      
-      .main-title{
-        margin-top:10%;
-        padding-bottom:20%;
-        top:30%;
-      }
-      .logo-white{
-        
-      }
-    }
-    @media screen and (max-width: 475px) {
-      .main-title.h2{
-        font-size:14%;
-      }
-    }
-    @media (pointer:none), (pointer:coarse) {
-      .login-page .form-holder .info{
-        height:300px;
-      }
-      .first_row{
-        width:100%;
-        max-height:300px;
-      }
-      .second_row{
-        width:100%;
-        margin:0;
-      }
-      .main-title{
-        margin-top:10%;
-        padding-bottom:20%;
-        top:30%;
-      }
-      .logo-white{
-      }
-    }
-    @media screen and (max-width: 360px) {
-      .login-page .container{
-        padding:0;
-      }
-    }
-    
-    @media screen and (max-width: 539px) {
-      .logo-white{
-        height:80px; 
-        width:auto;
-      }
-    }
-    @media screen and (max-width: 280px) {
-      .logo-white{
-        height:65px;
-        width:auto;
-      }
-    }
-    input.input-material:focus{
-      color:black;
-      border-color:black;
-    }
-    input.input-material{
-      border-color:#85b4f2;
-    }
-    input.input-material ~ label.active{
-      color:black;
-    }
-    
-    .second_row{
-      max-height:400px;
-    }
-    body{
-    font-family: 'Montserrat', sans-serif;
-    /* background-image: linear-gradient(#e66465, #9198e5); */
-    background-attachment: fixed;
+  .title-content{
+    width:100%;
+    display: flex;
+    align-items: center;
+  }
+  .logo-white{
+    /* height:110px;  */
+    width:80%;
+    max-width: 100%;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%)
+    /* top: 20%; */
+    /* margin:0 auto; */
+    /* object-fit: none; */
+    /* object-position: 50% 50%; */
+  }
+  .main-title{
+    position:absolute;
+    top:50%;
+  }
+  .login-page .form-holder .info{
+    /* background-color:#e57373; */
+    background-color:transparent;
+  }
+  .bg-white{
+    background-color:transparent;
   }
   .form.d-flex{
-    background-color:white;
+    background-color:transparent;
   }
-  h4.main-title .steps{
-      font-size:12px;
-  }
-  ul.password-validator li{
-      text-decoration: none;
-      color:#E03F35;
-  }
-  a{
-      text-decoration:none;
-      color:black;
-  }
-  a.btn-default:hover{
-      color:black;
+  .form-holder.has-shadow{
+    background:url('white.png');
+    -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    2px 2px 4px rgba(0,0,0,0.5);  /* Firefox 3.5 - 3.6 */
+    box-shadow:         2px 2px 4px rgba(0,0,0,0.5);
   }
   .first_row{
-    margin:auto;
+    max-height:150px;
+    /* m-height:150px; */
   }
-  .content{
+  @media screen and (max-width: 1091px) {
     
+    .main-title{
+      margin-top:10%;
+      padding-bottom:20%;
+      top:30%;
+    }
+    .logo-white{
+      
+    }
   }
-  .login-page::before{
+  @media screen and (max-width: 475px) {
+    .main-title.h2{
+      font-size:14%;
+    }
+  }
+  @media (pointer:none), (pointer:coarse) {
+    .login-page .form-holder .info{
+      height:300px;
+    }
+    .first_row{
+      width:100%;
+      max-height:300px;
+    }
+    .second_row{
+      width:100%;
+      margin:0;
+    }
+    .main-title{
+      margin-top:10%;
+      padding-bottom:20%;
+      top:30%;
+    }
+    .logo-white{
+    }
+  }
+  @media screen and (max-width: 360px) {
+    .login-page .container{
+      padding:0;
+    }
+  }
+  
+  @media screen and (max-width: 539px) {
+    .logo-white{
+      height:80px; 
+      width:auto;
+    }
+  }
+  @media screen and (max-width: 280px) {
+    .logo-white{
+      height:65px;
+      width:auto;
+    }
+  }
+  input.input-material:focus{
     color:black;
-  }
-  div.login-page{
-    background:url('red_bg1.png');
+    border-color:black;
   }
   input.input-material{
-    background:transparent;
+    border-color:#85b4f2;
   }
-  .form.d-flex{
-    background:transparent;
+  input.input-material ~ label.active{
+    color:black;
   }
+  
+  .second_row{
+    max-height:400px;
+  }
+  body{
+  font-family: 'Montserrat', sans-serif;
+  /* background-image: linear-gradient(#e66465, #9198e5); */
+  background-attachment: fixed;
+}
+.form.d-flex{
+  /* background-color:white; */
+}
+h4.main-title .steps{
+    font-size:12px;
+}
+ul.password-validator li{
+    text-decoration: none;
+    color:#E03F35;
+}
+a{
+    text-decoration:none;
+    color:black;
+}
+a.btn-default:hover{
+    color:black;
+}
+.first_row{
+  margin:auto;
+}
+.content{
+  
+}
+.login-page::before{
+  color:black;
+}
+div.login-page{
+  background:url('red_bg1.png');
+}
+input.input-material{
+  background:transparent;
+}

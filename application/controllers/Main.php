@@ -7,7 +7,6 @@ class Main extends MY_Controller {
 	{
 		//$this->load->view('Body/index');
 		$this->default_template($this->view_directory->assessment());
-		echo 'test commit';
 
 	}
 }

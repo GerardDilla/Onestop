@@ -16,4 +16,8 @@ class MainModel extends CI_Model {
         $this->db->where('automated_code',$key);
         $this->db->update('student_account', $data);
     }
+    public function checkEmail($email){
+        $this->db->where('email',$email);
+        return $this->db->get('student_account')->row_array();
+    }
 }

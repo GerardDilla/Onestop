@@ -1,3 +1,33 @@
+<?php
+if($this->session->flashdata('msg')!=''){
+    echo "<script>
+    iziToast.warning({
+        title: 'Error: ',
+        message: '".$this->session->flashdata('msg')."',
+        position: 'topCenter',
+    });
+    </script>";
+    $this->session->set_flashdata('msg','');
+}
+else if($this->session->flashdata('success')!=''){
+    echo "<script>
+    iziToast.show({
+    icon: 'bi bi-check2-square',
+    title: 'Success',
+    message: `".$this->session->flashdata('success')."`,
+    position: 'topCenter',
+    progressBarColor: '#cc0000',
+    onClosing: function(instance, toast, closedBy){
+    },
+    onClosed: function(instance, toast, closedBY){
+        alert('closed');
+    }
+});</script>";
+    $this->session->set_flashdata('success','');
+}
+?>
+
+    </script>
 <div class="page login-page">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
@@ -18,7 +48,7 @@
         <div class="col-lg-6 col-md-12 second_row login-row">
             <div class="form d-flex" style="background:transparent">
             <div class="content">
-                <form method="post" class="form-validate">
+                <form method="post" class="form-validate" action="<?php echo base_url('main/sendEmail');?>">
                 <div class="col-md-12" style="margin-bottom:40px">
                     <h1 class="anim2">Forgot Password</h1>
                 </div>
@@ -27,11 +57,11 @@
                     <label for="login-username" class="label-material">User Name</label>
                 </div> -->
                 <div class="form-group">
-                    <input required autocomplete="off" id="login-email" type="text" name="loginPassword" required data-msg="Please enter your password" class="input-material anim3">
+                    <input required autocomplete="off" id="login-email" type="text" name="email" required data-msg="Please enter your password" class="input-material anim3">
                     <label for="login-email" class="label-material" style="color:black;font-weight:bold;">Email</label>
                 </div>
                 <div align="right">
-                    <button id="login" type="submit" class="btn btn-info submit-button">Submit</button>
+                    <button id="login" type="button" type="submit" class="btn btn-info submit-button">Submit</button>
                 </div>
                 <div style="bottom:2;position:absolute;">
                     <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>
@@ -52,6 +82,42 @@ function back(){
 // function back(){
 //     gsap.from('.page-2',{opacity:0,duration:1,y:-50});
 // }
+function submitForm(){
+    $.ajax({
+        url: "<?php echo base_url('main/sendEmail')?>",
+        method: 'get',
+        data:{
+            'email':$('#login-email').val()
+        },
+        dataType:'json',
+        success: function(response) {
+            if(response.type=='error'){
+                iziToast.warning({
+                    title: 'Error: ',
+                    message: response.msg,
+                    position: 'topCenter',
+                });
+            }
+            else{
+                iziToast.show({
+                    icon: 'bi bi-check2-square',
+                    title: 'Success',
+                    message: response.msg,
+                    position: 'topCenter',
+                    progressBarColor: '#cc0000',
+                    onClosing: function(instance, toast, closedBy){
+                    },
+                    onClosed: function(instance, toast, closedBY){
+                        alert('closed');
+                    }
+                })
+            }
+        },
+        error: function(response) {
+
+        }
+    });
+}
 function openEffect(){
     gsap.from('.login-page',{opacity:0,duration:1,y:-50});
     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});

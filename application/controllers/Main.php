@@ -9,6 +9,38 @@ class Main extends MY_Controller {
 		// echo 'hello';
 		$this->login_template($this->view_directory->login());
 	}
+	public function email($cp,$from,$from_name,$send_to,$subject,$message){
+		$config = Array(
+				'protocol'  => 'smtp',
+				'smtp_host' => 'ssl://smtp.gmail.com',
+				'smtp_port' => '465',
+				'smtp_timeout' => '7',
+				'smtp_user' => 'webmailer@sdca.edu.ph',
+				'smtp_pass' => 'sdca2017',
+				'charset' => 'utf-8',
+				'newline' => '\r\n',
+				'mailtype'  => 'html',
+				'validation' => true,
+				'wordwrap' => true
+		);
+		$this->load->library('email');
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");
+		$this->email->from($from, $from_name);
+		$this->email->to($send_to);
+		$this->email->subject($subject);
+		$this->email->message($message);
+		if($this->email->send()){
+				echo  'Email has been sent to '.$cp;
+				echo  '<br><br>';
+		}else{
+				echo  "<h4>There was a problem with sending an email.</h4>";
+				echo  "<br><br>For any concers, proceed to our <a href'#' style'font-size:15px; color:#00F;'>Helpdesk</a> or the MIS Office.";        
+		}
+		//email debugger
+			echo $this->email->print_debugger(array('headers'));
+
+	}
 	public function loginProcess(){
 		try{
 			$username = $this->input->post('loginUsername');
@@ -51,6 +83,27 @@ class Main extends MY_Controller {
 			redirect(base_url('/'));
 		}
 		
+	}
+	public function sendEmail(){
+		try{
+			$data = $this->mainmodel->checkEmail($this->input->get('email'));
+			if(!empty($data)){
+				$this->email("Jhon Norman Fabregas",'jfabregas@sdca.edu.ph','St. Dominic College of Asia','jhonnormanfabregas@gmail.com','Forgot Password','Click this link to reset your password. {unwrap}http://example.com/a_long_link_that_should_not_be_wrapped.html{/unwrap}');
+				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
+				$this->session->set_flashdata('success',"We've sent a confirmation link on your email. Click the link to reset your password.");
+				redirect(base_url('main/forgotPassword'));
+			}
+			else{
+				// echo array('type'=>'error','msg' => 'You input a wrong email!!');
+				$this->session->set_flashdata('msg','You input a wrong email!!');
+				redirect(base_url('main/forgotPassword'));
+			}
+			
+		}
+		catch(\Exception $e){
+			$this->session->set_flashdata('msg',$e);
+			redirect(base_url('main/forgotPassword'));
+		}
 	}
 	public function changeUserPassProcess(){
 		try{

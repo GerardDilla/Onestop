@@ -13,7 +13,6 @@ class sidebar_choices
 			'url' => '',
 			'url' => '',
 			'url' => '',
-			'url' => '',
 		); 
 		return $menu;
 

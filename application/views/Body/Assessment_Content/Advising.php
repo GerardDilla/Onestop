@@ -1,14 +1,13 @@
 <div class="col-md-12">
-    <hr>
     <div class="row">
         <div class="col-md-12">
-            <h6>1. CHOOSE SUBJECTS</h6>
-            <br>
-            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
-            <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
+            <h4>1. CHOOSE SUBJECTS</h4>
         </div>
     </div>
     <br>
+    <h5>Queued Subjects</h5>
+    <a href="#" class="btn btn-sm btn-primary load-disable" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
+    <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
     <table class="table table-striped" id="queueTable" style="display: block; overflow: auto;">
         <thead>
             <tr>
@@ -22,6 +21,30 @@
         </thead>
         <tbody>
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- <tr>
                 <td>20202021</td>
                 <td>ITC123</td>
                 <td>Programming Fundamentals</td>
@@ -52,24 +75,23 @@
                 <td>BSIT1A</td>
                 <td>5</td>
                 <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-            </tr>
+            </tr> -->
 
         </tbody>
     </table>
 </div>
 <div class="col-md-12">
-    <hr>
     <div class="row">
         <div class="col-md-12">
-            <h6>2. SELECT PAYMENT PLAN</h6>
+            <h4>2. SELECT PAYMENT PLAN</h4>
             <br>
-            <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked="">
-            <label class="btn btn-sm btn-outline-primary" for="success-outlined">
+            <input type="radio" class="btn-check" name="options-outlined" id="installmentchoice" autocomplete="off" checked="">
+            <label class="btn btn-sm btn-outline-primary" for="installmentchoice">
                 INSTALLMENT
             </label>
 
-            <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
-            <label class="btn btn-sm btn-outline-primary" for="danger-outlined">
+            <input type="radio" class="btn-check" name="options-outlined" id="fullpaymentchoice" autocomplete="off">
+            <label class="btn btn-sm btn-outline-primary" for="fullpaymentchoice">
                 FULL PAYMENT
             </label>
         </div>
@@ -102,5 +124,3 @@
         </div>
     </div>
 </div>
-
-

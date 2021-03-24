@@ -4,7 +4,7 @@
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
 <link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
 <section class="section">
-    
+
     <div class="card">
         <!-- <div class="card-header">
         </div> -->
@@ -93,10 +93,10 @@
             <!-- /wizard container -->
         </div>
     </div>
-    <?php $this->load->view('Body/Assessment_Content/Advising_Modals'); ?>
-
-
 </section>
+
+<?php $this->load->view('Body/Assessment_Content/Advising_Modals'); ?>
+
 <!--   Core JS Files   -->
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>

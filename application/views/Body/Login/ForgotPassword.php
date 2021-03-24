@@ -62,7 +62,7 @@ else if($this->session->flashdata('success')!=''){
                     <label for="login-email" class="label-material" style="color:black;font-weight:bold;">Email</label>
                 </div>
                 <div align="right">
-                    <button id="login" type="button" type="submit" class="btn btn-info submit-button">Submit</button>
+                    <button id="submit" type="submit" class="btn btn-info submit-button">Submit</button>
                 </div>
                 <div style="bottom:2;position:absolute;">
                     <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>
@@ -76,6 +76,17 @@ else if($this->session->flashdata('success')!=''){
     </div>
 </div>
 <script>
+$('form').on('submit',function(){
+    var count = 0;
+    $('.input-material').each(function(){
+        if($(this).val()==""){
+            ++count;
+        }
+    })
+    if(count==0){
+        $('#submit').attr('disabled','disabled');
+    }
+});
 openEffect();
 function back(){
     closeEffect();

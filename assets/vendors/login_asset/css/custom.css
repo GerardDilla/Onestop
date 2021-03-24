@@ -50,23 +50,11 @@ body{
     max-height:150px;
     /* m-height:150px; */
   }
-  @media screen and (max-width: 1091px) {
-    
-    .main-title{
-      margin-top:10%;
-      padding-bottom:20%;
-      top:30%;
-    }
-    .logo-white{
-      
-    }
-  }
-  @media screen and (max-width: 475px) {
-    .main-title.h2{
-      font-size:14%;
-    }
-  }
   @media (pointer:none), (pointer:coarse) {
+    #modal.my_modal{
+        max-width:100%;
+        width:100%;
+    }
     .login-page .form-holder .info{
       height:300px;
     }
@@ -86,18 +74,48 @@ body{
     .logo-white{
     }
   }
+  @media screen and (max-width: 2000px) {
+    #modal.my_modal{
+        max-width:100%;
+        width:45%;
+    }
+  }
+  @media screen and (max-width: 1091px) {
+    #modal.my_modal{
+        max-width:45%;
+        width:45%;
+    }
+    .main-title{
+      margin-top:10%;
+      padding-bottom:20%;
+      top:30%;
+    }
+    .logo-white{
+      
+    }
+  }
+  @media screen and (max-width: 539px) {
+    #modal.my_modal{
+      max-width:100%;
+      width:100%;
+    }
+    .logo-white{
+      height:80px; 
+      width:auto;
+    }
+  }
+  @media screen and (max-width: 475px) {
+    .main-title.h2{
+      font-size:14%;
+    }
+  }
   @media screen and (max-width: 360px) {
     .login-page .container{
       padding:0;
     }
   }
   
-  @media screen and (max-width: 539px) {
-    .logo-white{
-      height:80px; 
-      width:auto;
-    }
-  }
+ 
   @media screen and (max-width: 280px) {
     .logo-white{
       height:65px;

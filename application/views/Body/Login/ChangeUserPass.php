@@ -1,3 +1,16 @@
+<style>
+/* @media screen (max-width:1049){
+    #modal.my_modal{
+        max-width:100%;
+        width:50%;
+    }
+} */
+.iziModal .iziModal-header.iziModal-noSubtitle .iziModal-header-title {
+    font-size: 1.2em;
+    margin: 3px 0 0;
+    font-weight: bold;
+}
+</style>
 <div class="page login-page">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
@@ -15,7 +28,7 @@
         <div class="col-lg-6 col-md-12 second_row login-row">
             <div class="form d-flex">
             <div class="content">
-                <form method="post" class="form-validate" action="<?php echo base_url('main/changeUserPassProcess');?>">
+                <form method="post" id="form_process" class="form-validate" action="<?php echo base_url('main/changeUserPassProcess');?>">
                     <input type="hidden" name="JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=" value="<?php echo $key;?>">
                 <!-- <div class="col-md-12" style="margin-bottom:40px">
                     <h1>Forgot Password</h1>
@@ -33,7 +46,7 @@
                     <label for="login-confirm" class="label-material" style="color:black;font-weight:bold;">Confirm Password</label>
                 </div>
                 <div align="right">
-                    <button id="login" type="submit" class="btn btn-info submit-button">Submit</button>
+                    <button id="btnSubmit" type="submit" class="btn btn-info submit-button">Submit</button>
                 </div>
                 </form>
             </div>
@@ -43,7 +56,38 @@
     </div>
     </div>
 </div>
+<div id="modal" data-izimodal-group="" data-izimodal-loop="" style="display:none;" data-izimodal-title="Input your code">  
+    <div class="col-md-12 content" style="padding:20px 10% 20px 10%;margin:auto;">
+        <form id="form-code" class="form-inline col-md-12">
+            <div class="form-group-material col-md-12">
+                    <input required autocomplete="off" id="login-code" type="text" name="code" required data-msg="Incorrect code" class="input-material">
+                    <label for="login-code" class="label-material" style="color:black;font-weight:bold;">Code</label>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
+    var width = '35%';
+    $('#modal').iziModal({
+        headerColor: '#45abee',
+        width: '',
+        top:1,
+        overlayColor: 'rgba(0, 0, 0, 0.5)',
+        fullscreen: true,
+        transitionIn: 'fadeInUp',
+        transitionOut: 'fadeOutDown',
+        appendToOverlay: 'body',
+        focusInput: true,
+        overlayClose:false,
+        closeButton: false,
+        fullscreen:false,
+        // height: '80',
+    });
+    // $('#form-process .input-material').attr('disabled','disabled');
+    // $('#form-process button[type=submit]').attr('disabled','disabled');
+    // $("#modal").addClass('my_modal');
+    // $("#modal .label-material").addClass('active');
+    // $('#modal').iziModal('open');
     $(".pr-password").passwordRequirements({
             useLowercase:false,
             useSpecial : false
@@ -58,6 +102,52 @@
     })
 </script>
 <script>
+
+$('#form_process').on('submit',function(e){
+    e.preventDefault();
+    var upperCase= new RegExp('[A-Z]');
+    var count = 0;
+    var strength = 25;
+    var str = $('input[name=new_password]').val().split('');
+    
+    $('#form-process .input-material').each(function(){
+        if($(this).val()==""){
+            ++count;
+        }
+    })
+    if($('input[name=new_password]').val()!=$('input[name=confirm_password]').val()){
+        ++count;
+        iziToast.warning({
+            title: 'Error: ',
+            message: 'Incorrect confirmation password.!!',
+            position: 'topCenter',
+        });
+    }
+    if($.isNumeric($('input[name=new_password]').val().replace(/[^\d.-]/g, ''))){
+        strength += 25;
+    }
+    if(str.length>=8){
+        strength += 25;
+    }
+    if(upperCase.test($('input[name=new_password]').val())){
+        strength += 25;
+    }
+
+    if(strength!=100){
+        iziToast.warning({
+            title: 'Error: ',
+            message: 'Your password is too weak!!',
+            position: 'topCenter',
+        });
+    }
+    else if(count==0&&strength==100){
+        $('button[type=submit]').attr('disabled','disabled');
+        document.getElementById("form_process").submit();
+    }
+    console.log(strength);
+    console.log(count);
+    
+});
 openEffect();
 function back(){
     closeEffect();

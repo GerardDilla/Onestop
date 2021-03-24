@@ -9,6 +9,19 @@ class Main extends MY_Controller {
 		// echo 'hello';
 		$this->login_template($this->view_directory->login());
 	}
+	public function setSession($data){
+		$this->session->set_userdata(array(
+			'reference_no' =>  $data['reference_no'],
+			'first_name' => $data['First_Name'],
+			'middle_name' => $data['Middle_Name'],
+			'last_name' => $data['Last_Name'],
+			'yearlevel' => $data['YearLevel'],
+			'course' => $data['Course'],
+			'major' => $data['Major'],
+			'admittedsy' => $data['AdmittedSY'],
+			'admittedsem' => $data['AdmittedSEM']
+		));
+	}
 	public function email($cp,$from,$from_name,$send_to,$subject,$message){
 		$config = Array(
 				'protocol'  => 'smtp',
@@ -38,7 +51,7 @@ class Main extends MY_Controller {
 				echo  "<br><br>For any concers, proceed to our <a href'#' style'font-size:15px; color:#00F;'>Helpdesk</a> or the MIS Office.";        
 		}
 		//email debugger
-			echo $this->email->print_debugger(array('headers'));
+			// echo $this->email->print_debugger(array('headers'));
 
 	}
 	public function loginProcess(){
@@ -47,6 +60,7 @@ class Main extends MY_Controller {
 			$password = $this->input->post('loginPassword');
 			$data = $this->mainmodel->checkLogin($username,$password);
 			if(!empty($data)){
+				$this->setSession($data);
 				redirect(base_url('main/selfassesment'));
 			}else{
 				$this->session->set_flashdata('msg','Incorrect username or password!!');
@@ -100,8 +114,6 @@ class Main extends MY_Controller {
 			$this->data['key'] = $key;
 			$key = $this->encryption->decrypt($key);
 			$data = $this->mainmodel->checkKey($key);
-			// print_r($data);
-			// exit;
 			if(!empty($data)){
 				$this->login_template($this->view_directory->changePassword());
 			}
@@ -120,8 +132,6 @@ class Main extends MY_Controller {
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
 			$password = $this->input->post('new_password');
 			$key = $this->encryption->decrypt($key);
-
-			// exit;
 			$this->mainmodel->changeUserPass($key,array(
 				'password' => $password,
 				'automated_code' => ''
@@ -135,10 +145,8 @@ class Main extends MY_Controller {
 		}
 	}
 	public function changeUserPass($key = ''){
-		// exit;
 		if(!empty($key)){
 			$this->data['key'] = $key;
-			$key = $this->encryption->decrypt($key);
 			$data = $this->mainmodel->checkKey($key);
 			if(!empty($data)){
 				$this->login_template($this->view_directory->changeUserPass());
@@ -158,14 +166,17 @@ class Main extends MY_Controller {
 	public function changeUserPassProcess(){
 		try{
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
-			$key = $this->encryption->decrypt($key);
+			$data = $this->mainmodel->checkKey($key);
+			
+			// $key = $this->encryption->decrypt($key);
 			$this->mainmodel->changeUserPass($key,array(
 				'username' => $this->input->post('username') ,
 				'password' => $this->input->post('new_password'),
-				'automated_code' => ''
+				// 'automated_code' => ''
 			));
-			$this->session->set_flashdata('success',$e);
-			redirect(base_url('/'));
+			$this->setSession($data);
+			$this->session->set_flashdata('success',$data['First_Name'].' '.$data['Last_Name']);
+			redirect(base_url('main/selfassesment'));
 		}
 		catch(\Exception $e){
 			$this->session->set_flashdata('msg',$e);
@@ -173,18 +184,24 @@ class Main extends MY_Controller {
 		}
 	}
 	public function selfassesment(){
+		$this->validateSession();
 		$this->data['student_information'] = 'Body/Assessment_Content/Student_Information';
 		$this->data['advising'] = 'Body/Assessment_Content/Advising';
 		$this->data['payment'] = 'Body/Assessment_Content/Payment';
 		$this->default_template($this->view_directory->assessment());
 	}
 	public function passwordReset(){
+		$this->validateSession();
 		$this->default_template($this->view_directory->passwordReset());
 	}
 	public function logout(){
+		$this->session->sess_destroy();
 		redirect(base_url('/'));
 	}
-	public function decode(){
-		// $this->encrypt->set_mode(MCRYPT_MODE_CFB);
+	public function validateSession(){
+		if(empty($this->session->userdata('reference_no'))){
+			$this->session->set_flashdata('msg','Session Expired!!');
+			redirect(base_url('/'));
+		}
 	}
 }

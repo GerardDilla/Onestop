@@ -15,14 +15,10 @@ class MY_Controller extends CI_Controller {
         $this->load->database();
         $this->load->model('MainModel','mainmodel');
         $this->load->library('encryption');
-        // $this->data = array();
         $this->title = 'Default';
     }
-	
-
     public function default_template($body = array('view' => ''))
     {
-
         $directory = 'Layout/Default/';
         $this->template['Title'] = $this->data['tab_active'] = $body['title'] ? $body['title'] : $this->title;
         $this->template['Header'] = $this->load->view($directory.'Header.php', $this->data, true);

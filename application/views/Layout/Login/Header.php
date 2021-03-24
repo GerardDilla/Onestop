@@ -20,4 +20,5 @@
     <!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/iziToast-master/dist/css/iziToast.css'); ?>"> -->
     
     <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/iziModal.min.css'); ?>">
 	

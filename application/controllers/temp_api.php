@@ -10,7 +10,7 @@ class temp_api extends CI_Controller
 		header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: GET, POST');
 		header('Access-Control-Request-Headers: Content-Type');
-
+		$this->validkey = 'testkey101';
 		parent::__construct();
 	}
 	public function index()
@@ -22,13 +22,11 @@ class temp_api extends CI_Controller
 	}
 	public function test()
 	{
-
 		$test = $this->input->post();
 		$response = [
 			'Input' => $test,
-			'Status' => $test ? 'Received' . $test : 'Fail'
+			'Status' => !empty($test) ? 'Received' : 'Fail'
 		];
-
-		return $this->response->setJSON($response);
+		echo json_encode($response);
 	}
 }

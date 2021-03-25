@@ -1,17 +1,28 @@
+// var playPause = anime({
+//     targets:'img.loading',
+//     loop:true,
+//     keyframes:[
+//         {rotate:'360deg'}
+//     ],
+//     translateY: {
+//         value:    ['160px', '0'], 
+//         duration: 575,
+//         easing:   'easeInQuad',
+//       },
+//     duration:3000,
+//     autoplay:false
+// });
 var playPause = anime({
-    targets:'img.loading',
-    loop:true,
-    keyframes:[
-        {rotate:'360deg'}
-    ],
-    translateY: {
-        value:    ['160px', '0'], 
-        duration: 575,
-        easing:   'easeInQuad',
-      },
-    duration:3000,
+    targets: '#amazing path',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    easing: 'easeInOutSine',
+    duration: 1500,
+    delay: function(el, i) { return i * 250 },
+    direction: 'alternate',
+    loop: true,
     autoplay:false
-});
+  });
+  
 $(document).ready(function(){
     gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
@@ -30,6 +41,12 @@ $(document).ready(function(){
     }, 1000);
 });
 $('.leave_button').on('click',function(){
+    // var setInterval2 = window.setInterval(function(){ 
+    //     clearInterval(setInterval2);
+    //     // alert('1');
+    //     playPause();
+    // }, 500);
+    playPause.play();
     gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});

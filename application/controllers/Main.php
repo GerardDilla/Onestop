@@ -172,7 +172,7 @@ class Main extends MY_Controller {
 			$this->mainmodel->changeUserPass($key,array(
 				'username' => $this->input->post('username') ,
 				'password' => $this->input->post('new_password'),
-				// 'automated_code' => ''
+				'automated_code' => ''
 			));
 			$this->setSession($data);
 			$this->session->set_flashdata('success',$data['First_Name'].' '.$data['Last_Name']);

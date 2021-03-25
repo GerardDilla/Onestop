@@ -23,7 +23,8 @@
     ul.transition li{
         transform:scaleY(1);
         background:white;
-        width:20%;
+        width:12.5%;
+        /* width:20%; */
     }
     ul{
         list-style:none;
@@ -75,6 +76,9 @@
     <img class="loading transition-effect" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE_FINAL DESIGN.png')?>">
 </div>
 <ul class="transition transition-effect">
+    <li></li>
+    <li></li>
+    <li></li>
     <li></li>
     <li></li>
     <li></li>

@@ -35,4 +35,13 @@ class MainModel extends CI_Model {
         $this->db->where('automated_code !=','');
         return $this->db->get('student_account')->result_array();
     }
+    public function checkOldPassword($reference_no,$old_password){
+        $this->db->where('reference_no',$reference_no);
+        $this->db->where('password',$old_password);
+        return $this->db->get('student_account')->row_array();
+    }
+    public function updateAccountWithRefNo($reference_no,$data){
+        $this->db->where('reference_no',$reference_no);
+        $this->db->update('student_account', $data);
+    }
 }

@@ -61,6 +61,7 @@ class Main extends MY_Controller {
 			$data = $this->mainmodel->checkLogin($username,$password);
 			if(!empty($data)){
 				$this->setSession($data);
+				$this->session->set_flashdata('success',$data['First_Name'].' '.$data['Last_Name']);
 				redirect(base_url('main/selfassesment'));
 			}else{
 				$this->session->set_flashdata('msg','Incorrect username or password!!');
@@ -182,6 +183,16 @@ class Main extends MY_Controller {
 			redirect(base_url('/'));
 		}
 	}
+	public function logout(){
+		$this->session->sess_destroy();
+		redirect(base_url('/'));
+	}
+	public function validateSession(){
+		if(empty($this->session->userdata('reference_no'))){
+			$this->session->set_flashdata('msg','Session Expired!!');
+			redirect(base_url('/'));
+		}
+	}
 	public function selfassesment(){
 		$this->validateSession();
 		$this->data['student_information'] = 'Body/Assessment_Content/Student_Information';
@@ -192,15 +203,29 @@ class Main extends MY_Controller {
 	public function passwordReset(){
 		$this->validateSession();
 		$this->default_template($this->view_directory->passwordReset());
+
 	}
-	public function logout(){
-		$this->session->sess_destroy();
-		redirect(base_url('/'));
-	}
-	public function validateSession(){
-		if(empty($this->session->userdata('reference_no'))){
-			$this->session->set_flashdata('msg','Session Expired!!');
-			redirect(base_url('/'));
+	public function passwordResetProcess(){
+		try{
+		$old_password = $this->input->post('old_password');
+		$new_password = $this->input->post('new_password');
+		$reference_no = $this->session->userdata('reference_no');
+		$data = $this->mainmodel->checkOldPassword($reference_no,$old_password);
+			if(!empty($data)){
+				$this->mainmodel->updateAccountWithRefNo($reference_no,array(
+					'password' => $new_password
+				));
+				$this->session->set_flashdata('success','You Successfully changed your password!');
+				redirect(base_url('main/passwordReset'));
+			}
+			else{
+				$this->session->set_flashdata('error','Incorrect old password!!');
+				redirect(base_url('main/passwordReset'));
+			}
+		}
+		catch(\Exception $e){
+			$this->session->set_flashdata('error',$e);
+			redirect(base_url('main/passwordReset'));
 		}
 	}
 }

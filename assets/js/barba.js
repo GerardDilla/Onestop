@@ -22,9 +22,6 @@ function contentAnimation(){
     gsap.from('.anim2',{duration:1.5,translateY:50,opacity:0});
     gsap.from('.anim3',{duration:1.5,translateY:50,opacity:0});
     gsap.to('img',{clipPath:"polygon(0 0,100% 0,100% 100%,0 100%)"});
-    // t1.from('.anim2',{duration:1.5,translateY:50,opacity:0});
-    // t1.from('.anim3',{duration:1.5,translateY:50,opacity:0});
-    // t1.to('img',{clipPath:"polygon(0 0,100% 0,100% 100%,0 100%)"});
     return gsap;
 }
 $(function() {

@@ -67,7 +67,7 @@ else if($this->session->flashdata('success')!=''){
                     <button id="login" type="submit" class="btn btn-info submit-button">Login</button>
                 </div>
                 <div class="col-md-12">
-                <h2><a href="javascript:void(0)" onclick="forgotPassword()" class="forgot-pass">Forgot Password?</a></h2>
+                <h2><a href="javascript:void(0)" onclick="forgotPassword2()" class="forgot-pass leave_button">Forgot Password?</a></h2>
                 </div>
                 </form>
             </div>
@@ -78,9 +78,9 @@ else if($this->session->flashdata('success')!=''){
     </div>
     </div>
 </div>
-<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
+<!-- <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TimelineLite.min.js"></script>
-<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/CSSRulePlugin3.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/CSSRulePlugin3.min.js"></script> -->
 <script>
 $('form').on('submit',function(){
     var count = 0;
@@ -93,27 +93,7 @@ $('form').on('submit',function(){
         $('#login').attr('disabled','disabled');
     }
 });
-openEffect();
-function forgotPassword(){
-    closeEffect();
-}
-function back(){
-    gsap.from('.page-2',{opacity:0,duration:1,y:-50});
-}
-function openEffect(){
-    gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
-    gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-}
-function goToLink(){
+function forgotPassword2(){
     window.location.replace("<?php echo base_url('main/forgotpassword')?>")
-}
-function closeEffect(){
-    var this_window = window;
-    gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    gsap.to('.form-holder',{opacity:0,duration:1,y:-50,delay:.5,onComplete:function(){goToLink()}});
 }
 </script>

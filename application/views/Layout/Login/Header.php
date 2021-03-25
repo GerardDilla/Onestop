@@ -21,4 +21,4 @@
     
     <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/css/iziModal.min.css'); ?>">
-	
+	<!-- <link rel="stylesheet" href="<?php echo base_url('assets/css/barba.css'); ?>"> -->

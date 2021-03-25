@@ -65,7 +65,7 @@ else if($this->session->flashdata('success')!=''){
                     <button id="submit" type="submit" class="btn btn-info submit-button">Submit</button>
                 </div>
                 <div style="bottom:2;position:absolute;">
-                    <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>
+                    <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default leave_button" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>
                 </div>
                 </form>
             </div>
@@ -87,9 +87,10 @@ $('form').on('submit',function(){
         $('#submit').attr('disabled','disabled');
     }
 });
-openEffect();
+// openEffect();
 function back(){
     closeEffect();
+    // closeEffect();
 }
 // function back(){
 //     gsap.from('.page-2',{opacity:0,duration:1,y:-50});
@@ -130,20 +131,38 @@ function submitForm(){
         }
     });
 }
-function openEffect(){
-    gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
-    gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-}
+// function openEffect(){
+//     gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
+//     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
+//     gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
+//     gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
+// }
+// $(document).ready(function(){
+//     var t1 = gsap.timeline();
+//     t1.to('ul.transition li',{duration:.2,scaleY:0,transformOrigin:"bottom left",stagger:.1,delay:.1});
+// });
+// function pageTransition(){
+//     var t1 = gsap.timeline();
+//     t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.2});
+//     t1.to('ul.transition li',{duration:.2,scaleY:0,transformOrigin:"bottom left",stagger:.1,delay:.1});
+
+//     t1.from('.anim2',{duration:.1,translateY:50,opacity:0});
+//     t1.from('.anim3',{duration:.1,translateY:50,opacity:0});
+//     t1.to('img',{clipPath:"polygon(0 0,100% 0,100% 100%,0 100%)"});
+// }
 function goToLink(){
     window.location.replace("<?php echo base_url('/')?>")
 }
 function closeEffect(){
-    var this_window = window;
-    gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    gsap.to('.form-holder',{opacity:0,duration:1,y:-50,delay:.5,onComplete:function(){goToLink()}});
+    goToLink();
+    var t1 = gsap.timeline();
+    t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
 }
+// function closeEffect(){
+//     var this_window = window;
+//     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
+//     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
+//     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
+//     gsap.to('.form-holder',{opacity:0,duration:1,y:-50,delay:.5,onComplete:function(){goToLink()}});
+// }
 </script>

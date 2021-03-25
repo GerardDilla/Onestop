@@ -90,6 +90,7 @@ class Main extends MY_Controller {
 				}
 				$this->mainmodel->changeKey($this->input->post('email'),array('automated_code' => $generate_code ));
 				$encrypt_code = $this->encryption->encrypt($generate_code);
+				$encrypt_code = $generate_code;
 				$this->email($data['First_name'].' '.$data['Last_Name'],'jfabregas@sdca.edu.ph','St. Dominic College of Asia',$this->input->post('email'),'Forgot Password','Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}');
 				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
 				$this->session->set_flashdata('success',"We've sent a confirmation link on your email. Click the link to reset your password.");
@@ -107,12 +108,10 @@ class Main extends MY_Controller {
 			redirect(base_url('main/forgotPassword'));
 		}
 	}
-	public function forgotPasswordProcess(){
-	}
 	public function changePassword($key = ''){
 		if(!empty($key)){
 			$this->data['key'] = $key;
-			$key = $this->encryption->decrypt($key);
+			// $key = $this->encryption->decrypt($key);
 			$data = $this->mainmodel->checkKey($key);
 			if(!empty($data)){
 				$this->login_template($this->view_directory->changePassword());
@@ -131,7 +130,7 @@ class Main extends MY_Controller {
 		try{
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
 			$password = $this->input->post('new_password');
-			$key = $this->encryption->decrypt($key);
+			// $key = $this->encryption->decrypt($key);
 			$this->mainmodel->changeUserPass($key,array(
 				'password' => $password,
 				'automated_code' => ''
@@ -144,12 +143,12 @@ class Main extends MY_Controller {
 			redirect(base_url('/'));
 		}
 	}
-	public function changeUserPass($key = ''){
+	public function setupUserPass($key = ''){
 		if(!empty($key)){
 			$this->data['key'] = $key;
 			$data = $this->mainmodel->checkKey($key);
 			if(!empty($data)){
-				$this->login_template($this->view_directory->changeUserPass());
+				$this->login_template($this->view_directory->setupUserPass());
 			}
 			else{
 				$this->session->set_flashdata('msg','Incorrect key!!');

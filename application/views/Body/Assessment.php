@@ -96,10 +96,12 @@
 </section>
 
 <?php $this->load->view('Body/Assessment_Content/Advising_Modals'); ?>
-
 <!--   Core JS Files   -->
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery.bootstrap.wizard.js" type="text/javascript"></script>
 <!--  Plugin for the Wizard -->
 <script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript"></script>
+
+<!-- Advising -->
+<script src="<?php echo base_url(); ?>assets/js/advising.js"></script>

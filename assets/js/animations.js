@@ -12,17 +12,22 @@
 //     duration:3000,
 //     autoplay:false
 // });
+// $('#amazing path').css('display','none')
 var playPause = anime({
     targets: '#amazing path',
     strokeDashoffset: [anime.setDashoffset, 0],
     easing: 'easeInOutSine',
-    duration: 1500,
-    delay: function(el, i) { return i * 250 },
-    direction: 'alternate',
-    loop: true,
-    autoplay:false
+    duration: 1000,
+    delay: function(el, i) { return i * 200 },
+    direction: 'reverse',
+    // loop: false,
+    autoplay:true,
+    complete: function(anim) {
+        $('.transition-effect').css('z-index','0');
+      }
   });
-  
+//   playPause.play();
+//   alert('hello');
 $(document).ready(function(){
     gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});

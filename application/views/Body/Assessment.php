@@ -63,6 +63,7 @@
                                 <?php $this->load->view($this->data['student_information']); ?>
                             </div>
                             <div class="tab-pane container" id="advising">
+                                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
                                 <?php $this->load->view($this->data['advising']); ?>
                             </div>
                             <div class="tab-pane container" id="registration">
@@ -103,5 +104,16 @@
 <!--  Plugin for the Wizard -->
 <script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript"></script>
 
+<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
+
+<!-- Temporary Loading script -->
+<script>
+    $(document).ajaxStart(function() {
+        $(".temp_loading").fadeIn();
+    });
+    $(document).ajaxStop(function() {
+        $(".temp_loading").fadeOut();
+    });
+</script>

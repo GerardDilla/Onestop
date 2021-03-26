@@ -31,11 +31,11 @@ $(document).ready(function () {
 
             // var $valid = $('.wizard-card form').valid();
 
-            if (!$valid) {
-                return false;
-            } else {
-                return true;
-            }
+            // if (!$valid) {
+            //     return false;
+            // } else {
+            //     return true;
+            // }
 
         },
 

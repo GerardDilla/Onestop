@@ -28,8 +28,8 @@ function ajax_subjectlist() {
             section: '833',
         }
     });
-
 }
+
 function subject_tablerenderer(element = '', data = []) {
 
     tablebody = element.find('tbody');
@@ -38,34 +38,27 @@ function subject_tablerenderer(element = '', data = []) {
     //array sched start loop
     $.each(data, function (index, row) {
 
-        tablebody.append($('<tr/>'));
-        tablebody.append('\
+        tablebody.append($('<tr/>').append('\
         <td>'+ row['Sched_Code'] + '</td>\
         <td>'+ row['Course_Code'] + '</td>\
         <td>'+ row['Course_Title'] + '</td>\
-        <td>'+ row['Section'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Sched_Code'] + '</td>\
-        ');
-
-        // <th>Sched Code</th>
-        // <th>Course Code</th>
-        // <th>Course Title</th>
-        // <th>Section</th>
-        // <th>Lec Unit</th>
-        // <th>Lab Unit</th>
-        // <th>Day</th>
-        // <th>Time</th>
-        // <th>Room</th>
-        // <th>Remaining Slot</th>
-        // <th>Instructor Name</th>
-        // <th></th>
+        <td>'+ row['Section_Name'] + '</td>\
+        <td>'+ row['Course_Lec_Unit'] + '</td>\
+        <td>'+ row['Course_Lab_Unit'] + '</td>\
+        <td>'+ row['Day'] + '</td>\
+        <td>'+ row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+        <td>'+ row['Room'] + '</td>\
+        <td> 40 (Static)</td>\
+        <td>'+ row['Instructor_Name'] + '</td>\
+        <td><button class="btn btn-info">Add</btn></td>\
+        ')
+        );
     });
-    tablebody.html(content);
+
+    if (!$.fn.DataTable.isDataTable('#subjectTable')) {
+        $('#subjectTable').DataTable({
+            "ordering": false
+        });
+    }
+
 }

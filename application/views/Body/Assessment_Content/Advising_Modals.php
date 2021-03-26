@@ -1,6 +1,6 @@
 <!--Extra Large Modal -->
 <div class="modal fade text-left w-100" id="subjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel16">Suggested Subjects</h4>
@@ -10,7 +10,8 @@
 
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="subjectTable" style="display: block; overflow: auto; width:100%">
+
+                <table class="mdl-data-table" id="subjectTable" style="width:100%">
                     <thead>
                         <tr>
                             <th>Sched Code</th>
@@ -48,6 +49,7 @@
                 </table>
             </div>
             <div class="modal-footer">
+                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
@@ -93,12 +95,3 @@
         </div>
     </div>
 </div>
-
-
-<!-- Modal scripts -->
-<script src="<?php echo base_url() ?>assets/vendors/simple-datatables/simple-datatables.js"></script>
-<script>
-    // Simple Datatable
-    let subjectTable = document.querySelector('#subjectTable');
-    let dataTable = new simpleDatatables.DataTable(subjectTable);
-</script>

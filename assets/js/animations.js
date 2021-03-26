@@ -22,8 +22,15 @@ var playPause = anime({
     direction: 'reverse',
     // loop: false,
     autoplay:true,
-    complete: function(anim) {
-        $('.transition-effect').css('z-index','0');
+    begin: function(anim) {
+        var f = window.setInterval(function(){
+            $('.transition-effect').css('z-index','0');
+            clearInterval(f);
+            $('.content input.input-material').children(':first').focus();
+            $('.content input.input-material').children(':first').addClass('active');
+            console.log($('.content input.input-material').children(':first'));
+        },1000);
+        
       }
   });
 //   playPause.play();
@@ -36,6 +43,7 @@ $(document).ready(function(){
     // playPause.play();
 
     var t1 = gsap.timeline();
+    // t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
     t1.to('ul.transition li',{duration:.2,scaleY:0,transformOrigin:"bottom left",stagger:.1,delay:.1});
     var setInterval = window.setInterval(function(){ 
         // $('.transition-effect').css('z-index','0');
@@ -43,22 +51,22 @@ $(document).ready(function(){
         $('.loading').hide();
         clearInterval(setInterval);
         // alert('1');
-    }, 1000);
+    }, 2000);
 });
-$('.leave_button').on('click',function(){
-    // var setInterval2 = window.setInterval(function(){ 
-    //     clearInterval(setInterval2);
-    //     // alert('1');
-    //     playPause();
-    // }, 500);
-    playPause.play();
-    gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
-    gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    var t1 = gsap.timeline();
-    t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
-});
+// $('.leave_button').on('click',function(){
+//     var setInterval2 = window.setInterval(function(){ 
+        
+//         // alert('1');
+//         clearInterval(setInterval2);
+//         // playPause();
+//     }, 100);
+//     gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
+//     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
+//     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
+//     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
+//     var t1 = gsap.timeline();
+//     t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
+// });
 // $('form').submit(function(){
 //     gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
 //     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});

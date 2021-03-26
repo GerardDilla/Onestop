@@ -4,11 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Main extends MY_Controller {
 	public function index()
 	{
-		//$this->load->view('Body/index');
-		// $this->default_template($this->view_directory->assessment());
-		// echo 'hello';
 		$this->login_template($this->view_directory->login());
 	}
+	// OSE LOGIN ,Password Reset and Setup User Pass
 	public function setSession($data){
 		$this->session->set_userdata(array(
 			'reference_no' =>  $data['reference_no'],
@@ -112,7 +110,6 @@ class Main extends MY_Controller {
 	public function changePassword($key = ''){
 		if(!empty($key)){
 			$this->data['key'] = $key;
-			// $key = $this->encryption->decrypt($key);
 			$data = $this->mainmodel->checkKey($key);
 			if(!empty($data)){
 				$this->login_template($this->view_directory->changePassword());
@@ -131,7 +128,6 @@ class Main extends MY_Controller {
 		try{
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
 			$password = $this->input->post('new_password');
-			// $key = $this->encryption->decrypt($key);
 			$this->mainmodel->changeUserPass($key,array(
 				'password' => $password,
 				'automated_code' => ''
@@ -162,13 +158,11 @@ class Main extends MY_Controller {
 		}
 		
 	}
-	
 	public function changeUserPassProcess(){
 		try{
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
 			$data = $this->mainmodel->checkKey($key);
 			
-			// $key = $this->encryption->decrypt($key);
 			$this->mainmodel->changeUserPass($key,array(
 				'username' => $this->input->post('username') ,
 				'password' => $this->input->post('new_password'),
@@ -193,15 +187,16 @@ class Main extends MY_Controller {
 			redirect(base_url('/'));
 		}
 	}
+
+	// Inside OSE
+
 	public function selfassesment(){
-		$this->validateSession();
 		$this->data['student_information'] = 'Body/Assessment_Content/Student_Information';
 		$this->data['advising'] = 'Body/Assessment_Content/Advising';
 		$this->data['payment'] = 'Body/Assessment_Content/Payment';
 		$this->default_template($this->view_directory->assessment());
 	}
 	public function passwordReset(){
-		$this->validateSession();
 		$this->default_template($this->view_directory->passwordReset());
 
 	}

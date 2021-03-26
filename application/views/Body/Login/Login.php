@@ -78,9 +78,6 @@ else if($this->session->flashdata('success')!=''){
     </div>
     </div>
 </div>
-<!-- <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TimelineLite.min.js"></script>
-<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/CSSRulePlugin3.min.js"></script> -->
 <script>
 $('form').on('submit',function(){
     var count = 0;
@@ -93,7 +90,33 @@ $('form').on('submit',function(){
         $('#login').attr('disabled','disabled');
     }
 });
+function closeAnimation(){
+    var playPause = anime({
+    targets: '#amazing path',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    easing: 'easeInOutSine',
+    duration: 1000,
+    delay: function(el, i) { return i * 200 },
+    direction: 'normal',
+    // loop: false,
+    autoplay:true,
+        begin: function(anim) {
+            var interval2 = window.setInterval(function(){
+            window.location.replace("<?php echo base_url('main/forgotpassword')?>")  
+            },1000);
+        }
+    });
+    playPause.play();
+    gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
+    gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
+    gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
+    gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
+    var t1 = gsap.timeline();
+    t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
+    $('.transition-effect').css('z-index','1001');
+    $('#amazing').css('z-index','1002');
+}
 function forgotPassword2(){
-    window.location.replace("<?php echo base_url('main/forgotpassword')?>")
+    closeAnimation();
 }
 </script>

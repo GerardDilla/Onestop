@@ -6,7 +6,7 @@
     <!-- Header Content -->
     <title><?php if ($Title) echo $Title; ?></title>
     <?php if ($Header) echo $Header; ?>
-    <?php if ($Script) echo $Script; ?>
+    
 </head>
 
 <body>
@@ -29,7 +29,7 @@
             <div class="page-heading">
                 <h3><?php if ($Title) echo $Title; ?></h3>
             </div>
-
+            <?php if ($Script) echo $Script; ?>
             <!-- Body Content -->
             <div class="page-content">
                 <?php if ($Body) echo $Body; ?>

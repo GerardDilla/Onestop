@@ -19,10 +19,10 @@ class MY_Controller extends CI_Controller {
     }
     public function default_template($body = array('view' => ''))
     {
-        // if(empty($this->session->userdata('reference_no'))){
-		// 	$this->session->set_flashdata('msg','Session Expired!!');
-		// 	redirect(base_url('/'));
-		// }
+        if(empty($this->session->userdata('reference_no'))){
+			$this->session->set_flashdata('msg','Session Expired!!');
+			redirect(base_url('/'));
+		}
         $directory = 'Layout/Default/';
         $this->template['Title'] = $this->data['tab_active'] = $body['title'] ? $body['title'] : $this->title;
         $this->template['Header'] = $this->load->view($directory.'Header.php', $this->data, true);

@@ -9,81 +9,9 @@
     <?php if ($Script) echo $Script; ?>
 </head>
 <style>
-    ul.transition{
-        display:flex;
-        position:absolute;
-        z-index:1000;
-        height: 100vh;
-        width:100%;
-        top:0;
-        left:0;
-        margin:0;
-        pointer-events:none;
-    }
-    ul.transition li{
-        transform:scaleY(1);
-        background:#333;
-        width:15%;
-        margin:none;
-        /* width:20%; */
-    }
-    ul{
-        list-style:none;
-        display:flex;
-        padding:0;
-        margin-right:auto;
-    }
-    img.loading{
-        /* z-index:1002; */
-        /* top:50%; */
-        /* right:50%; */
-        max-width:400px;
-        /* width:100%; */
-        /* transform:translateY(-50%); */
-        /* margin-top:35%; */
-        /* transition:transform 1s cubic-bezier(0.7,0.04,0.66,1.71); */
-        /* transition:transform 300ms cubic-bezier(0,0.47,0.32,1.97); */
-        /* pointer-events:none; */
-    }
-    img.loading:hover{
-        /* transform:translate(200px,150px) rotate(20deg); */
-        /* transform:translate(200px,150px) rotate(20deg) */
-    }
-    #loading{
-        /* display:none; */
-        width:100%;
-        height:100vh;
-        position:absolute;
-        z-index:1001;
-        background:transparent;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-    }
-    #loading img.loading{
-        clip-path:polygon(0 0,100% 0,100% 0,0 0);
-        /* display:none; */
-        z-index:1002;
-        margin:auto;
-        position:absolute;
-        /* left:50%; */
-        bottom:50%;
-        transform:translateY(50%,50%);
-        width:100%;
-    }
-    #amazing{
-        z-index:1003;
-        position:absolute;
-        width:100%;
-        /* right:50%; */
-        bottom:50%;
-        transform:translateY(0,50%);
-    }
+    
 </style>
 <body data-barba="wrapper">
-<!-- <div id="loading" class="transition-effect">
-    <img class="loading transition-effect" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE_FINAL DESIGN.png')?>">
-</div> -->
 <svg class="transition-effect" width="475" height="116" viewBox="0 0 475 116" fill="none" xmlns="http://www.w3.org/2000/svg" id="amazing">
     <path d="M93.6604 94.9991L93.6627 94.9974C103.855 87.7316 108.836 76.2653 108.836 60.944V46.256C108.836 31.2056 103.796 19.8475 93.5243 12.4946C83.4959 5.2473 70.1958 1.69998 53.768 1.69998H7.832C6.36566 1.69998 5.07567 2.251 4.03534 3.29133C2.99501 4.33165 2.444 5.62164 2.444 7.08798V100.112C2.444 101.578 2.99501 102.868 4.03534 103.909C5.07567 104.949 6.36567 105.5 7.832 105.5H53.768C70.376 105.5 83.7243 102.054 93.6604 94.9991ZM64.1713 35.7338L64.1939 35.7531L64.2173 35.7715C66.4857 37.5538 67.676 40.1096 67.676 43.664V63.536C67.676 67.0886 66.4854 69.708 64.1939 71.5913C61.9502 73.4182 58.7736 74.42 54.488 74.42H42.884V32.78H54.488C58.7608 32.78 61.9283 33.8231 64.1713 35.7338Z" stroke="#F14242" stroke-width="3"/>
     <path d="M137.322 102.162L137.328 102.166C147.895 109.771 161.832 113.5 179 113.5C196.166 113.5 210.055 109.772 220.524 102.164C231.24 94.4503 236.5 82.5358 236.5 66.7347V48.2653C236.5 37.8256 233.979 29.02 228.837 21.9497C223.736 14.9352 216.819 9.7698 208.142 6.44498C199.609 3.13687 189.886 1.5 179 1.5C168.112 1.5 158.341 3.13732 149.711 6.44372C141.026 9.77079 134.107 14.9912 129.007 22.1097L129.004 22.113C123.966 29.1846 121.5 38.0374 121.5 48.5681V66.4319C121.5 82.4224 126.701 94.4421 137.322 102.162ZM189.164 37.1419L189.186 37.1613L189.21 37.1797C191.601 39.0693 192.855 41.7808 192.855 45.5403V69.4597C192.855 73.2167 191.601 75.9942 189.187 77.9897C186.826 79.9238 183.489 80.9792 179 80.9792C174.52 80.9792 171.121 79.9277 168.65 77.98C166.359 76.0977 165.145 73.3845 165.145 69.6111V45.3889C165.145 41.6155 166.359 38.9024 168.65 37.0201C171.121 35.0723 174.52 34.0208 179 34.0208C183.476 34.0208 186.803 35.1196 189.164 37.1419Z" stroke="#F14242" stroke-width="3"/>
@@ -108,12 +36,10 @@
     </main>
 </div>
 
-<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script> -->
 <script src="https://unpkg.com/@barba/core"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous"></script>
 <script src="<?php echo base_url('assets/js/barba.js')?>"></script>
 <script src="<?php echo base_url('assets/js/animations.js')?>"></script>
-<!-- <script src="<?php echo base_url('assets/js/anime.js')?>"></script> -->
 <?php if ($Footer) echo $Footer; ?>
 
 </body>

@@ -56,9 +56,7 @@
 </script>
 <script>
 
-    // 
 $('form').on('submit',function(e){
-    // alert('hello');
     e.preventDefault();
     var upperCase= new RegExp('[A-Z]');
     var count = 0;
@@ -99,29 +97,5 @@ $('form').on('submit',function(e){
         $('input[type=submit]').attr('disabled','disabled');
         $('#form_submit')[0].submit();
     }
-    
 });
-// openEffect();
-// function back(){
-//     closeEffect();
-// }
-// function back(){
-//     gsap.from('.page-2',{opacity:0,duration:1,y:-50});
-// }
-// function openEffect(){
-//     gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
-//     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-// }
-// function goToLink(){
-//     window.location.replace("<?php echo base_url('/')?>")
-// }
-// function closeEffect(){
-//     var this_window = window;
-//     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     // gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-//     gsap.to('.form-holder',{opacity:0,duration:1,y:-50,delay:1,onComplete:function(){goToLink()}});
-// }
 </script>

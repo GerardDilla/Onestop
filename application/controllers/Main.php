@@ -17,7 +17,8 @@ class Main extends MY_Controller {
 			'course' => $data['Course'],
 			'major' => $data['Major'],
 			'admittedsy' => $data['AdmittedSY'],
-			'admittedsem' => $data['AdmittedSEM']
+			'admittedsem' => $data['AdmittedSEM'],
+			'email' => $data['email']
 		));
 	}
 	public function email($cp,$from,$from_name,$send_to,$subject,$message){
@@ -58,8 +59,10 @@ class Main extends MY_Controller {
 			$password = $this->input->post('loginPassword');
 			$data = $this->mainmodel->checkLogin($username,$password);
 			if(!empty($data)){
+				// print_r($data);
 				$this->setSession($data);
 				$this->session->set_flashdata('success',$data['First_Name'].' '.$data['Last_Name']);
+				// exit;
 				redirect(base_url('main/selfassesment'));
 			}else{
 				$this->session->set_flashdata('msg','Incorrect username or password!!');
@@ -89,8 +92,13 @@ class Main extends MY_Controller {
 				}
 				$this->mainmodel->changeKey($this->input->post('email'),array('automated_code' => $generate_code ));
 				$encrypt_code = $this->encryption->encrypt($generate_code);
+
+				// print_r($data);exit;
+
 				$encrypt_code = $generate_code;
-				$this->email($data['First_name'].' '.$data['Last_Name'],'jfabregas@sdca.edu.ph','St. Dominic College of Asia',$this->input->post('email'),'Forgot Password','Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}');
+				// $this->sendemail->test();exit;
+				// echo $data['First_Name'].' '.$data['Last_Name'];exit;
+				$this->email($data['First_Name'].' '.$data['Last_Name'],'jfabregas@sdca.edu.ph','St. Dominic College of Asia',$this->input->post('email'),'Forgot Password','Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}');
 				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
 				$this->session->set_flashdata('success',"We've sent a confirmation link on your email. Click the link to reset your password.");
 				redirect(base_url('/'));
@@ -246,5 +254,27 @@ class Main extends MY_Controller {
 		}
 		$sql = $this->db->get("sample",$per_page,$offset)->result_array();
 		echo json_encode($sql);
+	}
+	public function validationOfDocuments(){
+		$this->default_template($this->view_directory->validationOfDocuments());
+	}
+	public function validationDocumentsProcess(){
+		try{
+			$email_data = array(
+				'send_to' => 'Jhon Norm Fabregas',
+				'reply_to' => 'jfabregas@sdca.edu.ph',
+				'sender_name' => 'St. Dominic College of Asia',
+				'send_to_email' => $this->session->userdata('email'),
+				'title' => 'Forgot Password',
+				'message' => 'Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}'
+			);
+			$this->email($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message']);
+			$this->session->set_flashdata('success','Successfully submitted!!');
+			redirect(base_url('main/validationOfDocuments'));
+		}
+		catch(\Exception $e){
+			$this->session->set_flashdata('error',$e);
+			redirect(base_url('main/validationOfDocuments'));
+		}
 	}
 }

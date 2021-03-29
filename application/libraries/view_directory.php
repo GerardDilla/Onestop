@@ -51,4 +51,10 @@ class view_directory
 		$data['title'] = 'Data Table';
 		return $data;
 	}
+	public function validationOfDocuments()
+	{
+		$data['view'] = $this->body.'ValidationDocuments';
+		$data['title'] = 'Validation of Documents';
+		return $data;
+	}
 }

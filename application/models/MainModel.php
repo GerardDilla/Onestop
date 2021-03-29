@@ -28,8 +28,11 @@ class MainModel extends CI_Model {
         $this->db->update('student_account', $data);
     }
     public function checkEmail($email){
-        $this->db->where('email',$email);
-        return $this->db->get('student_account')->row_array();
+        $this->db->select('student_account.*,student_info.First_Name,student_info.Last_Name');
+        $this->db->from('student_account');
+        $this->db->join('student_info','student_account.reference_no = student_info.Reference_Number');
+        $this->db->where('student_account.email',$email);
+        return $this->db->get()->row_array();
     }
     public function getAllStudAccount(){
         $this->db->where('automated_code !=','');

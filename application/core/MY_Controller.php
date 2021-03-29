@@ -15,6 +15,7 @@ class MY_Controller extends CI_Controller {
         $this->load->database();
         $this->load->model('MainModel','mainmodel');
         $this->load->library('encryption');
+        $this->load->library('pagination');
         $this->title = 'Default';
     }
     public function default_template($body = array('view' => ''))

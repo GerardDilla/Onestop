@@ -223,4 +223,28 @@ class Main extends MY_Controller {
 			redirect(base_url('main/passwordReset'));
 		}
 	}
+	public function dataTable(){
+		$this->default_template($this->view_directory->dataTable());
+
+	}
+	public function getDataTableData(){
+		$page = $this->input->get("page");
+		$search = $this->input->get("search");
+		if(empty($page)){
+			$page = 1;
+		}
+		// rows per page
+		$per_page = 10;
+
+		// offset 
+		$offset = ($page * $per_page) - $per_page;
+
+		if(!empty($search)){
+			$this->db->like('name', $search);
+			$this->db->like('age',  $search);
+			$this->db->like('date',  $search);
+		}
+		$sql = $this->db->get("sample",$per_page,$offset)->result_array();
+		echo json_encode($sql);
+	}
 }

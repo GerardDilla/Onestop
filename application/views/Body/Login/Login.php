@@ -101,8 +101,10 @@ function closeAnimation(){
     // loop: false,
     autoplay:true,
         begin: function(anim) {
+            goToLink();
             var interval2 = window.setInterval(function(){
-            window.location.replace("<?php echo base_url('main/forgotpassword')?>")  
+                // goToLink();
+            clearInterval(interval2);  
             },1000);
         }
     });
@@ -115,6 +117,9 @@ function closeAnimation(){
     t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
     $('.transition-effect').css('z-index','1001');
     $('#amazing').css('z-index','1002');
+}
+function goToLink(){
+    window.location.replace("<?php echo base_url('main/forgotpassword')?>");
 }
 function forgotPassword2(){
     closeAnimation();

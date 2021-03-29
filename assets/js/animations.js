@@ -45,13 +45,12 @@ $(document).ready(function(){
     var t1 = gsap.timeline();
     // t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
     t1.to('ul.transition li',{duration:.2,scaleY:0,transformOrigin:"bottom left",stagger:.1,delay:.1});
-    var setInterval = window.setInterval(function(){ 
-        // $('.transition-effect').css('z-index','0');
-        $('#loading').hide();
-        $('.loading').hide();
-        clearInterval(setInterval);
-        // alert('1');
-    }, 2000);
+    // var setInterval = window.setInterval(function(){ 
+    //     $('#loading').hide();
+    //     $('.loading').hide();
+    //     clearInterval(setInterval);
+    //     alert('1');
+    // }, 2000);
 });
 // $('.leave_button').on('click',function(){
 //     var setInterval2 = window.setInterval(function(){ 

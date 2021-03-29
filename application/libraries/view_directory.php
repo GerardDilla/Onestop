@@ -45,4 +45,10 @@ class view_directory
 		$data['title'] = 'Password Reset';
 		return $data;
 	}
+	public function dataTable()
+	{
+		$data['view'] = $this->body.'Component/DataTable';
+		$data['title'] = 'Data Table';
+		return $data;
+	}
 }

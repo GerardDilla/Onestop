@@ -18,7 +18,8 @@ class Main extends MY_Controller {
 			'major' => $data['Major'],
 			'admittedsy' => $data['AdmittedSY'],
 			'admittedsem' => $data['AdmittedSEM'],
-			'email' => $data['email']
+			'email' => $data['email'],
+			'student_folder' => $data['folder_name']
 		));
 	}
 	public function email($cp,$from,$from_name,$send_to,$subject,$message){
@@ -170,12 +171,17 @@ class Main extends MY_Controller {
 		try{
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
 			$data = $this->mainmodel->checkKey($key);
-			
+			$folder_name = $data['First_Name'].' '.$data['Middle_Name'].' '.$data['Last_Name'];
 			$this->mainmodel->changeUserPass($key,array(
 				'username' => $this->input->post('username') ,
 				'password' => $this->input->post('new_password'),
-				'automated_code' => ''
+				'automated_code' => '',
+				'folder_name' => $folder_name
 			));
+			if (!is_dir('assets/student/'.$folder_name)) {
+				mkdir('assets/student/'.$folder_name,0777,true);
+				mkdir('assets/student/'.$folder_name.'/requirement',0777,true);
+			}
 			$this->setSession($data);
 			$this->session->set_flashdata('success',$data['First_Name'].' '.$data['Last_Name']);
 			redirect(base_url('main/selfassesment'));
@@ -256,18 +262,72 @@ class Main extends MY_Controller {
 		echo json_encode($sql);
 	}
 	public function validationOfDocuments(){
+		// date_default_timezone_set('Asia/Kolkata');
+		$getRequirementsList = $this->mainmodel->getRequirementsList();
+		$count = 0;
+		foreach($getRequirementsList as $list){
+			$checkRequirement = $this->mainmodel->checkRequirement($list['id_name']);
+			$getRequirementsList[$count]['status'] = empty($checkRequirement['status'])?'':$checkRequirement['status'];
+			$getRequirementsList[$count]['date'] = empty($checkRequirement['requirements_date'])?'':date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']));
+			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
+			++$count;
+		}
+		// exit;
+		$this->data['requirements'] = $getRequirementsList;
 		$this->default_template($this->view_directory->validationOfDocuments());
 	}
 	public function validationDocumentsProcess(){
+		date_default_timezone_set('Asia/manila');
+		$ref_no = $this->session->userdata('reference_no');
+		$getRequirementsList = $this->mainmodel->getRequirementsList();
+		$config['upload_path'] = './assets/student/'.$this->session->userdata('student_folder').'/requirement';
+		$config['allowed_types'] = 'PNG|JPG|jpeg|jpg|png|pdf|docm|doc|docx';
+		// $config['encrypt_name'] = false;
+
 		try{
 			$email_data = array(
-				'send_to' => 'Jhon Norm Fabregas',
+				'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
 				'reply_to' => 'jfabregas@sdca.edu.ph',
 				'sender_name' => 'St. Dominic College of Asia',
 				'send_to_email' => $this->session->userdata('email'),
 				'title' => 'Forgot Password',
 				'message' => 'Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}'
 			);
+			
+			foreach($getRequirementsList as $list){
+				$id_name = $list['id_name'];
+				$config['file_name'] = $id_name;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				$this->upload->overwrite = true;
+				if ($this->upload->do_upload($id_name))
+				{
+					print_r($this->upload->data());
+				}
+				else{
+					$this->session->set_flashdata('error',$this->upload->display_errors());
+					redirect(base_url('main/validationOfDocuments'));exit;
+				}
+				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
+				if(!empty($checkRequirement)){
+					$this->mainmodel->updateRequirementLog(array(
+						'requirements_date' => date("Y-m-d H:i:s")
+					));
+				}
+				else{
+					$this->mainmodel->newRequirementLog(array(
+						'requirements_link' => 'student/'.$this->session->userdata('student_folder').'/requirement/'.$id_name,
+						'requirements_name' => $id_name,
+						'requirements_date' => date("Y-m-d H:i:s"),
+						'status' => 'pending',
+						'reference_no' => $ref_no
+					));
+					// $this->upload->overwrite = true;
+					// $this->upload->do_upload($id_name);
+				}
+				
+			}
+			
 			$this->email($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message']);
 			$this->session->set_flashdata('success','Successfully submitted!!');
 			redirect(base_url('main/validationOfDocuments'));
@@ -275,6 +335,17 @@ class Main extends MY_Controller {
 		catch(\Exception $e){
 			$this->session->set_flashdata('error',$e);
 			redirect(base_url('main/validationOfDocuments'));
+		}
+		
+	}
+	public function createFolder(){
+		$name = $this->input->get('name');
+		// if(!mkdir('assets/student/'.$name,0777,true)){
+		// 	echo 'failed';
+		// }
+		if (!is_dir('assets/student/'.$name)) {
+			mkdir('assets/student/'.$name,0777,true);
+			mkdir('assets/student/'.$name.'/requirement',0777,true);
 		}
 	}
 }

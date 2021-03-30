@@ -47,4 +47,21 @@ class MainModel extends CI_Model {
         $this->db->where('reference_no',$reference_no);
         $this->db->update('student_account', $data);
     }
+    public function getRequirementsList(){
+        return $this->db->get('requirements')->result_array(); 
+    }
+    public function checkRequirement($requirements_name){
+        $ref_no = $this->session->userdata('reference_no');
+        $this->db->where('requirements_name',$requirements_name);
+        $this->db->where('reference_no',$ref_no);
+        return $this->db->get('requirements_log')->row_array(); 
+    }
+    public function newRequirementLog($data){
+        $this->db->insert('requirements_log', $data);
+    }
+    public function updateRequirementLog($data){
+        $ref_no = $this->session->userdata('reference_no');
+        $this->db->where('reference_no',$ref_no);
+        $this->db->update('requirements_log', $data);
+    }
 }

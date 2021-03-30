@@ -4,19 +4,15 @@ $(document).ready(function () {
 
     init_queuedlist();
 
-    if (!$.fn.DataTable.isDataTable('#subjectTable')) {
-        $('#subjectTable').DataTable({
-            "ordering": false
-        });
-    }
+    $('#subjectTable').DataTable({
+        "ordering": false
+    });
 
-    if (!$.fn.DataTable.isDataTable('#queueTable')) {
-        $('#queueTable').DataTable({
-            "ordering": false,
-            "bPaginate": false,
-            "bLengthChange": false,
-        });
-    }
+    $('#queueTable').DataTable({
+        "ordering": false,
+        "bPaginate": false,
+        "bLengthChange": false,
+    });
 
 
 });
@@ -28,7 +24,9 @@ function init_subjectlists() {
         console.log('tablerun');
         response = JSON.parse(response);
         subject_tablerenderer($('#subjectTable'), response);
+        init_scheduleplot();
     })
+
 
 }
 
@@ -47,6 +45,7 @@ function init_remove_queue(row) {
     ajax_removequeue(sessionid);
     init_queuedlist();
 
+
 }
 
 
@@ -59,6 +58,12 @@ function init_queuedlist() {
         console.log(response);
         queue_tablerenderer($('#queueTable'), response);
     })
+
+}
+
+function init_scheduleplot() {
+
+    schedule_tablerenderer($('#scheduleTable'), get_militarytime());
 
 }
 
@@ -108,9 +113,12 @@ function ajax_queuedlist() {
 }
 function queue_tablerenderer(element = '', data = []) {
 
+    element.DataTable().clear();
+    element.DataTable().destroy();
+
+
     tablebody = element.find('tbody');
     tablebody.html('');
-
     //array sched start loop
     $.each(data, function (index, row) {
 
@@ -124,12 +132,20 @@ function queue_tablerenderer(element = '', data = []) {
         ')
         );
     });
-    element.reload();
 
+    element.DataTable({
+        "ordering": false,
+        "bPaginate": false,
+        "bLengthChange": false,
 
+    });
 
 }
 function subject_tablerenderer(element = '', data = []) {
+
+    element.DataTable().clear();
+    element.DataTable().destroy();
+
 
     tablebody = element.find('tbody');
     tablebody.html('');
@@ -142,18 +158,81 @@ function subject_tablerenderer(element = '', data = []) {
         <td>'+ row['Course_Code'] + '</td>\
         <td>'+ row['Course_Title'] + '</td>\
         <td>'+ row['Section_Name'] + '</td>\
-        <td>'+ row['Course_Lec_Unit'] + '</td>\
-        <td>'+ row['Course_Lab_Unit'] + '</td>\
+        <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
         <td>'+ row['Day'] + '</td>\
         <td>'+ row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
-        <td>'+ row['Room'] + '</td>\
-        <td> 40 (Static)</td>\
-        <td>'+ row['Instructor_Name'] + '</td>\
         <td><button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="'+ row['Sched_Code'] + '">Add</btn></td>\
         ')
         );
     });
-    element.ajax.reload();
+
+    element.DataTable({
+        "ordering": false,
+        "bPaginate": false,
+        "columns": [
+            null,
+            null,
+            { "width": "40%" },
+            null,
+            null,
+            null,
+            null,
+            null,
+        ]
+    });
 
 }
+
+function schedule_tablerenderer(element, time = []) {
+
+    days = {
+        M: 'Monday',
+        T: 'Tuesday',
+        W: 'Wednesday',
+        TH: 'Thursday',
+        F: 'Friday',
+        S: 'Saturday',
+        SUN: 'Sunday'
+    };
+
+    //Make Columns
+    tablehead = element.find('thead');
+    tablehead.html('');
+    tablehead.append('<tr>');
+    tablehead.append('<th></th>');
+    $.each(days, function (index, day) {
+
+        tablehead.append('<th>' + day + '</th>');
+
+    });
+    tablehead.append('</tr>');
+
+    //Make 
+
+
+
+}
+
+function get_militarytime() {
+
+    starttime = 700;
+    endtime = 2100;
+    time = [];
+    while (starttime < endtime) {
+
+        time.push(starttime);
+        lastcharacter = starttime.toString().length == 3 ? starttime.toString().substr(1) : starttime.toString().substr(2);
+        if (lastcharacter == 30) {
+            starttime = starttime + 70;
+        } else {
+            starttime = starttime + 30;
+        }
+        // console.log(starttime + '| Last:' + lastcharacter);
+    }
+    console.log(time);
+    return time;
+
+}
+
+
 

@@ -15,7 +15,7 @@ class temp_api extends CI_Controller
 		header('Access-Control-Request-Headers: Content-Type');
 		$this->validkey = 'testkey101';
 		parent::__construct();
-		$this->load->model('Advising');
+		$this->load->model('AdvisingModel');
 
 		#Temporary Keys
 		$this->reference_number = '12345';
@@ -36,12 +36,12 @@ class temp_api extends CI_Controller
 			'section' => $this->input->get('section'),
 		);
 		// die(json_encode($params));
-		$result = $this->Advising->block_schedule($params);
+		$result = $this->AdvisingModel->block_schedule($params);
 		echo json_encode($result);
 	}
 	public function queue_subject_list()
 	{
-		$result = $this->Advising->get_queued_subjects($this->reference_number);
+		$result = $this->AdvisingModel->get_queued_subjects($this->reference_number);
 		echo json_encode($result);
 	}
 	public function queue_subject()
@@ -53,7 +53,7 @@ class temp_api extends CI_Controller
 
 		# 3. Check if there are schedule conflicts
 
-
+		
 		//get year level
 		//$year_level = $this->Student_Model->get_year_level($array_data);
 		// $year_level = $this->Student_Model->get_year_level_v2($array_data);
@@ -71,7 +71,7 @@ class temp_api extends CI_Controller
 		$inputs = array(
 			'SchedCode' => $this->input->post('schedcode'),
 		);
-		$schedData = $this->Advising->get_sched_info($inputs['SchedCode'])[0];
+		$schedData = $this->AdvisingModel->get_sched_info($inputs['SchedCode'])[0];
 
 		//add the sched to session
 		$array_insert = array(
@@ -89,7 +89,7 @@ class temp_api extends CI_Controller
 			'Section' =>  'NEEDS OTHER DATA',
 			'Graduating' =>  'NEEDS OTHER DATA',
 		);
-		$status = $this->Advising->insert_sched_session($array_insert);
+		$status = $this->AdvisingModel->insert_sched_session($array_insert);
 		echo $status;
 	}
 
@@ -97,7 +97,7 @@ class temp_api extends CI_Controller
 	{
 
 		$id = $this->input->post('sessionId');
-		$this->Advising->remove_advising_session($id);
+		$this->AdvisingModel->remove_advising_session($id);
 		echo json_encode('removed');
 	}
 	public function test()

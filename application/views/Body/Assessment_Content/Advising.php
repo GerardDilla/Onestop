@@ -13,8 +13,8 @@
         <thead>
             <tr>
                 <th>Sched Code</th>
-                <th>Course Code</th>
-                <th>Course Title</th>
+                <th>Subject Code</th>
+                <th>Subject Title</th>
                 <th>Section</th>
                 <th>Units</th>
                 <th></th>

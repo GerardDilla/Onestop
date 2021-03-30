@@ -1,7 +1,7 @@
 <?php
 
 
-class Advising extends CI_Model
+class AdvisingModel extends CI_Model
 {
 
     public function block_schedule($array_data)
@@ -23,10 +23,10 @@ class Advising extends CI_Model
         C.id AS sched_display_id
         ');
         $this->db->from('Sections AS A');
-        $this->db->join('Sched AS B', 'A.Section_ID = B.Section_ID', 'inner');
-        $this->db->join('Sched_Display AS C', 'B.Sched_Code = C.Sched_Code', 'inner');
+        $this->db->join('Sched AS B', 'A.Section_ID = B.Section_ID', 'left');
+        $this->db->join('Sched_Display AS C', 'B.Sched_Code = C.Sched_Code', 'left');
         //$this->db->join('Legend AS D', 'B.SchoolYear = D.School_Year AND B.Semester = D.Semester', 'inner');
-        $this->db->join('`Subject` AS E', 'E.Course_Code = B.Course_Code', 'inner');
+        $this->db->join('Subject AS E', 'E.Course_Code = B.Course_Code', 'left');
         $this->db->join('Room AS R', 'C.RoomID = R.ID', 'inner');
         $this->db->join('Instructor AS I', 'I.ID = C.Instructor_ID', 'left');
         $this->db->where('A.Active', 1);

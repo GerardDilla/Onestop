@@ -1,8 +1,6 @@
 $(document).ready(function () {
 
-    $('.addsubject-button').click(function () {
-        init_subjectlists();
-    })
+    init_subjectlists();
 
     init_queuedlist();
 
@@ -80,6 +78,7 @@ function ajax_insertqueue(schedcode) {
 
     return $.ajax({
         url: "/Onestop/index.php/temp_api/queue_subject",
+        async: false,
         type: 'POST',
         data: {
             schedcode: schedcode,
@@ -91,6 +90,7 @@ function ajax_removequeue(sessionID) {
 
     return $.ajax({
         url: "/Onestop/index.php/temp_api/unqueue_subject",
+        async: false,
         type: 'POST',
         data: {
             sessionId: sessionID,
@@ -124,7 +124,7 @@ function queue_tablerenderer(element = '', data = []) {
         ')
         );
     });
-    element.ajax.reload();
+    element.reload();
 
 
 

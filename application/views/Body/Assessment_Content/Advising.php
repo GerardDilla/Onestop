@@ -8,7 +8,8 @@
     <h5>Queued Subjects</h5>
     <a href="#" class="btn btn-sm btn-primary load-disable addsubject-button" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
     <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
-    <table class="table table-striped" id="queueTable" style="display: block; overflow: auto;">
+    <br><br>
+    <table class="mdl-data-table" id="queueTable">
         <thead>
             <tr>
                 <th>Sched Code</th>
@@ -79,6 +80,7 @@
 
         </tbody>
     </table>
+    <br><br>
 </div>
 <div class="col-md-12">
     <div class="row">

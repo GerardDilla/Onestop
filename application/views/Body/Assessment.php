@@ -63,7 +63,6 @@
                                 <?php $this->load->view($this->data['student_information']); ?>
                             </div>
                             <div class="tab-pane container" id="advising">
-                                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
                                 <?php $this->load->view($this->data['advising']); ?>
                             </div>
                             <div class="tab-pane container" id="registration">

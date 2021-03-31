@@ -131,7 +131,7 @@ function closeAnimation(){
     duration: 1000,
     delay: function(el, i) { return i * 200 },
     direction: 'normal',
-    // loop: false,
+    // loop: true,
     autoplay:true,
         begin: function(anim) {
             goToLink();
@@ -155,6 +155,7 @@ function goToLink(){
     window.location.replace("<?php echo base_url('/')?>");
 }
 function back(){
+    // goToLink();
     closeAnimation();
 }
 </script>

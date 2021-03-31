@@ -33,8 +33,8 @@ class Main extends MY_Controller {
 				'charset' => 'utf-8',
 				'newline' => '\r\n',
 				'mailtype'  => 'html',
-				'validation' => true,
-				'wordwrap' => true
+				'validation' => true
+				// 'wordwrap' => true
 		);
 		$this->load->library('email');
 		$this->email->initialize($config);
@@ -283,7 +283,7 @@ class Main extends MY_Controller {
 		$config['upload_path'] = './assets/student/'.$this->session->userdata('student_folder').'/requirement';
 		$config['allowed_types'] = 'PNG|JPG|jpeg|jpg|png|pdf|docm|doc|docx';
 		// $config['encrypt_name'] = false;
-
+		$row = "";
 		try{
 			$email_data = array(
 				'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
@@ -291,10 +291,19 @@ class Main extends MY_Controller {
 				'sender_name' => 'St. Dominic College of Asia',
 				'send_to_email' => $this->session->userdata('email'),
 				'title' => 'Forgot Password',
-				'message' => 'Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}'
+				'message' => '<html><head></head><body>
+				<table width="50%">
+				<thead>
+				<tr>
+				<th>Requirements Name</th>
+				<th>Date Submitted</th>
+				</tr></thead><tbody>'.$row.'</tbody>
+				</table></body></html>
+				'
 			);
 			
 			foreach($getRequirementsList as $list){
+				
 				$id_name = $list['id_name'];
 				$config['file_name'] = $id_name;
 				$this->load->library('upload', $config);
@@ -310,6 +319,7 @@ class Main extends MY_Controller {
 				}
 				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
 				if(!empty($checkRequirement)){
+					$row = $row."<tr><td>".$checkRequirement['requirements_name']."</td><td>".date("M. j,Y g:ia")."</td></tr>";
 					$this->mainmodel->updateRequirementLog(array(
 						'requirements_date' => date("Y-m-d H:i:s")
 					));
@@ -327,7 +337,6 @@ class Main extends MY_Controller {
 				}
 				
 			}
-			
 			$this->email($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message']);
 			$this->session->set_flashdata('success','Successfully submitted!!');
 			redirect(base_url('main/validationOfDocuments'));

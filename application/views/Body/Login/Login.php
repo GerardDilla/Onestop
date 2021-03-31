@@ -90,6 +90,9 @@ $('form').on('submit',function(){
         $('#login').attr('disabled','disabled');
     }
 });
+// $(window).on('beforeunload',function(){
+//     console.log('hello');
+// });
 function closeAnimation(){
     var playPause = anime({
     targets: '#amazing path',
@@ -98,7 +101,7 @@ function closeAnimation(){
     duration: 1000,
     delay: function(el, i) { return i * 200 },
     direction: 'normal',
-    // loop: false,
+    // loop: true,
     autoplay:true,
         begin: function(anim) {
             goToLink();
@@ -123,5 +126,6 @@ function goToLink(){
 }
 function forgotPassword2(){
     closeAnimation();
+    // goToLink();
 }
 </script>

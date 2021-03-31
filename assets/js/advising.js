@@ -75,7 +75,7 @@ function ajax_subjectlist() {
         data: {
             school_year: '2020-2021',
             semester: 'FIRST',
-            section: '833',
+            // section: '833',
         }
     });
 }

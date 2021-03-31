@@ -99,4 +99,47 @@ class AdvisingModel extends CI_Model
         $this->db->where('ID', $id);
         $this->db->update('advising_session');
     }
+
+    public function get_year_level($array_data)
+    {
+        $this->db->select('*');
+        $this->db->from('Sections');
+        $this->db->where('Section_ID', $array_data['section']);
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+
+    public function get_student_info_by_reference_no($reference_no)
+    {
+        $this->db->select('*, PM1.`Program_Major` AS 1st_major, PM2.`Program_Major` AS 2nd_major, PM3.`Program_Major` AS 3rd_major');
+        $this->db->from('Student_Info AS SI');
+        $this->db->join('`Program_Majors` AS PM1', 'PM1.`ID` = SI.`Course_Major_1st`');
+        $this->db->join('Program_Majors AS PM2', 'PM2.`ID` = SI.`Course_Major_2nd`');
+        $this->db->join('Program_Majors AS PM3', 'PM3.`ID` = SI.`Course_Major_3rd`');
+        $this->db->where('Reference_Number', $reference_no);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function get_sched_session($array_data)
+    {
+        $this->db->select('*, `ASess`.`ID` AS session_id');
+        $this->db->from('advising_session AS ASess');
+        $this->db->join('Sched AS S', 'S.`Sched_Code` = ASess.`Sched_Code`', 'inner');
+        $this->db->join('Sched_Display AS SD', 'ASess.`Sched_Display_ID` = SD.`id`', 'inner');
+        $this->db->join('`Subject` AS Subj', '`Subj`.`Course_Code` = S.`Course_Code`', 'inner');
+        $this->db->join('`Sections` AS Sec', '`Sec`.`Section_ID` = S.`Section_ID`', 'inner');
+        $this->db->join('Room AS R', 'R.`ID` = SD.`RoomID`', 'inner');
+        $this->db->join('`Instructor` AS Ins', 'Ins.`ID` = SD.`Instructor_ID`', 'left');
+        $this->db->where('ASess.`Reference_Number`', $array_data['reference_no']);
+        $this->db->where('ASess.`valid`', 1);
+        $query = $this->db->get();
+
+        // reset query
+        $this->db->reset_query();
+
+        return $query->result_array();
+    }
 }

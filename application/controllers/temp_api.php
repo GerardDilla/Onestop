@@ -17,14 +17,14 @@ class temp_api extends CI_Controller
 		$this->validkey = 'testkey101';
 		parent::__construct();
 		$this->load->model('AdvisingModel');
-
+		$this->load->model('FeesModel');
 		#Temporary Keys
-		$this->reference_number = '12345';
-		$this->student_number = '20202020';
+		$this->reference_number = '14174';
+		$this->student_number = '20122411';
 		#Temporary Legends
-		$this->legend_sy = '2020-2021';
+		$this->legend_sy = '2019-2020';
 		$this->legend_sem = 'FIRST';
-		$this->section = '833';
+		$this->section = '180';
 	}
 	public function index()
 	{
@@ -156,7 +156,7 @@ class temp_api extends CI_Controller
 		// 	// 	# code...
 		// 	// 	//get foreign fee (other fee)
 
-		// 	// 	$foreign_fee = $this->Fees_Model->get_foreign_fee($array_data);
+		// 	// 	$foreign_fee = $this->FeesModel->get_foreign_fee($array_data);
 
 		// 	// 	if (!$foreign_fee) {
 		// 	// 		# code...
@@ -235,7 +235,9 @@ class temp_api extends CI_Controller
 		//$array_data['AdmittedSEM'] = $student_info[0]['AdmittedSEM'];
 		//get fees details
 
-		$array_fees = $this->Fees_Model->get_fees_without_admit($array_data);
+		$array_fees = $this->FeesModel->get_fees_without_admit($array_data);
+
+
 		//print_r($array_data).'<br>';
 		if ($array_fees == NULL) {
 			# code...
@@ -268,7 +270,9 @@ class temp_api extends CI_Controller
 
 		//get subject other fee
 
-		$array_subject_other_fee = $this->Fees_Model->get_subject_other_fee_session($array_data);
+		$array_subject_other_fee = $this->FeesModel->get_subject_other_fee_session($array_data);
+
+
 		foreach ($array_subject_other_fee as $key => $subject_other_fee) {
 			# code...
 			if ($array_data['plan'] === 'installment') {
@@ -279,34 +283,34 @@ class temp_api extends CI_Controller
 			}
 		}
 		//check if student is a foreigner
-		// $foreigner_checker = $this->Student_Model->check_if_foreigner($array_data['reference_no']);
+		$foreigner_checker = $this->AdvisingModel->check_if_foreigner($array_data['reference_no']);
 
-		// if ($foreigner_checker === 1) {
-		// 	# code...
-		// 	#check if the foreigner selected the international program 
-		// 	$international_program_check = $this->Program_Model->check_international_program($array_data['program_code']);
+		if ($foreigner_checker === 1) {
+			# code...
+			#check if the foreigner selected the international program 
+			$international_program_check = $this->AdvisingModel->check_international_program($array_data['program_code']);
 
-		// 	if (empty($international_program_check)) {
-		// 		# code...
-		// 		$foreign_fee = $this->Fees_Model->get_foreign_fee($array_data);
+			if (empty($international_program_check)) {
+				# code...
+				$foreign_fee = $this->FeesModel->get_foreign_fee($array_data);
 
-		// 		if (!$foreign_fee) {
-		// 			# code...
-		// 			return;
-		// 		}
+				if (!$foreign_fee) {
+					# code...
+					return;
+				}
 
-		// 		if ($array_data['plan'] === 'installment') {
-		// 			$total_other += ($foreign_fee[0]['Fees_Amount'] * $installment_interest);
-		// 		} else {
-		// 			$total_other += $foreign_fee[0]['Fees_Amount'];
-		// 		}
-		// 	}
+				if ($array_data['plan'] === 'installment') {
+					$total_other += ($foreign_fee[0]['Fees_Amount'] * $installment_interest);
+				} else {
+					$total_other += $foreign_fee[0]['Fees_Amount'];
+				}
+			}
 
 
-		// 	//print "foreign fee <br/>";
-		// 	//print_r($foreign_fee);
+			//print "foreign fee <br/>";
+			//print_r($foreign_fee);
 
-		// }
+		}
 
 		$total_other = number_format($total_other, 2, '.', '');
 		$total_misc = number_format($total_misc, 2, '.', '');
@@ -323,7 +327,7 @@ class temp_api extends CI_Controller
 
 		//get lab fee
 		/*
-        $lab_fees = $this->Fees_Model->get_lab_fee($array_data);
+        $lab_fees = $this->FeesModel->get_lab_fee($array_data);
         $total_lab_fee = 0;
         foreach ($lab_fees as $key => $type) 
         {
@@ -343,7 +347,8 @@ class temp_api extends CI_Controller
 		//get subject lab fee
 		$total_lab_fee = 0;
 
-		$array_subject_lab_fee = $this->Fees_Model->get_subject_lab_fee_session($array_data);
+		$array_subject_lab_fee = $this->FeesModel->get_subject_lab_fee_session($array_data);
+
 		foreach ($array_subject_lab_fee as $key => $subject_lab_fee) {
 			# code...
 			if ($array_data['plan'] === 'installment') {

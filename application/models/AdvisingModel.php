@@ -142,4 +142,32 @@ class AdvisingModel extends CI_Model
 
         return $query->result_array();
     }
+
+    public function check_if_foreigner($reference_no)
+    {
+        $this->db->trans_start();
+        $this->db->select('Reference_Number');
+        $this->db->from('Student_Info');
+        $this->db->where('Reference_Number', $reference_no);
+        $this->db->where('Nationality !=', 'FILIPINO');
+        $this->db->trans_complete();
+
+        $query = $this->db->get();
+
+        // reset query
+        $this->db->reset_query();
+
+        return $query->num_rows();
+    }
+
+    public function check_international_program($program_code)
+    {
+        $this->db->select('*');
+        $this->db->from('Programs');
+        $this->db->where('Program_Code', $program_code);
+        $this->db->where('international_program', 1);
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

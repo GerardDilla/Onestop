@@ -4,6 +4,8 @@ $(document).ready(function () {
 
     init_queuedlist();
 
+    init_paymentmethod();
+
     $('#subjectTable').DataTable({
         "ordering": false
     });
@@ -14,8 +16,15 @@ $(document).ready(function () {
         "bLengthChange": false,
     });
 
+    $('input[type=radio][name=payment-option]').change(function () {
+
+        init_paymentmethod(this.value);
+
+    });
+
 
 });
+
 
 function init_subjectlists() {
 
@@ -34,6 +43,7 @@ function init_add_queue(row) {
 
     schedcode = $(row).data('schedcode');
     ajax_insertqueue(schedcode);
+    init_paymentmethod($('input[type=radio][name=payment-option]').value);
     init_queuedlist();
 
 }
@@ -43,6 +53,7 @@ function init_remove_queue(row) {
 
     sessionid = $(row).data('sessionid');
     ajax_removequeue(sessionid);
+    init_paymentmethod($('input[type=radio][name=payment-option]').value);
     init_queuedlist();
 
 
@@ -61,10 +72,33 @@ function init_queuedlist() {
 
 }
 
+function init_paymentmethod(value = 'installment') {
+
+    result = ajax_paymentmethod(value);
+    result.success(function (response) {
+
+        response = JSON.parse(response);
+        console.log(response);
+        paymentplant_tablerenderer(response);
+    })
+}
+
 function init_scheduleplot() {
 
     schedule_tablerenderer($('#scheduleTable'), get_militarytime());
+    paymentplant_tablerenderer
+}
 
+function ajax_paymentmethod(paymentplan) {
+
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/payment_plan",
+        async: true,
+        type: 'GET',
+        data: {
+            plan: paymentplan
+        }
+    });
 }
 
 function ajax_subjectlist() {
@@ -183,6 +217,16 @@ function subject_tablerenderer(element = '', data = []) {
 
 }
 
+function paymentplant_tablerenderer(data = []) {
+
+    $('#other_fee').html(data['other_fee']);
+    $('#misc_fee').html(data['misc_fee']);
+    $('#lab_fee').html(data['lab_fee']);
+    $('#tuition_fee').html(data['tuition_fee']);
+    $('#total_fee').html(data['total_fee']);
+
+}
+
 function schedule_tablerenderer(element, time = []) {
 
     days = {
@@ -206,9 +250,6 @@ function schedule_tablerenderer(element, time = []) {
 
     });
     tablehead.append('</tr>');
-
-    //Make 
-
 
 
 }

@@ -4,7 +4,7 @@
 class FeesModel extends CI_Model
 {
 
-  public function get_fees_without_admit($array_data)
+  public function get_fees($array_data)
   {
     $this->db->select('*');
     $this->db->from('Fees_Listing AS `FEES`');
@@ -144,6 +144,7 @@ class FeesModel extends CI_Model
     $this->db->where('Reference_Number', $array_data['reference_no']);
     $this->db->where('Semester', $array_data['semester']);
     $this->db->where('SchoolYear', $array_data['school_year']);
+    $this->db->order_by('id', 'DESC');
 
     $query = $this->db->get();
 

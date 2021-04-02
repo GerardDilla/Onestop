@@ -170,4 +170,82 @@ class AdvisingModel extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+
+    public function get_sched_advised($array_data)
+    {
+        $this->db->select('*');
+        $this->db->from('Advising AS Adv');
+        $this->db->join('Sched AS S', 'S.`Sched_Code` = Adv.`Sched_Code`', 'inner');
+        $this->db->join('Sched_Display AS SD', 'Adv.`Sched_Display_ID` = SD.`id`', 'inner');
+        $this->db->join('`Subject` AS Subj', '`Subj`.`Course_Code` = S.`Course_Code`', 'inner');
+        $this->db->join('`Sections` AS Sec', '`Sec`.`Section_ID` = S.`Section_ID`', 'inner');
+        $this->db->join('Room AS R', 'R.`ID` = SD.`RoomID`', 'inner');
+        $this->db->join('`Instructor` AS Ins', 'Ins.`ID` = SD.`Instructor_ID`', 'left');
+        $this->db->where('Adv.`Reference_Number`', $array_data['reference_no']);
+        $this->db->where('Adv.`valid`', 1);
+        $query = $this->db->get();
+
+        // reset query
+        $this->db->reset_query();
+
+        return $query->result_array();
+    }
+
+    public function insert_sched_info($array_data)
+    {
+        #Copies Advising_Session data to Advising Table
+        $reference_no = $array_data['reference_no'];
+        $query = $this->db->query("
+            INSERT INTO Advising (Reference_Number, Student_Number, Sched_Code, Sched_Display_ID, Semester, School_Year, `Status`, Program, Major, Year_Level, Section)
+            SELECT Adv.`Reference_Number`, Adv.`Student_Number`, Adv.`Sched_Code`, Adv.`Sched_Display_ID`, Adv.`Semester`, Adv.School_Year, Adv.`Status`, 
+            Adv.Program, Adv.Major, Adv.Year_Level, Sec.Section_Name 
+            FROM `advising_session` AS Adv
+            INNER JOIN Sections AS Sec ON Adv.Section = Sec.Section_ID
+            WHERE Adv.`Reference_Number` = $reference_no
+            AND Adv.`valid` = '1'
+        ");
+        $query_log = $this->db->last_query();
+        return $query_log;
+    }
+
+    public function delete_advising_session($array_data)
+    {
+        $this->db->set('valid', 0);
+        $this->db->where('Reference_Number', $array_data['reference_no']);
+        $this->db->update('advising_session');
+
+        $query_log = $this->db->last_query();
+        // reset query
+        $this->db->reset_query();
+
+        return $query_log;
+    }
+
+    public function update_student_curriculum($array_data)
+    {
+        $this->db->set('Curriculum', $array_data['curriculum']);
+        $this->db->where('Reference_Number', $array_data['reference_no']);
+        $this->db->update('Student_Info');
+
+        $query_log = $this->db->last_query();
+        // reset query
+        $this->db->reset_query();
+
+        return $query_log;
+    }
+
+    public function remove_sched_info($array_data)
+    {
+        $this->db->set('valid', 0);
+        $this->db->where('Reference_Number', $array_data['reference_no']);
+        $this->db->where('Semester', $array_data['semester']);
+        $this->db->where('School_Year', $array_data['school_year']);
+        $this->db->update('Advising');
+
+        $query_log = $this->db->last_query();
+        // reset query
+        $this->db->reset_query();
+
+        return $query_log;
+    }
 }

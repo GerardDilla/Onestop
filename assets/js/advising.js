@@ -22,9 +22,26 @@ $(document).ready(function () {
 
     });
 
+    $('#advise_button').click(function () {
+
+        init_advise();
+
+    });
+
 
 });
 
+function init_advise() {
+
+    plan = $('input[type=radio][name=payment-option]:checked').val();
+    result = ajax_adviseStudent(plan);
+    result.success(function (response) {
+
+        // response = JSON.parse(response);
+        init_queuedlist();
+
+    })
+}
 
 function init_subjectlists() {
 
@@ -87,6 +104,17 @@ function init_scheduleplot() {
 
     schedule_tablerenderer($('#scheduleTable'), get_militarytime());
     paymentplant_tablerenderer
+}
+
+function ajax_adviseStudent(paymentplan) {
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/advise_student",
+        async: true,
+        type: 'GET',
+        data: {
+            plan: paymentplan
+        }
+    });
 }
 
 function ajax_paymentmethod(paymentplan) {

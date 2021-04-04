@@ -277,13 +277,20 @@ class Main extends MY_Controller {
 		$this->default_template($this->view_directory->validationOfDocuments());
 	}
 	public function validationDocumentsProcess(){
+		$files = glob('express/assets/*'); // get all file names
+		foreach($files as $file){ // iterate files
+			if(is_file($file)) {
+				unlink($file); // delete file
+			}
+		}
 		date_default_timezone_set('Asia/manila');
 		$ref_no = $this->session->userdata('reference_no');
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
-		$config['upload_path'] = './assets/student/'.$this->session->userdata('student_folder').'/requirement';
-		$config['allowed_types'] = 'PNG|JPG|jpeg|jpg|png|pdf|docm|doc|docx';
-		// $config['encrypt_name'] = false;
+		// $config['upload_path'] = './assets/student/'.$this->session->userdata('student_folder').'/requirement';
+		$config['upload_path'] = './express/assets/';
+		$config['allowed_types'] = '*';
 		$row = "";
+		$array_files = array();
 		try{
 			$email_data = array(
 				'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
@@ -303,7 +310,7 @@ class Main extends MY_Controller {
 			);
 			
 			foreach($getRequirementsList as $list){
-				
+				// echo $this->input->post($list['id_name']).'<br>';
 				$id_name = $list['id_name'];
 				$config['file_name'] = $id_name;
 				$this->load->library('upload', $config);
@@ -311,9 +318,19 @@ class Main extends MY_Controller {
 				$this->upload->overwrite = true;
 				if ($this->upload->do_upload($id_name))
 				{
-					print_r($this->upload->data());
+					$uploaded_data = $this->upload->data();
+					array_push($array_files,array(
+						"name" => $uploaded_data['orig_name'],
+						"type" => $uploaded_data['file_type']
+					));
+					
+					// print_r($this->upload->data());
+					// echo '<pre>'.print_r($this->upload->data(),1).'</pre><br>';
+
+					// array_push()
 				}
 				else{
+					// echo json_encode(array("msg" => $this->upload->display_errors()));
 					$this->session->set_flashdata('error',$this->upload->display_errors());
 					redirect(base_url('main/validationOfDocuments'));exit;
 				}
@@ -326,24 +343,37 @@ class Main extends MY_Controller {
 				}
 				else{
 					$this->mainmodel->newRequirementLog(array(
-						'requirements_link' => 'student/'.$this->session->userdata('student_folder').'/requirement/'.$id_name,
 						'requirements_name' => $id_name,
 						'requirements_date' => date("Y-m-d H:i:s"),
 						'status' => 'pending',
 						'reference_no' => $ref_no
 					));
-					// $this->upload->overwrite = true;
-					// $this->upload->do_upload($id_name);
 				}
 				
 			}
-			$this->email($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message']);
-			$this->session->set_flashdata('success','Successfully submitted!!');
-			redirect(base_url('main/validationOfDocuments'));
+			$all_uploadeddata = array("folder_name"=>$ref_no,"data"=> $array_files);
+			// echo '<pre>'.print_r($array_files,1).'</pre>';
+			$string = http_build_query($all_uploadeddata);
+			$ch = curl_init("http://localhost:4003/uploadtodrive/");
+			curl_setopt($ch,CURLOPT_POST,true);
+			curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
+			// curl_setopt($ch,CURLOPT_SSL_VERIFYEPEER,false);
+			curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+
+			$result = curl_exec($ch);
+			if($result=="success"){
+				$this->session->set_flashdata('success','Successfully submitted!!');
+				redirect(base_url('main/validationOfDocuments'));
+			}
+			curl_close($ch);
+			// $this->email($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message']);
+			
+			// echo json_encode(array("msg" => 'Successfully Uploaded'));
 		}
 		catch(\Exception $e){
 			$this->session->set_flashdata('error',$e);
-			redirect(base_url('main/validationOfDocuments'));
+			// redirect(base_url('main/validationOfDocuments'));
+			// echo json_encode(array("msg" => $e));
 		}
 		
 	}
@@ -356,5 +386,29 @@ class Main extends MY_Controller {
 			mkdir('assets/student/'.$name,0777,true);
 			mkdir('assets/student/'.$name.'/requirement',0777,true);
 		}
+	}
+	public function sampleUpload(){
+		$array_files = array(
+			array(
+			"name" => "image1.jpg",
+			"type" => "image/jpg"
+			),
+			array(
+			"name" => "image2.jpg",
+			"type" => "image/jpg"
+			),
+			array(
+			"name" => "image3.jpg",
+			"type" => "image/jpg"
+			));
+		$data = array("folder_name"=>"19588","data"=> $array_files);
+		$string = http_build_query($data);
+		$ch = curl_init("http://localhost:4003/uploadtodrive/test_post2");
+		curl_setopt($ch,CURLOPT_POST,true);
+		curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,false);
+
+		curl_exec($ch);
+		curl_close($ch);
 	}
 }

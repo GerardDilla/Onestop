@@ -27,8 +27,8 @@ const upload = multer({storage: storage});
 router.post('/',(req,res)=>{
     // req.session.id_number = "";
     var data_body = req.body.data;
-    // var folder_name = req.body.folder_name;
-    var folder_name = "requirements";
+    var folder_name = req.body.folder_name;
+    // var folder_name = "requirements";
     const SCOPES = ['https://www.googleapis.com/auth/drive'];
   // The file token.json stores the user's access and refresh tokens, and is
   // created automatically when the authorization flow completes for the first
@@ -171,27 +171,6 @@ router.post('/',(req,res)=>{
                     insertFileInFolder(auth,result,item.name,item.type)
                 })
             });
-            // var catchId = createFolder(auth).then(result => {
-            //     jsonReader('my_data.json',(err,data)=>{
-            //         if(err){
-            //             console.log(err)
-            //         }else{
-            //             data.id = result
-            //             fs.writeFile('my_data.json',JSON.stringify(data),err => {
-            //                 if(err) return console.log(err)
-            //             })
-            //         }
-            //     })
-            // });
-            // console.log(req.session.folder_id)
-
-            // setTimeout(function(){
-            //     const getMyData = fs.readFileSync("my_data.json");
-            //     const parseMyData = JSON.parse(getMyData);
-            //     console.log('This is the ID:'+parseMyData.id);
-            // },1000)
-            // console.log("Id name:",req.session.id_number)
-            // getValueId();
             
             
         }
@@ -226,7 +205,7 @@ router.post('/',(req,res)=>{
   }
   async function createFolder(auth){
     const drive = google.drive({ version: 'v3', auth});
-    var this_is_id = 'application/vnd.google-apps.folder';
+    var this_is_id = '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap';
     var fileMetadata = {
       'name': folder_name,
       'mimeType': 'application/vnd.google-apps.folder',
@@ -276,4 +255,80 @@ router.post('/',(req,res)=>{
   res.send("success");
 });
 
+router.get("/generateToken",(req,res) => {
+    
+  const TOKEN_PATH = 'token.json';
+  const SCOPES = ['https://www.googleapis.com/auth/drive'];
+  // Load client secrets from a local file.
+  fs.readFile('credentials.json', (err, content) => {
+      if (err) return console.log('Error loading client secret file:', err);
+    //   authorize(JSON.parse(content), createFolder);
+
+        // code use to check for adding folder uploading of files   
+      authorize(JSON.parse(content), checkFiles);
+      
+    //   authorize(JSON.parse(content), insertFileInFolder);
+      // authorize(JSON.parse(content), searchFor);
+      // authorize(JSON.parse(content), getFile);
+      // authorize(JSON.parse(content), uploadFile);
+  });
+  
+  /**
+   * Create an OAuth2 client with the given credentials, and then execute the
+   * given callback function.
+   * @param {Object} credentials The authorization client credentials.
+   * @param {function} callback The callback to call with the authorized client.
+   */
+  function checkFiles(auth){
+    console.log('Success')
+  }
+  function authorize(credentials, callback) {
+      const { client_secret, client_id, redirect_uris } = credentials.installed;
+      const oAuth2Client = new google.auth.OAuth2(
+          client_id, client_secret, redirect_uris[0]);
+
+      // Check if we have previously stored a token.
+      fs.readFile(TOKEN_PATH, (err, token) => {
+          if (err) return getAccessToken(oAuth2Client, callback);
+          oAuth2Client.setCredentials(JSON.parse(token));
+
+          callback(oAuth2Client);//list files and upload file
+          // createFolder(oAuth2Client);
+          //callback(oAuth2Client, '0B79LZPgLDaqESF9HV2V3YzYySkE');//get file
+
+      });
+  }
+
+  /**
+   * Get and store new token after prompting for user authorization, and then
+   * execute the given callback with the authorized OAuth2 client.
+   * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+   * @param {getEventsCallback} callback The callback for the authorized client.
+   */
+  function getAccessToken(oAuth2Client, callback) {
+      const authUrl = oAuth2Client.generateAuthUrl({
+          access_type: 'offline',
+          scope: SCOPES,
+      });
+      console.log('Authorize this app by visiting this url:', authUrl);
+      const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+      });
+      rl.question('Enter the code from that page here: ', (code) => {
+          rl.close();
+          oAuth2Client.getToken(code, (err, token) => {
+              if (err) return console.error('Error retrieving access token', err);
+              oAuth2Client.setCredentials(token);
+              // Store the token to disk for later program executions
+              fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+                  if (err) return console.error(err);
+                  console.log('Token stored to', TOKEN_PATH);
+              });
+              callback(oAuth2Client);
+          });
+      });
+  }
+  res.send("success")
+})
 module.exports = router;

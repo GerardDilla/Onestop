@@ -173,3 +173,20 @@ div.login-page{
 input.input-material{
   background:transparent;
 }
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+.relative-container{
+  position:relative;  
+}
+span.show-password{
+    position:absolute;
+    right:15px;
+    transform:translate(0,-50%);
+    top:50%;
+    cursor:pointer;
+}
+span.show-password:hover{
+  color:#85b4f2
+}

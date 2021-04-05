@@ -21,12 +21,18 @@
                     <h1>Password Reset</h1>
                 </div>
                 <div class="form-group anim3">
-                    <input required="required"  autocomplete="off" id="login-new" type="password" name="new_password"  data-msg="Please enter your new password" class="pr-password input-material">
+                    <input required="required" id="login-new" type="password" name="new_password"  data-msg="Please enter your new password" class="pr-password input-material">
                     <label for="login-new" class="label-material" style="color:black;font-weight:bold;">New Password</label>
+                    <span class="show-password">
+                        <i id="show_new_password" class="bi bi-eye-fill" onclick="showPassword('new_password')" aria-hidden="true"></i>
+                    </span>
                 </div>
                 <div class="form-group anim3">
-                    <input  autocomplete="off" id="login-confirm" type="password" name="confirm_password" required="required" data-msg="Incorrect confirm password" class="input-material">
+                    <input id="login-confirm" type="password" name="confirm_password" required="required" data-msg="Incorrect confirm password" class="input-material">
                     <label for="login-confirm" class="label-material" style="color:black;font-weight:bold;">Confirm Password</label>
+                    <span class="show-password">
+                        <i id="show_confirm_password" class="bi bi-eye-fill" onclick="showPassword('confirm_password')" aria-hidden="true"></i>
+                    </span>
                 </div>
                 <div align="right">
                     <!-- <button id="submit" type="submit" class="btn btn-info">Submit</button> -->
@@ -53,6 +59,20 @@
             $("#login-confirm").addClass('is-invalid');
         }
     })
+    function showPassword(id){
+        var x = document.querySelector(`[name=${id}]`);
+        var icon = document.getElementById('show_'+id);
+
+        if (x.type === "password") {
+            x.type = "text";
+            icon.classList.remove("bi-eye-fill")
+            icon.classList.add("bi-eye-slash")
+        } else {
+            x.type = "password";
+            icon.classList.remove("bi-eye-slash")
+            icon.classList.add("bi-eye-fill")
+        }
+    }
 </script>
 <script>
 

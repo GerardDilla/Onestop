@@ -60,8 +60,15 @@ else if($this->session->flashdata('success')!=''){
                     <label for="login-username" class="label-material label-color" style="color:black;font-weight:bold;">User Name</label>
                 </div>
                 <div class="form-group anim3">
-                    <input required autocomplete="off" id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
                     <label for="login-password" class="label-material label-color" style="color:black;font-weight:bold;">Password</label>
+                    <!-- <div class="relative-container"> -->
+                    <input required autocomplete="off" id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                    <span class="show-password">
+                        <i id="show_loginPassword" class="bi bi-eye-fill" onclick="showPassword('loginPassword')" aria-hidden="true"></i>
+                    </span>
+                    <!-- </div> -->
+                    
+                    
                 </div>
                 <div align="right">
                     <button id="login" type="submit" class="btn btn-info submit-button">Login</button>
@@ -90,9 +97,23 @@ $('form').on('submit',function(){
         $('#login').attr('disabled','disabled');
     }
 });
-// $(window).on('beforeunload',function(){
-//     console.log('hello');
-// });
+$('#show_'+id).toggle(4000,function(){
+        alert('toggled')
+    });
+function showPassword(id){
+    var x = document.querySelector(`[name=${id}]`);
+    var icon = document.getElementById('show_'+id);
+
+    if (x.type === "password") {
+        x.type = "text";
+        icon.classList.remove("bi-eye-fill")
+        icon.classList.add("bi-eye-slash")
+    } else {
+        x.type = "password";
+        icon.classList.remove("bi-eye-slash")
+        icon.classList.add("bi-eye-fill")
+    }
+}
 function closeAnimation(){
     var playPause = anime({
     targets: '#amazing path',

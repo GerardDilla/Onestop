@@ -34,7 +34,17 @@
         
 //       }
 //   });
-$('.transition-effect').css('z-index','0');
+// $('.transition-effect').css('z-index','0');
+// $('#amazing path').css('display','none')
+$('#amazing').css('z-index','0')
+var startEffect = window.setInterval(function(){
+      $('.transition-effect').css('z-index','0');
+      $('.content input.input-material').children(':first').focus();
+      $('.content input.input-material').children(':first').addClass('active');
+      console.log($('.content input.input-material').children(':first'));
+      clearInterval(startEffect);
+      
+  },1000)
   $(window).on('beforeunload',function(){
     // console.log('wazzup');
     // var playPause = anime({

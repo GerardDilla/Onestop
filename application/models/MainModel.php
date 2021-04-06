@@ -64,4 +64,9 @@ class MainModel extends CI_Model {
         $this->db->where('reference_no',$ref_no);
         $this->db->update('requirements_log', $data);
     }
+    public function revertIfErrorInRequirementUpload(){
+        $ref_no = $this->session->userdata('reference_no');
+        $this->db->where('reference_no',$ref_no);
+        $this->db->delete('requirements_log');
+    }
 }

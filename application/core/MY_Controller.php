@@ -24,8 +24,9 @@ class MY_Controller extends CI_Controller {
         //     'validation' => true,
         //     'wordwrap' => true
         // ));
+        $this->load->library('email');
         $this->load->library('view_directory');
-        $this->load->library('send_email');
+        $this->load->library('sdca_mailer',array('email' => $this->email,'load' => $this->load));
         $this->load->library('session');
         $this->load->database();
         $this->load->model('MainModel','mainmodel');

@@ -329,7 +329,7 @@ class Main extends MY_Controller {
 				'reply_to' => 'jfabregas@sdca.edu.ph',
 				'sender_name' => 'St. Dominic College of Asia',
 				'send_to_email' => $this->session->userdata('email'),
-				'title' => 'Forgot Password',
+				'title' => 'Student Requirements',
 				'message' => 'Email/ValidationOfDocument'
 			);
 			
@@ -390,7 +390,7 @@ class Main extends MY_Controller {
 
 			$result = curl_exec($ch);
 			if($result=="success"){
-				$this->emailHtmlType($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message'],array(
+				$this->sdca_mailer->sendHtmlEmail($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message'],array(
 					'student_name' => $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name'),
 					'requirements' => $array_files,
 					'datetime' => date("Y-m-d H:i:s")
@@ -399,6 +399,7 @@ class Main extends MY_Controller {
 				redirect(base_url('main/validationOfDocuments'));
 			}
 			else{
+				$this->mainmodel->revertIfErrorInRequirementUpload();
 				$this->session->set_flashdata('error','Gdrive Uploader is Offline');
 				redirect(base_url('main/validationOfDocuments'));
 			}
@@ -462,6 +463,14 @@ class Main extends MY_Controller {
 				
 	}
 	public function sampleMail(){
-		$this->sendmail->index();
+		$email_data = array(
+			'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
+			'reply_to' => 'jfabregas@sdca.edu.ph',
+			'sender_name' => 'St. Dominic College of Asia',
+			'send_to_email' => $this->session->userdata('email'),
+			'title' => 'Forgot Password',
+			'message' => 'Hi Sir'
+		);
+		$this->sdca_mailer->sendEmail($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message']);
 	}
 }

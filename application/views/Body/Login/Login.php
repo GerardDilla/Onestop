@@ -53,7 +53,7 @@ else if($this->session->flashdata('success')!=''){
             <div class="content">
                 <form method="post" class="form-validate" action="<?php echo base_url('main/loginProcess')?>">
                 <div class="col-md-12" style="margin-bottom:20px">
-                    <h1 class="anim2">Sign In</h1>
+                    <h1 class="anim2">Sign In & Out</h1>
                 </div>
                 <div class="form-group anim3">
                     <input required autocomplete="off" id="login-username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">

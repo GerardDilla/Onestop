@@ -11,21 +11,21 @@ class MY_Controller extends CI_Controller {
 
         parent::__construct();
         // $this->load->library('email');
-        $this->load->library('Sendemail',Array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'ssl://smtp.gmail.com',
-            'smtp_port' => '465',
-            'smtp_timeout' => '7',
-            'smtp_user' => 'webmailer@sdca.edu.ph',
-            'smtp_pass' => 'sdca2017',
-            'charset' => 'utf-8',
-            'newline' => '\r\n',
-            'mailtype'  => 'html',
-            'validation' => true,
-            'wordwrap' => true
-        ));
-        
+        // $this->load->library('Sendemail',Array(
+        //     'protocol'  => 'smtp',
+        //     'smtp_host' => 'ssl://smtp.gmail.com',
+        //     'smtp_port' => '465',
+        //     'smtp_timeout' => '7',
+        //     'smtp_user' => 'webmailer@sdca.edu.ph',
+        //     'smtp_pass' => 'sdca2017',
+        //     'charset' => 'utf-8',
+        //     'newline' => '\r\n',
+        //     'mailtype'  => 'html',
+        //     'validation' => true,
+        //     'wordwrap' => true
+        // ));
         $this->load->library('view_directory');
+        $this->load->library('send_email');
         $this->load->library('session');
         $this->load->database();
         $this->load->model('MainModel','mainmodel');

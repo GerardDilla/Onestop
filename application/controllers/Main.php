@@ -461,28 +461,7 @@ class Main extends MY_Controller {
 		// $this->load->view('Email/ValidationOfDocument',array(
 				
 	}
-	public function sampleUpload(){
-		$array_files = array(
-			array(
-			"name" => "image1.jpg",
-			"type" => "image/jpg"
-			),
-			array(
-			"name" => "image2.jpg",
-			"type" => "image/jpg"
-			),
-			array(
-			"name" => "image3.jpg",
-			"type" => "image/jpg"
-			));
-		$data = array("folder_name"=>"19588","data"=> $array_files);
-		$string = http_build_query($data);
-		$ch = curl_init("http://localhost:4003/uploadtodrive/test_post2");
-		curl_setopt($ch,CURLOPT_POST,true);
-		curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER,false);
-
-		curl_exec($ch);
-		curl_close($ch);
+	public function sampleMail(){
+		$this->sendmail->index();
 	}
 }

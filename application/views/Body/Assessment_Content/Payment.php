@@ -1,193 +1,118 @@
-<style>
-    .align_center{
-        text-align: center;
-    }
-    /* .header{
-        text-align: center;
-    } */
-    .first_div{
-        padding:0px 0 10px 0;
-    }
-    .ul_class{
-        text-align: center;
-        list-style: none;
-        background-color: rgba(200, 200, 200, 0.2); 
-        width: 100%;
-        padding: 7px 0 7px 0;
-        margin: 0; 
-    }
-    .li_class{
-        display: inline; width: 33.3333%;
-        text-decoration: none;
-        color: black;
-        padding: 10px 10% 10px 10%;
-    }
-    .active_class{
-        background-color: #4caf50;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 16px 26px -10px rgb(76 175 80 / 56%), 0 4px 25px 0px rgb(0 0 0 / 12%), 0 8px 10px -5px rgb(76 175 80 / 20%);
-    }
-    /* .body_class h4{
-        text-align: center;
-    }
-    .body_class_title{
-        text-align: center;
-    } */
-    .body_class_selections{
-        display: flex;
-        justify-content: center;
-    }
-    .choice_check_box{
-        display: grid;
-        margin: 8%;
-    }
-    /* .choice_check_box h6{
-        text-align: center;
-    } */
-    .body_class_selections_circle{
-        /* margin: auto; */
-        
-    }
-    .body_class_selections_circle{
-        /* text-align: center; */
-        /* vertical-align: middle; */
-        display: inline-block;
-        height: 116px;
-        width: 116px;
-        border-radius: 50%;
-        color: #999999;
-        margin: 0 auto 20px;
-        border: 4px solid #CCCCCC;
-    }
-    .body_class_selections_circle:hover{
-        border-color: #4caf50;
-        color: #4caf50;
-        cursor: pointer;
-    }
-    .form_input_group{
-        display: table;
-    }
-    .form_group_text{
-        border: 0;
-        background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#D2D2D2, #D2D2D2);
-        background-size: 0 2px, 100% 1px;
-        background-repeat: no-repeat;
-        background-position: center bottom, center calc(100% - 1px);
-        background-color: transparent;
-        transition: background 0s ease-out;
-        float: none;
-        box-shadow: none;
-        border-radius: 0;
-        font-weight: 400;
-        width: 40%;
-    }
-    #circle_selection_icon{
-        position: relative;
-        top: 18px;
-        font-size: 60px;
-    }
-    #student_number_icon{
-        font-size: 25px;
-        position: relative;
-        top: 7px;
-    }
-    .footer_button_color{
-        display: block;
-        float: right;
-        background-color: #4caf50;
-    }
+<div class="col-md-8 row">
+    <!--Regform Header-->
+    <!-- <div class="col-lg-12" style="text-align:center">
+        <img src="https://stdominiccollege.edu.ph/WEBDOSE//img/SdcaHeader.jpg" width="80%" height="auto">
+    </div> -->
+    <!--/Regform Header-->
+    <div class="col-lg-12" style="text-align:center; color:#000">
+        <h3>ASSESSMENT FORM</h3>
+        <hr>
+        <table style="width:100%">
+            <tbody>
+                <tr class="success" style="font-size: 12px; text-align:left">
+                    <td width="40%" style="padding:0px 10px 0px 0px" valign="top">
+                        <strong>REFERENCE NUMBER:</strong> <span id="trf_rn"></span> <br>
+                        <strong>NAME:</strong> <span id="trf_name" class="capitalizetext"></span> <br>
+                        <strong>ADDRESS:</strong> <span id="trf_address"></span> <br>
+                    </td>
+                    <td width="20%" style="padding:0px 10px 0px 0px" valign="top">
+                        <strong>SEMESTER:</strong> <span id="trf_sem"></span> <br>
+                        <strong>COURSE:</strong> <span id="trf_course"></span> <br>
+                    </td>
+                    <td width="20%" style="padding:0px 10px 0px 0px" valign="top">
+                        <strong>SCHOOL YEAR:</strong> <span id="trf_sy"></span> <br>
+                        <strong>YEAR LEVEL:</strong> <span id="trf_yl"></span> <br>
+                    </td>
+                    <td width="20%" style="padding:0px 10px 0px 0px" valign="top">
+                        <strong>SECTION:</strong> <span id="trf_sec"></span> <br>
+                        <strong>DATE:</strong> <span id="trf_date"></span> <br>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <table>
+            <thead>
+                <tr class="success" style="font-size: 13px; text-align:left">
+                    <th style="padding-right: 10px;">Sched Code</th>
+                    <th style="padding-right: 10px;">Course Code</th>
+                    <th style="padding-right: 10px;">Course</th>
+                    <th style="padding-right: 10px;">Units</th>
+                    <th style="padding-right: 10px;">Day</th>
+                    <th style="padding-right: 10px;">Time</th>
+                    <th style="padding-right: 10px;">Room</th>
+                </tr>
+            </thead>
+            <tbody id="temporary_regform_subjects" style="font-size: 12px; text-align:left">
+                <tr>
+                    <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">202000275</td>
+                    <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">GE104</td>
+                    <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">Understanding The Self</td>
+                    <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">3</td>
+                    <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_day">M</td>
+                    <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_time">9:00AM - 12:00PM</td>
+                    <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_room">GD108</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <table class="pull-right" style="font-size: 13px; width: 80%; text-align:left">
+            <tbody>
+                <tr>
+                    <td><strong>Tuition:</strong></td>
+                    <td class="feesbox" id="trf_tuition">23924.25</td>
 
-    @media only screen and (max-width: 1000px) {
-        .li_class{
-            padding: 10px 5% 10px 5%;
-        }
-    }
-    @media only screen and (max-width: 629px) {
-        .li_class{
-            display: inline-block;
-            margin: 0;
-            width: 96%;
-        }
-        .body_class_selections{
-            display: grid;
-            justify-content: center;
-        }
-        .footer_button_color{
-            display: inline-grid;
-            float: none;
-            background-color: #4caf50;
-        }
-    }
-</style>
-<div class="align_center">
-    <div class="row">
-        <div class="header">
-            <h3>Payment Form</h3>
-            <h5>Fill out the form to proceed with the payment</h5>
-        </div>
-        <div class="first_div">
-            <ul class="ul_class">
-                <a href="" class="active_class">
-                    <li class="li_class">
-                        BASIC INFO
-                    </li>
-                </a>
-                <a href="" class="">
-                    <li class="li_class">
-                        ACADEMIC INFO
-                    </li>
-                </a>
-                <a href="" class="">
-                    <li class="li_class">
-                        CONTACT DETAILS
-                    </li>
-                </a>
-            </ul>
-        </div>
-        <div class="body_class">
-            <div class="body_class_title">
-                <h4>Please answer the form below</h4>    
-            </div>
-            <div class="body_class_selections">
-                <div class="choice_check_box">
-                    <div class="body_class_selections_circle">
-                        <i class="bi bi-pencil" id="circle_selection_icon"></i>
-                    </div>
-                    <h6>BASIC EDUCATION</h6>
-                </div>
-                <div class="choice_check_box">
-                    <div class="body_class_selections_circle">
-                        <i class="bi bi-people-fill" id="circle_selection_icon"></i>
-                    </div>
-                    <h6>SENIOR HIGHSCOOL</h6>
-                </div>
-                <div class="choice_check_box">
-                    <div class="body_class_selections_circle">
-                        <i class="bi bi-laptop" id="circle_selection_icon"></i>
-                    </div>
-                    <h6>HIGHER EDUCATION</h6>
-                </div>
-            </div>
-            <hr>
-            <h4>Student's Student Number or Reference Number</h4>
-        </div>
-        <div class="col-sm-12">
-            <div class="form_input-group">
-                <div class="form-group label-floating is-empty">
-                    <i class="bi bi-person-circle" id="student_number_icon"></i>
-                    <input type="text" name="" id="" class="form_group_text">
-                </div>
-            </div>
-        </div>
-        <div class="payment_footer">
-            <div class="payment_footer_button col-md-12">
-                <input type="submit" name="" id="submit" class="btn btn-next btn-fill btn-success btn-wd footer_button_color">
-            </div>
-            <br>
-            <h5>Need help with something? Visit our <a href="https://stdominiccollege.edu.ph/SDCAHelpdesk">Helpdesk</a></h5>
-            <h6><a href="https://stdominiccollege.edu.ph">Back to home</a></h6>
-        </div>
-        <!-- <div style="background-color: #4caf50; padding: 25px 0 25px 0; width:33%; z-index:-1; position:relative; top:-46px;"></div> -->
+                    <td><strong>Initial Payment:</strong></td>
+                    <td class="feesbox" id="trf_initial">13180.66</td>
+
+                    <td><strong>Total Units:</strong></td>
+                    <td class="feesbox" id="trf_total_units">31</td>
+                </tr>
+                <tr>
+                    <td><strong>Misc Fees:</strong></td>
+                    <td class="feesbox" id="trf_misc">10484.64</td>
+
+                    <td><strong>First:</strong></td>
+                    <td class="feesbox" id="trf_first">10544.53</td>
+
+                    <td><strong>Total Subjects:</strong></td>
+                    <td class="feesbox" id="trf_total_subject">12</td>
+                </tr>
+                <tr>
+                    <td><strong>Lab Fees:</strong></td>
+                    <td class="feesbox" id="trf_lab">4192.66</td>
+
+                    <td><strong>Second:</strong></td>
+                    <td class="feesbox" id="trf_second">10105.17</td>
+
+                    <td><strong>Scholar:</strong></td>
+                    <td class="feesbox" id="trf_scholar">NO SCHOLARSHIP</td>
+                </tr>
+                <tr>
+                    <td><strong>Other Fees:</strong></td>
+                    <td class="feesbox" id="trf_other">5334.00</td>
+
+                    <td><strong>Third:</strong></td>
+                    <td class="feesbox" id="trf_third">10105.17</td>
+
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Total Fees:</strong></td>
+                    <td class="feesbox" id="trf_total_fees">43935.55</td>
+
+                    <td><strong>Fourth:</strong></td>
+                    <td class="feesbox" id="trf_fourth">0.00</td>
+
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <label>
+            <h6><u>NOTE: THIS IS NOT A PROOF OF OFFICIAL ENROLLMENT</u></h6>
+        </label>
     </div>
 </div>

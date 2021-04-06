@@ -590,13 +590,40 @@ class temp_api extends CI_Controller
 		return;
 	}
 
-	public function test()
+	public function temporary_regform_ajax()
 	{
-		$test = $this->input->post();
-		$response = [
-			'Input' => $test,
-			'Status' => !empty($test) ? 'Received' : 'Fail'
-		];
-		echo json_encode($response);
+
+		$reference_number = $this->input->get('ref_num');
+		if ($reference_number != '') {
+
+			$searcharray['Reference_Number'] = $reference_number;
+			$AdvisedCheck = $this->Student_Model->check_advised($searcharray);
+			$array = array(
+				'sy' => $AdvisedCheck[0]['School_Year'],
+				'sem' => $AdvisedCheck[0]['Semester'],
+				'refnum' => $reference_number
+			);
+			$data['get_Advise'] = $this->RegForm_Model->Get_advising_ajax($array);
+
+			foreach ($data['get_Advise']  as $row) {
+				$section         = $row->Section_Name;
+				$course        = $row->Course;
+				$sem           = $row->Semester;
+				$sy            = $row->School_Year;
+				$yl            = $row->YL;
+				$ref_num       = $row->Reference_Number;
+				$stu_num       = $row->Student_Number;
+				$admmitedSy    = $row->AdmittedSY;
+				$admmitedSem    = $row->AdmittedSEM;
+			}
+			$data['get_TotalCountSubject']       = $this->RegForm_Model->Get_CountSubject_Advising_TRF($stu_num, $sem, $sy);
+			$data['get_labfees']                 = $this->RegForm_Model->Get_LabFeesAdvising_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_miscfees']                = $this->RegForm_Model->Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_otherfees']                = $this->RegForm_Model->Get_OTHER_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_tuitionfee']              = $this->RegForm_Model->Get_Tuition_FEE_TRF($course, $sem, $sy, $yl, $ref_num, $admmitedSy, $admmitedSem);
+			//$data['get_totalcash']               = $this->RegForm_Model->Get_Total_CashPayment($ref_num,$sem,$sy);
+			$data['get_totalunits']               = $this->RegForm_Model->totalUnitsAdvising_TRF($array);
+			echo json_encode($data);
+		}
 	}
 }

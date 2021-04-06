@@ -36,14 +36,6 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#registration" data-toggle="tab">
-                                        <div class="icon-circle">
-                                            <i class="bi bi-file-text" id="bi_resize"></i>
-                                        </div>
-                                        REGISTRATION
-                                    </a>
-                                </li>
-                                <li>
                                     <a href="#payment" data-toggle="tab">
                                         <div class="icon-circle">
                                             <i class="bi bi-cash-stack" id="bi_resize"></i>
@@ -51,6 +43,15 @@
                                         PAYMENT
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="#registration" data-toggle="tab">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-file-text" id="bi_resize"></i>
+                                        </div>
+                                        REGISTRATION
+                                    </a>
+                                </li>
+
                             </ul>
                             <!-- /Progress Nav -->
                         </div>

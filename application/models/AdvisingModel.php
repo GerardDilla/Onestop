@@ -248,4 +248,23 @@ class AdvisingModel extends CI_Model
 
         return $query_log;
     }
+
+    public function check_advised($array)
+    {
+
+        $this->db->where('Reference_Number', $array['Reference_Number']);
+        //$this->db->where('School_Year', $array['School_Year']);
+        //$this->db->where('Semester', $array['Semester']);
+        $this->db->where('Dropped', 0);
+        $this->db->where('Cancelled', 0);
+        $this->db->where('valid', 1);
+        $this->db->order_by('ID', 'DESC');
+        /*
+        $this->db->order_by('School_Year', 'DESC');
+        $this->db->order_by('Semester', 'DESC');
+        */
+        $result = $this->db->get('Advising');
+        $this->db->reset_query();
+        return $result->result_array();
+    }
 }

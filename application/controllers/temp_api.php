@@ -20,6 +20,8 @@ class temp_api extends CI_Controller
 		parent::__construct();
 		$this->load->model('AdvisingModel');
 		$this->load->model('FeesModel');
+		$this->load->model('RegFormModel');
+
 
 		#Temporary Keys
 		$this->reference_number = '14174';
@@ -592,18 +594,17 @@ class temp_api extends CI_Controller
 
 	public function temporary_regform_ajax()
 	{
-
-		$reference_number = $this->input->get('ref_num');
+		$reference_number = $this->reference_number;
 		if ($reference_number != '') {
 
 			$searcharray['Reference_Number'] = $reference_number;
-			$AdvisedCheck = $this->Student_Model->check_advised($searcharray);
+			$AdvisedCheck = $this->AdvisingModel->check_advised($searcharray);
 			$array = array(
-				'sy' => $AdvisedCheck[0]['School_Year'],
-				'sem' => $AdvisedCheck[0]['Semester'],
-				'refnum' => $reference_number
+				'sy' => $this->legend_sy,
+				'sem' => $this->legend_sem,
+				'refnum' => $this->reference_number
 			);
-			$data['get_Advise'] = $this->RegForm_Model->Get_advising_ajax($array);
+			$data['get_Advise'] = $this->RegFormModel->Get_advising_ajax($array);
 
 			foreach ($data['get_Advise']  as $row) {
 				$section         = $row->Section_Name;
@@ -616,13 +617,13 @@ class temp_api extends CI_Controller
 				$admmitedSy    = $row->AdmittedSY;
 				$admmitedSem    = $row->AdmittedSEM;
 			}
-			$data['get_TotalCountSubject']       = $this->RegForm_Model->Get_CountSubject_Advising_TRF($stu_num, $sem, $sy);
-			$data['get_labfees']                 = $this->RegForm_Model->Get_LabFeesAdvising_TRF($ref_num, $course, $sem, $sy, $yl);
-			$data['get_miscfees']                = $this->RegForm_Model->Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
-			$data['get_otherfees']                = $this->RegForm_Model->Get_OTHER_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
-			$data['get_tuitionfee']              = $this->RegForm_Model->Get_Tuition_FEE_TRF($course, $sem, $sy, $yl, $ref_num, $admmitedSy, $admmitedSem);
+			$data['get_TotalCountSubject']       = $this->RegFormModel->Get_CountSubject_Advising_TRF($stu_num, $sem, $sy);
+			$data['get_labfees']                 = $this->RegFormModel->Get_LabFeesAdvising_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_miscfees']                = $this->RegFormModel->Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_otherfees']                = $this->RegFormModel->Get_OTHER_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_tuitionfee']              = $this->RegFormModel->Get_Tuition_FEE_TRF($course, $sem, $sy, $yl, $ref_num, $admmitedSy, $admmitedSem);
 			//$data['get_totalcash']               = $this->RegForm_Model->Get_Total_CashPayment($ref_num,$sem,$sy);
-			$data['get_totalunits']               = $this->RegForm_Model->totalUnitsAdvising_TRF($array);
+			$data['get_totalunits']               = $this->RegFormModel->totalUnitsAdvising_TRF($array);
 			echo json_encode($data);
 		}
 	}

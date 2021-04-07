@@ -59,8 +59,9 @@ class MainModel extends CI_Model {
     public function newRequirementLog($data){
         $this->db->insert('requirements_log', $data);
     }
-    public function updateRequirementLog($data){
+    public function updateRequirementLog($data,$req){
         $ref_no = $this->session->userdata('reference_no');
+        $this->db->where('requirements_name',$req);
         $this->db->where('reference_no',$ref_no);
         $this->db->update('requirements_log', $data);
     }
@@ -68,5 +69,17 @@ class MainModel extends CI_Model {
         $ref_no = $this->session->userdata('reference_no');
         $this->db->where('reference_no',$ref_no);
         $this->db->delete('requirements_log');
+    }
+    public function getStudentAccountInfo($ref_no){
+        $this->db->where('Reference_Number',$ref_no);
+        return $this->db->get('student_info')->row_array();
+    }
+    public function getRequirementsLogPerRefNo(){
+        $ref_no = $this->session->userdata('reference_no');
+        $this->db->select('requirements_log.*,requirements.rq_name');
+        $this->db->from('requirements_log');
+        $this->db->join('requirements','requirements_log.requirements_name = requirements.id_name','left');
+        $this->db->where('reference_no',$ref_no);
+        return $this->db->get()->result_array();
     }
 }

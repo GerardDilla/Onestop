@@ -34,7 +34,17 @@ router.post('/',(req,res)=>{
   // created automatically when the authorization flow completes for the first
   // time.
   const TOKEN_PATH = 'token.json';
-
+    function sendBackToPHP(pass_id){
+        // res.send({
+        //     status'success',
+        //     id:pass_id
+        // })
+        res.send(pass_id);
+        // res.json({
+        //     status:'success',
+        //     id:pass_id
+        // })
+    }
   // Load client secrets from a local file.
   fs.readFile('credentials.json', (err, content) => {
       if (err) return console.log('Error loading client secret file:', err);
@@ -170,16 +180,18 @@ router.post('/',(req,res)=>{
                 data_body.forEach(item => {
                     insertFileInFolder(auth,result,item.name,item.type)
                 })
+                sendBackToPHP(result);
             });
             
             
         }
         else{
-            console.log(found.id)
+            // console.log(found.id)
             var current_id = found.id;
             data_body.forEach(item => {
                 insertFileInFolder(auth,current_id,item.name,item.type)
             })
+            sendBackToPHP(found.id);
             console.log("folder is existed");
         }
         var list = []
@@ -252,7 +264,7 @@ router.post('/',(req,res)=>{
       }
     });
   }
-  res.send("success");
+//   res.send("success");
 });
 
 router.get("/generateToken",(req,res) => {
@@ -329,6 +341,11 @@ router.get("/generateToken",(req,res) => {
           });
       });
   }
-  res.send("success")
+//   res.send("success")
+})
+router.get("/getjson",(req,res)=>{
+    // res.json({
+
+    // })
 })
 module.exports = router;

@@ -22,70 +22,6 @@ class Main extends MY_Controller {
 			'student_folder' => $data['folder_name']
 		));
 	}
-	public function email($cp,$from,$from_name,$send_to,$subject,$message){
-		$config = Array(
-				'protocol'  => 'smtp',
-				'smtp_host' => 'ssl://smtp.gmail.com',
-				'smtp_port' => '465',
-				'smtp_timeout' => '7',
-				'smtp_user' => 'webmailer@sdca.edu.ph',
-				'smtp_pass' => 'sdca2017',
-				'charset' => 'utf-8',
-				'newline' => '\r\n',
-				'mailtype'  => 'html',
-				'validation' => true
-				// 'wordwrap' => true
-		);
-		$this->load->library('email');
-		$this->email->initialize($config);
-		$this->email->set_newline("\r\n");
-		$this->email->from($from, $from_name);
-		$this->email->to($send_to);
-		$this->email->subject($subject);
-		$this->email->message($message);
-		if($this->email->send()){
-				echo  'Email has been sent to '.$cp;
-				echo  '<br><br>';
-		}else{
-				echo  "<h4>There was a problem with sending an email.</h4>";
-				echo  "<br><br>For any concers, proceed to our <a href'#' style'font-size:15px; color:#00F;'>Helpdesk</a> or the MIS Office.";        
-		}
-		//email debugger
-			// echo $this->email->print_debugger(array('headers'));
-
-	}
-	public function emailHtmlType($cp,$from,$from_name,$send_to,$subject,$message,$add_data){
-		$config = Array(
-				'protocol'  => 'smtp',
-				'smtp_host' => 'ssl://smtp.gmail.com',
-				'smtp_port' => '465',
-				'smtp_timeout' => '7',
-				'smtp_user' => 'webmailer@sdca.edu.ph',
-				'smtp_pass' => 'sdca2017',
-				'charset' => 'utf-8',
-				'newline' => '\r\n',
-				'mailtype'  => 'html',
-				'validation' => true
-				// 'wordwrap' => true
-		);
-		$this->load->library('email');
-		$this->email->initialize($config);
-		$this->email->set_newline("\r\n");
-		$this->email->from($from, $from_name);
-		$this->email->to($send_to);
-		$this->email->subject($subject);
-		$this->email->message($this->load->view($message,$add_data,true));
-		if($this->email->send()){
-				echo  'Email has been sent to '.$cp;
-				echo  '<br><br>';
-		}else{
-				echo  "<h4>There was a problem with sending an email.</h4>";
-				echo  "<br><br>For any concers, proceed to our <a href'#' style'font-size:15px; color:#00F;'>Helpdesk</a> or the MIS Office.";        
-		}
-		//email debugger
-			// echo $this->email->print_debugger(array('headers'));
-
-	}
 	public function loginProcess(){
 		try{
 			$username = $this->input->post('loginUsername');
@@ -308,13 +244,27 @@ class Main extends MY_Controller {
 		$this->data['requirements'] = $getRequirementsList;
 		$this->default_template($this->view_directory->validationOfDocuments());
 	}
-	public function validationDocumentsProcess(){
-		$files = glob('express/assets/*'); // get all file names
-		foreach($files as $file){ // iterate files
-			if(is_file($file)) {
-				unlink($file); // delete file
-			}
+	public function validationOfTobeFollowedDocuments(){
+		// date_default_timezone_set('Asia/Kolkata');
+		$getRequirementsList = $this->mainmodel->getRequirementsList();
+		$count = 0;
+		foreach($getRequirementsList as $list){
+			$checkRequirement = $this->mainmodel->checkRequirement($list['id_name']);
+			$getRequirementsList[$count]['status'] = empty($checkRequirement['status'])?'':$checkRequirement['status'];
+			$getRequirementsList[$count]['date'] = empty($checkRequirement['requirements_date'])?'':date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']));
+			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
+			++$count;
 		}
+		// exit;
+		// echo '<pre>'.print_r($getRequirementsList,1).'</pre>';
+		// exit;
+		$this->data['requirements'] = $getRequirementsList;
+		$this->default_template($this->view_directory->ValidationOfTobeFollowedDocuments());
+	}
+	public function validationDocumentsProcess(){
+		$user_fullname = $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name');
+		
+		
 		date_default_timezone_set('Asia/manila');
 		$ref_no = $this->session->userdata('reference_no');
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
@@ -323,6 +273,8 @@ class Main extends MY_Controller {
 		$config['allowed_types'] = '*';
 		$row = "";
 		$array_files = array();
+		$array_filestodelete = array();
+		$array_completefiles = array();
 		try{
 			$email_data = array(
 				'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
@@ -334,53 +286,110 @@ class Main extends MY_Controller {
 			);
 			
 			foreach($getRequirementsList as $list){
-				if($this->input->post('check_'.$list['id_name'])==null){
+				// if($this->input->post('check_'.$list['id_name'])!=null){
+				// 	$this->mainmodel->newRequirementLog(array(
+				// 		'requirements_name' => $id_name,
+				// 		'requirements_date' => date("Y-m-d H:i:s"),
+				// 		'status' => 'to be follow',
+				// 		'reference_no' => $ref_no
+				// 	));
+				// }
+				
 				// echo $this->input->post($list['id_name']).'<br>';
+				
 				$id_name = $list['id_name'];
-				$config['file_name'] = $id_name;
+				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
+				$config['file_name'] = $id_name.'_'.$ref_no.''.date("YmdHis");
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				$this->upload->overwrite = true;
-				if ($this->upload->do_upload($id_name))
-				{
-					$uploaded_data = $this->upload->data();
-					array_push($array_files,array(
-						"name" => $uploaded_data['orig_name'],
-						"type" => $uploaded_data['file_type'],
-						'rq_name' => $list['rq_name']
-					));
-					
-					// print_r($this->upload->data());
-					// echo '<pre>'.print_r($this->upload->data(),1).'</pre><br>';
+				$req_status = 'to be follow';
+				$status_col = empty($checkRequirement)?'':$checkRequirement['status'];
+				if($this->input->post('check_'.$list['id_name'])==null&&$status_col==""){
+					$req_status = 'pending';
+					if ($this->upload->do_upload($id_name))
+					{
+						$uploaded_data = $this->upload->data();
+						array_push($array_files,array(
+							"name" => $uploaded_data['orig_name'],
+							"type" => $uploaded_data['file_type'],
+							'rq_name' => $list['rq_name']
+						));
+						array_push($array_filestodelete,'express/assets/'.$uploaded_data['orig_name']);
+						
+					}
+					else{
+						// echo json_encode(array("msg" => $this->upload->display_errors()));
+						$this->session->set_flashdata('error',$this->upload->display_errors());
+						// redirect(base_url('main/validationOfDocuments'));exit;
+						redirect($_SERVER['HTTP_REFERER']);exit;
+					}
+				}
+				else if($this->input->post('check_'.$list['id_name'])==null&&$status_col=="to be follow"){
+					$req_status = 'pending';
+					if ($this->upload->do_upload($id_name))
+					{
+						$uploaded_data = $this->upload->data();
+						array_push($array_files,array(
+							"name" => $uploaded_data['orig_name'],
+							"type" => $uploaded_data['file_type'],
+							'rq_name' => $list['rq_name']
+						));
+						array_push($array_filestodelete,'express/assets/'.$uploaded_data['orig_name']);
+						
+					}
+					else{
+						// echo json_encode(array("msg" => $this->upload->display_errors()));
+						$this->session->set_flashdata('error',$this->upload->display_errors());
+						// redirect(base_url('main/validationOfDocuments'));exit;
+						redirect($_SERVER['HTTP_REFERER']);exit;
+					}
+				}
+				
 
-					// array_push()
+				
+				$file_type = "";
+				$orig_name = "";
+				if($this->input->post('check_'.$list['id_name'])==null){
+					$file_type = $uploaded_data['file_type'];
+					$orig_name = $uploaded_data['orig_name'];
 				}
-				else{
-					// echo json_encode(array("msg" => $this->upload->display_errors()));
-					$this->session->set_flashdata('error',$this->upload->display_errors());
-					redirect(base_url('main/validationOfDocuments'));exit;
-				}
-				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
 				if(!empty($checkRequirement)){
+					// $getRequirementsLog = $this->mainmodel->getRequirementsLog($r);
+					if($checkRequirement['status']=="to be follow"){
+						$this->mainmodel->updateRequirementLog(array(
+							'requirements_date' => date("Y-m-d H:i:s"),
+							'file_submitted' => $orig_name,
+							'file_type' => $file_type,
+							'status' => 'pending'
+						),$id_name);
+					}
 					$row = $row."<tr><td>".$checkRequirement['requirements_name']."</td><td>".date("M. j,Y g:ia")."</td></tr>";
-					$this->mainmodel->updateRequirementLog(array(
-						'requirements_date' => date("Y-m-d H:i:s")
-					));
+					
 				}
 				else{
 					$this->mainmodel->newRequirementLog(array(
 						'requirements_name' => $id_name,
 						'requirements_date' => date("Y-m-d H:i:s"),
-						'status' => 'pending',
-						'reference_no' => $ref_no
+						'status' => $req_status,
+						'reference_no' => $ref_no,
+						'file_submitted' => $orig_name,
+						'file_type' => $file_type
 					));
 				}
-
+				
 
 				// 
-				}
+				
 			}
-			$all_uploadeddata = array("folder_name"=>$ref_no,"data"=> $array_files);
+			$getRequirementsLogPerRefNo = $this->mainmodel->getRequirementsLogPerRefNo();
+			foreach($getRequirementsLogPerRefNo as $reqloglist){
+				array_push($array_completefiles,array(
+					"name" => $reqloglist['rq_name'],
+					"status" => $reqloglist['status']
+				));
+			}
+			$all_uploadeddata = array("folder_name"=>$ref_no.'/'.$user_fullname,"data"=> $array_files);
 
 			$string = http_build_query($all_uploadeddata);
 			$ch = curl_init("http://localhost:4003/uploadtodrive/");
@@ -389,19 +398,37 @@ class Main extends MY_Controller {
 			curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
 			$result = curl_exec($ch);
-			if($result=="success"){
+			if($result!=null&&$result!=""){
 				$this->sdca_mailer->sendHtmlEmail($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message'],array(
 					'student_name' => $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name'),
-					'requirements' => $array_files,
-					'datetime' => date("Y-m-d H:i:s")
+					'requirements' => $array_completefiles,
+					'datetime' => date("Y-m-d H:i:s"),
+					'gdrive_link' => "https://drive.google.com/drive/u/0/folders/".$result
 				));
+				$files = glob('express/assets/*'); // get all file names
+				foreach($files as $file){
+					if(in_array($file, $array_filestodelete)){
+						if(is_file($file)) {
+							unlink($file); // delete file
+						}
+					}
+				}
+				$this->mainmodel->updateAccountWithRefNo($ref_no,array('gdrive_id'=>$result));
 				$this->session->set_flashdata('success','Successfully submitted!!');
-				redirect(base_url('main/validationOfDocuments'));
+				redirect($_SERVER['HTTP_REFERER']);
 			}
 			else{
+				$files = glob('express/assets/*'); // get all file names
+				foreach($files as $file){
+					if(in_array($file, $array_filestodelete)){
+						if(is_file($file)) {
+							unlink($file); // delete file
+						}
+					}
+				}
 				$this->mainmodel->revertIfErrorInRequirementUpload();
 				$this->session->set_flashdata('error','Gdrive Uploader is Offline');
-				redirect(base_url('main/validationOfDocuments'));
+				redirect($_SERVER['HTTP_REFERER']);
 			}
 			curl_close($ch);
 			// echo json_encode(array("msg" => 'Successfully Uploaded'));
@@ -409,68 +436,22 @@ class Main extends MY_Controller {
 		catch(\Exception $e){
 			// echo $e;
 			$this->session->set_flashdata('error',$e);
-			redirect(base_url('main/validationOfDocuments'));
+			redirect($_SERVER['HTTP_REFERER']);
 			// echo json_encode(array("msg" => $e));
 		}
 		
 	}
-	public function createFolder(){
-		$name = $this->input->get('name');
-		// if(!mkdir('assets/student/'.$name,0777,true)){
-		// 	echo 'failed';
-		// }
-		if (!is_dir('assets/student/'.$name)) {
-			mkdir('assets/student/'.$name,0777,true);
-			mkdir('assets/student/'.$name.'/requirement',0777,true);
-		}
-	}
-	public function sampleSendMail(){
-		$array_files = array(
-			array(
-			"name" => "image1.jpg",
-			"type" => "image/jpg",
-			"rq_name" => "Birth Certificate"
-			),
-			array(
-			"name" => "image2.jpg",
-			"type" => "image/jpg",
-			"rq_name" => "Good Moral"
-			),
-			array(
-			"name" => "image3.jpg",
-			"type" => "image/jpg",
-			"rq_name" => "Form 137"
-			));
+	public function notifyWhenPaymentSubmitted($ref_no = "",$amount = ""){
+		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
 		$email_data = array(
 			'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
 			'reply_to' => 'jfabregas@sdca.edu.ph',
 			'sender_name' => 'St. Dominic College of Asia',
 			'send_to_email' => $this->session->userdata('email'),
-			'title' => 'Forgot Password',
-			'message' => 'Email/ValidationOfDocument'
+			'title' => 'Proof of Payment',
+			'message' => 'Email/PaymentEvidence'
 		);
-		// $this->emailHtmlType($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message'],array(
-		// 	'student_name' => $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').''.$this->session->userdata('last_name'),
-		// 	'requirements' => $array_files,
-		// 	'datetime' => date("Y-m-d H:i:s"))
-		// );
-		echo '<pre>'.print_r(array(
-			'student_name' => $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name'),
-			'requirements' => $array_files,
-			'datetime' => date("Y-m-d H:i:s")
-		),1).'</pre>';
-		// $this->load->view('Email/ValidationOfDocument',array(
-				
-	}
-	public function sampleMail(){
-		$email_data = array(
-			'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
-			'reply_to' => 'jfabregas@sdca.edu.ph',
-			'sender_name' => 'St. Dominic College of Asia',
-			'send_to_email' => $this->session->userdata('email'),
-			'title' => 'Forgot Password',
-			'message' => 'Hi Sir'
-		);
-		$this->sdca_mailer->sendEmail($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message']);
+		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message'],array('student_info'=>$student_info,'total_amount'=>$amount));
+		
 	}
 }

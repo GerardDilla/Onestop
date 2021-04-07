@@ -57,4 +57,9 @@ class view_directory
 		$data['title'] = 'Validation of Documents';
 		return $data;
 	}
+	public function ValidationOfTobeFollowedDocuments(){
+		$data['view'] = $this->body.'ValidationOfTobeFollowedDocuments';
+		$data['title'] = 'Submission of To be Followed Requirements';
+		return $data;
+	}
 }

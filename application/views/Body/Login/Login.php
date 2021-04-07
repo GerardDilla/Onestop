@@ -60,13 +60,13 @@ else if($this->session->flashdata('success')!=''){
                     <label for="login-username" class="label-material label-color" style="color:black;font-weight:bold;">User Name</label>
                 </div>
                 <div class="form-group anim3">
+                    
+                    
+                    <input autocomplete="off" id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
                     <label for="login-password" class="label-material label-color" style="color:black;font-weight:bold;">Password</label>
-                    <!-- <div class="relative-container"> -->
-                    <input required autocomplete="off" id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
                     <span class="show-password">
                         <i id="show_loginPassword" class="bi bi-eye-fill" onclick="showPassword('loginPassword')" aria-hidden="true"></i>
                     </span>
-                    <!-- </div> -->
                     
                     
                 </div>

@@ -82,4 +82,9 @@ class MainModel extends CI_Model {
         $this->db->where('reference_no',$ref_no);
         return $this->db->get()->result_array();
     }
+    public function checkStudentAccountForDuplication($col,$value){
+        $this->db->select('status');
+        $this->db->where($col,$value);
+        return $this->db->get('student_account')->row_array();
+    }
 }

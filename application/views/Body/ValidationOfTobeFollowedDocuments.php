@@ -79,7 +79,7 @@ echo '</script>';
                 <div class="col-md-12 col-sm-12" align="right" style="margin-top:10px">
                     <!-- <button type="submit" class="btn btn-info">Submit</button> -->
                     <?php
-                        if($req_count!=$total_count){
+                        if($req_count!=$total_count&&$req_count!=0){
                             echo '<button type="submit" class="btn btn-info">Submit</button>';
                         }
                     ?>

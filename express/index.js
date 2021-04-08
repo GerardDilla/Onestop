@@ -6,6 +6,7 @@ const app = express();
 const session = require("express-session")
 const upload = require('express-fileupload');
 const uploadToGdrive = require("./route/uploadtogdrive");
+const gdriveuploader = require("./route/gdrivelibrary");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(upload())
@@ -18,7 +19,7 @@ app.use(session({
   saveUninitialized: false
 }));
 app.use("/uploadtodrive",uploadToGdrive);
-
+app.use("/gdriveuploader",gdriveuploader);
 app.listen(port,()=>console.log(`Running in Localhost:${port}`))
 //Drive API, v3
 //https://www.googleapis.com/auth/drive	See, edit, create, and delete all of your Google Drive files

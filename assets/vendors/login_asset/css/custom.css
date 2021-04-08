@@ -177,5 +177,15 @@ input::-ms-reveal,
 input::-ms-clear {
   display: none;
 }
+span.show-password{
+  position:absolute;
+  right:15px;
+  transform:translate(0,-50%);
+  top:50%;
+  cursor:pointer;
+}
+span.show-password:hover{
+color:#85b4f2
+}
 
 

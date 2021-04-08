@@ -138,21 +138,32 @@ class Main extends MY_Controller {
 	public function changeUserPassProcess(){
 		try{
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
-			$data = $this->mainmodel->checkKey($key);
-			$folder_name = $data['First_Name'].' '.$data['Middle_Name'].' '.$data['Last_Name'];
-			$this->mainmodel->changeUserPass($key,array(
-				'username' => $this->input->post('username') ,
-				'password' => $this->input->post('new_password'),
-				'automated_code' => '',
-				'folder_name' => $folder_name
-			));
-			if (!is_dir('assets/student/'.$folder_name)) {
-				mkdir('assets/student/'.$folder_name,0777,true);
-				mkdir('assets/student/'.$folder_name.'/requirement',0777,true);
+			// $data = $this->mainmodel->checkKey($key);
+			$checkStudentAccountForDuplication  = $this->mainmodel->checkStudentAccountForDuplication('username',$this->input->post('username'));
+			if(empty($checkStudentAccountForDuplication)){
+				// echo 'empty';
+				$data = $this->mainmodel->checkKey($key);
+				$folder_name = $data['First_Name'].' '.$data['Middle_Name'].' '.$data['Last_Name'];
+				$this->mainmodel->changeUserPass($key,array(
+					'username' => $this->input->post('username') ,
+					'password' => $this->input->post('new_password'),
+					'automated_code' => '',
+					'folder_name' => $folder_name
+				));
+				if (!is_dir('assets/student/'.$folder_name)) {
+					mkdir('assets/student/'.$folder_name,0777,true);
+					mkdir('assets/student/'.$folder_name.'/requirement',0777,true);
+				}
+				$this->setSession($data);
+				$this->session->set_flashdata('success',$data['First_Name'].' '.$data['Last_Name']);
+				redirect(base_url('main/selfassesment'));
 			}
-			$this->setSession($data);
-			$this->session->set_flashdata('success',$data['First_Name'].' '.$data['Last_Name']);
-			redirect(base_url('main/selfassesment'));
+			else{
+				// echo 'not empty';
+				$this->session->set_flashdata('error','This username is not available to used!!');
+				redirect($_SERVER['HTTP_REFERER']);
+			}
+			
 		}
 		catch(\Exception $e){
 			$this->session->set_flashdata('msg',$e);
@@ -322,7 +333,7 @@ class Main extends MY_Controller {
 						// echo json_encode(array("msg" => $this->upload->display_errors()));
 						$this->session->set_flashdata('error',$this->upload->display_errors());
 						// redirect(base_url('main/validationOfDocuments'));exit;
-						redirect($_SERVER['HTTP_REFERER']);exit;
+						redirect($_SERVER['HTTP_REFERER']);
 					}
 				}
 				else if($this->input->post('check_'.$list['id_name'])==null&&$status_col=="to be follow"){
@@ -351,8 +362,8 @@ class Main extends MY_Controller {
 				$file_type = "";
 				$orig_name = "";
 				if($this->input->post('check_'.$list['id_name'])==null){
-					$file_type = $uploaded_data['file_type'];
-					$orig_name = $uploaded_data['orig_name'];
+					$file_type = empty($uploaded_data['file_type'])?'':$uploaded_data['file_type'];
+					$orig_name = empty($uploaded_data['orig_name'])?'':$uploaded_data['orig_name'];
 				}
 				if(!empty($checkRequirement)){
 					// $getRequirementsLog = $this->mainmodel->getRequirementsLog($r);
@@ -453,5 +464,9 @@ class Main extends MY_Controller {
 		);
 		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message'],array('student_info'=>$student_info,'total_amount'=>$amount));
 		
+	}
+	public function checkForGdriveUploader(){
+		$result = $this->gdrive_uploader->index();
+		echo $result;
 	}
 }

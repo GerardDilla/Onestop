@@ -11,6 +11,18 @@
     font-weight: bold;
 }
 </style>
+<?php
+if($this->session->flashdata('error')!=''){
+    echo "<script>
+    iziToast.warning({
+        title: 'Error: ',
+        message: '".$this->session->flashdata('error')."',
+        position: 'topCenter',
+    });
+    </script>";
+    $this->session->set_flashdata('error','');
+}
+?>
 <div class="page login-page">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">

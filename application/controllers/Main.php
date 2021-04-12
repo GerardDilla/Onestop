@@ -454,6 +454,7 @@ class Main extends MY_Controller {
 	}
 	public function notifyWhenPaymentSubmitted($ref_no = "",$amount = ""){
 		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
+		//  CC to Accounting notification
 		$email_data = array(
 			'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
 			'reply_to' => 'jfabregas@sdca.edu.ph',
@@ -464,6 +465,9 @@ class Main extends MY_Controller {
 		);
 		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'],$email_data['reply_to'],$email_data['sender_name'],$email_data['send_to_email'],$email_data['title'],$email_data['message'],array('student_info'=>$student_info,'total_amount'=>$amount));
 		
+	}
+	public function uploadProofOfPayment(){
+		$this->default_template($this->view_directory->uploadProofOfPayment());
 	}
 	public function checkForGdriveUploader(){
 		echo $this->session->userdata('email');

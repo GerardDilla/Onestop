@@ -62,4 +62,9 @@ class view_directory
 		$data['title'] = 'Submission of To be Followed Requirements';
 		return $data;
 	}
+	public function uploadProofOfPayment(){
+		$data['view'] = $this->body.'UploadProofOfPayment';
+		$data['title'] = 'Upload Proof of Payment';
+		return $data;	
+	}
 }

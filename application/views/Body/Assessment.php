@@ -3,8 +3,8 @@
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
 <link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
-<section class="section">
-    
+<section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
+
     <div class="card">
         <!-- <div class="card-header">
         </div> -->
@@ -19,31 +19,34 @@
                             </div>
                             <!-- Progress Nav -->
                             <ul>
-                                <li>
+                                <li id="tab_student_information">
                                     <a href="#student_information" data-toggle="tab">
                                         <div class="icon-circle">
+                                            <div class="success_check" id=""><i class="bi bi-check"></i></div>
                                             <i class="bi bi-person-lines-fill" id="bi_resize"></i>
                                         </div>
                                         STUDENT INFORMATION
                                     </a>
                                 </li>
-                                <li>
+                                <li id="tab_advising">
                                     <a href="#advising" data-toggle="tab">
                                         <div class="icon-circle">
+                                            <div class="success_check" id=""><i class="bi bi-check"></i></div>
                                             <i class="bi bi-clipboard-plus" id="bi_resize"></i>
                                         </div>
                                         ADVISING
                                     </a>
                                 </li>
-                                <li>
+                                <li id="tab_registration">
                                     <a href="#registration" data-toggle="tab">
                                         <div class="icon-circle">
+                                            <div class="success_check" id=""><i class="bi bi-check"></i></div>
                                             <i class="bi bi-file-text" id="bi_resize"></i>
                                         </div>
                                         REGISTRATION
                                     </a>
                                 </li>
-                                <li>
+                                <li id="tab_payment">
                                     <a href="#payment" data-toggle="tab">
                                         <div class="icon-circle">
                                             <i class="bi bi-cash-stack" id="bi_resize"></i>

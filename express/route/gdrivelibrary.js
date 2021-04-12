@@ -164,16 +164,19 @@ router.post('/',(req,res)=>{
   }
    async function searchFiles(drive, pageToken,auth) {
     drive.files.list({
-        corpora: 'user',
+        // corpora: 'user',
         // pageSize: 10,
         q: "mimeType: 'application/vnd.google-apps.folder'",
+        parents: '1qNLUOCw7SfhS6STY7doHCjug_piEswDT',
         pageToken: pageToken ? pageToken : '',
-        fields: 'nextPageToken, files(id,name)',
+        fields: 'nextPageToken, files(id,name,parents)',
+        spaces:'drive'
     }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
-        const found = files.find(element => element.name == folder_name );
-        console.log(found)
+        // cons
+        const found = files.find(element => element.name == folder_name&&element.parents==['1qNLUOCw7SfhS6STY7doHCjug_piEswDT'] );
+        // console.log(found)
         // If this folder is not existed it will create a folder for student
         if(found==null){
             // add files into folder
@@ -345,6 +348,7 @@ router.get("/generateToken",(req,res) => {
 //   res.send("success")
 })
 router.post("/sample",(req,res)=>{
-    res.send('Welcome to Google Drive Api');
+    // res.send('Welcome to Google Drive Api');
+    res.json(JSON.stringify({status:'success',msg:'hello'}))
 })
 module.exports = router;

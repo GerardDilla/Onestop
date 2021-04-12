@@ -27,11 +27,15 @@ class MainModel extends CI_Model {
         $this->db->where('email',$email);
         $this->db->update('student_account', $data);
     }
+    public function changeKeyWithRefNo($ref_no,$data){
+        $this->db->where('reference_no',$ref_no);
+        $this->db->update('student_account', $data);
+    }
     public function checkEmail($email){
         $this->db->select('student_account.*,student_info.First_Name,student_info.Last_Name');
         $this->db->from('student_account');
         $this->db->join('student_info','student_account.reference_no = student_info.Reference_Number');
-        $this->db->where('student_account.email',$email);
+        $this->db->where('student_info.Email',$email);
         return $this->db->get()->row_array();
     }
     public function getAllStudAccount(){

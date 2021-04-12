@@ -24,7 +24,7 @@ ul{
 }
 
 #amazing{
-    z-index:1003;
+    /* z-index:1003; */
     position:absolute;
     width:100%;
     /* right:50%; */

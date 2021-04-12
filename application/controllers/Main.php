@@ -18,7 +18,7 @@ class Main extends MY_Controller {
 			'major' => $data['Major'],
 			'admittedsy' => $data['AdmittedSY'],
 			'admittedsem' => $data['AdmittedSEM'],
-			'email' => $data['email'],
+			'email' => $data['Email'],
 			'student_folder' => $data['folder_name']
 		));
 	}
@@ -47,6 +47,7 @@ class Main extends MY_Controller {
 	public function forgotPassword(){
 		$this->login_template($this->view_directory->forgotPassword());
 	}
+	// Forgot Password Send Email when submit
 	public function sendEmail(){
 		$this->load->helper('string');
 		try{
@@ -59,15 +60,14 @@ class Main extends MY_Controller {
 						$generate_code = random_string('alnum', 20);
 					}
 				}
-				$this->mainmodel->changeKey($this->input->post('email'),array('automated_code' => $generate_code ));
-				$encrypt_code = $this->encryption->encrypt($generate_code);
+				$this->mainmodel->changeKeyWithRefNo($data['reference_no'],array('automated_code' => $generate_code ));
 
-				// print_r($data);exit;
+				// $encrypt_code = $this->encryption->encrypt($generate_code);
 
 				$encrypt_code = $generate_code;
 				// $this->sendemail->test();exit;
 				// echo $data['First_Name'].' '.$data['Last_Name'];exit;
-				$this->email($data['First_Name'].' '.$data['Last_Name'],'jfabregas@sdca.edu.ph','St. Dominic College of Asia',$this->input->post('email'),'Forgot Password','Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}');
+				$this->sdca_mailer->sendEmail($data['First_Name'].' '.$data['Last_Name'],'jfabregas@sdca.edu.ph','St. Dominic College of Asia',$this->input->post('email'),'Forgot Password','Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/'.$encrypt_code.'{/unwrap}');
 				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
 				$this->session->set_flashdata('success',"We've sent a confirmation link on your email. Click the link to reset your password.");
 				redirect(base_url('/'));
@@ -466,7 +466,9 @@ class Main extends MY_Controller {
 		
 	}
 	public function checkForGdriveUploader(){
-		$result = $this->gdrive_uploader->index();
-		echo $result;
+		echo $this->session->userdata('email');
+		// $result = $this->gdrive_uploader->index();
+		// print_r($result);
+		// echo $result['status'];
 	}
 }

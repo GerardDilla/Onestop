@@ -1,7 +1,39 @@
 searchVisible = 0;
 transparent = true;
+$(document).ready(function() {
+    base_url = $('#assessment_section').data('baseurl');
+    // testttest = "";
+    // async function name() {
+    //     return new Promise(function(resolve, reject) {
+    //         $.ajax({
+    //             type: "GET",
+    //             url: base_url + "main/wizard_tracker_statuss",
+    //             success: function(response) {
+    //                 alert(response);
+    //                 testttest = response;
+    //                 resolve(response);
+    //             },
+    //             error: function(response) {
+    //                 reject(response);
+    //             }
+    //         });
 
-$(document).ready(function () {
+    //     });
+    // }
+    // name().then(function(result) {
+    //     console.log(result);
+    // }).catch((result) => {
+    //     console.log(result);
+    // });
+
+    $.ajax({
+        type: "GET",
+        url: base_url + "main/wizard_tracker_statuss",
+        success: function(response) {
+            alert(response);
+        },
+        error: function(response) {}
+    });
 
     // Wizard Initialization
     $('.wizard-card').bootstrapWizard({
@@ -17,7 +49,7 @@ $(document).ready(function () {
         //     }
         // },
 
-        onInit: function (tab, navigation, index) {
+        onInit: function(tab, navigation, index) {
 
             //check number of tabs and fill the entire row
             var $total = navigation.find('li').length;
@@ -27,19 +59,19 @@ $(document).ready(function () {
 
         },
 
-        onTabClick: function (tab, navigation, index) {
-
+        onTabClick: function(tab, navigation, index) {
+            // alert('clicked');
             // var $valid = $('.wizard-card form').valid();
 
-            if (!$valid) {
-                return false;
-            } else {
-                return true;
-            }
+            // if (!$valid) {
+            //     return false;
+            // } else {
+            //     return true;
+            // }
 
         },
 
-        onTabShow: function (tab, navigation, index) {
+        onTabShow: function(tab, navigation, index) {
             var $total = navigation.find('li').length;
             var $current = index + 1;
 
@@ -68,11 +100,11 @@ $(document).ready(function () {
 
 
     // Prepare the preview for profile picture
-    $("#wizard-picture").change(function () {
+    $("#wizard-picture").change(function() {
         readURL(this);
     });
 
-    $('[data-toggle="wizard-radio"]').click(function () {
+    $('[data-toggle="wizard-radio"]').click(function() {
         wizard = $(this).closest('.wizard-card');
         wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
         $(this).addClass('active');
@@ -80,7 +112,7 @@ $(document).ready(function () {
         $(this).find('[type="radio"]').attr('checked', 'true');
     });
 
-    $('[data-toggle="wizard-checkbox"]').click(function () {
+    $('[data-toggle="wizard-checkbox"]').click(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $(this).find('[type="checkbox"]').removeAttr('checked');

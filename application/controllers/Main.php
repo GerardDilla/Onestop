@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Main extends MY_Controller {
+class Main extends MY_Controller
+{
 
 	public function index()
 	{
@@ -10,25 +11,47 @@ class Main extends MY_Controller {
 		// echo 'hello';
 		$this->login_template($this->view_directory->login());
 	}
-	public function forgotPassword(){
+	public function forgotPassword()
+	{
 		$this->login_template($this->view_directory->forgotPassword());
 	}
-	public function changePassword(){
+	public function changePassword()
+	{
 		$this->login_template($this->view_directory->changePassword());
 	}
-	public function selfassesment(){
+	public function selfassesment()
+	{
 
 		$this->data['student_information'] = 'Body/Assessment_Content/Student_Information';
 		$this->data['advising'] = 'Body/Assessment_Content/Advising';
 		$this->data['payment'] = 'Body/Assessment_Content/Payment';
 
 		$this->default_template($this->view_directory->assessment());
-
 	}
-	public function passwordReset(){
+	public function passwordReset()
+	{
 		$this->default_template($this->view_directory->passwordReset());
 	}
-	public function logout(){
+	public function logout()
+	{
 		redirect(base_url('/'));
+	}
+	public function wizard_tracker_status()
+	{
+		$this->load->database();
+		$this->load->model('WizardModel', 'wizard_model');
+		$status = $this->wizard_model->tracker_status();
+		$data['enrolled'] = 0;
+		$data['payment'] = 0;
+		$data['advising'] = 0;
+		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+			$data['enrolled'] = 1;
+		} else if ($status['Ref_Num_ftc'] != null) {
+			$data['payment'] = 1;
+		} else {
+			$data['advising'] = 1;
+		}
+		echo json_encode($data);
+		return $data;
 	}
 }

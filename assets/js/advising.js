@@ -33,6 +33,7 @@ $(document).ready(function () {
 
 });
 
+
 function init_advise() {
 
     plan = $('input[type=radio][name=payment-option]:checked').val();
@@ -41,9 +42,9 @@ function init_advise() {
 
         // response = JSON.parse(response);
         init_queuedlist();
-
+        init_assessmentform();
     })
-    init_assessmentform();
+
 }
 
 function init_assessmentform() {
@@ -134,7 +135,8 @@ function ajax_adviseStudent(paymentplan) {
 
 function ajax_assessmentform(paymentplan) {
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/temporary_regform_ajax"
+        url: "/Onestop/index.php/temp_api/temporary_regform_ajax",
+        async: true,
     });
 }
 

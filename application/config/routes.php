@@ -56,4 +56,4 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['main/setupUserPass/$1'] = 'main/setupUserPass';
 $route['main/changePassword/$2'] = 'main/changePassword';
-$route['main/notifyWhenPaymentSubmitted/$1/$3'] = 'main/notifyWhenPaymentSubmitted';
+$route['main/notifyWhenPaymentSubmitted/$1/$2/$3'] = 'main/notifyWhenPaymentSubmitted';

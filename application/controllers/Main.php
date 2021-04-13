@@ -19,7 +19,8 @@ class Main extends MY_Controller {
 			'admittedsy' => $data['AdmittedSY'],
 			'admittedsem' => $data['AdmittedSEM'],
 			'email' => $data['Email'],
-			'student_folder' => $data['folder_name']
+			'student_folder' => $data['folder_name'],
+			'gdrive_folder' => $data['gdrive_id']
 		));
 	}
 	public function loginProcess(){
@@ -452,14 +453,21 @@ class Main extends MY_Controller {
 		}
 		
 	}
-	public function notifyWhenPaymentSubmitted($ref_no = "",$amount = ""){
+	public function notifyWhenPaymentSubmitted($ref_no = "",$amount = "",$email=""){
 		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
 		//  CC to Accounting notification
+		$student_email = "";
+		if($student_info['Email']!=""){
+			$student_email = $student_info['Email'];
+		}
+		else{
+			$student_email = $email;
+		}
 		$email_data = array(
-			'send_to' => $this->session->userdata('first_name').' '.$this->session->userdata('last_name'),
+			'send_to' => $student_info['First_Name'].' '.$student_info['Last_Name'],
 			'reply_to' => 'jfabregas@sdca.edu.ph',
 			'sender_name' => 'St. Dominic College of Asia',
-			'send_to_email' => $this->session->userdata('email'),
+			'send_to_email' => $student_email,
 			'title' => 'Proof of Payment',
 			'message' => 'Email/PaymentEvidence'
 		);
@@ -467,12 +475,96 @@ class Main extends MY_Controller {
 		
 	}
 	public function uploadProofOfPayment(){
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		
+		if(!empty($checkRequirement)){
+			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
+			// $this->data['gdrive_link'] = $result;
+			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
+		}
+		// print_r($checkRequirement);
 		$this->default_template($this->view_directory->uploadProofOfPayment());
 	}
+	public function uploadProofOfPaymentProcess(){
+		// echo 'uploaded';
+		$user_fullname = $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name');
+		$ref_no = $this->session->userdata('reference_no');
+		$id_name = "proof_of_payment";
+		$config['upload_path'] = './express/assets/';
+		$config['allowed_types'] = '*';
+		$config['file_name'] = $id_name.'_'.$ref_no.''.date("YmdHis");
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		$this->upload->overwrite = true;
+		$uploaded = array();
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		$orig_name = "";
+		$orig_type = "";
+		if ($this->upload->do_upload('images'))
+		{
+			$uploaded_data = $this->upload->data();
+			// print_r($uploaded_data);
+			$orig_name = $uploaded_data['orig_name'];
+			$orig_type = $uploaded_data['file_type'];
+			array_push($uploaded,array(
+				"name" => $uploaded_data['orig_name'],
+				"type" => $uploaded_data['file_type'],
+				'rq_name' => 'Proof of Payment'
+			));
+		}
+		else{
+			$this->session->set_flashdata('error','Upload Error');
+			redirect($_SERVER['HTTP_REFERER']);exit;
+		}
+		
+		// res.send();
+		$result = $this->gdrive_uploader->index(array("folder_name"=>$ref_no.'/'.$user_fullname,"data"=>$uploaded));
+		// echo $result;
+		$upload_success = false;
+		if(!empty($result)){
+			$this->session->set_userdata('gdrive_folder',$result);
+			$this->mainmodel->updateAccountWithRefNo($ref_no,array('gdrive_id'=>$result));
+		}
+		if(!empty($checkRequirement)){
+			$this->mainmodel->updateRequirementLog(array(
+				'requirements_name' => 'proof_of_payment',
+				'requirements_date' => date("Y-m-d H:i:s"),
+				'status' => 'status',
+				'reference_no' => $ref_no,
+				'file_submitted' => $uploaded_data['orig_name'],
+				'file_type' => $uploaded_data['file_type'],
+				// 'path_id' => empty($getId)?'':$getId
+			),'proof_of_payment');
+		}
+		else{
+			$this->mainmodel->newRequirementLog(array(
+				'requirements_name' => 'proof_of_payment',
+				'requirements_date' => date("Y-m-d H:i:s"),
+				'status' => 'status',
+				'reference_no' => $ref_no,
+				'file_submitted' => $orig_name,
+				'file_type' => $orig_type,
+				// 'path_id' => empty($getId)?'':$getId
+			));
+		}
+		$this->session->set_flashdata('success','Successfully Uploaded');
+		// $this->uploadProofOfPayment();
+		redirect(base_url('main/uploadProofOfPayment'));
+
+		// header('Refresh: X; URL='.base_url('main/uploadProofOfPayment'));
+	}
 	public function checkForGdriveUploader(){
-		echo $this->session->userdata('email');
-		// $result = $this->gdrive_uploader->index();
-		// print_r($result);
-		// echo $result['status'];
+		// $
+		// echo $this->session->userdata('email');
+		$result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
+		
+	}
+	public function testSession(){
+		echo $this->session->userdata('gdrive_folder');
+	}
+	public function getProofOfPaymentImage(){
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		$result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
+		echo json_encode($result);
 	}
 }

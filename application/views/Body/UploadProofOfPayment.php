@@ -44,6 +44,7 @@ $('.input-images-1').imageUploader({
 });
 $('input[type=file]').attr('multiple',false);
 $('input[type=file]').on('change',function(){
+    alert('change')
     var imgInterval = window.setInterval(() => {
         var img = document.querySelector(".uploaded-image img"); 
         // console.log(img.height)

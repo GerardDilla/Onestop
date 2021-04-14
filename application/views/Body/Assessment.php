@@ -21,34 +21,34 @@
                             <!-- Progress Nav -->
                             <ul>
                                 <li id="tab_student_information">
-                                    <a href="#student_information">
+                                    <a>
                                         <div id="tab_student_information-circle" class="icon-circle">
-                                            <div class="success_check" id=""><i class="bi bi-check"></i></div>
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-person-lines-fill" id="bi_resize"></i>
                                         </div>
                                         STUDENT INFORMATION
                                     </a>
                                 </li>
                                 <li id="tab_advising">
-                                    <a href="#advising">
+                                    <a>
                                         <div id="tab_advising-circle" class="icon-circle">
-                                            <div class="success_check" id=""><i class="bi bi-check"></i></div>
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-clipboard-plus" id="bi_resize"></i>
                                         </div>
                                         ADVISING
                                     </a>
                                 </li>
                                 <li id="tab_registration">
-                                    <a href="#registration">
+                                    <a>
                                         <div id="tab_registration-circle" class="icon-circle">
-                                            <div class="success_check" id=""><i class="bi bi-check"></i></div>
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-file-text" id="bi_resize"></i>
                                         </div>
                                         REGISTRATION
                                     </a>
                                 </li>
                                 <li id="tab_payment">
-                                    <a href="#payment">
+                                    <a>
                                         <div id="tab_payment-circle" class="icon-circle">
                                             <i class="bi bi-cash-stack" id="bi_resize"></i>
                                         </div>

@@ -31,7 +31,7 @@ class Main extends MY_Controller
 		$status = $this->WizardModel->tracker_status();
 		$data['registration'] = 0;
 		$data['advising'] = 0;
-		$data['student_information'] = 1;
+		$data['student_information'] = 0;
 		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
 		// 	$data['registration'] = 1;
 		// } else if ($status['Ref_Num_ftc'] != null) {

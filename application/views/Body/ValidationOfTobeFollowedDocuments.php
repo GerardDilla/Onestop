@@ -73,16 +73,15 @@ echo '</script>';
                                 
                             </tr>
                             <?php } ?>
-                            <tr class="table-active">
+                            <!-- <tr class="table-active">
                                 <th colspan="4">Payment</th>
                             </tr>
                             <tr>
                                 <td>Proof of Payment</th>
                                 <td max-width="20%"><input type="file" class="form-control form-control-sm"></td>
-                                <!-- <th style="text-align:center;"></th> -->
                                 <td style="text-align:center;">pending</td>
                                 <td style="text-align:center;"><?php echo date("M. j,Y g:ia");?></td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>

@@ -479,7 +479,7 @@ class Main extends MY_Controller {
 		
 		if(!empty($checkRequirement)){
 			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
-			// $this->data['gdrive_link'] = $result;
+			$this->data['gdrive_link'] = $checkRequirement['path_id'];
 			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
 		}
 		// print_r($checkRequirement);
@@ -556,15 +556,22 @@ class Main extends MY_Controller {
 	public function checkForGdriveUploader(){
 		// $
 		// echo $this->session->userdata('email');
-		$result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
-		
+		// $result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
+		// $result = $this->gdrive_uploader->getAllFilesInFolder();
+		$result = $this->gdrive_uploader->getFileId(array('file_name'=>'','folder_id'=>$this->session->userdata('gdrive_folder')));
+		$decode = json_decode($result,true);
+		echo '<pre>'.print_r($decode,1).'</pre>';
 	}
 	public function testSession(){
 		echo $this->session->userdata('gdrive_folder');
+
 	}
 	public function getProofOfPaymentImage(){
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
 		$result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
+		if(!empty($result)){
+			$this->mainmodel->updateRequirementLog(array('path_id' => $result),'proof_of_payment');
+		}
 		echo json_encode($result);
 	}
 }

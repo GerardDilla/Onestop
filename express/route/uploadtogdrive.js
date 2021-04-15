@@ -343,9 +343,7 @@ router.get("/generateToken",(req,res) => {
   }
 //   res.send("success")
 })
-router.get("/getjson",(req,res)=>{
-    // res.json({
-
-    // })
+router.post("/getjson",(req,res)=>{
+    res.send('Hello World');
 })
 module.exports = router;

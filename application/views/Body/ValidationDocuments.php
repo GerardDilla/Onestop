@@ -51,15 +51,12 @@ echo '</script>';
                                 $requirements_list = [];
                                 $req_count = 0;
                                 foreach($requirements as $list){
-                                    if($list['id_name']!="proof_of_payment"){
-                                        if($list['status']!=""){
-                                            ++$req_count;
-                                        }
+                                    if($list['status']!=""){
+                                        ++$req_count;
                                     }
                                 }
 
                                 foreach($requirements as $list){
-                                if($list['id_name']!="proof_of_payment"){
                                 array_push($requirements_list,$list['id_name']);
                                 $status = $list['status'];
                             ?>
@@ -73,9 +70,7 @@ echo '</script>';
                                 <td style="text-align:center;"><?php echo $list['date'];?></td>
                                 
                             </tr>
-                            <?php 
-                                }
-                        } ?>
+                            <?php }?>
                         </tbody>
                     </table>
                 </div>

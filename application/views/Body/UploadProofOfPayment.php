@@ -1,23 +1,4 @@
-<?php 
-echo '<script>';
-if(!empty($this->session->flashdata('error'))){
-    echo "iziToast.error({
-                title: 'Error: ',
-                message: '".$this->session->flashdata('error')."',
-                position: 'topRight',
-            });";
-    $this->session->set_flashdata('error','');
-}
-else if(!empty($this->session->flashdata('success'))){
-    echo "iziToast.success({
-            title: 'Success: ',
-            message: '".$this->session->flashdata('success')."',
-            position: 'topRight',
-        });";
-    $this->session->set_flashdata('success','');
-}
-echo '</script>';
-?>
+
 <link rel="stylesheet" href="<?php echo base_url('');?>assets/css/image-uploader.min.css">
 <script type="text/javascript" src="<?php echo base_url('');?>assets/js/image-uploader.min.js"></script>
 <style>
@@ -35,10 +16,11 @@ echo '</script>';
         max-height:50vh;
     }
     #uploaded_image{
+        /* text-align:center; */
         height:auto;
         width:50vw;
         max-height:50vh;
-        margin-left:10vw;
+        /* margin-left:10vw; */
         border:1px solid #ccc;
         border-radius:10px;
     }
@@ -47,6 +29,11 @@ echo '</script>';
         border-radius:10px; */
         /* padding:auto; */
     }
+    .iziModal-header-title{color:black;}
+    /* #view_image.iziModal{
+        width:100%;
+        max-width:100%;
+    } */
 </style>
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
@@ -92,8 +79,27 @@ else{
 </div>
 <?php } ?>
 </section>
+<div id="view_image" data-izimodal-group="" data-izimodal-loop="" style="display:none;" data-izimodal-title="">
+    <div class="col-md-12" style="margin:10px;" align="center">
+        <img src="<?php echo empty($gdrive_link)?'':'https://drive.google.com/uc?export=view&id='.$gdrive_link;?>" id="uploaded_image">
+    </div>
+</div>
 <script>
 var image_upload = "";
+// var image_url = "";
+
+$('#view_image').iziModal({
+    theme:'light',
+    headerColor: '#f2f7ff',
+    width: '60vw',
+    overlayColor: 'rgba(0, 0, 0, 0.5)',
+    top:1,
+    fullscreen: true,
+    color:'black',
+    transitionIn: 'fadeInUp',
+    transitionOut: 'fadeOutDown',
+    // height: '80',
+});
 $('.input-images-1').imageUploader({
     maxFiles: 1
 });
@@ -123,23 +129,41 @@ $('.input-images-1').on('mouseover',function(){
         }, 100);
     }
 });
-function viewImage(){
-    $.ajax({
-        url: "<?php echo base_url();?>main/getProofOfPaymentImage",
-        method: 'get',
-        dataType:'json',
-        success: function(response) {
-            console.log(response)
-            // console.log(response);
-            // $('input[name=first]').val(response.us_first);
-            // $('input[name=last]').val(response.us_last);
-            // $('input[name=nickname]').val(response.us_nickname);
-        },
-        error: function(response) {
-            // console.log(response)
-        }
-    });
+async function getImageLink(){
+    return new Promise((resolve,reject)=>{
+        $.ajax({
+            url: "<?php echo base_url();?>main/getProofOfPaymentImage",
+            method: 'get',
+            dataType:'json',
+            success: function(response) {
+                resolve(`https://drive.google.com/uc?export=view&id=${response}`);
+            },
+            error: function(response) {
+                reject(response);
+            }
+        });
+    })
 }
+function OnloadImage(){
+    $('body').waitMe({
+        effect : 'bounce',
+        text : '',
+        bg : 'rgba(255,255,255,0.7)',
+        color : '#000',
+        maxSize : '',
+        waitTime : -1,
+        textPos : 'vertical',
+        fontSize : '',
+        source : '',
+        onClose : function() {}
+    });
+    getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');console.log(link)}).catch(error=>console.log(error));
+}
+function viewImage(){
+    $('#view_image').iziModal('open');
+    $('#view_image').iziModal('setTitle',"<b>Proof of Payment:</b>");
+}
+
 $(window).resize(function(){
     // alert('resize');
     var img = document.querySelector(".uploaded-image img"); 
@@ -147,3 +171,24 @@ $(window).resize(function(){
     $('.image-uploader.has-files .uploaded-image').css('width',img.width)
 })
 </script>
+<?php 
+echo '<script>';
+if(!empty($this->session->flashdata('error'))){
+    echo "iziToast.error({
+                title: 'Error: ',
+                message: '".$this->session->flashdata('error')."',
+                position: 'topRight',
+            });";
+    $this->session->set_flashdata('error','');
+}
+else if(!empty($this->session->flashdata('success'))){
+    echo "iziToast.success({
+            title: 'Success: ',
+            message: '".$this->session->flashdata('success')."',
+            position: 'topRight',
+        });";
+    echo "OnloadImage();";
+    $this->session->set_flashdata('success','');
+}
+echo '</script>';
+?>

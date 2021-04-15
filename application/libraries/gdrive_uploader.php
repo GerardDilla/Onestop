@@ -47,5 +47,27 @@ class gdrive_uploader
         
         curl_close($ch);
   }
+  public function getAllFilesInFolder()
+	{
+        $all_uploadeddata = array();
+        $string = http_build_query($all_uploadeddata);
+        $ch = curl_init("http://localhost:4003/gdriveuploader/getjson");
+        curl_setopt($ch,CURLOPT_POST,true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          $error_msg = curl_error($ch);
+          return $error_msg;
+        }
+        else{
+          return $result;
+        }
+        
+        curl_close($ch);
+  }
 }
 ?>

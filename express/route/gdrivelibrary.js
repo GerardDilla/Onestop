@@ -414,21 +414,27 @@ router.post("/get_id",(req,res)=>{
         // parents: '1qNLUOCw7SfhS6STY7doHCjug_piEswDT',
         pageToken: pageToken ? pageToken : '',
         fields: 'nextPageToken, files(id,name,parents)',
+        // fields: 'nextPageToken, files(*)',
         spaces:'drive'
     }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
         // cons
-        
-        const found = files.find(element => element.name == file_name && element.parents==folder_id);
-        // console.log(found);
-        if(found==null){
-            sendBackToPHP('');
-            console.log(`Get Id: Cant find ${file_name}`)
+        if(file_name!=""){
+            const found = files.find(element => element.name == file_name && element.parents==folder_id);
+            // console.log(found);
+            if(found==null){
+                sendBackToPHP('');
+                console.log(`Get Id: Cant find ${file_name}`)
+            }
+            else{
+                sendBackToPHP(found.id);
+                console.log(`Get Id: ${found.id}`)
+            }
         }
         else{
-            sendBackToPHP(found.id);
-            console.log(`Get Id: ${found.id}`)
+            const found = files.filter( ({parents}) => parents==folder_id);
+            sendBackToPHP(JSON.stringify(found));
         }
         
     });
@@ -440,5 +446,8 @@ router.post("/get_id",(req,res)=>{
 router.post("/sample",(req,res)=>{
     // res.send('Welcome to Google Drive Api');
     res.json(JSON.stringify({status:'success',msg:'hello'}))
+})
+router.post("/getjson",(req,res)=>{
+    res.send(JSON.stringify({status:'success',msg:'hello'}));
 })
 module.exports = router;

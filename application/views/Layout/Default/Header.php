@@ -16,7 +16,10 @@
 <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.svg');?>" type="image/x-icon">
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/simple-datatables/style.css');?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-password-validation-while-typing/css/jquery.passwordRequirements.css');?>" />
+<link rel="stylesheet" href="<?php echo base_url('assets/css/iziModal.min.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/vendors/waitMe/waitMe.min.css'); ?>">
+
 <script src="<?php echo base_url('assets/vendors/login_asset/js/jquery.min.js');?>"></script>
 <style>
 

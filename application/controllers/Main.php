@@ -1,8 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Main extends MY_Controller
 {
+
+	public function __construct()
+	{
+		parent::__construct();
+	}
 
 	public function index()
 	{
@@ -56,5 +66,25 @@ class Main extends MY_Controller
 	public function logout()
 	{
 		redirect(base_url('/'));
+	}
+	public function export_assessmentform()
+	{
+	}
+
+	public function phpspreadsheettest()
+	{
+
+
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->setCellValue('A1', 'Hello World !');
+
+		$writer = new Xlsx($spreadsheet);
+
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="teststes.xlsx"');
+		header('Cache-Control: max-age=0');
+
+		$writer->save('php://output'); // download file 
 	}
 }

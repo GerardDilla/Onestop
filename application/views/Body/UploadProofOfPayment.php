@@ -77,7 +77,7 @@ else{
                 <tr>
                     <th>Requirements</th>
                     <th style="text-align:center;" width="15%">View</th>
-                    <th style="text-align:center;" width="15%">Date</th>
+                    <th style="text-align:center;" width="20%">Date</th>
                 </tr>
             </thead>
             <tbody>

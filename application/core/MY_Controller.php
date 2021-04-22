@@ -11,7 +11,8 @@ class MY_Controller extends CI_Controller {
 
         parent::__construct();
         $this->load->library('view_directory');
-        
+        $this->load->database();
+		$this->load->model('AssesmentModel');
         
         // $this->data = array();
         $this->title = 'Default';

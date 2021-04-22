@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css');?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/assessmentWizard.css');?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/assesment.css');?>">
 
 <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.svg');?>" type="image/x-icon">
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/simple-datatables/style.css');?>">

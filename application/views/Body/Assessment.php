@@ -11,7 +11,6 @@
         <div class="row">
             <!-- Wizard container -->
             <div class="wizard-container">
-                <div id="testnig101"></div>
                 <div class="card wizard-card" data-color="red" id="wizardProfile">
                     <form action="" method="">
                         <div class="wizard-navigation">

@@ -20,18 +20,28 @@ class Main extends MY_Controller
 		$this->data['payment'] = 'Body/AssessmentContent/Payment';
 		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
 
+		$from_session_reference_number = '3';
+		$this->data['courses'] = $this->get_student_course_choices($from_session_reference_number);
+		$array = array();
+		foreach($this->data['courses'] as $course){
+			$course_info = $this->get_student_course_info($course);
+			$array[] = $course_info;
+		}
+		$this->data['courses_info'] = $array;
+		
+		// die(json_encode($this->data['courses']));
+
 		$this->default_template($this->view_directory->assessment());
 	}
-	// 
+	// Waiting For Datas but Working
 	public function wizard_tracker_status()
 	{
 		$ref_no = $this->input->post('Reference_Number');
-		$this->load->database();
-		$this->load->model('WizardModel');
-		$status = $this->WizardModel->tracker_status();
+		$status = $this->AssesmentModel->tracker_status();
 		$data['registration'] = 0;
 		$data['advising'] = 0;
 		$data['student_information'] = 0;
+		
 		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
 		// 	$data['registration'] = 1;
 		// } else if ($status['Ref_Num_ftc'] != null) {
@@ -41,6 +51,60 @@ class Main extends MY_Controller
 		// }
 		echo json_encode($data);
 		// return json_encode($data);
+	}
+	// Waiting updates
+	public function shs_balance_checker($student_number)
+	{
+		// // $student_number = '20150349';
+		// $student_number = $this->input->post('student_number');
+		$overall_fees = $this->AssesmentModel->get_overall_fees($student_number);
+		$overall_payment = $this->AssesmentModel->get_overall_payment($student_number);
+		$total = $overall_payment['AmountofPayment'] - $overall_fees['Fees'];
+		$array = array(
+			'overall_payment' => $overall_payment['AmountofPayment'],
+			'overall_fees' => $overall_fees['Fees'],
+			'total' => $total,
+		);
+		if (!empty($overall_fees) && !empty($overall_payment)) {
+			if ($total >= -1) {
+				// echo "<br>".$total;
+				$array['status'] = 'no_dept';
+			} else {
+				// echo "<br> Total Dept : ".$total;
+				$array['status'] = 'dept';
+			}
+			// echo "<br> Total : " . ($overall_payment['AmountofPayment'] - $overall_fees['Fees']);
+		} else {
+			// echo "Empty";
+			$array['status'] = 'empty';
+		}
+		echo json_encode($array);
+	}
+	// Waiting For Datas but Working
+	public function get_student_course_choices($from_session_reference_number)
+	{
+		$student = $this->AssesmentModel->get_student_by_reference_number($from_session_reference_number);
+		$courses = array(
+			'0' => $student['Course_1st'],
+			'1' => $student['Course_2nd'],
+			'2' => $student['Course_3rd'],
+		);
+		// echo $courses;
+		return $courses;
+	}
+	// Get Program by Program Code
+	public function get_student_course_info($program_code)
+	{
+		$course_info = $this->AssesmentModel->get_course_program_code($program_code);
+		// echo json_encode($course_info);
+		return $course_info;
+	}
+	// Get Program Major by Program Code
+	public function get_student_course_major($program_code)
+	{
+		$major = $this->AssesmentModel->get_major_by_course($program_code);
+		echo json_encode($major);
+		// return $major;
 	}
 
 	public function forgotPassword()

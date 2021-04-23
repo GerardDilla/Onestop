@@ -102,6 +102,9 @@
 
                     </select>
                 </fieldset>
+                <button class="btn btn-sm btn-primary" onclick="submit_course()" for="success-outlined">
+                    SUBMIT COURSE
+                </button>
             </div>
         </div>
         <br>
@@ -195,4 +198,37 @@
             }
         })
     })
+
+    function submit_course() {
+        // alert('test');
+        program_code = $('#courses').children("option:selected").val();
+        program_course = $("#courses option:selected").text();
+        program_major = $("#majors option:selected").text();
+        program_major_select = $('#majors').children("option:selected").val();
+        // alert(program_code);
+        confirm_msg = "Are you sure you want:\n"+program_course;
+        if(program_major_select != 'none'){
+            confirm_msg += "\nMajor in: "+ program_major;
+        }
+        if (program_code != 'none') {
+            if (confirm(confirm_msg) == true) {
+                $.ajax({
+                    url: base_url + "main/update_course_by_reference_number",
+                    type: "post",
+                    data: {
+                        course: program_code,
+                        major: program_major_select
+                    },
+                    success: function(response){
+                        alert(response);
+                    },
+                })
+            } else {
+                event.preventDefault();
+            }
+        }else{
+            event.preventDefault();
+            alert("You did NOT select a Course!");
+        }
+    }
 </script>

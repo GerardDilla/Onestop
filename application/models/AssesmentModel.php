@@ -78,4 +78,14 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+    public function upadte_course_by_reference_number($array)
+    {
+        $data = array(
+            'Course' => $array['course'],
+            'Major' => $array['major'],
+        );
+        $this->db->where('Reference_Number', $array['reference_number']);
+        $this->db->update('Student_Info', $data);
+        return true;
+    }
 }

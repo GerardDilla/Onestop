@@ -23,12 +23,12 @@ class Main extends MY_Controller
 		$from_session_reference_number = '3';
 		$this->data['courses'] = $this->get_student_course_choices($from_session_reference_number);
 		$array = array();
-		foreach($this->data['courses'] as $course){
+		foreach ($this->data['courses'] as $course) {
 			$course_info = $this->get_student_course_info($course);
 			$array[] = $course_info;
 		}
 		$this->data['courses_info'] = $array;
-		
+
 		// die(json_encode($this->data['courses']));
 
 		$this->default_template($this->view_directory->assessment());
@@ -41,7 +41,7 @@ class Main extends MY_Controller
 		$data['registration'] = 0;
 		$data['advising'] = 0;
 		$data['student_information'] = 0;
-		
+
 		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
 		// 	$data['registration'] = 1;
 		// } else if ($status['Ref_Num_ftc'] != null) {
@@ -81,9 +81,9 @@ class Main extends MY_Controller
 		echo json_encode($array);
 	}
 	// Waiting For Datas but Working
-	public function get_student_course_choices($from_session_reference_number)
+	public function get_student_course_choices($reference_number)
 	{
-		$student = $this->AssesmentModel->get_student_by_reference_number($from_session_reference_number);
+		$student = $this->AssesmentModel->get_student_by_reference_number($reference_number);
 		$courses = array(
 			'0' => $student['Course_1st'],
 			'1' => $student['Course_2nd'],
@@ -105,6 +105,33 @@ class Main extends MY_Controller
 		$major = $this->AssesmentModel->get_major_by_course($program_code);
 		echo json_encode($major);
 		return $major;
+	}
+	public function update_course_by_reference_number()
+	{
+		$get_in_Session = '5';
+		$check_course = $this->check_course_by_reference_number($get_in_Session);
+		if ($check_course == 'none') {
+			$array = array(
+				'reference_number' => $get_in_Session,
+				'course' => $this->input->post('course'),
+				'major' => $this->input->post('major'),
+			);
+			$update = $this->AssesmentModel->upadte_course_by_reference_number($array);
+			if ($update) {
+				// Ongoing
+			}
+		}else{
+			die('You Alredy Have Course! Contact MIS department for this issue.');
+		}
+	}
+	public function check_course_by_reference_number($reference_number)
+	{
+		$student = $this->AssesmentModel->get_student_by_reference_number($reference_number);
+		if ($student['Course']) {
+			return $student;
+		} else {
+			return 'none';
+		}
 	}
 
 	public function forgotPassword()

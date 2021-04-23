@@ -104,7 +104,7 @@ class Main extends MY_Controller
 	{
 		$major = $this->AssesmentModel->get_major_by_course($program_code);
 		echo json_encode($major);
-		// return $major;
+		return $major;
 	}
 
 	public function forgotPassword()

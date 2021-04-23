@@ -176,15 +176,21 @@
     $('#courses').on('change', function() {
         program_code = $('#courses').children("option:selected").val();
         $.ajax({
-            url: base_url + "main/get_student_course_major/" + program_code_selected,
+            url: base_url + "main/get_student_course_major/" + program_code,
             dataType: "json",
             success: function(response) {
-                // alert(response);
-                // $('#majors').;
+                $('#majors').empty();
+                html = ""
                 if ($.trim(response) != '') {
-                    alert('May nakuha');
+                    $.each(response, function(key, value) {
+                        // alert(key + ": " + value['Program_Major']);
+                        html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
+                    });
+                    // alert(html);
+                    $('#majors').append(html);
                 } else {
-                    alert('walang nakuha');
+                    $('#majors').empty();
+                    $('#majors').append("<option value='none' disabled selected>NO COURSE MAJOR</option>");
                 }
             }
         })

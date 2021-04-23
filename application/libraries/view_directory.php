@@ -32,6 +32,13 @@ class view_directory
 		$data['title'] = 'Change Password';
 		return $data;
 	}
+
+	public function setupUserPass()
+	{
+		$data['view'] = $this->body.'Login/ChangeUserPass';
+		$data['title'] = 'Setup your Username & Password';
+		return $data;
+	}
 	public function passwordReset()
 	{
 		$data['view'] = $this->body . 'PasswordReset';

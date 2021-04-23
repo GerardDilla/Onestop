@@ -6,7 +6,7 @@
     <!-- Header Content -->
     <title><?php if ($Title) echo $Title; ?></title>
     <?php if ($Header) echo $Header; ?>
-
+    <?php if ($Script) echo $Script; ?>
 </head>
 
 <body>
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Scripts Content -->
-    <?php if ($Script) echo $Script; ?>
+    
 
 </body>
 

@@ -1,8 +1,22 @@
-<!-- <?php $this->load->helper('string');
-        echo random_string('alnum', 20); ?> -->
+<?php
+if($this->session->flashdata('success')!=""){
+    echo "<script>iziToast.show({
+        theme: 'dark',
+        icon: 'icon-person',
+        title: 'Welcome',
+        message: '".$this->session->flashdata('success')."',
+        position: 'topRight',
+        progressBarColor: '#cc0000',
+        image: '".base_url('assets/vendors/login_asset/img/sdcalogo.png')."',
+    });</script>";
+    $this->session->set_flashdata('success','');
+}
+?>
+<!-- <?php $this->load->helper('string'); echo random_string('alnum', 20); ?> -->
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
-<link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
+<link href="<?php echo base_url('') ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
+
 <section class="section">
 
     <div class="card">

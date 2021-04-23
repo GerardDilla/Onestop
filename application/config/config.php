@@ -158,7 +158,7 @@ $config['composer_autoload'] = FCPATH . 'vendor/autoload.php';
 | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
 |
 */
-$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:_+=';
 
 /*
 |--------------------------------------------------------------------------
@@ -295,7 +295,7 @@ $config['error_views_path'] = '';
 */
 $config['cache_path'] = '';
 
-/*
+    /*
 |--------------------------------------------------------------------------
 | Cache Include Query String
 |--------------------------------------------------------------------------
@@ -324,7 +324,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'wksY7IQ4nREf90i6nIRiqJ';
 
 /*
 |--------------------------------------------------------------------------

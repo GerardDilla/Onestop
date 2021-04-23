@@ -27,6 +27,10 @@
         z-index: 100;
     }
 
+    div#main {
+        margin-left: 300px;
+    }
+
     /* footer{
         bottom:0;
     } */

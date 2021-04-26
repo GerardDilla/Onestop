@@ -483,6 +483,7 @@ class Main extends MY_Controller {
 		$this->upload->initialize($config);
 		$this->upload->overwrite = true;
 		$uploaded = array();
+		$array_filestodelete = array();
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
 		$orig_name = "";
 		$orig_type = "";
@@ -497,6 +498,7 @@ class Main extends MY_Controller {
 				"type" => $uploaded_data['file_type'],
 				'rq_name' => 'Proof of Payment'
 			));
+			array_push($array_filestodelete,'express/assets/'.$uploaded_data['orig_name']);
 		}
 		else{
 			$this->session->set_flashdata('error','Upload Error');
@@ -533,10 +535,18 @@ class Main extends MY_Controller {
 				// 'path_id' => empty($getId)?'':$getId
 			));
 		}
+		$files = glob('express/assets/*'); // get all file names
+		foreach($files as $file){
+			if(in_array($file, $array_filestodelete)){
+				if(is_file($file)) {
+					unlink($file); // delete file
+				}
+			}
+		}
 		$this->session->set_flashdata('success','Successfully Uploaded');
 		// $this->uploadProofOfPayment();
 		redirect(base_url('main/uploadProofOfPayment'));
-
+		
 		// header('Refresh: X; URL='.base_url('main/uploadProofOfPayment'));
 	}
 	public function checkForGdriveUploader(){

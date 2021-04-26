@@ -11,6 +11,18 @@
     font-weight: bold;
 }
 </style>
+<?php
+if($this->session->flashdata('error')!=''){
+    echo "<script>
+    iziToast.warning({
+        title: 'Error: ',
+        message: '".$this->session->flashdata('error')."',
+        position: 'topCenter',
+    });
+    </script>";
+    $this->session->set_flashdata('error','');
+}
+?>
 <div class="page login-page">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
@@ -40,10 +52,16 @@
                 <div class="form-group anim3">
                     <input required autocomplete="off" id="login-new" type="password" name="new_password" required data-msg="Please enter your new password" class="pr-password input-material">
                     <label for="login-new" class="label-material" style="color:black;font-weight:bold;">Input your Password</label>
+                    <span class="show-password">
+                        <i id="show_new_password" class="bi bi-eye-fill" onclick="showPassword('new_password')" aria-hidden="true"></i>
+                    </span>
                 </div>
                 <div class="form-group anim3">
                     <input required autocomplete="off" id="login-confirm" type="password" name="confirm_password" required data-msg="Incorrect confirm password" class="input-material">
                     <label for="login-confirm" class="label-material" style="color:black;font-weight:bold;">Confirm Password</label>
+                    <span class="show-password">
+                        <i id="show_confirm_password" class="bi bi-eye-fill" onclick="showPassword('confirm_password')" aria-hidden="true"></i>
+                    </span>
                 </div>
                 <div align="right">
                     <button id="btnSubmit" type="submit" class="btn btn-info submit-button">Submit</button>
@@ -149,6 +167,20 @@ $('#form_process').on('submit',function(e){
     
 });
 openEffect();
+function showPassword(id){
+    var x = document.querySelector(`[name=${id}]`);
+    var icon = document.getElementById('show_'+id);
+
+    if (x.type === "password") {
+        x.type = "text";
+        icon.classList.remove("bi-eye-fill")
+        icon.classList.add("bi-eye-slash")
+    } else {
+        x.type = "password";
+        icon.classList.remove("bi-eye-slash")
+        icon.classList.add("bi-eye-fill")
+    }
+}
 function back(){
     closeEffect();
 }

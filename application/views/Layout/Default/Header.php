@@ -21,6 +21,7 @@
 <script src="<?php echo base_url('assets/vendors/login_asset/js/jquery.min.js'); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 <style>
+    /* sticky sidenav responsive to content */
     #sidebar {
         position: fixed;
         height: 100%;
@@ -31,7 +32,38 @@
         margin-left: 300px;
     }
 
-    /* footer{
-        bottom:0;
-    } */
+    #pr-box i {
+        border-bottom: 7px solid #05BCC8;
+    }
+
+    #pr-box.light p {
+        background-color: #05BCC8;
+    }
+
+    #pr-box.light ul li span {
+        border: 3px solid #05BCC8;
+    }
+
+    #pr-box.light ul li span.pr-ok {
+        background-color: #05BCC8;
+        border: 3px solid #05BCC8;
+    }
+
+    #pr-box.dark p {
+        background-color: #05BCC8;
+    }
+
+    #pr-box.dark ul {
+        background-color: #2d2f31;
+    }
+
+    #pr-box.dark ul li span {
+        background-color: #2d2f31;
+        border: 3px solid #05BCC8;
+    }
+
+    #pr-box.dark ul li span.pr-ok {
+        background-color: #05BCC8;
+        border: 3px solid #05BCC8;
+    }
 </style>

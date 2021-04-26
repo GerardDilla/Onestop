@@ -55,10 +55,7 @@ echo '</script>';
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">Conf. Password</label>
                         <input required class="form-control" placeholder="type here...." type="password" name="confirm_password" id="confirm_password">
-                        <div class="invalid-feedback feedback-3">
-                            <i class="bx bx-radio-circle"></i>
-                            This is required.
-                        </div>
+                        <div class="invalid-feedback feedback-3"><i class="bx bx-radio-circle"></i>This is required.</div>
                     </div>
                     <div class="col-md-12" align="right">
                         Show Password <input name="show_confirm_password" onchange="showPassword('confirm_password')" align="right" class="form-check-input" type="checkbox">

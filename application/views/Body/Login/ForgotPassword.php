@@ -1,16 +1,21 @@
 <?php
+echo '<script> $(document).ready(function(){';
 if($this->session->flashdata('msg')!=''){
-    echo "<script>
+    echo "
+    var error = window.setInterval(function(){
     iziToast.warning({
         title: 'Error: ',
         message: '".$this->session->flashdata('msg')."',
         position: 'topCenter',
     });
-    </script>";
+    clearInterval(error);
+    },500);
+    ";
     $this->session->set_flashdata('msg','');
 }
 else if($this->session->flashdata('success')!=''){
-    echo "<script>
+    echo "
+    var success = window.setInterval(function(){
         iziToast.show({
         icon: 'bi bi-check2-square',
         title: 'Success',
@@ -23,9 +28,13 @@ else if($this->session->flashdata('success')!=''){
             // alert('closed');
             back();
         }
-    });</script>";
+    });
+    clearInterval(success);
+    },500);
+    ";
     $this->session->set_flashdata('success','');
 }
+echo '});</script>';
 ?>
 
     </script>
@@ -58,7 +67,7 @@ else if($this->session->flashdata('success')!=''){
                     <label for="login-username" class="label-material">User Name</label>
                 </div> -->
                 <div class="form-group">
-                    <input required autocomplete="off" id="login-email" type="text" name="email" required data-msg="Please enter your password" class="input-material anim3">
+                    <input required autocomplete="off" id="login-email" type="text" name="email" required data-msg="Please enter your email" class="input-material anim3">
                     <label for="login-email" class="label-material" style="color:black;font-weight:bold;">Email</label>
                 </div>
                 <div align="right">
@@ -87,14 +96,6 @@ $('form').on('submit',function(){
         $('#submit').attr('disabled','disabled');
     }
 });
-// openEffect();
-function back(){
-    closeEffect();
-    // closeEffect();
-}
-// function back(){
-//     gsap.from('.page-2',{opacity:0,duration:1,y:-50});
-// }
 function submitForm(){
     $.ajax({
         url: "<?php echo base_url('main/sendEmail')?>",
@@ -131,38 +132,39 @@ function submitForm(){
         }
     });
 }
-// function openEffect(){
-//     gsap.from('.form-holder',{opacity:0,duration:1,y:-50});
-//     gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-// }
-// $(document).ready(function(){
-//     var t1 = gsap.timeline();
-//     t1.to('ul.transition li',{duration:.2,scaleY:0,transformOrigin:"bottom left",stagger:.1,delay:.1});
-// });
-// function pageTransition(){
-//     var t1 = gsap.timeline();
-//     t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.2});
-//     t1.to('ul.transition li',{duration:.2,scaleY:0,transformOrigin:"bottom left",stagger:.1,delay:.1});
-
-//     t1.from('.anim2',{duration:.1,translateY:50,opacity:0});
-//     t1.from('.anim3',{duration:.1,translateY:50,opacity:0});
-//     t1.to('img',{clipPath:"polygon(0 0,100% 0,100% 100%,0 100%)"});
-// }
-function goToLink(){
-    window.location.replace("<?php echo base_url('/')?>")
-}
-function closeEffect(){
-    goToLink();
+function closeAnimation(){
+    var playPause = anime({
+    targets: '#amazing path',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    easing: 'easeInOutSine',
+    duration: 1000,
+    delay: function(el, i) { return i * 200 },
+    direction: 'normal',
+    // loop: true,
+    autoplay:true,
+        begin: function(anim) {
+            goToLink();
+            var interval2 = window.setInterval(function(){
+            // goToLink();
+            clearInterval(interval2);  
+            },1000);
+        }
+    });
+    playPause.play();
+    gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
+    gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
+    gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
+    gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
     var t1 = gsap.timeline();
     t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
+    $('.transition-effect').css('z-index','1001');
+    $('#amazing').css('z-index','1002');
 }
-// function closeEffect(){
-//     var this_window = window;
-//     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-//     gsap.to('.form-holder',{opacity:0,duration:1,y:-50,delay:.5,onComplete:function(){goToLink()}});
-// }
+function goToLink(){
+    window.location.replace("<?php echo base_url('/')?>");
+}
+function back(){
+    // goToLink();
+    closeAnimation();
+}
 </script>

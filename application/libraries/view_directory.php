@@ -35,7 +35,7 @@ class view_directory
 
 	public function setupUserPass()
 	{
-		$data['view'] = $this->body.'Login/ChangeUserPass';
+		$data['view'] = $this->body . 'Login/ChangeUserPass';
 		$data['title'] = 'Setup your Username & Password';
 		return $data;
 	}
@@ -43,6 +43,24 @@ class view_directory
 	{
 		$data['view'] = $this->body . 'PasswordReset';
 		$data['title'] = 'Password Reset';
+		return $data;
+	}
+	public function dataTable()
+	{
+		$data['view'] = $this->body . 'Component/DataTable';
+		$data['title'] = 'Data Table';
+		return $data;
+	}
+	public function validationOfDocuments()
+	{
+		$data['view'] = $this->body . 'ValidationDocuments';
+		$data['title'] = 'Validation of Documents';
+		return $data;
+	}
+	public function ValidationOfTobeFollowedDocuments()
+	{
+		$data['view'] = $this->body . 'ValidationOfTobeFollowedDocuments';
+		$data['title'] = 'Submission of To be Followed Requirements';
 		return $data;
 	}
 }

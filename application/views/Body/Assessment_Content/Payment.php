@@ -3,7 +3,7 @@
     <div class="col-md-8 row">
 
         <!--/Regform Header-->
-        <div class="col-lg-12" style="text-align:center; color:#000">
+        <div class="col-lg-12 AssessmentForm" style="text-align:center; color:#000">
             <h3>ASSESSMENT FORM</h3>
             <hr>
             <table style="width:100%">
@@ -43,7 +43,7 @@
                     </tr>
                 </thead>
                 <tbody id="temporary_regform_subjects" style="font-size: 12px; text-align:left">
-                    <tr>
+                    <!-- <tr>
                         <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">202000275</td>
                         <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">GE104</td>
                         <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">Understanding The Self</td>
@@ -51,7 +51,7 @@
                         <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_day">M</td>
                         <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_time">9:00AM - 12:00PM</td>
                         <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_room">GD108</td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             <hr>
@@ -116,7 +116,7 @@
         </div>
     </div>
     <!-- Payment Options -->
-    <div class="col-md-4 row">
+    <div class="col-md-4 row" id="canvas">
 
         <ul class="paymentbullet">
             <li>
@@ -125,6 +125,10 @@
             <li><a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a><br></li>
             <li><button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#cashierPayment">OVER THE COUNTER</button><br></li>
         </ul>
+
+        <div id="capture" style="padding: 10px; background: #f5da55">
+            <h4 style="color: #000; ">Hello world!</h4>
+        </div>
 
     </div>
 </div>

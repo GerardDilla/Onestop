@@ -9,6 +9,7 @@
         <!-- <div class="card-header">
         </div> -->
         <div class="row">
+            <div class="testtest">JSDADSADHSAJDJSADJSADJSA</div>
             <!-- Wizard container -->
             <div class="wizard-container">
                 <div class="card wizard-card" data-color="red" id="wizardProfile">
@@ -101,10 +102,20 @@
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery.bootstrap.wizard.js" type="text/javascript"></script>
+
 <!--  Plugin for the Wizard -->
 <script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript"></script>
 
+<!-- datatables -->
 <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" type="text/javascript"></script>
+
+<!-- jspdf -->
+<!-- <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script> -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
 

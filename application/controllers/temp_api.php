@@ -605,7 +605,11 @@ class temp_api extends CI_Controller
 				'refnum' => $this->reference_number
 			);
 			$data['get_Advise'] = $this->RegFormModel->Get_advising_ajax($array);
+			if (empty($data['get_Advise'])) {
 
+				echo false;
+				die();
+			}
 			foreach ($data['get_Advise']  as $row) {
 				$section         = $row->Section_Name;
 				$course        = $row->Course;

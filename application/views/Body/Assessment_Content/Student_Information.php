@@ -76,14 +76,14 @@
                         <option>ABMMA</option>
                     </select>
                 </fieldset>
-                <fieldset class="form-group">
+                <!-- <fieldset class="form-group">
                     <select class="form-select" id="basicSelect">
                         <option>COURSE MAJOR</option>
                         <option>BSIT</option>
                         <option>BSBA</option>
                         <option>ABMMA</option>
                     </select>
-                </fieldset>
+                </fieldset> -->
             </div>
         </div>
         <br>

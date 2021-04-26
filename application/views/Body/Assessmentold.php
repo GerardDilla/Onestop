@@ -10,7 +10,7 @@
                 <div class="row">
                     <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION</h6>
                     <div class="col-md-6">
-                        
+
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -46,7 +46,7 @@
                                 <option>BSBA</option>
                                 <option>ABMMA</option>
                             </select>
-                        </fieldset>
+                            <!-- </fieldset>
                         <fieldset class="form-group">
                             <select class="form-select" id="basicSelect">
                                 <option>COURSE MAJOR</option>
@@ -54,7 +54,7 @@
                                 <option>BSBA</option>
                                 <option>ABMMA</option>
                             </select>
-                        </fieldset>
+                        </fieldset> -->
                     </div>
                 </div>
                 <br>

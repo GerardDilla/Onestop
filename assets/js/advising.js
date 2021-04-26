@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     init_assessmentform();
 
-    jspdftest();
+    // jspdftest();
 
     $('#subjectTable').DataTable({
         "ordering": false

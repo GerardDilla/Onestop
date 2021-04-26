@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     init_assessmentform();
 
-    jspdftest();
+    // jspdftest();
 
     $('#subjectTable').DataTable({
         "ordering": false
@@ -411,9 +411,9 @@ function assessmentform_renderer(resultdata = []) {
 }
 
 function jspdftest() {
-
-    var HTML_Width = $(".testtest").width();
-    var HTML_Height = $(".testtest").height();
+    // alert($(".AssessmentForm").width());
+    var HTML_Width = $(".AssessmentForm").width();
+    var HTML_Height = $(".AssessmentForm").height();
     var top_left_margin = 15;
     var PDF_Width = HTML_Width + (top_left_margin * 2);
     var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
@@ -423,6 +423,18 @@ function jspdftest() {
     var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
 
     html2canvas(document.querySelector(".AssessmentForm")).then(canvas => {
+
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        $('#student_information').append(canvas);
+
+        var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+        pdf.addImage(imgData, 'jpeg', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+        for (var i = 1; i <= totalPDFPages; i++) {
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'jpeg', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+        }
+        pdf.save("AssessmentForm.pdf");
+        $(".html-content").hide();
         $('#canvas').append(canvas);
     });
     // html2canvas(document.querySelector(".testtest")).then(canvas => {

@@ -37,10 +37,10 @@
 </style>
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
-<form id="upload_form" action="<?php echo base_url('main/uploadProofOfPaymentProcess');?>" method="post" enctype="multipart/form-data">
+<form id="proof_of_payment_form" action="<?php echo base_url('main/uploadProofOfPaymentProcess');?>" method="post" enctype="multipart/form-data">
     <div class="card" style="margin:none;">
         <div class="card-header" align="right">
-            <button class="btn btn-info" type="submit">Submit</button>
+            <button type="submit" class="btn btn-info">Submit</button>
         </div>
         <div class="card-body">
             <div class="input-field">
@@ -87,7 +87,25 @@ else{
 <script>
 var image_upload = "";
 // var image_url = "";
+$('#proof_of_payment_form').on('submit',function(e){
+    e.preventDefault();
+    var count = 0;
+    if($('input[name=images]').val()==""){
+        ++count;
+    }
 
+    if(count==0){
+        $('#proof_of_payment_form button[type=submit]').attr('disabled','disabled');
+        $(this)[0].submit();
+    }
+    else{
+        iziToast.error({
+            title: 'Error: ',
+            message: 'You need to choose a file!!',
+            position: 'topRight',
+        });
+    }
+});
 $('#view_image').iziModal({
     theme:'light',
     headerColor: '#f2f7ff',
@@ -159,10 +177,10 @@ function OnloadImage(){
         source : '',
         onClose : function() {}
     });
-    var getImageLinkTimeout = window.setInterval(()=>{
-        getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');}).catch(error=>console.log(error));
-        clearInterval(getImageLinkTimeout);
-    },3000)
+    setTimeout(() => {
+        getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');console.log(link)}).catch(error=>console.log(error));
+    }, 3000);
+    
 }
 function viewImage(){
     $('#view_image').iziModal('open');
@@ -170,7 +188,6 @@ function viewImage(){
 }
 
 $(window).resize(function(){
-    // alert('resize');
     var img = document.querySelector(".uploaded-image img"); 
     $('.image-uploader.has-files .uploaded-image').css('height',img.height)
     $('.image-uploader.has-files .uploaded-image').css('width',img.width)

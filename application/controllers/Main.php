@@ -267,16 +267,11 @@ class Main extends MY_Controller {
 			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
 			++$count;
 		}
-		// exit;
-		// echo '<pre>'.print_r($getRequirementsList,1).'</pre>';
-		// exit;
 		$this->data['requirements'] = $getRequirementsList;
 		$this->default_template($this->view_directory->ValidationOfTobeFollowedDocuments());
 	}
 	public function validationDocumentsProcess(){
 		$user_fullname = $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name');
-		
-		
 		date_default_timezone_set('Asia/manila');
 		$ref_no = $this->session->userdata('reference_no');
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
@@ -298,17 +293,6 @@ class Main extends MY_Controller {
 			);
 			
 			foreach($getRequirementsList as $list){
-				// if($this->input->post('check_'.$list['id_name'])!=null){
-				// 	$this->mainmodel->newRequirementLog(array(
-				// 		'requirements_name' => $id_name,
-				// 		'requirements_date' => date("Y-m-d H:i:s"),
-				// 		'status' => 'to be follow',
-				// 		'reference_no' => $ref_no
-				// 	));
-				// }
-				
-				// echo $this->input->post($list['id_name']).'<br>';
-				
 				$id_name = $list['id_name'];
 				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
 				$config['file_name'] = $id_name.'_'.$ref_no.''.date("YmdHis");
@@ -396,10 +380,13 @@ class Main extends MY_Controller {
 			}
 			$getRequirementsLogPerRefNo = $this->mainmodel->getRequirementsLogPerRefNo();
 			foreach($getRequirementsLogPerRefNo as $reqloglist){
-				array_push($array_completefiles,array(
-					"name" => $reqloglist['rq_name'],
-					"status" => $reqloglist['status']
-				));
+				if($reqloglist['requirements_name']!="proof_of_payment"){
+					array_push($array_completefiles,array(
+						"name" => $reqloglist['rq_name'],
+						"status" => $reqloglist['status'],
+						"req_date" => $reqloglist['requirements_date']
+					));
+				}
 			}
 			$all_uploadeddata = array("folder_name"=>$ref_no.'/'.$user_fullname,"data"=> $array_files);
 
@@ -486,7 +473,6 @@ class Main extends MY_Controller {
 		$this->default_template($this->view_directory->uploadProofOfPayment());
 	}
 	public function uploadProofOfPaymentProcess(){
-		// echo 'uploaded';
 		$user_fullname = $this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name');
 		$ref_no = $this->session->userdata('reference_no');
 		$id_name = "proof_of_payment";
@@ -497,6 +483,7 @@ class Main extends MY_Controller {
 		$this->upload->initialize($config);
 		$this->upload->overwrite = true;
 		$uploaded = array();
+		$array_filestodelete = array();
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
 		$orig_name = "";
 		$orig_type = "";
@@ -511,6 +498,7 @@ class Main extends MY_Controller {
 				"type" => $uploaded_data['file_type'],
 				'rq_name' => 'Proof of Payment'
 			));
+			array_push($array_filestodelete,'express/assets/'.$uploaded_data['orig_name']);
 		}
 		else{
 			$this->session->set_flashdata('error','Upload Error');
@@ -529,7 +517,7 @@ class Main extends MY_Controller {
 			$this->mainmodel->updateRequirementLog(array(
 				'requirements_name' => 'proof_of_payment',
 				'requirements_date' => date("Y-m-d H:i:s"),
-				'status' => 'status',
+				'status' => 'pending',
 				'reference_no' => $ref_no,
 				'file_submitted' => $uploaded_data['orig_name'],
 				'file_type' => $uploaded_data['file_type'],
@@ -547,10 +535,18 @@ class Main extends MY_Controller {
 				// 'path_id' => empty($getId)?'':$getId
 			));
 		}
+		$files = glob('express/assets/*'); // get all file names
+		foreach($files as $file){
+			if(in_array($file, $array_filestodelete)){
+				if(is_file($file)) {
+					unlink($file); // delete file
+				}
+			}
+		}
 		$this->session->set_flashdata('success','Successfully Uploaded');
 		// $this->uploadProofOfPayment();
 		redirect(base_url('main/uploadProofOfPayment'));
-
+		
 		// header('Refresh: X; URL='.base_url('main/uploadProofOfPayment'));
 	}
 	public function checkForGdriveUploader(){

@@ -15,15 +15,15 @@
                             <tbody>
                                 <tr>
                                     <td>FIRST NAME:</td>
-                                    <td>JUAN</td>
+                                    <td><?php echo $this->session->userdata('first_name');?></td>
                                 </tr>
                                 <tr>
                                     <td>MIDDLE NAME:</td>
-                                    <td>DELA</td>
+                                    <td><?php echo $this->session->userdata('middle_name');?></td>
                                 </tr>
                                 <tr>
                                     <td>LAST NAME:</td>
-                                    <td>CRUZ</td>
+                                    <td><?php echo $this->session->userdata('last_name');?></td>
                                 </tr>
                                 <tr>
                                     <td>REFERENCE NUMBER:</td>

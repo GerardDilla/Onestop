@@ -1,9 +1,23 @@
+<?php
+if ($this->session->flashdata('success') != "") {
+    echo "<script>iziToast.show({
+        theme: 'dark',
+        icon: 'icon-person',
+        title: 'Welcome',
+        message: '" . $this->session->flashdata('success') . "',
+        position: 'topRight',
+        progressBarColor: '#cc0000',
+        image: '" . base_url('assets/vendors/login_asset/img/sdcalogo.png') . "',
+    });</script>";
+    $this->session->set_flashdata('success', '');
+}
+?>
 <!-- <?php $this->load->helper('string');
         echo random_string('alnum', 20); ?> -->
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
 <link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
-<section class="section">
+<section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
 
     <div class="card">
         <!-- <div class="card-header">
@@ -16,38 +30,41 @@
                     <form action="" method="">
                         <div class="wizard-navigation">
                             <div class="progress-with-circle">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
+                                <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
                             </div>
                             <!-- Progress Nav -->
                             <ul>
-                                <li>
-                                    <a href="#student_information" data-toggle="tab">
-                                        <div class="icon-circle">
+                                <li id="tab_student_information">
+                                    <a>
+                                        <div id="tab_student_information-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-person-lines-fill" id="bi_resize"></i>
                                         </div>
                                         STUDENT INFORMATION
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#advising" data-toggle="tab">
-                                        <div class="icon-circle">
+                                <li id="tab_advising">
+                                    <a>
+                                        <div id="tab_advising-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-clipboard-plus" id="bi_resize"></i>
                                         </div>
                                         ADVISING
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#payment" data-toggle="tab">
-                                        <div class="icon-circle">
-                                            <i class="bi bi-cash-stack" id="bi_resize"></i>
+                                <li id="tab_registration">
+                                    <a>
+                                        <div id="tab_registration-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                            <i class="bi bi-file-text" id="bi_resize"></i>
                                         </div>
                                         PAYMENT
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#registration" data-toggle="tab">
-                                        <div class="icon-circle">
-                                            <i class="bi bi-file-text" id="bi_resize"></i>
+                                <li id="tab_payment">
+                                    <a>
+                                        <div id="tab_payment-circle" class="icon-circle">
+                                            <i class="bi bi-cash-stack" id="bi_resize"></i>
                                         </div>
                                         REGISTRATION
                                     </a>
@@ -95,9 +112,13 @@
             <!-- /wizard container -->
         </div>
     </div>
-</section>
+    <?php $this->load->view($this->data['advising_modals']); ?>
 
-<?php $this->load->view('Body/Assessment_Content/Advising_Modals'); ?>
+
+</section>
+<script>
+
+</script>
 <!--   Core JS Files   -->
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>

@@ -1,13 +1,87 @@
 searchVisible = 0;
 transparent = true;
-
 $(document).ready(function () {
+    fetch_user_status();
 
+    function fetch_user_status() {
+        base_url = $("#assessment_section").data("baseurl");
+        reference_number = "1";
+        $("tab_registration").removeAttr("class");
+        $("tab_advising").removeAttr("class");
+        $("tab_student_information").removeAttr("class");
+        $.ajax({
+            type: "POST",
+            url: base_url + "main/wizard_tracker_status",
+            data: {
+                Reference_Number: reference_number,
+            },
+            success: function (response) {
+                // alert(response);
+                result = JSON.parse(response);
+                registration = result.registration;
+                advising = result.advising;
+                student_information = result.student_information;
+                // alert(registration);
+                if (registration == 1) {
+                    tab_tab_payment();
+                    tab_registration();
+                    tab_advising();
+                    tab_student_information();
+                    $("#progress_bar").css("width", "85.5%");
+                    $("#payment").addClass("active");
+                } else if (advising == 1) {
+                    tab_registration();
+                    tab_advising();
+                    tab_student_information();
+                    $("#progress_bar").css("width", "62.5%");
+                    $("#registration").addClass("active");
+                } else if (student_information == 1) {
+                    tab_advising();
+                    tab_student_information();
+                    $("#progress_bar").css("width", "37.5%");
+                    $("#advising").addClass("active");
+                } else {
+                    tab_student_information();
+                    $("#progress_bar").css("width", "12.5%");
+                    $("#student_information").addClass("active");
+                }
+
+            },
+            error: function (response) { },
+        });
+    }
+
+    function tab_tab_payment() {
+        $("#tab_payment").attr("class", "active");
+        $("#tab_payment-circle").addClass("checked");
+        // $("#tab_payment-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+        $("#tab_registration-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+    }
+
+    function tab_registration() {
+        $("#tab_registration").attr("class", "active");
+        $("#tab_registration-circle").addClass("checked");
+        $("#tab_advising-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+    }
+
+    function tab_advising() {
+        $("#tab_advising").attr("class", "active");
+        $("#tab_advising-circle").addClass("checked");
+        $("#tab_student_information-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+    }
+
+    function tab_student_information() {
+        $("#tab_student_information").attr("class", "active");
+        $("#tab_student_information-circle").addClass("checked");
+
+    }
     // Wizard Initialization
-    $('.wizard-card').bootstrapWizard({
-        'tabClass': 'nav nav-pills',
-        'nextSelector': '.btn-next',
-        'previousSelector': '.btn-previous',
+    $(".wizard-card").bootstrapWizard({
+        tabClass: "nav nav-pills",
+        nextSelector: ".btn-next",
+        previousSelector: ".btn-previous",
 
         // onNext: function (tab, navigation, index) {
         //     var $valid = $('.wizard-card form').valid();
@@ -18,32 +92,28 @@ $(document).ready(function () {
         // },
 
         onInit: function (tab, navigation, index) {
-
             //check number of tabs and fill the entire row
-            var $total = navigation.find('li').length;
+            var $total = navigation.find("li").length;
             $width = 100 / $total;
 
-            navigation.find('li').css('width', $width + '%');
-
+            navigation.find("li").css("width", $width + "%");
         },
 
         onTabClick: function (tab, navigation, index) {
-
+            // alert('clicked');
             // var $valid = $('.wizard-card form').valid();
-
             // if (!$valid) {
             //     return false;
             // } else {
             //     return true;
             // }
-
         },
 
         onTabShow: function (tab, navigation, index) {
-            var $total = navigation.find('li').length;
+            var $total = navigation.find("li").length;
             var $current = index + 1;
 
-            var $wizard = navigation.closest('.wizard-card');
+            var $wizard = navigation.closest(".wizard-card");
 
             // If it's the last tab then hide the last button and show the finish instead
             // if ($current >= $total) {
@@ -56,16 +126,16 @@ $(document).ready(function () {
 
             //update progress
             var move_distance = 100 / $total;
-            move_distance = move_distance * (index) + move_distance / 2;
+            move_distance = move_distance * index + move_distance / 2;
 
-            $wizard.find($('.progress-bar')).css({ width: move_distance + '%' });
+            $wizard.find($(".progress-bar")).css({ width: move_distance + "%" });
             //e.relatedTarget // previous tab
 
-            $wizard.find($('.wizard-card .nav-pills li.active a .icon-circle')).addClass('checked');
-
-        }
+            $wizard
+                .find($(".wizard-card .nav-pills li.active a .icon-circle"))
+                .addClass("checked");
+        },
     });
-
 
     // Prepare the preview for profile picture
     $("#wizard-picture").change(function () {
@@ -73,23 +143,22 @@ $(document).ready(function () {
     });
 
     $('[data-toggle="wizard-radio"]').click(function () {
-        wizard = $(this).closest('.wizard-card');
-        wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
-        $(this).addClass('active');
-        $(wizard).find('[type="radio"]').removeAttr('checked');
-        $(this).find('[type="radio"]').attr('checked', 'true');
+        wizard = $(this).closest(".wizard-card");
+        wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
+        $(this).addClass("active");
+        $(wizard).find('[type="radio"]').removeAttr("checked");
+        $(this).find('[type="radio"]').attr("checked", "true");
     });
 
     $('[data-toggle="wizard-checkbox"]').click(function () {
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
-            $(this).find('[type="checkbox"]').removeAttr('checked');
+        if ($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            $(this).find('[type="checkbox"]').removeAttr("checked");
         } else {
-            $(this).addClass('active');
-            $(this).find('[type="checkbox"]').attr('checked', 'true');
+            $(this).addClass("active");
+            $(this).find('[type="checkbox"]').attr("checked", "true");
         }
     });
 
-    $('.set-full-height').css('height', 'auto');
-
+    $(".set-full-height").css("height", "auto");
 });

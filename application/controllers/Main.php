@@ -83,15 +83,16 @@ class Main extends MY_Controller
 		// $this->sheet2 = $this->spreadsheet->getSheet(1);
 		// $this->cell;
 
-		$sheet->setCellValue('B6', '12321321321');
-		$sheet->setCellValue('B7', '123DSADSADSADSA21321321');
-		$sheet->setCellValue('B8', '12321DSADSADSADSADSADSADSAASDS321321');
+		$sheet->setCellValue('E8', '123145');
+		$sheet->setCellValue('C9', 'GERARD DILLA');
+		$sheet->setCellValue('D10', '12321321312321321321321321321');
 
 		// $sheet->setCellValue('A1', 'Hello World !');
 
-		$writer = new Xlsx($spreadsheet);
-
-		header('Content-Type: application/vnd.ms-excel');
+		// $writer = new Xlsx($spreadsheet);
+		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf($spreadsheet);
+		$writer->writeAllSheets();
+		// header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename="teststes.xlsx"');
 		header('Cache-Control: max-age=0');
 

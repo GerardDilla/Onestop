@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-require 'vendor/autoload.php';
+// require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -316,25 +316,35 @@ class Main extends MY_Controller
 	}
 	public function update_course_by_reference_number()
 	{
-
 		$check_course = $this->check_course_by_reference_number($this->session->userdata('reference_no'));
 		if ($check_course == 'none') {
 			$array = array(
-				'reference_number' => $get_in_Session,
+				'reference_number' => $this->session->userdata('reference_no'),
 				'course' => $this->input->post('course'),
 				'major' => $this->input->post('major'),
 			);
-			$update = $this->AssesmentModel->upadte_course_by_reference_number($array);
+			$update = $this->AssesmentModel->update_course_by_reference_number($array);
 			if ($update) {
-				// Ongoing
+				echo json_encode(array(
+					'title' => 'Success',
+					'body' => 'Course successfully updated.',
+					'status' => 'success'
+				));
 			}
 		} else {
-			die('You Alredy Have Course! Contact MIS department for this issue.');
+			echo json_encode(array(
+				'title' => 'You Alredy Have Course!',
+				'body' => 'Contact MIS department for this issue.',
+				'status' => 'failed'
+			));
 		}
 	}
 	public function check_course_by_reference_number($reference_number)
 	{
 		$student = $this->AssesmentModel->get_student_by_reference_number($reference_number);
+		if ($student['Course'] == 'N/A') {
+			return 'none';
+		}
 		if ($student['Course']) {
 			return $student;
 		} else {

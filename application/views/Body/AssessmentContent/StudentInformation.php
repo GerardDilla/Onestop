@@ -116,7 +116,6 @@
 <script>
     $(document).ready(function() {
         base_url = $('#assessment_section').data('baseurl');
-
         $('input[type=radio][name=eductype]').change(function() {
             type = $(this).data('etype');
             if (type == 'freshmen') {
@@ -135,18 +134,13 @@
         });
 
         $('input[type=checkbox][name=shsverification]').change(function() {
-
             shsChecker = $('.shsverification:checkbox:checked').length > 0
             if (shsChecker) {
                 $('.balance-verification').fadeIn();
             } else {
                 $('.balance-verification').fadeOut();
             }
-
         });
-
-
-
     });
     $('#helperText').on('change', function() {
         stundent_number_text = $('#helperText').val();
@@ -186,10 +180,8 @@
                 html = ""
                 if ($.trim(response) != '') {
                     $.each(response, function(key, value) {
-                        // alert(key + ": " + value['Program_Major']);
                         html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
                     });
-                    // alert(html);
                     $('#majors').append(html);
                 } else {
                     $('#majors').empty();
@@ -199,36 +191,104 @@
         })
     })
 
+    function izi_toast(title,msg,color) {
+        iziToast.show({
+            title: title,
+            message: msg,
+            color: color,
+            position: 'center',
+            closeOnEscape: true,
+            closeOnClick: true,
+            timeout: 10000,
+            // progressBar: false,
+            transitionIn: 'fadeIn',
+            transitionOut: 'fadeOut',
+        });
+    }
+
     function submit_course() {
-        // alert('test');
         program_code = $('#courses').children("option:selected").val();
         program_course = $("#courses option:selected").text();
         program_major = $("#majors option:selected").text();
         program_major_select = $('#majors').children("option:selected").val();
-        // alert(program_code);
-        confirm_msg = "Are you sure you want:\n"+program_course;
-        if(program_major_select != 'none'){
-            confirm_msg += "\nMajor in: "+ program_major;
+        confirm_msg = "<b style='color:black'>Are you sure you want:</b><br>" + program_course;
+        if (program_major_select != 'none') {
+            confirm_msg += "<br>Major in: " + program_major;
         }
         if (program_code != 'none') {
-            if (confirm(confirm_msg) == true) {
-                $.ajax({
-                    url: base_url + "main/update_course_by_reference_number",
-                    type: "post",
-                    data: {
-                        course: program_code,
-                        major: program_major_select
-                    },
-                    success: function(response){
-                        alert(response);
-                    },
-                })
-            } else {
-                event.preventDefault();
-            }
-        }else{
             event.preventDefault();
-            alert("You did NOT select a Course!");
+            // if (confirm(confirm_msg) == true) {
+            //     $.ajax({
+            //         url: base_url + "main/update_course_by_reference_number",
+            //         type: "post",
+            //         data: {
+            //             course: program_code,
+            //             major: program_major_select
+            //         },
+            //         success: function(response) {
+            //             alert(response);
+            //         },
+            //     })
+            // } else {
+            //     event.preventDefault();
+            // }
+            iziToast.question({
+                timeout: 200000,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'question',
+                zindex: 999,
+                // title: 'Hey',
+                message: confirm_msg,
+                position: 'center',
+                buttons: [
+                    ['<button><b>YES</b></button>', function(instance, toast) {
+
+                        $.ajax({
+                            url: base_url + "main/update_course_by_reference_number",
+                            type: "post",
+                            data: {
+                                course: program_code,
+                                major: program_major_select
+                            },
+                            dataType: "json",
+                            success: function(response) {
+                                // alert(response['title']);
+                                if(response['status'] == 'success'){
+                                    izi_toast(response['title'],response['body'],'green');
+                                }else{
+                                    izi_toast(response['title'],response['body'],'red');
+                                }
+                            },
+                        })
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>NO</button>', function(instance, toast) {
+
+                        event.preventDefault();
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function(instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function(instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+        } else {
+            event.preventDefault();
+            izi_toast('Snap!','You did NOT select a Course!','red');
+            // alert("You did NOT select a Course!");
         }
     }
 </script>

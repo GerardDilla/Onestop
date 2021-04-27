@@ -39,7 +39,7 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('main/validationOfDocuments') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('main/uploadProofOfPayment') ?>" class='sidebar-link'>
                         <i class="bi bi-map-fill"></i>
                         <span>Proof of Payment</span>
                     </a>

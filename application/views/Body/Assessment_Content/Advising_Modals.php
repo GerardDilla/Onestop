@@ -431,10 +431,10 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
                 </button>
-                <button type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                <a href="<?php echo site_url('Main/phpspreadsheettest') ?>" class="btn btn-primary ml-1">
                     <i class="bx bx-check d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Download Assessment Form</span>
-                </button>
+                </a>
             </div>
         </div>
     </div>

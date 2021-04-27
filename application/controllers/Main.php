@@ -74,10 +74,20 @@ class Main extends MY_Controller
 	public function phpspreadsheettest()
 	{
 
-
-		$spreadsheet = new Spreadsheet();
+		// $spreadsheet = new Spreadsheet();
+		$this->inputFileType = 'Xlsx'; // Xlsx - Xml - Ods - Slk - Gnumeric - Csv\
+		$this->inputFileName = './assets/excel_template/AssessmentForm_Template.xlsx';
+		$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($this->inputFileName);
 		$sheet = $spreadsheet->getActiveSheet();
-		$sheet->setCellValue('A1', 'Hello World !');
+		// $this->sheet1 = $this->spreadsheet->getSheet(0);
+		// $this->sheet2 = $this->spreadsheet->getSheet(1);
+		// $this->cell;
+
+		$sheet->setCellValue('B6', '12321321321');
+		$sheet->setCellValue('B7', '123DSADSADSADSA21321321');
+		$sheet->setCellValue('B8', '12321DSADSADSADSADSADSADSAASDS321321');
+
+		// $sheet->setCellValue('A1', 'Hello World !');
 
 		$writer = new Xlsx($spreadsheet);
 
@@ -86,5 +96,9 @@ class Main extends MY_Controller
 		header('Cache-Control: max-age=0');
 
 		$writer->save('php://output'); // download file 
+	}
+	private function assessmentform_export_data()
+	{
+		$this->sheet1->setCellValue($data['Cell'], $data['Value']);
 	}
 }

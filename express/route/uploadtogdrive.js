@@ -7,7 +7,7 @@ const { google } = require('googleapis'); //googleapis not supported module type
 const express = require("express");
 const otherasync = require("async");
 let router = express.Router();
-const {getQuery} = require('../query/main.js');
+// const {getQuery} = require('../query/main.js');
 var id_number;
 const multer = require('multer');
 const { pathToFileURL } = require('url');
@@ -343,9 +343,7 @@ router.get("/generateToken",(req,res) => {
   }
 //   res.send("success")
 })
-router.get("/getjson",(req,res)=>{
-    // res.json({
-
-    // })
+router.post("/getjson",(req,res)=>{
+    res.send('Hello World');
 })
 module.exports = router;

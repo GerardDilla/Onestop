@@ -558,13 +558,13 @@ class Main extends MY_Controller {
 		// echo $this->session->userdata('email');
 		// $result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
 		// $result = $this->gdrive_uploader->getAllFilesInFolder();
-		$result = $this->gdrive_uploader->getFileId(array('file_name'=>'','folder_id'=>$this->session->userdata('gdrive_folder')));
-		$decode = json_decode($result,true);
-		echo '<pre>'.print_r($decode,1).'</pre>';
+		$result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_108820210415102145.jpg','folder_id'=>$this->session->userdata('gdrive_folder')));
+		// $decode = json_decode($result,true);
+		// echo '<pre>'.print_r($decode,1).'</pre>';
+		echo $result;
 	}
 	public function testSession(){
 		echo $this->session->userdata('gdrive_folder');
-
 	}
 	public function getProofOfPaymentImage(){
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');

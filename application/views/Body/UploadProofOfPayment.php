@@ -37,10 +37,10 @@
 </style>
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
-<form action="<?php echo base_url('main/uploadProofOfPaymentProcess');?>" method="post" enctype="multipart/form-data">
+<form id="upload_form" action="<?php echo base_url('main/uploadProofOfPaymentProcess');?>" method="post" enctype="multipart/form-data">
     <div class="card" style="margin:none;">
         <div class="card-header" align="right">
-            <button class="btn btn-info">Submit</button>
+            <button class="btn btn-info" type="submit">Submit</button>
         </div>
         <div class="card-body">
             <div class="input-field">
@@ -129,7 +129,7 @@ $('.input-images-1').on('mouseover',function(){
         }, 100);
     }
 });
-async function getImageLink(){
+async function getImageLink(id){
     return new Promise((resolve,reject)=>{
         $.ajax({
             url: "<?php echo base_url();?>main/getProofOfPaymentImage",
@@ -144,6 +144,8 @@ async function getImageLink(){
         });
     })
 }
+
+
 function OnloadImage(){
     $('body').waitMe({
         effect : 'bounce',
@@ -157,7 +159,10 @@ function OnloadImage(){
         source : '',
         onClose : function() {}
     });
-    getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');console.log(link)}).catch(error=>console.log(error));
+    var getImageLinkTimeout = window.setInterval(()=>{
+        getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');}).catch(error=>console.log(error));
+        clearInterval(getImageLinkTimeout);
+    },3000)
 }
 function viewImage(){
     $('#view_image').iziModal('open');
@@ -169,6 +174,22 @@ $(window).resize(function(){
     var img = document.querySelector(".uploaded-image img"); 
     $('.image-uploader.has-files .uploaded-image').css('height',img.height)
     $('.image-uploader.has-files .uploaded-image').css('width',img.width)
+})
+$('#upload_form').on('submit',function(e){
+    e.preventDefault();
+    var count = 0;
+    if($('input[name=images]').val()==""){
+        ++count;
+        iziToast.error({
+            title: 'Error: ',
+            message: 'Please choose a File!!',
+            position: 'topRight',
+        });
+    }
+    if(count==0){
+        $('#upload_form button[type=submit]').attr('disabled',true);
+        $(this)[0].submit();
+    }
 })
 </script>
 <?php 

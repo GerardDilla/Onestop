@@ -16,7 +16,3 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/login_asset/css/custom.css'); ?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-password-validation-while-typing/css/jquery.passwordRequirements.css'); ?>" />
-
-  <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
-  <link rel="stylesheet" href="<?php echo base_url('assets/css/iziModal.min.css'); ?>">
-  <link rel="stylesheet" href="<?php echo base_url('assets/css/animations.css'); ?>">

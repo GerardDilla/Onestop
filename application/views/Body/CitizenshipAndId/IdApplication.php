@@ -1,26 +1,9 @@
-<style>
-    #button_icon {
-        color: white;
-    }
-
-    .title_color {
-        color: rgba(67, 94, 190, 1);
-    }
-
-    .required_field {
-        color: rgba(255, 0, 0, 1);
-    }
-
-    .text_note {
-        color: rgba(255, 0, 0, 1) !important;
-    }
-</style>
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
+    <div class="alert alert-light-danger color-danger">
+        <i class="bi bi-exclamation-circle"></i>
+        PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM
+    </div>
     <div class="card">
-        <div class="alert alert-light-danger color-danger">
-            <i class="bi bi-exclamation-circle"></i> 
-            PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM
-        </div>
         <div class="row">
             <div class="card">
                 <div class="card-content">

@@ -47,7 +47,7 @@
                 <div class="form-check">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="form-check-input form-check-primary shsverification" name="shsverification">
-                        <label class="form-check-label" for="customColorCheck1">I Graduated from St. Dominic College of Asia</label>
+                        <label class="form-check-label" for="customColorCheck1">I'm A Senior Highschool graduate from St. Dominic College of Asia</label>
                     </div>
                 </div>
             </div>

@@ -7,7 +7,7 @@ const { google } = require('googleapis'); //googleapis not supported module type
 const express = require("express");
 const otherasync = require("async");
 let router = express.Router();
-const {getQuery} = require('../query/main.js');
+// const {getQuery} = require('../query/main.js');
 var id_number;
 const multer = require('multer');
 const { pathToFileURL } = require('url');

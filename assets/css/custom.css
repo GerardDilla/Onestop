@@ -23,8 +23,15 @@ div#main{
     z-index:1;
     transform-origin:0;
     background:white;
-} */
-/* .login-page{
-    background-color:blue;
-} */
-
+}
+ */
+.paymentbullet li{
+    list-style-type:none;
+    margin:10px;
+}
+.paymentbullet li button{
+    width:100% !important;
+}
+.paymentbullet li a{
+    width:100% !important;
+}

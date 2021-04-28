@@ -38,4 +38,28 @@ class view_directory
 		$data['title'] = 'Password Reset';
 		return $data;
 	}
+	public function dataTable()
+	{
+		$data['view'] = $this->body . 'Component/DataTable';
+		$data['title'] = 'Data Table';
+		return $data;
+	}
+	public function validationOfDocuments()
+	{
+		$data['view'] = $this->body . 'ValidationDocuments';
+		$data['title'] = 'Validation of Documents';
+		return $data;
+	}
+	public function ValidationOfTobeFollowedDocuments()
+	{
+		$data['view'] = $this->body . 'ValidationOfTobeFollowedDocuments';
+		$data['title'] = 'Submission of To be Followed Requirements';
+		return $data;
+	}
+	public function uploadProofOfPayment()
+	{
+		$data['view'] = $this->body . 'UploadProofOfPayment';
+		$data['title'] = 'Upload Proof of Payment';
+		return $data;
+	}
 }

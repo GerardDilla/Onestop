@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-require 'vendor/autoload.php';
+// require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -22,7 +22,145 @@ class Main extends MY_Controller
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
 	}
-	public function forgotPassword()
+	// OSE LOGIN ,Password Reset and Setup User Pass
+	public function setSession($data)
+	{
+		$this->session->set_userdata(array(
+			'reference_no' =>  $data['reference_no'],
+			'first_name' => $data['First_Name'],
+			'middle_name' => $data['Middle_Name'],
+			'last_name' => $data['Last_Name'],
+			'yearlevel' => $data['YearLevel'],
+			'course' => $data['Course'],
+			'major' => $data['Major'],
+			'admittedsy' => $data['AdmittedSY'],
+			'admittedsem' => $data['AdmittedSEM'],
+			'email' => $data['Email'],
+			'student_folder' => $data['folder_name'],
+			'gdrive_folder' => $data['gdrive_id']
+		));
+	}
+	public function email($cp, $from, $from_name, $send_to, $subject, $message)
+	{
+		$config = array(
+			'protocol'  => 'smtp',
+			'smtp_host' => 'ssl://smtp.gmail.com',
+			'smtp_port' => '465',
+			'smtp_timeout' => '7',
+			'smtp_user' => 'webmailer@sdca.edu.ph',
+			'smtp_pass' => 'sdca2017',
+			'charset' => 'utf-8',
+			'newline' => '\r\n',
+			'mailtype'  => 'html',
+			'validation' => true,
+			'wordwrap' => true
+		);
+		$this->load->library('email');
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");
+		$this->email->from($from, $from_name);
+		$this->email->to($send_to);
+		$this->email->subject($subject);
+		$this->email->message($message);
+		if ($this->email->send()) {
+			echo  'Email has been sent to ' . $cp;
+			echo  '<br><br>';
+		} else {
+			echo  "<h4>There was a problem with sending an email.</h4>";
+			echo  "<br><br>For any concers, proceed to our <a href'#' style'font-size:15px; color:#00F;'>Helpdesk</a> or the MIS Office.";
+		}
+		//email debugger
+		// echo $this->email->print_debugger(array('headers'));
+
+	}
+	public function loginProcess()
+	{
+		try {
+			$username = $this->input->post('loginUsername');
+			$password = $this->input->post('loginPassword');
+
+			$data = $this->mainmodel->checkLogin($username, $password);
+			if (!empty($data)) {
+				$this->setSession($data);
+				$this->session->set_flashdata('success', $data['First_Name'] . ' ' . $data['Last_Name']);
+				redirect(base_url('main/selfassesment'));
+			} else {
+				$this->session->set_flashdata('msg', 'Incorrect username or password!!');
+				redirect(base_url('/'));
+			}
+		} catch (\Exception $e) {
+			$this->session->set_flashdata('msg', $e);
+			redirect(base_url('/'));
+		}
+	}
+	// Forgot Password Send Email when submit
+	public function sendEmail()
+	{
+		$this->load->helper('string');
+		try {
+			$data = $this->mainmodel->checkEmail($this->input->post('email'));
+			if (!empty($data)) {
+				$codes = $this->mainmodel->getAllStudAccount();
+				$generate_code = random_string('alnum', 20);
+				foreach ($codes as $list) {
+					if ($generate_code == $list['automated_code']) {
+						$generate_code = random_string('alnum', 20);
+					}
+				}
+				$this->mainmodel->changeKeyWithRefNo($data['reference_no'], array('automated_code' => $generate_code));
+
+				$encrypt_code = $this->encryption->encrypt($generate_code);
+
+				// $encrypt_code = $generate_code;
+				// $this->sendemail->test();exit;
+				// echo $data['First_Name'].' '.$data['Last_Name'];exit;
+				$this->sdca_mailer->sendEmail($data['First_Name'] . ' ' . $data['Last_Name'], 'jfabregas@sdca.edu.ph', 'St. Dominic College of Asia', $this->input->post('email'), 'Forgot Password', 'Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/' . $encrypt_code . '{/unwrap}');
+				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
+				$this->session->set_flashdata('success', "We've sent a confirmation link on your email. Click the link to reset your password.");
+				redirect(base_url('/'));
+			} else {
+				// echo array('type'=>'error','msg' => 'You input a wrong email!!');
+				$this->session->set_flashdata('msg', 'You input a wrong email!!');
+				redirect(base_url('main/forgotPassword'));
+			}
+		} catch (\Exception $e) {
+			$this->session->set_flashdata('msg', $e);
+			redirect(base_url('main/forgotPassword'));
+		}
+	}
+	public function changePassword($key = '')
+	{
+		if (!empty($key)) {
+			$this->data['key'] = $key;
+			$data = $this->mainmodel->checkKey($key);
+			if (!empty($data)) {
+				$this->login_template($this->view_directory->changePassword());
+			} else {
+				$this->session->set_flashdata('msg', 'Incorrect key!!');
+				redirect(base_url('/'));
+			}
+		} else {
+			$this->session->set_flashdata('msg', 'Incorrect key!!');
+			redirect(base_url('/'));
+		}
+	}
+	public function changePasswordProcess()
+	{
+		try {
+			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
+			$password = $this->input->post('new_password');
+			$this->mainmodel->changeUserPass($key, array(
+				'password' => $password,
+				'automated_code' => ''
+			));
+			$this->session->set_flashdata('success', 'You have successfully changed your password.!!');
+			redirect(base_url('/'));
+		} catch (\Exception $e) {
+			$this->session->set_flashdata('msg', $e);
+			redirect(base_url('/'));
+		}
+	}
+	public function setupUserPass($key = '')
 	{
 		$this->login_template($this->view_directory->forgotPassword());
 	}
@@ -108,35 +246,294 @@ class Main extends MY_Controller
 		$this->load->view('Body/Assessment_Content/AssessmentForm');
 	}
 
-	public function phpspreadsheettest()
+	public function validationDocumentsProcess()
 	{
+		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
+		date_default_timezone_set('Asia/manila');
+		$ref_no = $this->session->userdata('reference_no');
+		$getRequirementsList = $this->mainmodel->getRequirementsList();
+		// $config['upload_path'] = './assets/student/'.$this->session->userdata('student_folder').'/requirement';
+		$config['upload_path'] = './express/assets/';
+		$config['allowed_types'] = '*';
+		$row = "";
+		$array_files = array();
+		$array_filestodelete = array();
+		$array_completefiles = array();
+		try {
+			$email_data = array(
+				'send_to' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name'),
+				'reply_to' => 'jfabregas@sdca.edu.ph',
+				'sender_name' => 'St. Dominic College of Asia',
+				'send_to_email' => $this->session->userdata('email'),
+				'title' => 'Student Requirements',
+				'message' => 'Email/ValidationOfDocument'
+			);
 
-		// $spreadsheet = new Spreadsheet();
-		$this->inputFileType = 'Xlsx'; // Xlsx - Xml - Ods - Slk - Gnumeric - Csv\
-		$this->inputFileName = './assets/excel_template/AssessmentForm_Template.xlsx';
-		$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($this->inputFileName);
-		$sheet = $spreadsheet->getActiveSheet();
-		// $this->sheet1 = $this->spreadsheet->getSheet(0);
-		// $this->sheet2 = $this->spreadsheet->getSheet(1);
-		// $this->cell;
+			foreach ($getRequirementsList as $list) {
+				$id_name = $list['id_name'];
+				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
+				$config['file_name'] = $id_name . '_' . $ref_no . '' . date("YmdHis");
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				$this->upload->overwrite = true;
+				$req_status = 'to be follow';
+				$status_col = empty($checkRequirement) ? '' : $checkRequirement['status'];
+				if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "") {
+					$req_status = 'pending';
+					if ($this->upload->do_upload($id_name)) {
+						$uploaded_data = $this->upload->data();
+						array_push($array_files, array(
+							"name" => $uploaded_data['orig_name'],
+							"type" => $uploaded_data['file_type'],
+							'rq_name' => $list['rq_name']
+						));
+						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+					} else {
+						// echo json_encode(array("msg" => $this->upload->display_errors()));
+						$this->session->set_flashdata('error', $this->upload->display_errors());
+						// redirect(base_url('main/validationOfDocuments'));exit;
+						redirect($_SERVER['HTTP_REFERER']);
+					}
+				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to be follow") {
+					$req_status = 'pending';
+					if ($this->upload->do_upload($id_name)) {
+						$uploaded_data = $this->upload->data();
+						array_push($array_files, array(
+							"name" => $uploaded_data['orig_name'],
+							"type" => $uploaded_data['file_type'],
+							'rq_name' => $list['rq_name']
+						));
+						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+					} else {
+						// echo json_encode(array("msg" => $this->upload->display_errors()));
+						$this->session->set_flashdata('error', $this->upload->display_errors());
+						// redirect(base_url('main/validationOfDocuments'));exit;
+						redirect($_SERVER['HTTP_REFERER']);
+						exit;
+					}
+				}
 
-		$sheet->setCellValue('E8', '123145');
-		$sheet->setCellValue('C9', 'GERARD DILLA');
-		$sheet->setCellValue('D10', '12321321312321321321321321321');
+				$file_type = "";
+				$orig_name = "";
+				if ($this->input->post('check_' . $list['id_name']) == null) {
+					$file_type = empty($uploaded_data['file_type']) ? '' : $uploaded_data['file_type'];
+					$orig_name = empty($uploaded_data['orig_name']) ? '' : $uploaded_data['orig_name'];
+				}
+				if (!empty($checkRequirement)) {
+					// $getRequirementsLog = $this->mainmodel->getRequirementsLog($r);
+					if ($checkRequirement['status'] == "to be follow") {
+						$this->mainmodel->updateRequirementLog(array(
+							'requirements_date' => date("Y-m-d H:i:s"),
+							'file_submitted' => $orig_name,
+							'file_type' => $file_type,
+							'status' => 'pending'
+						), $id_name);
+					}
+					$row = $row . "<tr><td>" . $checkRequirement['requirements_name'] . "</td><td>" . date("M. j,Y g:ia") . "</td></tr>";
+				} else {
+					$this->mainmodel->newRequirementLog(array(
+						'requirements_name' => $id_name,
+						'requirements_date' => date("Y-m-d H:i:s"),
+						'status' => $req_status,
+						'reference_no' => $ref_no,
+						'file_submitted' => $orig_name,
+						'file_type' => $file_type
+					));
+				}
 
-		// $sheet->setCellValue('A1', 'Hello World !');
 
-		// $writer = new Xlsx($spreadsheet);
-		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf($spreadsheet);
-		$writer->writeAllSheets();
-		// header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="teststes.xlsx"');
-		header('Cache-Control: max-age=0');
+				// 
 
-		$writer->save('php://output'); // download file 
+			}
+			$getRequirementsLogPerRefNo = $this->mainmodel->getRequirementsLogPerRefNo();
+			foreach ($getRequirementsLogPerRefNo as $reqloglist) {
+				if ($reqloglist['requirements_name'] != "proof_of_payment") {
+					array_push($array_completefiles, array(
+						"name" => $reqloglist['rq_name'],
+						"status" => $reqloglist['status'],
+						"req_date" => $reqloglist['requirements_date']
+					));
+				}
+			}
+			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
+
+			$string = http_build_query($all_uploadeddata);
+			$ch = curl_init("http://localhost:4003/uploadtodrive/");
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+			$result = curl_exec($ch);
+			if ($result != null && $result != "") {
+				$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
+					'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
+					'requirements' => $array_completefiles,
+					'datetime' => date("Y-m-d H:i:s"),
+					'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
+				));
+				$files = glob('express/assets/*'); // get all file names
+				foreach ($files as $file) {
+					if (in_array($file, $array_filestodelete)) {
+						if (is_file($file)) {
+							unlink($file); // delete file
+						}
+					}
+				}
+				$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $result));
+				$this->session->set_flashdata('success', 'Successfully submitted!!');
+				redirect($_SERVER['HTTP_REFERER']);
+			} else {
+				$files = glob('express/assets/*'); // get all file names
+				foreach ($files as $file) {
+					if (in_array($file, $array_filestodelete)) {
+						if (is_file($file)) {
+							unlink($file); // delete file
+						}
+					}
+				}
+				$this->mainmodel->revertIfErrorInRequirementUpload();
+				$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
+				redirect($_SERVER['HTTP_REFERER']);
+			}
+			curl_close($ch);
+			// echo json_encode(array("msg" => 'Successfully Uploaded'));
+		} catch (\Exception $e) {
+			// echo $e;
+			$this->session->set_flashdata('error', $e);
+			redirect($_SERVER['HTTP_REFERER']);
+			// echo json_encode(array("msg" => $e));
+		}
 	}
-	private function assessmentform_export_data()
+	public function notifyWhenPaymentSubmitted($ref_no = "", $amount = "", $email = "")
 	{
-		$this->sheet1->setCellValue($data['Cell'], $data['Value']);
+		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
+		//  CC to Accounting notification
+		$student_email = "";
+		if ($student_info['Email'] != "") {
+			$student_email = $student_info['Email'];
+		} else {
+			$student_email = $email;
+		}
+		$email_data = array(
+			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
+			'reply_to' => 'jfabregas@sdca.edu.ph',
+			'sender_name' => 'St. Dominic College of Asia',
+			'send_to_email' => $student_email,
+			'title' => 'Proof of Payment',
+			'message' => 'Email/PaymentEvidence'
+		);
+		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array('student_info' => $student_info, 'total_amount' => $amount));
+	}
+	public function uploadProofOfPayment()
+	{
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+
+		if (!empty($checkRequirement)) {
+			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
+			$this->data['gdrive_link'] = $checkRequirement['path_id'];
+			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
+		}
+		// print_r($checkRequirement);
+		$this->default_template($this->view_directory->uploadProofOfPayment());
+	}
+	public function uploadProofOfPaymentProcess()
+	{
+		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
+		$ref_no = $this->session->userdata('reference_no');
+		$id_name = "proof_of_payment";
+		$config['upload_path'] = './express/assets/';
+		$config['allowed_types'] = '*';
+		$config['file_name'] = $id_name . '_' . $ref_no . '' . date("YmdHis");
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		$this->upload->overwrite = true;
+		$uploaded = array();
+		$array_filestodelete = array();
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		$orig_name = "";
+		$orig_type = "";
+		if ($this->upload->do_upload('images')) {
+			$uploaded_data = $this->upload->data();
+			// print_r($uploaded_data);
+			$orig_name = $uploaded_data['orig_name'];
+			$orig_type = $uploaded_data['file_type'];
+			array_push($uploaded, array(
+				"name" => $uploaded_data['orig_name'],
+				"type" => $uploaded_data['file_type'],
+				'rq_name' => 'Proof of Payment'
+			));
+			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+		} else {
+			$this->session->set_flashdata('error', 'Upload Error');
+			redirect($_SERVER['HTTP_REFERER']);
+			exit;
+		}
+
+		// res.send();
+		$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
+		// echo $result;
+		$upload_success = false;
+		if (!empty($result)) {
+			$this->session->set_userdata('gdrive_folder', $result);
+			$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $result));
+		}
+		if (!empty($checkRequirement)) {
+			$this->mainmodel->updateRequirementLog(array(
+				'requirements_name' => 'proof_of_payment',
+				'requirements_date' => date("Y-m-d H:i:s"),
+				'status' => 'pending',
+				'reference_no' => $ref_no,
+				'file_submitted' => $uploaded_data['orig_name'],
+				'file_type' => $uploaded_data['file_type'],
+				// 'path_id' => empty($getId)?'':$getId
+			), 'proof_of_payment');
+		} else {
+			$this->mainmodel->newRequirementLog(array(
+				'requirements_name' => 'proof_of_payment',
+				'requirements_date' => date("Y-m-d H:i:s"),
+				'status' => 'status',
+				'reference_no' => $ref_no,
+				'file_submitted' => $orig_name,
+				'file_type' => $orig_type,
+				// 'path_id' => empty($getId)?'':$getId
+			));
+		}
+		$files = glob('express/assets/*'); // get all file names
+		foreach ($files as $file) {
+			if (in_array($file, $array_filestodelete)) {
+				if (is_file($file)) {
+					unlink($file); // delete file
+				}
+			}
+		}
+		$this->session->set_flashdata('success', 'Successfully Uploaded');
+		// $this->uploadProofOfPayment();
+		redirect(base_url('main/uploadProofOfPayment'));
+
+		// header('Refresh: X; URL='.base_url('main/uploadProofOfPayment'));
+	}
+	public function checkForGdriveUploader()
+	{
+		// $
+		// echo $this->session->userdata('email');
+		// $result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
+		// $result = $this->gdrive_uploader->getAllFilesInFolder();
+		$result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_108820210415102145.jpg', 'folder_id' => $this->session->userdata('gdrive_folder')));
+		// $decode = json_decode($result,true);
+		// echo '<pre>'.print_r($decode,1).'</pre>';
+		echo $result;
+	}
+	public function testSession()
+	{
+		echo $this->session->userdata('gdrive_folder');
+	}
+	public function getProofOfPaymentImage()
+	{
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		$result = $this->gdrive_uploader->getFileId(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('gdrive_folder')));
+		if (!empty($result)) {
+			$this->mainmodel->updateRequirementLog(array('path_id' => $result), 'proof_of_payment');
+		}
+		echo json_encode($result);
 	}
 }

@@ -410,6 +410,12 @@ function assessmentform_renderer(resultdata = []) {
 
 }
 
+function assessment_exporter(url) {
+
+    exportpage = window.open(url, '_blank');
+    // exportpage;
+}
+
 function jspdftest() {
     // alert($(".AssessmentForm").width());
     var HTML_Width = $(".AssessmentForm").width();

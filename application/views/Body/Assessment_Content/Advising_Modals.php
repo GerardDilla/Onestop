@@ -431,10 +431,10 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
                 </button>
-                <a href="<?php echo site_url('Main/phpspreadsheettest') ?>" class="btn btn-primary ml-1">
+                <button onclick="assessment_exporter('<?php echo site_url('temp_api/export_assessmentform') ?>')" class="btn btn-primary ml-1">
                     <i class="bx bx-check d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Download Assessment Form</span>
-                </a>
+                </button>
             </div>
         </div>
     </div>

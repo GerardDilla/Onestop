@@ -9,7 +9,6 @@
         <!-- <div class="card-header">
         </div> -->
         <div class="row">
-            <div class="testtest">JSDADSADHSAJDJSADJSADJSA</div>
             <!-- Wizard container -->
             <div class="wizard-container">
                 <div class="card wizard-card" data-color="red" id="wizardProfile">

@@ -67,8 +67,45 @@ class Main extends MY_Controller
 	{
 		redirect(base_url('/'));
 	}
-	public function export_assessmentform()
+	public function export_assessmentform($reference_number, $schoolyear, $semester)
 	{
+		$reference_number = $reference_number;
+		if ($reference_number != '') {
+
+			$searcharray['Reference_Number'] = $reference_number;
+			$AdvisedCheck = $this->AdvisingModel->check_advised($searcharray);
+			$array = array(
+				'sy' => $this->legend_sy,
+				'sem' => $this->legend_sem,
+				'refnum' => $this->reference_number
+			);
+			$data['get_Advise'] = $this->RegFormModel->Get_advising_ajax($array);
+			if (empty($data['get_Advise'])) {
+
+				echo false;
+				die();
+			}
+			foreach ($data['get_Advise']  as $row) {
+				$section         = $row->Section_Name;
+				$course        = $row->Course;
+				$sem           = $row->Semester;
+				$sy            = $row->School_Year;
+				$yl            = $row->YL;
+				$ref_num       = $row->Reference_Number;
+				$stu_num       = $row->Student_Number;
+				$admmitedSy    = $row->AdmittedSY;
+				$admmitedSem    = $row->AdmittedSEM;
+			}
+			$data['get_TotalCountSubject']       = $this->RegFormModel->Get_CountSubject_Advising_TRF($stu_num, $sem, $sy);
+			$data['get_labfees']                 = $this->RegFormModel->Get_LabFeesAdvising_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_miscfees']                = $this->RegFormModel->Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_otherfees']                = $this->RegFormModel->Get_OTHER_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_tuitionfee']              = $this->RegFormModel->Get_Tuition_FEE_TRF($course, $sem, $sy, $yl, $ref_num, $admmitedSy, $admmitedSem);
+			//$data['get_totalcash']               = $this->RegForm_Model->Get_Total_CashPayment($ref_num,$sem,$sy);
+			$data['get_totalunits']               = $this->RegFormModel->totalUnitsAdvising_TRF($array);
+			echo json_encode($data);
+		}
+		$this->load->view('Body/Assessment_Content/AssessmentForm');
 	}
 
 	public function phpspreadsheettest()

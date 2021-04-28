@@ -646,6 +646,35 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete,'express/assets/'.$uploaded_data['orig_name']);
+			$result = $this->gdrive_uploader->index(array("folder_name"=>$ref_no.'/'.$user_fullname,"data"=>$uploaded));
+		
+			$upload_success = false;
+			if(!empty($result)){
+				$this->session->set_userdata('gdrive_folder',$result);
+				$this->mainmodel->updateAccountWithRefNo($ref_no,array('gdrive_id'=>$result));
+			}
+			if(!empty($checkRequirement)){
+				$this->mainmodel->updateRequirementLog(array(
+					'requirements_name' => 'proof_of_payment',
+					'requirements_date' => date("Y-m-d H:i:s"),
+					'status' => 'pending',
+					'reference_no' => $ref_no,
+					'file_submitted' => $uploaded_data['orig_name'],
+					'file_type' => $uploaded_data['file_type'],
+					// 'path_id' => empty($getId)?'':$getId
+				),'proof_of_payment');
+			}
+			else{
+				$this->mainmodel->newRequirementLog(array(
+					'requirements_name' => 'proof_of_payment',
+					'requirements_date' => date("Y-m-d H:i:s"),
+					'status' => 'status',
+					'reference_no' => $ref_no,
+					'file_submitted' => $orig_name,
+					'file_type' => $orig_type,
+					// 'path_id' => empty($getId)?'':$getId
+				));
+			}
 		}
 		else{
 			$this->session->set_flashdata('error','Upload Error');
@@ -653,35 +682,7 @@ class Main extends MY_Controller
 		}
 		
 		// res.send();
-		$result = $this->gdrive_uploader->index(array("folder_name"=>$ref_no.'/'.$user_fullname,"data"=>$uploaded));
-		// echo $result;
-		$upload_success = false;
-		if(!empty($result)){
-			$this->session->set_userdata('gdrive_folder',$result);
-			$this->mainmodel->updateAccountWithRefNo($ref_no,array('gdrive_id'=>$result));
-		}
-		if(!empty($checkRequirement)){
-			$this->mainmodel->updateRequirementLog(array(
-				'requirements_name' => 'proof_of_payment',
-				'requirements_date' => date("Y-m-d H:i:s"),
-				'status' => 'pending',
-				'reference_no' => $ref_no,
-				'file_submitted' => $uploaded_data['orig_name'],
-				'file_type' => $uploaded_data['file_type'],
-				// 'path_id' => empty($getId)?'':$getId
-			),'proof_of_payment');
-		}
-		else{
-			$this->mainmodel->newRequirementLog(array(
-				'requirements_name' => 'proof_of_payment',
-				'requirements_date' => date("Y-m-d H:i:s"),
-				'status' => 'status',
-				'reference_no' => $ref_no,
-				'file_submitted' => $orig_name,
-				'file_type' => $orig_type,
-				// 'path_id' => empty($getId)?'':$getId
-			));
-		}
+		
 		$files = glob('express/assets/*'); // get all file names
 		foreach($files as $file){
 			if(in_array($file, $array_filestodelete)){

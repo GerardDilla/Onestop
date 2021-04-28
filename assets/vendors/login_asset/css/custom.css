@@ -221,7 +221,7 @@ color:#85b4f2
       max-width:100%;
       width:100%;
   }
-  .login-page .form-holder .info{
+  /* .login-page .form-holder .info{
     height:300px;
   }
   .first_row{
@@ -238,7 +238,7 @@ color:#85b4f2
     top:30%;
   }
   .logo-white{
-  }
+  } */
 }
 @media screen and (max-width: 2000px) {
   #modal.my_modal{
@@ -317,6 +317,9 @@ color:#85b4f2
   }
 }
 @media screen and (max-width: 280px) {
+  /* h1{
+    color:red;
+  } */
   .dose-logo{
     width:150px;
     height:auto;
@@ -327,6 +330,9 @@ color:#85b4f2
   .logo-white{
     height:65px;
     width:auto;
+  }
+  .login-row .form.d-flex{
+    width:100%;
   }
 }
 @media screen and (min-width:992px){
@@ -346,4 +352,55 @@ color:#85b4f2
   .container {
       max-width: 100%;
   }
+}
+@media only screen and (device-width: 768px) {
+  /* For general iPad layouts */
+  .form-holder .row.bg-white{
+    height:auto;
+  }
+  .page.login-page {
+    height:1000px;
+  }
+  .first_row{
+    height: 50vh;
+    max-height:50vh;
+  }
+  .second_row{
+    max-height:600px;
+  }
+}
+@media only screen and (device-width: 1024px) {
+  /* For general iPad layouts */
+  .enrollment{
+    font-size:3em;
+  }
+  .made_easy{
+    font-size:3em;
+  }
+  /* .first_row{
+    height: 69vh;
+  }
+  .second_row{
+    height:500px;
+  } */
+  h1{
+    color:blue;
+  }
+  .form-holder .row.bg-white{
+    height:auto;
+  }
+  .page.login-page {
+    height:1300px;
+  }
+  .first_row{
+    height: 60vh;
+    /* max-height:65vh; */
+  }
+  .second_row{
+    max-height:600px;
+  }
+  /* .form-holder .row.bg-white{
+    height:1000px;
+  } */
+  
 }

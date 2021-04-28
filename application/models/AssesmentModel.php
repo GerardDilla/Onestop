@@ -78,7 +78,7 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
-    public function upadte_course_by_reference_number($array)
+    public function update_course_by_reference_number($array)
     {
         $data = array(
             'Course' => $array['course'],

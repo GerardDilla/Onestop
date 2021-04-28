@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.material.min.css">
 <script src="<?php echo base_url('assets/vendors/login_asset/js/jquery.min.js'); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
 <style>
     /* sticky sidenav responsive to content */
     #sidebar {

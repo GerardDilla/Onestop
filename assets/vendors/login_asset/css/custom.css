@@ -112,25 +112,12 @@ a.btn-default:hover{
 }
 div.login-page{
   /* background:url('img/red_bg1.png'); */
-  /* background:#333; */
+  background:white;
 }
 input.input-material{
   background:transparent;
 }
-input::-ms-reveal,
-input::-ms-clear {
-  display: none;
-}
-span.show-password{
-  position:absolute;
-  right:15px;
-  transform:translate(0,-50%);
-  top:50%;
-  cursor:pointer;
-}
-span.show-password:hover{
-color:#85b4f2
-}
+
 
 .login-row .form.d-flex{
   /* border:2px solid #E02424; */
@@ -215,6 +202,20 @@ color:#85b4f2
 }
 .container.form.d-flex.align-items-center{
   margin-right:0;
+}
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+span.show-password{
+  position:absolute;
+  right:15px;
+  transform:translate(0,-50%);
+  top:50%;
+  cursor:pointer;
+}
+span.show-password:hover{
+color:#85b4f2
 }
 @media (pointer:none), (pointer:coarse) {
   #modal.my_modal{
@@ -312,6 +313,9 @@ color:#85b4f2
   }
 }
 @media screen and (max-width: 360px) {
+  span.show-password{
+    right:1px;
+  }
   .login-page .container{
     padding:0;
   }
@@ -383,9 +387,9 @@ color:#85b4f2
   .second_row{
     height:500px;
   } */
-  h1{
+  /* h1{
     color:blue;
-  }
+  } */
   .form-holder .row.bg-white{
     height:auto;
   }
@@ -404,3 +408,17 @@ color:#85b4f2
   } */
   
 }
+/* @media only screen and (device-width: 640px) {
+  .first_row{
+    height:50vh;
+    max-height: 50vh;
+    
+  }
+  .login-page .form-holder .info, .login-page .form-holder .form{
+    height:1500px;
+  }
+  .form-holder .row.bg-white{
+    height:auto;
+  }
+} */
+

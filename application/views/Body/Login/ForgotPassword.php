@@ -42,7 +42,7 @@ echo '});</script>';
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
         <div class="row bg-white">
-        <div class="col-lg-6 col-md-6 first_row login-row">
+        <div class="col-lg-6 col-md-6 col-sm-12 first_row login-row">
             <!-- <div class="info d-flex align-items-center">
             <div class="content title-content">
                 <div class="logo">
@@ -52,7 +52,7 @@ echo '});</script>';
             </div> -->
             <span class="enrollment">Enrollment</span>
             <span class="made_easy">MADE EASY!</span>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
         </div>
         <!-- Form Panel    -->
         <div class="col-lg-6 col-md-6 col-sm-12 second_row login-row">

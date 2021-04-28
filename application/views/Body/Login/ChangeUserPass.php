@@ -27,7 +27,7 @@ if($this->session->flashdata('error')!=''){
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
         <div class="row bg-white">
-        <div class="col-lg-6 col-md-12 first_row login-row">
+        <div class="col-lg-6 col-md-6 col-sm-6 first_row login-row">
             <!-- <div class="info d-flex align-items-center">
             <div class="content title-content">
                 <div class="logo">
@@ -41,7 +41,7 @@ if($this->session->flashdata('error')!=''){
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         </div>
         <!-- Form Panel    -->
-        <div class="col-lg-6 col-md-12 second_row login-row">
+        <div class="col-lg-6 col-md-6 col-sm-6 second_row login-row">
             <div class="form d-flex bg-white">
             <div class="content">
                 <form method="post" id="form_process" class="form-validate" action="<?php echo base_url('main/changeUserPassProcess');?>">

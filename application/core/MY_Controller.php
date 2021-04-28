@@ -18,7 +18,7 @@ class MY_Controller extends CI_Controller
                 $this->load->library('session');
                 $this->load->database();
                 $this->load->model('MainModel', 'mainmodel');
-                $this->load->model('AssesmentModel');
+                // $this->load->model('AssesmentModel');
                 $this->load->library('encryption');
                 $this->load->library('pagination');
 

@@ -24,8 +24,8 @@ class temp_api extends CI_Controller
 
 
 		#Temporary Keys
-		$this->reference_number = '14174';
-		$this->student_number = '20122411';
+		$this->reference_number = $this->session->userdata('reference_no');
+		$this->student_number = $this->session->userdata('reference_no');
 
 		#Temporary Legends : Must be auto generated
 		$this->legend_sy = '2019-2020';

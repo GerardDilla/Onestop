@@ -27,6 +27,7 @@ class Main extends MY_Controller
 	{
 		$this->session->set_userdata(array(
 			'reference_no' =>  $data['reference_no'],
+			'student_no' =>  $data['reference_no'],
 			'first_name' => $data['First_Name'],
 			'middle_name' => $data['Middle_Name'],
 			'last_name' => $data['Last_Name'],
@@ -163,10 +164,6 @@ class Main extends MY_Controller
 	public function setupUserPass($key = '')
 	{
 		$this->login_template($this->view_directory->forgotPassword());
-	}
-	public function changePassword()
-	{
-		$this->login_template($this->view_directory->changePassword());
 	}
 	public function selfassesment()
 	{

@@ -12,7 +12,6 @@
 <body>
 
     <div id="app">
-
         <!-- Sidebar Content -->
         <?php if ($Sidenav) echo $Sidenav; ?>
 

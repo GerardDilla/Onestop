@@ -33,14 +33,14 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="<?php echo base_url('main/validationOfDocuments') ?>" class='sidebar-link'>
-                        <i class="bi bi-map-fill"></i>
+                        <i class="bi bi-card-checklist"></i>
                         <span>Requirements</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
                     <a href="<?php echo base_url('main/uploadProofOfPayment') ?>" class='sidebar-link'>
-                        <i class="bi bi-map-fill"></i>
+                        <i class="bi bi-credit-card-fill"></i>
                         <span>Proof of Payment</span>
                     </a>
                 </li>

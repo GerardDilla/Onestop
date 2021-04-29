@@ -41,24 +41,26 @@ echo '});</script>';
 <div class="page login-page">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
-        <div class="row">
-        <div class="col-lg-6 col-md-12 first_row login-row">
-            <div class="info d-flex align-items-center">
+        <div class="row bg-white">
+        <div class="col-lg-6 col-md-6 col-sm-12 first_row login-row">
+            <!-- <div class="info d-flex align-items-center">
             <div class="content title-content">
                 <div class="logo">
                 <image class="logo-white anim1" src="<?php echo base_url('assets/vendors/login_asset/img/DOSE_FINAL DESIGN.png');?>">
                 </div>
-                <!-- <h1 class="main-title anim1">
-                    One Stop Enrollment
-                </h1> -->
             </div>
-            </div>
+            </div> -->
+            <span class="enrollment">Enrollment</span>
+            <span class="made_easy">MADE EASY!</span>
+            <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
         </div>
         <!-- Form Panel    -->
-        <div class="col-lg-6 col-md-12 second_row login-row">
-            <div class="form d-flex" style="background:transparent">
+        <div class="col-lg-6 col-md-6 col-sm-12 second_row login-row">
+            <div class="form d-flex bg-white" style="background:transparent">
             <div class="content">
                 <form method="post" class="form-validate" action="<?php echo base_url('main/sendEmail');?>">
+                <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
+                <span class="white-box"></span>
                 <div class="col-md-12" style="margin-bottom:40px">
                     <h1 class="anim2">Forgot Password</h1>
                 </div>
@@ -71,11 +73,11 @@ echo '});</script>';
                     <label for="login-email" class="label-material" style="color:black;font-weight:bold;">Email</label>
                 </div>
                 <div align="right">
-                    <button id="submit" type="submit" class="btn btn-info submit-button">Submit</button>
+                <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default btn-sm leave_button" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>&nbsp;<button id="submit" type="submit" class="btn btn-danger btn-sm submit-button">Submit</button>
                 </div>
-                <div style="bottom:2;position:absolute;">
-                    <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default leave_button" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>
-                </div>
+                <!-- <div style="bottom:2;position:absolute;">
+                    
+                </div> -->
                 </form>
             </div>
             </div>

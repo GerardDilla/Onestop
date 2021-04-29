@@ -85,7 +85,23 @@ else{
     </div>
 </div>
 <script>
+class StorageData{
+    constructor(){
+        this.data = [];
+    }
+    getData(){
+        return this.data;
+    }
+    changeData(changedata){
+        this.data = changedata;
+    }
+}
 var image_upload = "";
+var storagedata = new StorageData();
+// OnloadImage();
+// setTimeout(()=>{
+//     console.log('Link:'+storagedata.getData());
+// },7000)
 // var image_url = "";
 $('#proof_of_payment_form').on('submit',function(e){
     e.preventDefault();
@@ -155,6 +171,7 @@ async function getImageLink(id){
             dataType:'json',
             success: function(response) {
                 resolve(`https://drive.google.com/uc?export=view&id=${response}`);
+                // storagedata
             },
             error: function(response) {
                 reject(response);
@@ -178,7 +195,7 @@ function OnloadImage(){
         onClose : function() {}
     });
     setTimeout(() => {
-        getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');console.log(link)}).catch(error=>console.log(error));
+        getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');storagedata.changeData(link);}).catch(error=>console.log(error));
     }, 3000);
     
 }
@@ -186,11 +203,15 @@ function viewImage(){
     $('#view_image').iziModal('open');
     $('#view_image').iziModal('setTitle',"<b>Proof of Payment:</b>");
 }
-
+var img = document.querySelector(".uploaded-image img"); 
+    // $('.image-uploader.has-files .uploaded-image').css('height',img.height)
+    // $('.image-uploader.has-files .uploaded-image').css('width',img.width)
+// console.log(img);
 $(window).resize(function(){
     var img = document.querySelector(".uploaded-image img"); 
     $('.image-uploader.has-files .uploaded-image').css('height',img.height)
     $('.image-uploader.has-files .uploaded-image').css('width',img.width)
+    // console.log(img.height);
 })
 $('#upload_form').on('submit',function(e){
     e.preventDefault();

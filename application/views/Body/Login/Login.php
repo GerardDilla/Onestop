@@ -36,24 +36,30 @@ else if($this->session->flashdata('success')!=''){
 <div class="page login-page page-1">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
-        <div class="row">
-        <div class="col-lg-6 col-md-12 first_row login-row">
-            <div class="info d-flex align-items-center">
+        <div class="row bg-white">
+        <div class="col-lg-6 col-md-6 col-sm-6 first_row login-row">
+            <!-- <div class="info d-flex align-items-center">
             <div class="content title-content">
                 <div class="logo">
                 <image class="logo-white anim1" src="<?php echo base_url('assets/vendors/login_asset/img/DOSE_FINAL DESIGN.png');?>">
                 </div>
-                <!-- <h1 class="main-title anim1">One Stop Enrollment</h1> -->
+                <h1 class="main-title anim1">One Stop Enrollment</h1>
             </div>
-            </div>
+            </div> -->
+            
+            <span class="enrollment">Enrollment</span>
+            <span class="made_easy">MADE EASY!</span>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         </div>
         <!-- Form Panel    -->
-        <div class="col-lg-6 col-md-12 second_row login-row" style="background:transparent">
-            <div class="form d-flex" style="background:transparent">
+        <div class="col-lg-6 col-md-6 col-sm-6 second_row login-row bg-white" >
+            <div class="form d-flex">
             <div class="content">
                 <form method="post" class="form-validate" action="<?php echo base_url('main/loginProcess')?>">
-                <div class="col-md-12" style="margin-bottom:20px">
-                    <h1 class="anim2">Sign In & Out</h1>
+                <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
+                <span class="white-box"></span>
+                <div class="col-md-12" style="margin-bottom:20px;text-align:center;">
+                    <h1 class="anim2">SIGN IN</h1>
                 </div>
                 <div class="form-group anim3">
                     <input required autocomplete="off" id="login-username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
@@ -70,11 +76,12 @@ else if($this->session->flashdata('success')!=''){
                     
                     
                 </div>
-                <div align="right">
-                    <button id="login" type="submit" class="btn btn-info submit-button">Login</button>
+                <h5><a href="javascript:void(0)" onclick="forgotPassword2()" class="forgot-pass leave_button">Forgot Password?</a></h5>
+                <div align="center" style="margin-top:20px;">
+                    <button id="login" type="submit" class="btn btn-danger btn-sm submit-button">Login</button>
                 </div>
                 <div class="col-md-12">
-                <h2><a href="javascript:void(0)" onclick="forgotPassword2()" class="forgot-pass leave_button">Forgot Password?</a></h2>
+                
                 </div>
                 </form>
             </div>

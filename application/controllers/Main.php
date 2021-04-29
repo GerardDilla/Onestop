@@ -25,6 +25,7 @@ class Main extends MY_Controller
 	{
 		$this->session->set_userdata(array(
 			'reference_no' =>  $data['reference_no'],
+			'Student_Number' =>  $data['Student_Number'],
 			'first_name' => $data['First_Name'],
 			'middle_name' => $data['Middle_Name'],
 			'last_name' => $data['Last_Name'],
@@ -37,6 +38,7 @@ class Main extends MY_Controller
 			'student_folder' => $data['folder_name'],
 			'gdrive_folder' => $data['gdrive_id']
 		));
+		// echo json_encode($data);
 	}
 	public function email($cp, $from, $from_name, $send_to, $subject, $message)
 	{
@@ -246,18 +248,18 @@ class Main extends MY_Controller
 	public function wizard_tracker_status()
 	{
 		$ref_no = $this->input->post('Reference_Number');
-		$status = $this->AssesmentModel->tracker_status();
-		$data['registration'] = 0;
-		$data['advising'] = 0;
-		$data['student_information'] = 0;
+		$status = $this->AssesmentModel->tracker_status($ref_no);
+		// $data['registration'] = 0;
+		// $data['advising'] = 0;
+		// $data['student_information'] = 0;
 
-		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
-		// 	$data['registration'] = 1;
-		// } else if ($status['Ref_Num_ftc'] != null) {
-		// 	$data['advising'] = 1;
-		// } else {
-		// 	$data['student_information'] = 1;
-		// }
+		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+			$data['registration'] = 1;
+		} else if ($status['Ref_Num_ftc'] != null) {
+			$data['advising'] = 1;
+		} else {
+			$data['student_information'] = 1;
+		}
 		echo json_encode($data);
 		// return json_encode($data);
 	}

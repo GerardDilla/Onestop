@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     function fetch_user_status() {
         base_url = $("#assessment_section").data("baseurl");
-        reference_number = "1";
+        reference_number = "14174";
         $("tab_registration").removeAttr("class");
         $("tab_advising").removeAttr("class");
         $("tab_student_information").removeAttr("class");

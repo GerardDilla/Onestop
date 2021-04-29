@@ -116,6 +116,14 @@
             </li>
             <li><a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a><br></li>
             <li><button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#cashierPayment">OVER THE COUNTER</button><br></li>
+            <li>
+                <hr>
+                <h4>Already Paid?</h4>
+            </li>
+            <li>
+                <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" target=="_blank" type="button" class="btn btn-lg btn-primary">UPLOAD PROOF OF PAYMENT</a>
+            </li>
+            <li style="text-align:center"><img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>
         </ul>
 
     </div>

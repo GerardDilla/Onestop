@@ -247,18 +247,22 @@ class Main extends MY_Controller
 	// Waiting For Datas but Working
 	public function wizard_tracker_status()
 	{
-		$ref_no = $this->input->post('Reference_Number');
+		// $ref_no = $this->input->post('Reference_Number');
+		$ref_no = $this->session->userdata('reference_no');
 		$status = $this->AssesmentModel->tracker_status($ref_no);
-		// $data['registration'] = 0;
-		// $data['advising'] = 0;
-		// $data['student_information'] = 0;
+		// $data['registration'] = 1;
+		// $data['advising'] = 1;
+		// $data['student_information'] = 1;
+
 
 		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
 			$data['registration'] = 1;
 		} else if ($status['Ref_Num_ftc'] != null) {
 			$data['advising'] = 1;
-		} else {
+		} else if ($status['Course'] != null) {
 			$data['student_information'] = 1;
+		} else {
+			$data['student_information'] = 0;
 		}
 		echo json_encode($data);
 		// return json_encode($data);
@@ -328,6 +332,10 @@ class Main extends MY_Controller
 			);
 			$update = $this->AssesmentModel->update_course_by_reference_number($array);
 			if ($update) {
+
+				$this->assign_section($array);
+				$this->assign_curriculum($array);
+
 				echo json_encode(array(
 					'title' => 'Success',
 					'body' => 'Course successfully updated.',

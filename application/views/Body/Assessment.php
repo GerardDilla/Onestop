@@ -91,6 +91,11 @@ if ($this->session->flashdata('success') != "") {
                             </div>
                         </div>
 
+                        <div class="col-md-12" style="text-align:center">
+                            <hr>
+                            <button type="button" class="btn btn-lg btn-primary wizard-proceed">PROCEED</button>
+                        </div>
+
                         <!-- /Inside Content -->
                         <!-- For Button Next 
                             <div class="wizard-footer">

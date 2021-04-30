@@ -1,20 +1,32 @@
 searchVisible = 0;
 transparent = true;
 $(document).ready(function () {
+
+    $('.wizard-proceed').click(function () {
+
+        // Event handler when proceeding to next step
+        if ($('#advising').hasClass('active')) {
+            console.log('ready to advise');
+            // Came from advising.js
+            init_advise();
+
+        }
+        $('.tab-content .tab-pane').removeClass('active');
+        fetch_user_status();
+
+    });
+
     fetch_user_status();
 
     function fetch_user_status() {
         base_url = $("#assessment_section").data("baseurl");
-        reference_number = "14174";
+        // reference_number = "14174";
         $("tab_registration").removeAttr("class");
         $("tab_advising").removeAttr("class");
         $("tab_student_information").removeAttr("class");
         $.ajax({
             type: "POST",
             url: base_url + "main/wizard_tracker_status",
-            data: {
-                Reference_Number: reference_number,
-            },
             success: function (response) {
                 // alert(response);
                 result = JSON.parse(response);

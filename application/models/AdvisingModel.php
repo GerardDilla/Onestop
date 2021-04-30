@@ -267,4 +267,11 @@ class AdvisingModel extends CI_Model
         $this->db->reset_query();
         return $result->result_array();
     }
+
+    public function get_latest_section($refnumber)
+    {
+
+        #check latest enrolled section
+        
+    }
 }

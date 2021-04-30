@@ -27,6 +27,10 @@ class temp_api extends CI_Controller
 		$this->reference_number = $this->session->userdata('reference_no');
 		$this->student_number = $this->session->userdata('Student_Number');
 
+		// $this->AdvisingModel->get_latest_section($this->reference_number)
+		$this->section = $this->AdvisingModel->get_latest_section($this->reference_number);
+		$this->curriculum = '';
+
 		#Temporary Legends : Must be auto generated
 		$this->legend_sy = '2019-2020';
 		$this->legend_sem = 'FIRST';
@@ -128,6 +132,7 @@ class temp_api extends CI_Controller
 			'section' => $this->section
 		);
 		$array_fees = $this->display_fee($array_data);
+
 
 		#Checker if all needed data is complete
 		// if ($array_fees == NULL) {
@@ -594,6 +599,8 @@ class temp_api extends CI_Controller
 
 	public function temporary_regform_ajax()
 	{
+
+
 		$reference_number = $this->reference_number;
 		if ($reference_number != '') {
 
@@ -605,7 +612,10 @@ class temp_api extends CI_Controller
 				'refnum' => $this->reference_number
 			);
 			$data['get_Advise'] = $this->RegFormModel->Get_advising_ajax($array);
-
+			if (empty($data['get_Advise'])) {
+				echo '0';
+				die();
+			}
 			foreach ($data['get_Advise']  as $row) {
 				$section         = $row->Section_Name;
 				$course        = $row->Course;
@@ -667,5 +677,17 @@ class temp_api extends CI_Controller
 			// echo json_encode($data);
 		}
 		$this->load->view('Body/AssessmentContent/AssessmentForm', $data);
+	}
+	private function assign_curriculum($param)
+	{
+	}
+	private function assign_section($param)
+	{
+		echo 'test';
+		#Get Program ID
+
+		#Check if new student or old
+
+		#Get Section Based on recently taken section
 	}
 }

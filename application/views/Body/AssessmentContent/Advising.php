@@ -130,7 +130,7 @@
     </div>
 </div>
 
-<div class="col-md-12" style="text-align:center">
+<!-- <div class="col-md-12" style="text-align:center">
     <hr>
     <button type="button" id="advise_button" class="btn btn-lg btn-primary">PROCEED</button>
-</div>
+</div> -->

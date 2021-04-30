@@ -56,10 +56,12 @@ function init_assessmentform() {
     result = ajax_assessmentform();
     result.success(function (response) {
 
-        response = JSON.parse(response);
-        console.log('-----------');
-        console.log(response);
-        assessmentform_renderer(response);
+        if (response != false) {
+            response = JSON.parse(response);
+            console.log('-----------');
+            assessmentform_renderer(response);
+        }
+
     });
 
 }
@@ -405,7 +407,6 @@ function assessmentform_renderer(resultdata = []) {
 function assessment_exporter(url) {
 
     exportpage = window.open(url, '_blank');
-    // exportpage;
 }
 
 function get_militarytime() {

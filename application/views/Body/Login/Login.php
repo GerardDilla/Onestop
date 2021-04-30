@@ -33,6 +33,19 @@ else if($this->session->flashdata('success')!=''){
     $this->session->set_flashdata('success','');
 }
 ?>
+<style>
+    @media screen (pointer:coarse) and (orientation: landscape) {
+        html {
+            transform: rotate(-90deg);
+            transform-origin: left top;
+            /* width: 100vh;
+            overflow-x: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0; */
+        }
+    }
+</style>
 <div class="page login-page page-1">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
@@ -55,7 +68,7 @@ else if($this->session->flashdata('success')!=''){
         <div class="col-lg-6 col-md-6 col-sm-6 second_row login-row bg-white" >
             <div class="form d-flex">
             <div class="content">
-                <form method="post" class="form-validate" action="<?php echo base_url('main/loginProcess')?>">
+                <form method="post" class="form-validate" action="<?php echo base_url('main/loginProcess')?>" tabindex="1">
                 <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
                 <span class="white-box"></span>
                 <div class="col-md-12" style="margin-bottom:20px;text-align:center;">
@@ -92,6 +105,9 @@ else if($this->session->flashdata('success')!=''){
     </div>
     </div>
 </div>
+<!-- <div> -->
+
+
 <script>
 $('form').on('submit',function(){
     var count = 0;
@@ -104,9 +120,9 @@ $('form').on('submit',function(){
         $('#login').attr('disabled','disabled');
     }
 });
-$('#show_'+id).toggle(4000,function(){
-        alert('toggled')
-    });
+// $('#show_'+id).toggle(4000,function(){
+//     alert('toggled')
+// });
 function showPassword(id){
     var x = document.querySelector(`[name=${id}]`);
     var icon = document.getElementById('show_'+id);
@@ -122,6 +138,8 @@ function showPassword(id){
     }
 }
 function closeAnimation(){
+    // console.log('dito')
+    // $('#amazing').css('display','');
     var playPause = anime({
     targets: '#amazing path',
     strokeDashoffset: [anime.setDashoffset, 0],
@@ -130,24 +148,37 @@ function closeAnimation(){
     delay: function(el, i) { return i * 200 },
     direction: 'normal',
     // loop: true,
-    autoplay:true,
+    autoplay:false,
         begin: function(anim) {
-            goToLink();
-            var interval2 = window.setInterval(function(){
-                // goToLink();
-            clearInterval(interval2);  
-            },1000);
+            // goToLink();
+            setTimeout(() => {
+                goToLink();
+            }, 3000);
+            // (function(){
+                
+            // clearInterval(interval2);  
+            // },000);
         }
     });
-    playPause.play();
+    // playPause.play();
     gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    var t1 = gsap.timeline();
-    t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
-    $('.transition-effect').css('z-index','1001');
-    $('#amazing').css('z-index','1002');
+    setTimeout(() => {
+        goToLink()
+    }, 2000);
+    if( /Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        
+    }
+    else{
+        var t1 = gsap.timeline();
+        t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
+        $('.transition-effect').css('z-index','1001');
+        $('#amazing').css('z-index','1002');
+        playPause.play();
+        // console.log('mobile')
+    }
 }
 function goToLink(){
     window.location.replace("<?php echo base_url('main/forgotpassword')?>");

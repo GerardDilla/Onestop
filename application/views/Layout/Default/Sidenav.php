@@ -3,7 +3,7 @@
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
                 <div class="logo">
-                    <a href="index.html"><img src="<?php echo base_url('assets/images/logo/sdcalogo.png');?>" alt="Logo" srcset=""></a>
+                    <a href="index.html"><img src="<?php echo base_url('assets/images/logo/DOSE LOGO.png');?>" alt="Logo" srcset=""></a>
                     <hr>
                     <h6 style="text-align: center;">ADMISSIONS PORTAL</h6>
                 </div>

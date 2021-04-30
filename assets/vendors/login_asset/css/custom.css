@@ -408,6 +408,32 @@ color:#85b4f2
   } */
   
 }
+@media only screen  and  (device-height: 768px) and (device-width: 1024px) {
+  /* h1{color:green} */
+  .login-page .container{
+    height:auto;
+  }
+  .page.login-page{
+    height:768px;
+  }
+}
+@media only screen  and  (device-height: 375px) and (device-width: 812px) {
+  .page.login-page{
+    height:600px;
+  }
+  .login-page .container{
+    height:auto;
+  }
+  .first_row{
+    margin:0;
+  }
+  .second_row{
+    height:600px;
+  }
+  .form-holder .row.bg-white{
+    height:600px;
+  }
+}
 /* @media only screen and (device-width: 640px) {
   .first_row{
     height:50vh;

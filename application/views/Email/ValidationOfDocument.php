@@ -32,13 +32,30 @@
                 </tr>
             <thead>
             <tbody style="text-align:center">
-                <?php foreach($requirements as $list){?>
+              <?php foreach($requirements as $list){
+                        if($list['id_name']!='marriage_certificate'){
+                ?>
                 <tr>
                     <td><?php echo $list['name'];?></td>
                     <td><?php echo $list['status'];?></td>
                     <td><?php echo $list['req_date'];?></td>
                 </tr>
-                <?php } ?>
+                <?php 
+                        }
+                        else{
+                            if($list['if_married']==1){
+                                
+                ?>
+                    <tr>
+                        <td><?php echo $list['name'];?></td>
+                        <td><?php echo $list['status'];?></td>
+                        <td><?php echo $list['req_date'];?></td>
+                    </tr>
+                <?php
+                            }
+                        }
+                    } 
+                ?>
             </tbody>
         </table>
     </body>

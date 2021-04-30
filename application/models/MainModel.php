@@ -80,7 +80,7 @@ class MainModel extends CI_Model {
     }
     public function getRequirementsLogPerRefNo(){
         $ref_no = $this->session->userdata('reference_no');
-        $this->db->select('requirements_log.*,requirements.rq_name');
+        $this->db->select('requirements_log.*,requirements.rq_name,requirements.id_name');
         $this->db->from('requirements_log');
         $this->db->join('requirements','requirements_log.requirements_name = requirements.id_name','left');
         $this->db->where('reference_no',$ref_no);
@@ -91,4 +91,5 @@ class MainModel extends CI_Model {
         $this->db->where($col,$value);
         return $this->db->get('student_account')->row_array();
     }
+    
 }

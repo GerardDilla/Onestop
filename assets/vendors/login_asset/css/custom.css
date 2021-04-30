@@ -416,6 +416,9 @@ color:#85b4f2
   .page.login-page{
     height:768px;
   }
+  .made_easy{
+    font-size: 2em;
+  }
 }
 @media only screen  and  (device-height: 375px) and (device-width: 812px) {
   .page.login-page{
@@ -432,6 +435,30 @@ color:#85b4f2
   }
   .form-holder .row.bg-white{
     height:600px;
+  }
+}
+@media only screen  and  (device-height: 360px) and (device-width: 640px) {
+  .page.login-page{
+    height:400px;                                                                                                                   00px;
+  }
+  .login-page .container{
+    height:auto;
+  }
+  .first_row{
+    margin:0;
+  }
+  .second_row{
+    height:600px;
+    font-size: 70%;
+  }
+  .form-holder .row.bg-white{
+    height:auto;
+  }
+  .login-page .form-holder .info, .login-page .form-holder .form{
+    padding: 0px 40px 0px 40px;
+  }
+  .login-row .form.d-flex{
+    margin:0px auto 0px auto;
   }
 }
 /* @media only screen and (device-width: 640px) {

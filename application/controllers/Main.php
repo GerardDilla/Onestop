@@ -423,6 +423,7 @@ class Main extends MY_Controller
 			$checkRequirement = $this->mainmodel->checkRequirement($list['id_name']);
 			$getRequirementsList[$count]['status'] = empty($checkRequirement['status']) ? '' : $checkRequirement['status'];
 			$getRequirementsList[$count]['date'] = empty($checkRequirement['requirements_date']) ? '' : date("M. j,Y g:ia", strtotime($checkRequirement['requirements_date']));
+			$getRequirementsList[$count]['if_married'] = empty($checkRequirement['if_married']) ? '0' : $checkRequirement['if_married'];
 			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
 			++$count;
 		}
@@ -504,13 +505,12 @@ class Main extends MY_Controller
 					$orig_name = empty($uploaded_data['orig_name']) ? '' : $uploaded_data['orig_name'];
 				}
 				if (!empty($checkRequirement)) {
-					// $getRequirementsLog = $this->mainmodel->getRequirementsLog($r);
 					if ($checkRequirement['status'] == "to be follow") {
 						$this->mainmodel->updateRequirementLog(array(
 							'requirements_date' => date("Y-m-d H:i:s"),
 							'file_submitted' => $orig_name,
 							'file_type' => $file_type,
-							'status' => 'pending'
+							'status' => 'pending',
 						), $id_name);
 					}
 					$row = $row . "<tr><td>" . $checkRequirement['requirements_name'] . "</td><td>" . date("M. j,Y g:ia") . "</td></tr>";
@@ -521,11 +521,10 @@ class Main extends MY_Controller
 						'status' => $req_status,
 						'reference_no' => $ref_no,
 						'file_submitted' => $orig_name,
-						'file_type' => $file_type
+						'file_type' => $file_type,
+						'if_married' => $id_name=='marriage_certificate'?$this->input->post('if_married'):0
 					));
 				}
-
-
 				// 
 
 			}
@@ -535,10 +534,14 @@ class Main extends MY_Controller
 					array_push($array_completefiles,array(
 						"name" => $reqloglist['rq_name'],
 						"status" => $reqloglist['status'],
-						"req_date" => $reqloglist['requirements_date']
+						"req_date" => $reqloglist['requirements_date'],
+						"id_name" => $reqloglist['id_name'],
+						"if_married" => $reqloglist['if_married']
 					));
 				}
 			}
+			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
+			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
 
 			$string = http_build_query($all_uploadeddata);
@@ -718,4 +721,5 @@ class Main extends MY_Controller
 		}
 		echo json_encode($result);
 	}
+	
 }

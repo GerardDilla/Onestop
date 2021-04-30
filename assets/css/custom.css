@@ -25,3 +25,13 @@ div#main{
     background:white;
 }
  */
+.paymentbullet li{
+    list-style-type:none;
+    margin:10px;
+}
+.paymentbullet li button{
+    width:100% !important;
+}
+.paymentbullet li a{
+    width:100% !important;
+}

@@ -47,7 +47,7 @@ composer.lock
 *.sublime-workspace
 *.sublime-project
 
-
+express/node_modules
 application/config/database.php
 application/config/config.php
 application/config/config.php

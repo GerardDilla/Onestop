@@ -1,3 +1,43 @@
+<?php
+echo '<script> $(document).ready(function(){';
+if($this->session->flashdata('msg')!=''){
+    echo "
+    var error = window.setInterval(function(){
+    iziToast.warning({
+        title: 'Error: ',
+        message: '".$this->session->flashdata('msg')."',
+        position: 'topCenter',
+    });
+    clearInterval(error);
+    },500);
+    ";
+    $this->session->set_flashdata('msg','');
+}
+else if($this->session->flashdata('success')!=''){
+    echo "
+    var success = window.setInterval(function(){
+        iziToast.show({
+        icon: 'bi bi-check2-square',
+        title: 'Success',
+        message: `".$this->session->flashdata('success')."`,
+        position: 'topCenter',
+        progressBarColor: '#cc0000',
+        onClosing: function(instance, toast, closedBy){
+        },
+        onClosed: function(instance, toast, closedBY){
+            // alert('closed');
+            back();
+        }
+    });
+    clearInterval(success);
+    },500);
+    ";
+    $this->session->set_flashdata('success','');
+}
+echo '});</script>';
+?>
+
+    </script>
 <div class="page login-page">
     <div class="container d-flex align-items-center">
     <div class="form-holder has-shadow">
@@ -8,20 +48,17 @@
                 <div class="logo">
                 <image class="logo-white anim1" src="<?php echo base_url('assets/vendors/login_asset/img/DOSE_FINAL DESIGN.png');?>">
                 </div>
-                <h1 class="main-title anim1">
+                <!-- <h1 class="main-title anim1">
                     One Stop Enrollment
-                <!-- Steps to reset password<br><br> -->
-                <!-- <font class="steps">1. Type your email in Forgot Password page.</font><br>
-                <font class="steps">1. Type your email in Forgot Password page.</font><br> -->
-                </h1>
+                </h1> -->
             </div>
             </div>
         </div>
         <!-- Form Panel    -->
-        <div class="col-lg-6 col-md-12 bg-white second_row login-row">
-            <div class="form d-flex">
+        <div class="col-lg-6 col-md-12 second_row login-row">
+            <div class="form d-flex" style="background:transparent">
             <div class="content">
-                <form method="post" class="form-validate">
+                <form method="post" class="form-validate" action="<?php echo base_url('main/sendEmail');?>">
                 <div class="col-md-12" style="margin-bottom:40px">
                     <h1 class="anim2">Forgot Password</h1>
                 </div>
@@ -30,14 +67,14 @@
                     <label for="login-username" class="label-material">User Name</label>
                 </div> -->
                 <div class="form-group">
-                    <input required autocomplete="off" id="login-email" type="text" name="loginPassword" required data-msg="Please enter your password" class="input-material anim3">
+                    <input required autocomplete="off" id="login-email" type="text" name="email" required data-msg="Please enter your email" class="input-material anim3">
                     <label for="login-email" class="label-material" style="color:black;font-weight:bold;">Email</label>
                 </div>
                 <div align="right">
-                    <button id="login" type="submit" class="btn btn-info submit-button">Submit</button>
+                    <button id="submit" type="submit" class="btn btn-info submit-button">Submit</button>
                 </div>
                 <div style="bottom:2;position:absolute;">
-                    <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>
+                    <a href="javascript:void(0)" onclick="back()" type="button" class="btn btn-default leave_button" style="font-weight:bold;"><i class="bi bi-arrow-left-circle"></i> Back</a>
                 </div>
                 </form>
             </div>
@@ -48,27 +85,86 @@
     </div>
 </div>
 <script>
-openEffect();
-function back(){
-    closeEffect();
+$('form').on('submit',function(){
+    var count = 0;
+    $('.input-material').each(function(){
+        if($(this).val()==""){
+            ++count;
+        }
+    })
+    if(count==0){
+        $('#submit').attr('disabled','disabled');
+    }
+});
+function submitForm(){
+    $.ajax({
+        url: "<?php echo base_url('main/sendEmail')?>",
+        method: 'get',
+        data:{
+            'email':$('#login-email').val()
+        },
+        dataType:'json',
+        success: function(response) {
+            if(response.type=='error'){
+                iziToast.warning({
+                    title: 'Error: ',
+                    message: response.msg,
+                    position: 'topCenter',
+                });
+            }
+            else{
+                iziToast.show({
+                    icon: 'bi bi-check2-square',
+                    title: 'Success',
+                    message: response.msg,
+                    position: 'topCenter',
+                    progressBarColor: '#cc0000',
+                    onClosing: function(instance, toast, closedBy){
+                    },
+                    onClosed: function(instance, toast, closedBY){
+                        alert('closed');
+                    }
+                })
+            }
+        },
+        error: function(response) {
+
+        }
+    });
 }
-// function back(){
-//     gsap.from('.page-2',{opacity:0,duration:1,y:-50});
-// }
-function openEffect(){
-    gsap.from('.login-page',{opacity:0,duration:1,y:-50});
-    gsap.from('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.from('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-    gsap.from('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-}
-function goToLink(){
-    window.location.replace("<?php echo base_url('/')?>")
-}
-function closeEffect(){
-    var this_window = window;
+function closeAnimation(){
+    var playPause = anime({
+    targets: '#amazing path',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    easing: 'easeInOutSine',
+    duration: 1000,
+    delay: function(el, i) { return i * 200 },
+    direction: 'normal',
+    // loop: true,
+    autoplay:true,
+        begin: function(anim) {
+            goToLink();
+            var interval2 = window.setInterval(function(){
+            // goToLink();
+            clearInterval(interval2);  
+            },1000);
+        }
+    });
+    playPause.play();
+    gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    gsap.to('.login-page',{opacity:0,duration:1,y:-50,delay:.5,onComplete:function(){goToLink()}});
+    var t1 = gsap.timeline();
+    t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
+    $('.transition-effect').css('z-index','1001');
+    $('#amazing').css('z-index','1002');
+}
+function goToLink(){
+    window.location.replace("<?php echo base_url('/')?>");
+}
+function back(){
+    // goToLink();
+    closeAnimation();
 }
 </script>

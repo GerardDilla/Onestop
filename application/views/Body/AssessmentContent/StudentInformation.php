@@ -119,7 +119,7 @@
 
                 </div>
 
-                <div class="col-md-12 shs-verification">
+                <div class="col-md-12 shs-verification" style="display:none">
                     <br>
                     <div class="form-check">
                         <div class="custom-control custom-checkbox">

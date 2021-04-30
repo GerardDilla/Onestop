@@ -1,5 +1,7 @@
 $(document).ready(function() {
+
     base_url = $('#assessment_section').data('baseurl');
+    // alert(base_url);
     $('input[type=radio][name=eductype]').change(function() {
 
         type = $(this).data('etype');
@@ -34,6 +36,9 @@ $('#shs_student_number').on('change', function() {
         $("input.shsverification").prop("checked", false)
     } else {
         stundent_number_text = $('#shs_student_number').val();
+        if (stundent_number_text.length > 0) {
+            $("#educ_new_student_label").prop("checked", true);
+        }
         $.ajax({
             url: base_url + "main/shs_balance_checker_echo/" + stundent_number_text + "/" + applied_status,
             dataType: "json",
@@ -113,8 +118,12 @@ function submit_course() {
         // console.log(applied_status);
         stundent_number_text = '';
         $("input.shsverification").prop("checked", false)
+    } else if (applied_status == 'freshmen') {
+        $("#educ_new_student_label").prop("checked", true);
     } else {
-        // alert('ayaw');
+        izi_toast('Snap!', 'You did NOT select your STATUS!', 'red');
+        event.preventDefault();
+        return
     }
     if (program_code != 'none') {
         if ($('input.shsverification').is(':checked')) {

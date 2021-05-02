@@ -612,13 +612,16 @@ class Main extends MY_Controller
 		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array('student_info' => $student_info, 'total_amount' => $amount));
 	}
 	public function uploadProofOfPayment(){
-		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-		
+		$checkRequirement = $this->mainmodel->checkRequirementForProofOfPayment('proof_of_payment');
+		// echo '<pre>'.print_r($checkRequirement,1).'</pre>';
+		// exit;
 		if(!empty($checkRequirement)){
 			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
 			$this->data['gdrive_link'] = $checkRequirement['path_id'];
 			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
+			// $this->data['payment_type'] = $checkRequirement['payment_type'];
 		}
+		
 		// print_r($checkRequirement);
 		$this->default_template($this->view_directory->uploadProofOfPayment());
 	}
@@ -668,7 +671,7 @@ class Main extends MY_Controller
 				),'proof_of_payment');
 			}
 			else{
-				$this->mainmodel->newRequirementLog(array(
+				$req_id = $this->mainmodel->newRequirementLog(array(
 					'requirements_name' => 'proof_of_payment',
 					'requirements_date' => date("Y-m-d H:i:s"),
 					'status' => 'status',
@@ -676,6 +679,15 @@ class Main extends MY_Controller
 					'file_submitted' => $orig_name,
 					'file_type' => $orig_type,
 					// 'path_id' => empty($getId)?'':$getId
+				));
+				$this->mainmodel->insertProofOfPayments(array(
+					'req_id' => $req_id,
+					'bank_type' => $this->input->post('bank_type'),
+					'payment_type' => $this->input->post('payment_type'),
+					'acc_num' => $this->input->post('account_number'),
+					'acc_holder_name' => $this->input->post('holder_name'),
+					'payment_reference_no' => $this->input->post('reference_number'),
+					'ref_no' => $ref_no
 				));
 			}
 		}

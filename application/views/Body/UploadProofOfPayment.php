@@ -62,6 +62,48 @@
     .button-3{
 
     } */
+    /* thead,tbody{
+        text-align:center;
+    } */
+    .payment-header{
+        background:#c6c8ca;
+        color:white;
+        /* margin-left:7px; */
+        padding:10px;
+        text-align:center;
+        font-weight:bold;
+    }
+    .payment-body{
+        text-align:center;
+        margin:10px 0px 10px 0px;
+    }
+    /* .payment-header div{
+        padding:10px;
+        text-align:center;
+        font-weight:bold;
+    } */
+    .aub{
+        padding-top:5%;
+    }
+    .rcbc{
+        /* padding-top:20%; */
+        padding-top:5%;
+    }
+    .bdo{
+        padding-top:5%;
+    }
+    .ub{
+        padding-top:5%;
+    }
+    .eastwest{
+        padding-top:5%;
+    }
+    /* @media (max-width:895px){
+        .aub,.rcbc,.bdo,.ub,.eastwest{1
+            padding-top:10px;
+        }
+    } */
+    
 </style>
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
@@ -73,7 +115,7 @@
                 <div class="col-md-6"><h4 id="payment-title" class="payment-page" style="display:none;">Online Payment</h4></div><div class="col-md-6" align="right"><button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button>&nbsp;<button style="display:none;" type="button" class="payment-page btn btn-sm btn-danger" id="submit-button">Submit</button></div>
             </div>
             <div class="col-md-12">
-                <button type="button" class="btn btn-sm btn-info">Upload Proof of Payment</button>
+                <button type="button" class="btn btn-sm btn-warning">Upload Proof of Payment</button>
             </div>
         </div>
         <div class="card-body">
@@ -81,7 +123,42 @@
                 <div class="col-md-12" align="center" style="margin-bottom:10px;">
                     <h4>Type of Payment</h4>
                 </div>
-                <div class="col-md-4" align="center">
+                <div class="col-md-4 col-lg-4 col-sm-12 row" style="margin:0;padding:0;">
+                    <div class="col-md-12 payment-header" ><br></div>
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/aub.png');?>"></div>
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="aub"><strong>120-01-890142-6</strong></p></div>
+
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/rcbc1.png');?>"></div>
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="rcbc"><strong>0013-4500-0867</strong></p></div>
+
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/bdo.png');?>"></div>
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="bdo"><strong>0000-7016-1291</strong></p></div>
+
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/eastwest-bank-logo.png');?>"></div>
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="eastwest"><strong>2000-0065-6417</strong></p></div>
+
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/ub.png');?>"></div>
+                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="ub"><strong>0004-70001-2500</strong></p></div>
+
+                </div>
+                <div class="col-md-4 col-lg-4 col-sm-12" style="margin:0;padding:0;">
+                    <div class="col-md-12 payment-header">Over the Counter</div>
+                    <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/sm-department-store-logo.jpg');?>"></div>
+                    <div class="col-md-12 payment-body" ><p><strong>SM Bacoor</strong></p></div>
+
+                    <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/hypermarket.jfif');?>"></div>
+                    <div class="col-md-12 payment-body" ><p><strong>Imus & Molino</strong></p></div>
+
+                    <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/savemore.png');?>"></div>
+                    <div class="col-md-12 payment-body" ><p><strong>Zapote</strong></p></div>
+                
+                
+                </div>
+                <div class="col-md-4 col-lg-4 col-sm-12" style="margin:0;padding:0;">
+                    <div class="col-md-12 payment-header">SDCA Online Payment</div>
+                    <div class="col-md-12 payment-body"><button class="btn btn-danger">Pay Here</button></div>
+                </div>
+                <!-- <div class="col-md-4" align="center">
                     <button type="button" onclick="choosePayment('online_payment')" class="btn button">Online Payment</button><br>
                     <img class="payment-logo" src="<?php echo base_url('assets/images/bank/aub.png');?>"><br>
                     <img class="payment-logo" src="<?php echo base_url('assets/images/bank/rcbc.png');?>"><br>
@@ -95,11 +172,10 @@
                     <img class="payment-logo" src="<?php echo base_url('assets/images/bank/hypermarket.jfif');?>"><br><strong class="branch">Imus & Molino</strong><br>
                     <img class="payment-logo" src="<?php echo base_url('assets/images/bank/savemore.png');?>"><br><strong class="branch">Zapote</strong>
                     
-                    <!-- hypermarket -->
                 </div>
                 <div class="col-md-4" align="center">
                     <button type="button" onclick="choosePayment('sdca_online_payment')" class="btn button">SDCA Online Payment</button>
-                </div>
+                </div> -->
             </div>
             <div class="col-md-12 row payment-page" style="display:none">
                 <div class="col-md-2 form-group online-payment">

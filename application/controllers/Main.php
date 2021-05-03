@@ -249,7 +249,8 @@ class Main extends MY_Controller
 	{
 		// $ref_no = $this->input->post('Reference_Number');
 		$ref_no = $this->session->userdata('reference_no');
-		$status = $this->AssesmentModel->tracker_status($ref_no);
+		$legend = $this->AdvisingModel->getlegend();
+		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		// $data['registration'] = 1;
 		// $data['advising'] = 1;
 		// $data['student_information'] = 1;

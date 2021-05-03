@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class AssesmentModel extends CI_Model
 {
-    public function tracker_status($ref_no)
+    public function tracker_status($ref_no, $sy, $sem)
     {
         $this->db->select('*,
             si.Reference_Number AS Ref_Num_si,
@@ -16,6 +16,10 @@ class AssesmentModel extends CI_Model
         $this->db->join('Fees_Temp_College ftc', 'si.Reference_Number = ftc.Reference_Number', 'LEFT');
         $this->db->join('Fees_Enrolled_College fec', 'si.Reference_Number = fec.Reference_Number', 'LEFT');
         $this->db->where('si.Reference_Number', $ref_no);
+        $this->db->where('ftc.schoolyear', $sy);
+        $this->db->where('ftc.schoolyear', $sy);
+        $this->db->where('fec.semester', $sem);
+        $this->db->where('fec.semester', $sem);
         $query = $this->db->get();
         // die($query->row_array()['Ref_Num_si']);
         return $query->row_array();

@@ -327,4 +327,16 @@ class AdvisingModel extends CI_Model
         $query = $this->db->get('Curriculum_Info');
         return $query->row_array();
     }
+    public function get_student_curriculum($refnum)
+    {
+        $this->db->select('Curriculum');
+        $this->db->where('Reference_Number', $refnum);
+        $query = $this->db->get('Student_Info');
+        $result = $query->row_array();
+        if (!empty($result)) {
+            return $result['Curriculum'];
+        } else {
+            return false;
+        }
+    }
 }

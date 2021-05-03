@@ -32,9 +32,11 @@ class temp_api extends CI_Controller
 		// $this->curriculum = '';
 
 		#Temporary Legends : Must be auto generated
-		$this->legend_sy = '2019-2020';
-		$this->legend_sem = 'FIRST';
-		$this->curriculum = '236';
+		$legend = $this->AdvisingModel->getlegend();
+		$this->legend_sy = $legend['School_Year'];
+		$this->legend_sem = $legend['Semester'];
+
+		$this->curriculum = $this->AdvisingModel->get_student_curriculum($this->reference_number);
 
 		#Generate current Date
 		$datestring = "%Y-%m-%d %H:%i:%s";

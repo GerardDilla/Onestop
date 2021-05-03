@@ -3,18 +3,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class AssesmentModel extends CI_Model
 {
-    public function tracker_status()
+    public function tracker_status($ref_no, $sy, $sem)
     {
         $this->db->select('*,
             si.Reference_Number AS Ref_Num_si,
             si.Student_Number AS Std_Num_si,
+            si.Course,
             ftc.Reference_Number AS Ref_Num_ftc,
             fec.Reference_Number AS Ref_Num_fec,
         ');
         $this->db->from('Student_Info si');
-        $this->db->join('Fees_Temp_College ftc', 'si.Reference_Number = ftc.Reference_Number', 'LEFT');
-        $this->db->join('Fees_Enrolled_College fec', 'si.Reference_Number = fec.Reference_Number', 'LEFT');
-        $this->db->where('si.Reference_Number', '26066');
+        $this->db->join('Fees_Temp_College ftc', 'si.Reference_Number = ftc.Reference_Number and ftc.schoolyear = "' . $sy . '" and ftc.semester = "' . $sem . '"', 'LEFT');
+        $this->db->join('Fees_Enrolled_College fec', 'si.Reference_Number = fec.Reference_Number and fec.schoolyear = "' . $sy . '" and fec.semester = "' . $sem . '"', 'LEFT');
+        $this->db->where('si.Reference_Number', $ref_no);
         $query = $this->db->get();
         // die($query->row_array()['Ref_Num_si']);
         return $query->row_array();
@@ -78,7 +79,7 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
-    public function upadte_course_by_reference_number($array)
+    public function update_course_by_reference_number($array)
     {
         $data = array(
             'Course' => $array['course'],

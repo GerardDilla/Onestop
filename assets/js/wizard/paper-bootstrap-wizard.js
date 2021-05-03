@@ -50,6 +50,7 @@ $(document).ready(function () {
                 } else if (student_information == 1) {
                     tab_advising();
                     tab_student_information();
+                    init_sectionlist();
                     $("#progress_bar").css("width", "37.5%");
                     $("#advising").addClass("active");
                 } else {
@@ -61,6 +62,8 @@ $(document).ready(function () {
             },
             error: function (response) { },
         });
+
+
     }
 
     function tab_tab_payment() {

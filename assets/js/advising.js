@@ -2,13 +2,15 @@
 
 $(document).ready(function () {
 
-    init_subjectlists();
+    // init_subjectlists();
 
     init_queuedlist();
 
     init_paymentmethod();
 
     init_assessmentform();
+
+    init_sectionlist();
 
     // jspdftest();
 
@@ -32,6 +34,10 @@ $(document).ready(function () {
 
         init_advise();
 
+    });
+
+    $('#section').click(function () {
+        init_subjectlists();
     });
 
 
@@ -63,6 +69,17 @@ function init_assessmentform() {
         }
 
     });
+
+}
+
+function init_sectionlist() {
+
+    subjects = ajax_sectionlist();
+    subjects.success(function (response) {
+        response = JSON.parse(response);
+        section_renderer(response);
+        init_subjectlists();
+    })
 
 }
 
@@ -134,7 +151,8 @@ function ajax_adviseStudent(paymentplan) {
         async: true,
         type: 'GET',
         data: {
-            plan: paymentplan
+            plan: paymentplan,
+            section: $('#section').val(),
         }
     });
 }
@@ -153,7 +171,8 @@ function ajax_paymentmethod(paymentplan) {
         async: true,
         type: 'GET',
         data: {
-            plan: paymentplan
+            plan: paymentplan,
+            section: $('#section').val(),
         }
     });
 }
@@ -164,10 +183,14 @@ function ajax_subjectlist() {
         url: "/Onestop/index.php/temp_api/subjects",
         type: 'GET',
         data: {
-            school_year: '2020-2021',
-            semester: 'FIRST',
-            // section: '833',
+            section: $('#section').val(),
         }
+    });
+}
+function ajax_sectionlist() {
+
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/get_section",
     });
 }
 function ajax_insertqueue(schedcode) {
@@ -178,6 +201,7 @@ function ajax_insertqueue(schedcode) {
         type: 'POST',
         data: {
             schedcode: schedcode,
+            section: $('#section').val(),
         }
     });
 }
@@ -402,6 +426,14 @@ function assessmentform_renderer(resultdata = []) {
 
     $('#regform').modal('show');
 
+}
+
+function section_renderer(data) {
+
+    $('#section').html('<option value="none" disabled selected>SELECT SECTION</option>');
+    $.each(data, function (index, result) {
+        $('#section').append('<option value="' + result['Section_ID'] + '">' + result['Section_Name'] + '</option>');
+    });
 }
 
 function assessment_exporter(url) {

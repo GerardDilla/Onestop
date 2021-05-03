@@ -333,7 +333,7 @@ class Main extends MY_Controller
 			$update = $this->AssesmentModel->update_course_by_reference_number($array);
 			if ($update) {
 
-				$this->assign_section($array);
+				#Auto assigns curriculum
 				$this->assign_curriculum($array);
 
 				echo json_encode(array(
@@ -741,5 +741,29 @@ class Main extends MY_Controller
 			$this->mainmodel->updateRequirementLog(array('path_id' => $result), 'proof_of_payment');
 		}
 		echo json_encode($result);
+	}
+
+	public function assign_curriculum($param)
+	{
+
+		#get legends
+		$legends = $this->AdvisingModel->getlegend();
+
+		#get program_id
+		$Course = $this->AdvisingModel->get_course($param['reference_number']);
+
+		$inputs = array(
+			'reference_no' => $param['reference_number'],
+			'School_Year' => $legends['School_Year'],
+			'Program_ID' => $Course
+		);
+
+		#get curriculum id
+		$curriculumdata = $this->AdvisingModel->get_curriculum($inputs);
+		$inputs['curriculum'] = $curriculumdata['Curriculum_ID'];
+
+		#update curriculum data
+		$updatestatus = $this->AdvisingModel->update_student_curriculum($inputs);
+		return $updatestatus;
 	}
 }

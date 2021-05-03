@@ -28,13 +28,12 @@ class temp_api extends CI_Controller
 		$this->student_number = $this->session->userdata('Student_Number');
 
 		// $this->AdvisingModel->get_latest_section($this->reference_number)
-		$this->section = $this->AdvisingModel->get_latest_section($this->reference_number);
-		$this->curriculum = '';
+		// $this->section = $this->AdvisingModel->get_latest_section($this->reference_number);
+		// $this->curriculum = '';
 
 		#Temporary Legends : Must be auto generated
 		$this->legend_sy = '2019-2020';
 		$this->legend_sem = 'FIRST';
-		$this->section = '180';
 		$this->curriculum = '236';
 
 		#Generate current Date
@@ -49,9 +48,9 @@ class temp_api extends CI_Controller
 	public function subjects()
 	{
 		$params = array(
-			'school_year' => $this->input->get('school_year'),
-			'semester' => $this->input->get('semester'),
-			'section' => $this->section,
+			'school_year' => $this->legend_sy,
+			'semester' => $this->legend_sem,
+			'section' => $this->input->get('section')
 		);
 		// die(json_encode($params));
 		$result = $this->AdvisingModel->block_schedule($params);
@@ -104,7 +103,7 @@ class temp_api extends CI_Controller
 			'Program' => '1',
 			'Major' => '0',
 			'Year_Level' => '1',
-			'Section' =>  $this->section,
+			'Section' =>  $this->input->post('section'),
 			'Graduating' =>  'NEEDS OTHER DATA',
 			'valid' => 1
 		);
@@ -129,7 +128,7 @@ class temp_api extends CI_Controller
 			'plan' => $this->input->get('plan'),
 			'school_year' => $this->legend_sy,
 			'semester' => $this->legend_sem,
-			'section' => $this->section
+			'section' => $this->input->get('section')
 		);
 		$array_fees = $this->display_fee($array_data);
 
@@ -205,9 +204,15 @@ class temp_api extends CI_Controller
 		//get year level
 		//$year_level = $this->AdvisingModel->get_year_level($array_data);
 		$year_level = $this->AdvisingModel->get_year_level($array_data);
-		if ($year_level[0]['Year_Level'] === 0) {
-			$year_level[0]['Year_Level'] = 1;
+		if (!empty($year_level)) {
+			if ($year_level[0]['Year_Level'] === 0) {
+				$year_level[0]['Year_Level'] = 1;
+			}
+		} else {
+			echo 0;
+			die();
 		}
+
 
 		$array_data['program_code'] = $student_info[0]['Course'];
 		$array_data['year_level'] = $year_level[0]['Year_Level'];
@@ -376,7 +381,7 @@ class temp_api extends CI_Controller
 			'semester' => $this->legend_sem,
 			'school_year' => $this->legend_sy,
 			'plan' => $this->input->get('plan'),
-			'section' => $this->section,
+			'section' => $this->input->get('section'),
 			// 'payment' => $this->input->post('payment'), #??
 			'payment' => 0,
 			'curriculum' => $this->curriculum,
@@ -427,11 +432,11 @@ class temp_api extends CI_Controller
 		//insert fees
 		$this->insert_enrollment_fees($array_data);
 
-		#Updates student information if new enrollee
-		if ($array_data['student_no'] === 0) {
+		// #Updates student information if new enrollee: REDUNDANT
+		// if ($array_data['student_no'] === 0) {
 
-			$this->AdvisingModel->update_student_curriculum($array_data);
-		}
+		// 	$this->AdvisingModel->update_student_curriculum($array_data);
+		// }
 
 		echo 'advising_success';
 	}
@@ -678,16 +683,18 @@ class temp_api extends CI_Controller
 		}
 		$this->load->view('Body/AssessmentContent/AssessmentForm', $data);
 	}
-	private function assign_curriculum($param)
+
+	public function get_section()
 	{
-	}
-	private function assign_section($param)
-	{
-		echo 'test';
+
 		#Get Program ID
+		$Course = $this->AdvisingModel->get_course($this->reference_number);
 
-		#Check if new student or old
+		#Check if new student or old: Returns bool
+		$Feesdata = $this->AdvisingModel->getfees_history($this->reference_number);
 
-		#Get Section Based on recently taken section
+		#Get section based on whether feesdata is true(old student) or false(new student)
+		$Sections = $this->AdvisingModel->get_sections($Course, $Feesdata);
+		echo json_encode($Sections);
 	}
 }

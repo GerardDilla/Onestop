@@ -3,13 +3,25 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel16">Suggested Subjects</h4>
+                <h4 class="modal-title" id="myModalLabel16">CHOOSE SUBJECTS</h4>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
 
             </div>
-            <div class="modal-body">
+            <div class="modal-body row">
+
+                <p class="col-md-12">
+                    Select a Section below to display subjects
+                </p>
+                <div class="col-md-4">
+                    <fieldset class="form-group">
+                        <select class="form-select" id="section" required>
+                            <option value="none" disabled selected>SELECT SECTION</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <hr>
 
                 <table class="mdl-data-table" id="subjectTable" style="width:100%">
                     <thead>

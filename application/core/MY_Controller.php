@@ -28,12 +28,13 @@ class MY_Controller extends CI_Controller
         // ));
         $this->load->library('email');
         $this->load->library('view_directory');
-        $this->load->library('sdca_mailer',array('email' => $this->email,'load' => $this->load));
-        $this->load->library('gdrive_uploader',array('folder_id'=>'1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
+        $this->load->library('sdca_mailer', array('email' => $this->email, 'load' => $this->load));
+        $this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
         $this->load->library('session');
         $this->load->database();
         $this->load->model('MainModel', 'mainmodel');
         $this->load->model('AssesmentModel');
+        $this->load->model('AdvisingModel');
         $this->load->library('encryption');
         $this->load->library('pagination');
 

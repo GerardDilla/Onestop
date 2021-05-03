@@ -272,6 +272,59 @@ class AdvisingModel extends CI_Model
     {
 
         #check latest enrolled section
-        
+
+    }
+    public function get_course($refnum)
+    {
+
+        $this->db->select('p.Program_ID');
+        $this->db->join('Programs as p', 's.Course = p.Program_Code');
+        $this->db->where('Reference_Number', $refnum);
+        $query = $this->db->get('Student_Info as s');
+        if (!empty($query->result_array())) {
+            return $query->result_array()[0]['Program_ID'];
+        } else {
+            return false;
+        }
+    }
+    public function getfees_history($refnum)
+    {
+        $this->db->select('Reference_Number');
+        $this->db->where('Reference_Number', $refnum);
+        $query = $this->db->get('Fees_Enrolled_College');
+        $count = $query->num_rows();
+        if ($count > 0) {
+            // Old Student
+            return true;
+        } else {
+            // New Student
+            return false;
+        }
+    }
+    public function get_sections($program_id, $status)
+    {
+
+        $this->db->where('Program_ID', $program_id);
+        if ($status == false) {
+            $this->db->where('Year_Level', 1);
+        }
+        $this->db->where('Active', 1);
+        $this->db->order_by('Year_Level', 'ASC');
+        $query = $this->db->get('Sections');
+        return $query->result_array();
+    }
+    public function getlegend()
+    {
+
+        $query = $this->db->get('Legend');
+        return $query->row_array();
+    }
+    public function get_curriculum($param)
+    {
+        $this->db->where('Program_ID', $param['Program_ID']);
+        $this->db->where('Curriculum_Year', $param['School_Year']);
+        $this->db->where('Valid', 1);
+        $query = $this->db->get('Curriculum_Info');
+        return $query->row_array();
     }
 }

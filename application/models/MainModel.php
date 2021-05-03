@@ -60,15 +60,6 @@ class MainModel extends CI_Model {
         $this->db->where('reference_no',$ref_no);
         return $this->db->get('requirements_log')->row_array();
     }
-    public function checkRequirementForProofOfPayment($requirements_name){
-        $ref_no = $this->session->userdata('reference_no');
-        $this->db->select('requirements_log.*','proof_of_payment_info.payment_type');
-        $this->db->from('requirements_log');
-        $this->db->join('proof_of_payment_info','requirements_log.id = proof_of_payment_info.req_id','left');
-        $this->db->where('requirements_log.requirements_name',$requirements_name);
-        $this->db->where('requirements_log.reference_no',$ref_no);
-        return $this->db->get()->row_array();
-    }
     public function newRequirementLog($data){
         $this->db->insert('requirements_log', $data);
         return $this->db->insert_id();
@@ -103,5 +94,9 @@ class MainModel extends CI_Model {
     }
     public function insertProofOfPayments($data){
         $this->db->insert('proof_of_payment_info', $data);
+    }
+    public function getProofOfPaymentInfo($req_id){
+        $this->db->where('req_id',$req_id);
+        return $this->db->get('proof_of_payment_info')->row_array();
     }
 }

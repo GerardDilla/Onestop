@@ -13,13 +13,13 @@
         display:block;
         height:auto;
         width:50vw;
-        max-height:50vh;
+        max-height:70vh;
     }
     #uploaded_image{
         /* text-align:center; */
         height:auto;
         width:50vw;
-        max-height:50vh;
+        max-height:60vh;
         /* margin-left:10vw; */
         border:1px solid #ccc;
         border-radius:10px;
@@ -66,7 +66,7 @@
         text-align:center;
     } */
     .payment-header{
-        background:#c6c8ca;
+        background:#B83232;
         color:white;
         /* margin-left:7px; */
         padding:10px;
@@ -83,27 +83,127 @@
         font-weight:bold;
     } */
     .aub{
-        padding-top:5%;
+        padding-top:10px;
     }
     .rcbc{
         /* padding-top:20%; */
-        padding-top:5%;
+        padding-top:10px;
     }
     .bdo{
-        padding-top:5%;
+        padding-top:10px;
     }
     .ub{
-        padding-top:5%;
+        padding-top:10px;
     }
     .eastwest{
-        padding-top:5%;
+        padding-top:10px;
     }
     /* @media (max-width:895px){
         .aub,.rcbc,.bdo,.ub,.eastwest{1
             padding-top:10px;
         }
     } */
+    .number-format::placeholder{
+        text-align:right;
+    }
+    .number-format{
+        text-align:right;
+    }
+    .slant{
+        /* border-right: 40px solid black;
+        border-bottom:40px solid black */
+    }
+    .slant:before{
+        position:absolute;
+        content: '';
+        width:40px;
+        height:55px;
+        bottom:-3px;
+        left:-6px;
+        background-color:white;
+        transform:rotate(20deg);
+        z-index:1;
+    }
+    .slant:after{
+        position:absolute;
+        content: '';
+        width:40px;
+        height:55px;
+        bottom:-8px;
+        right:-7px;
+        background-color:white;
+        transform:rotate(20deg);
+        z-index:1;
+    }
+    .btn-semi-round{
+        border-radius:10px;
+    }
+    .bills-payment-1{
+        /* border:solid black 1px; */
+        padding-left:90px;
+    }
+    .bills-payment-2{
+        display:none;
+    }
+    #upload-proof-button{
+        font-weight:bold;
+    }
+    .savings-account{
+        margin-left:50px;
+    }
+    .bank-logo{
+        text-align:right;
+    }
+    .bank-title{
+        text-align:left;
+    }
+    .bank-logo{
+         /* position:relative; */
+    }
+    .bank-logo:first-child{
+        padding-top:10px;
+    }
+    /* .bank-logo img{
+        position:absolute;
+        top:50%;
+        right:0;
+    } */
+    @media (max-width:768px){
+        .slant{
+            font-size:80%;
+        }
+        .bank-logo{
+            text-align:center;
+        }
+    }
     
+    @media (max-width:767px){
+        .bills-payment-1{
+            display:none;
+        }
+        .bills-payment-2{
+            display:block;
+        }
+    }
+    @media (max-width:600px){
+        .slant:after{
+            background-color:transparent;
+        }
+        .slant:before{
+            background-color:transparent;
+        }
+        .savings-account{
+            margin-left:0px;
+        }
+        .bank-logo{
+            text-align:center;
+        }
+        .bank-title{
+            text-align:center;
+        }
+    }
+    .btn-group-lg>.btn, .btn-lg {
+    }
 </style>
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
@@ -112,10 +212,19 @@
     <div class="card" style="margin:none;">
         <div class="card-header">
             <div class="col-md-12 row">
-                <div class="col-md-6"><h4 id="payment-title" class="payment-page" style="display:none;">Online Payment</h4></div><div class="col-md-6" align="right"><button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button>&nbsp;<button style="display:none;" type="button" class="payment-page btn btn-sm btn-danger" id="submit-button">Submit</button></div>
+                <div class="col-lg-4 ">
+                    <div class="form-group payment-type-div">
+                        <label class="input-label payment-page" style="display:none;"><b>Payment Type</b></label>
+                        <select class="form-select payment-page" name="payment-type" style="display:none;">
+                            <option value="online_payment">Online Payment</option>
+                            <option value="over_the_counter">Over the Counter</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-8" align="right"><button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button>&nbsp;<button style="display:none;" type="button" class="payment-page btn btn-sm btn-danger" id="submit-button">Submit</button></div>
             </div>
             <div class="col-md-12">
-                <button type="button" class="btn btn-sm btn-warning">Upload Proof of Payment</button>
+                <button type="button" id="upload-proof-button" onclick="choosePayment('online_payment')" class="btn btn-lg btn-warning">Upload Proof of Payment</button>
             </div>
         </div>
         <div class="card-body">
@@ -123,26 +232,42 @@
                 <div class="col-md-12" align="center" style="margin-bottom:10px;">
                     <h4>Type of Payment</h4>
                 </div>
-                <div class="col-md-4 col-lg-4 col-sm-12 row" style="margin:0;padding:0;">
-                    <div class="col-md-12 payment-header" ><br></div>
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/aub.png');?>"></div>
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="aub"><strong>120-01-890142-6</strong></p></div>
+                <div class="col-md-9 col-lg-9 col-sm-12 row" style="margin:0;padding:0;">
+                    <div class="col-md-6 payment-header" >OVER THE COUNTER</div>
+                    <div class="col-md-6 payment-header bills-payment-1" align="center">BILLS PAYMENT FACILITIES</div>
+                    <div class="col-md-12 payment-header slant" style="margin-top:20px;position:relative;"><font style="font-weight:400;">ACCOUNT NAME:</font> ST DOMINIC COLLEGE OF ASIA, INC.</div>
+                    <div class="col-md-12 row" style="margin:0;padding:0;">
+                        <div class="col-md-8 row">
+                            <div class="col-md-12 col-lg-4 col-sm-12 payment-body bank-logo"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/aub-2.jpg');?>"></div>
+                            <div class="col-md-12 col-lg-8 col-sm-12 payment-body bank-title"><p class="aub"><strong>Account Number : 120-01-890142-6<br><span class="savings-account">Savings</span></strong></p></div>
 
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/rcbc1.png');?>"></div>
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="rcbc"><strong>0013-4500-0867</strong></p></div>
+                            <div class="col-md-12 col-lg-4 col-sm-12 payment-body bank-logo"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/rcbc1.png');?>"></div>
+                            <div class="col-md-12 col-lg-8 col-sm-12 payment-body bank-title"><p class="rcbc"><strong>Account Number : 0013-4500-0867<br><span class="savings-account">Savings</span></strong></p></div>
 
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/bdo.png');?>"></div>
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="bdo"><strong>0000-7016-1291</strong></p></div>
+                            <div class="col-md-12 col-lg-4 col-sm-12 payment-body bank-logo"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/bdo.png');?>"></div>
+                            <div class="col-md-12 col-lg-8 col-sm-12 payment-body bank-title"><p class="bdo"><strong>Account Number : 0000-7016-1291<br><span class="savings-account">Savings</span></strong></p></div>
 
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/eastwest-bank-logo.png');?>"></div>
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="eastwest"><strong>2000-0065-6417</strong></p></div>
+                            <div class="col-md-12 col-lg-4 col-sm-12 payment-body bank-logo"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/eastwest-bank-logo-2.jpg');?>" style="height:50px;"></div>
+                            <div class="col-md-12 col-lg-8 col-sm-12 payment-body bank-title"><p class="eastwest"><strong>Account Number : 2000-0065-6417<br><span class="savings-account">Savings / Check Account</span></strong></p></div>
 
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/ub.png');?>"></div>
-                    <div class="col-md-12 col-lg-6 col-sm-12 payment-body"><p class="ub"><strong>0004-70001-2500</strong></p></div>
+                            <div class="col-md-12 col-lg-4 col-sm-12 payment-body bank-logo"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/ub-2.jpg');?>" style="height:50px;"></div>
+                            <div class="col-md-12 col-lg-8 col-sm-12 payment-body bank-title"><p class="ub"><strong>Account Number : 0004-70001-2500<br><span class="savings-account">Savings</span></strong></p></div>
+                        </div>
+                        <div class="col-md-4 row" style="margin:0;padding:0;">
+                            <div class="col-md-12 payment-header bills-payment-2" align="center">BILLS PAYMENT FACILITIES</div>
+                            <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/sm-department-store-logo-2.jpg');?>"></div>
+                            <div class="col-md-12 payment-body" ><p><strong>SM Bacoor</strong></p></div>
 
+                            <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/hypermarket-2.jfif');?>"></div>
+                            <div class="col-md-12 payment-body" ><p><strong>Imus & Molino</strong></p></div>
+
+                            <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/savemore.png');?>"></div>
+                            <div class="col-md-12 payment-body" ><p><strong>Zapote</strong></p></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 col-lg-4 col-sm-12" style="margin:0;padding:0;">
-                    <div class="col-md-12 payment-header">Over the Counter</div>
+                <!-- <div class="col-md-4 col-lg-4 col-sm-12" style="margin:0;padding:0;">
+                    <div class="col-md-12 payment-header">BILLS PAYMENT FACILITIES</div>
                     <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/sm-department-store-logo.jpg');?>"></div>
                     <div class="col-md-12 payment-body" ><p><strong>SM Bacoor</strong></p></div>
 
@@ -151,31 +276,11 @@
 
                     <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/savemore.png');?>"></div>
                     <div class="col-md-12 payment-body" ><p><strong>Zapote</strong></p></div>
-                
-                
-                </div>
-                <div class="col-md-4 col-lg-4 col-sm-12" style="margin:0;padding:0;">
-                    <div class="col-md-12 payment-header">SDCA Online Payment</div>
-                    <div class="col-md-12 payment-body"><button class="btn btn-danger">Pay Here</button></div>
-                </div>
-                <!-- <div class="col-md-4" align="center">
-                    <button type="button" onclick="choosePayment('online_payment')" class="btn button">Online Payment</button><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/aub.png');?>"><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/rcbc.png');?>"><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/bdo.png');?>"><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/eastwest-bank-logo.png');?>"><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/ub.png');?>">
-                </div>
-                <div class="col-md-4" align="center">
-                    <button type="button" onclick="choosePayment('over_the_counter')" class="btn button">Over the Counter</button><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/sm-department-store-logo.jpg');?>"><br><strong class="branch">SM Bacoor</strong><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/hypermarket.jfif');?>"><br><strong class="branch">Imus & Molino</strong><br>
-                    <img class="payment-logo" src="<?php echo base_url('assets/images/bank/savemore.png');?>"><br><strong class="branch">Zapote</strong>
-                    
-                </div>
-                <div class="col-md-4" align="center">
-                    <button type="button" onclick="choosePayment('sdca_online_payment')" class="btn button">SDCA Online Payment</button>
                 </div> -->
+                <div class="col-md-3 col-lg-3 col-sm-12" style="margin:0;padding:0;">
+                    <div class="col-md-12 payment-header">SDCA ONLINE PAYMENT</div>
+                    <div class="col-md-12 payment-body" style="margin-top:30px;"><button type="button" class="btn btn-success btn-lg btn-semi-round">Pay Here</button></div>
+                </div>
             </div>
             <div class="col-md-12 row payment-page" style="display:none">
                 <div class="col-md-2 form-group online-payment">
@@ -192,29 +297,35 @@
                         This is required.
                     </div>
                 </div>
-                <div class="col-md-4 online-payment">
+                <div class="col-md-3 online-payment">
                     <label class="input-label"><b>Account Number</b></label>
-                    <input type="text" class="form-control" name="account_number" style="">
+                    <input type="text" class="form-control" name="account_number" placeholder="...." style="">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
                 </div>
-                <div class="col-md-6 online-payment">
-                    <label class="input-label"><b>Account Holder Name</b></label>
-                    <input type="text" class="form-control" name="holder_name">
+                <div class="col-md-4 online-payment">
+                    <label class="input-label"><b>Account Number</b></label>
+                    <input type="text" class="form-control" name="holder_name" placeholder="...." style="">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
                 </div>
                 <div class="col-md-6 other-payment">
                     <label class="input-label"><b>Reference Number/Receipt No.</b></label>
-                    <input type="text" class="form-control" name="reference_number">
+                    <input type="text" class="form-control" name="reference_number" placeholder="....">
+                    <div class="invalid-feedback">
+                        This is required.
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="input-label"><b>Amount Paid</b></label>
+                    <input type="text" class="form-control number-format" name="amount_paid" placeholder="₱ 0.00">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
                 </div>
                 <div class="input-field col-md-12" >
-                    <!-- <label class="active">Photos</label> -->
                     <div class="input-images-1" style="padding-top: .5rem;"></div>
                 </div>
             </div>
@@ -268,11 +379,20 @@ class StorageData{
 }
 var image_upload = "";
 var storagedata = new StorageData();
+
+// var datacatcher = storage.getData();
 // OnloadImage();
 // setTimeout(()=>{
 //     console.log('Link:'+storagedata.getData());
 // },7000)
 // var image_url = "";
+$(".number-format").click(function () {
+   $(this).select();
+});
+$('select[name=payment-type]').on('change',function(){
+    // console.log()
+    choosePayment(this.value)
+});
 $('#submit-button').on('click',function(e){
     e.preventDefault();
     var count = 0;
@@ -371,8 +491,9 @@ async function getImageLink(id){
 }
 
 function choosePayment(payment){
+    $('#upload-proof-button').hide();
+    $('.payment-type-div').show();
     if(payment=="online_payment"){
-        $("#payment-title").text('Online Payment');
         $('input[name=payment_type]').val('Online Payment');
         $('.payment-page').show();
         $('.payment-type').hide();
@@ -383,7 +504,7 @@ function choosePayment(payment){
         $('.other-payment input.form-control').attr('required',false)
     }
     else if(payment=="over_the_counter"){
-        $("#payment-title").text('Over the Counter');
+        // $("#payment-title").text('Over the Counter');
         $('input[name=payment_type]').val('Over the Counter');
         $('.payment-page').show();
         $('.payment-type').hide();
@@ -394,7 +515,7 @@ function choosePayment(payment){
         $('.other-payment input.form-control').attr('required',true)
     }
     else if(payment=="sdca_online_payment"){
-        $("#payment-title").text('SDCA Online Payment');
+        // $("#payment-title").text('SDCA Online Payment');
         $('input[name=payment_type]').val('SDCA Online Payment');
         $('.payment-page').show();
         $('.payment-type').hide();
@@ -407,6 +528,7 @@ function choosePayment(payment){
     else{
         $('.payment-type').show();
         $('.payment-page').hide();
+        $('#upload-proof-button').show();
     }
 }
 function OnloadImage(){
@@ -425,7 +547,6 @@ function OnloadImage(){
     setTimeout(() => {
         getImageLink().then(link=>{ $('#uploaded_image').attr('src',link);$('body').waitMe('hide');storagedata.changeData(link);}).catch(error=>console.log(error));
     }, 3000);
-    
 }
 function viewImage(){
     $('#view_image').iziModal('open');

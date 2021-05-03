@@ -612,16 +612,16 @@ class Main extends MY_Controller
 		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array('student_info' => $student_info, 'total_amount' => $amount));
 	}
 	public function uploadProofOfPayment(){
-		$checkRequirement = $this->mainmodel->checkRequirementForProofOfPayment('proof_of_payment');
-		// echo '<pre>'.print_r($checkRequirement,1).'</pre>';
-		// exit;
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		
 		if(!empty($checkRequirement)){
 			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
 			$this->data['gdrive_link'] = $checkRequirement['path_id'];
 			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
-			// $this->data['payment_type'] = $checkRequirement['payment_type'];
+			$this->data['payment_type'] = empty($this->mainmodel->getProofOfPaymentInfo($checkRequirement['id']))?'':$this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])['payment_type'];
 		}
-		
+		// echo '<pre>'.print_r($checkRequirement,1).'</pre>';
+		// exit;
 		// print_r($checkRequirement);
 		$this->default_template($this->view_directory->uploadProofOfPayment());
 	}

@@ -43,15 +43,7 @@
                     </tr>
                 </thead>
                 <tbody id="temporary_regform_subjects" style="font-size: 12px; text-align:left">
-                    <tr>
-                        <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">202000275</td>
-                        <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">GE104</td>
-                        <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">Understanding The Self</td>
-                        <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;">3</td>
-                        <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_day">M</td>
-                        <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_time">9:00AM - 12:00PM</td>
-                        <td valign="top" width="10%" style="padding-right: 10px;  padding-top: 1px;" id="202000275_room">GD108</td>
-                    </tr>
+
                 </tbody>
             </table>
             <hr>
@@ -59,50 +51,50 @@
                 <tbody>
                     <tr>
                         <td><strong>Tuition:</strong></td>
-                        <td class="feesbox" id="trf_tuition">23924.25</td>
+                        <td class="feesbox" id="trf_tuition"></td>
 
                         <td><strong>Initial Payment:</strong></td>
-                        <td class="feesbox" id="trf_initial">13180.66</td>
+                        <td class="feesbox" id="trf_initial"></td>
 
                         <td><strong>Total Units:</strong></td>
-                        <td class="feesbox" id="trf_total_units">31</td>
+                        <td class="feesbox" id="trf_total_units"></td>
                     </tr>
                     <tr>
                         <td><strong>Misc Fees:</strong></td>
-                        <td class="feesbox" id="trf_misc">10484.64</td>
+                        <td class="feesbox" id="trf_misc"></td>
 
                         <td><strong>First:</strong></td>
-                        <td class="feesbox" id="trf_first">10544.53</td>
+                        <td class="feesbox" id="trf_first"></td>
 
                         <td><strong>Total Subjects:</strong></td>
-                        <td class="feesbox" id="trf_total_subject">12</td>
+                        <td class="feesbox" id="trf_total_subject"></td>
                     </tr>
                     <tr>
                         <td><strong>Lab Fees:</strong></td>
-                        <td class="feesbox" id="trf_lab">4192.66</td>
+                        <td class="feesbox" id="trf_lab"></td>
 
                         <td><strong>Second:</strong></td>
-                        <td class="feesbox" id="trf_second">10105.17</td>
+                        <td class="feesbox" id="trf_second"></td>
 
                         <td><strong>Scholar:</strong></td>
-                        <td class="feesbox" id="trf_scholar">NO SCHOLARSHIP</td>
+                        <td class="feesbox" id="trf_scholar"></td>
                     </tr>
                     <tr>
                         <td><strong>Other Fees:</strong></td>
-                        <td class="feesbox" id="trf_other">5334.00</td>
+                        <td class="feesbox" id="trf_other"></td>
 
                         <td><strong>Third:</strong></td>
-                        <td class="feesbox" id="trf_third">10105.17</td>
+                        <td class="feesbox" id="trf_third"></td>
 
                         <td></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td><strong>Total Fees:</strong></td>
-                        <td class="feesbox" id="trf_total_fees">43935.55</td>
+                        <td class="feesbox" id="trf_total_fees"></td>
 
                         <td><strong>Fourth:</strong></td>
-                        <td class="feesbox" id="trf_fourth">0.00</td>
+                        <td class="feesbox" id="trf_fourth"></td>
 
                         <td></td>
                         <td></td>
@@ -124,6 +116,14 @@
             </li>
             <li><a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a><br></li>
             <li><button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#cashierPayment">OVER THE COUNTER</button><br></li>
+            <li>
+                <hr>
+                <h4>Already Paid?</h4>
+            </li>
+            <li>
+                <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" target=="_blank" type="button" class="btn btn-lg btn-primary">UPLOAD PROOF OF PAYMENT</a>
+            </li>
+            <li style="text-align:center"><img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>
         </ul>
 
     </div>

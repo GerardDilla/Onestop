@@ -25,6 +25,7 @@ class Main extends MY_Controller
 	{
 		$this->session->set_userdata(array(
 			'reference_no' =>  $data['reference_no'],
+			'Student_Number' =>  $data['Student_Number'],
 			'first_name' => $data['First_Name'],
 			'middle_name' => $data['Middle_Name'],
 			'last_name' => $data['Last_Name'],
@@ -34,8 +35,10 @@ class Main extends MY_Controller
 			'admittedsy' => $data['AdmittedSY'],
 			'admittedsem' => $data['AdmittedSEM'],
 			'email' => $data['Email'],
-			'student_folder' => $data['folder_name']
+			'student_folder' => $data['folder_name'],
+			'gdrive_folder' => $data['gdrive_id']
 		));
+		// echo json_encode($data);
 	}
 	public function email($cp, $from, $from_name, $send_to, $subject, $message)
 	{
@@ -510,17 +513,12 @@ class Main extends MY_Controller
 			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
 			++$count;
 		}
-		// exit;
-		// echo '<pre>'.print_r($getRequirementsList,1).'</pre>';
-		// exit;
 		$this->data['requirements'] = $getRequirementsList;
 		$this->default_template($this->view_directory->ValidationOfTobeFollowedDocuments());
 	}
 	public function validationDocumentsProcess()
 	{
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
-
-
 		date_default_timezone_set('Asia/manila');
 		$ref_no = $this->session->userdata('reference_no');
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
@@ -542,17 +540,6 @@ class Main extends MY_Controller
 			);
 
 			foreach ($getRequirementsList as $list) {
-				// if($this->input->post('check_'.$list['id_name'])!=null){
-				// 	$this->mainmodel->newRequirementLog(array(
-				// 		'requirements_name' => $id_name,
-				// 		'requirements_date' => date("Y-m-d H:i:s"),
-				// 		'status' => 'to be follow',
-				// 		'reference_no' => $ref_no
-				// 	));
-				// }
-
-				// echo $this->input->post($list['id_name']).'<br>';
-
 				$id_name = $list['id_name'];
 				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
 				$config['file_name'] = $id_name . '_' . $ref_no . '' . date("YmdHis");
@@ -632,10 +619,13 @@ class Main extends MY_Controller
 			}
 			$getRequirementsLogPerRefNo = $this->mainmodel->getRequirementsLogPerRefNo();
 			foreach ($getRequirementsLogPerRefNo as $reqloglist) {
-				array_push($array_completefiles, array(
-					"name" => $reqloglist['rq_name'],
-					"status" => $reqloglist['status']
-				));
+				if ($reqloglist['requirements_name'] != "proof_of_payment") {
+					array_push($array_completefiles, array(
+						"name" => $reqloglist['rq_name'],
+						"status" => $reqloglist['status'],
+						"req_date" => $reqloglist['requirements_date']
+					));
+				}
 			}
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
 
@@ -686,24 +676,161 @@ class Main extends MY_Controller
 			// echo json_encode(array("msg" => $e));
 		}
 	}
-	public function notifyWhenPaymentSubmitted($ref_no = "", $amount = "")
+	public function notifyWhenPaymentSubmitted($ref_no = "", $amount = "", $email = "")
 	{
 		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
+		//  CC to Accounting notification
+		$student_email = "";
+		if ($student_info['Email'] != "") {
+			$student_email = $student_info['Email'];
+		} else {
+			$student_email = $email;
+		}
 		$email_data = array(
-			'send_to' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name'),
+			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
 			'reply_to' => 'jfabregas@sdca.edu.ph',
 			'sender_name' => 'St. Dominic College of Asia',
-			'send_to_email' => $this->session->userdata('email'),
+			'send_to_email' => $student_email,
 			'title' => 'Proof of Payment',
 			'message' => 'Email/PaymentEvidence'
 		);
 		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array('student_info' => $student_info, 'total_amount' => $amount));
 	}
+	public function uploadProofOfPayment()
+	{
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+
+		if (!empty($checkRequirement)) {
+			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
+			$this->data['gdrive_link'] = $checkRequirement['path_id'];
+			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
+		}
+		// print_r($checkRequirement);
+		$this->default_template($this->view_directory->uploadProofOfPayment());
+	}
+	public function uploadProofOfPaymentProcess()
+	{
+		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
+		$ref_no = $this->session->userdata('reference_no');
+		$id_name = "proof_of_payment";
+		$config['upload_path'] = './express/assets/';
+		$config['allowed_types'] = '*';
+		$config['file_name'] = $id_name . '_' . $ref_no . '' . date("YmdHis");
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		$this->upload->overwrite = true;
+		$uploaded = array();
+		$array_filestodelete = array();
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		$orig_name = "";
+		$orig_type = "";
+		if ($this->upload->do_upload('images')) {
+			$uploaded_data = $this->upload->data();
+			// print_r($uploaded_data);
+			$orig_name = $uploaded_data['orig_name'];
+			$orig_type = $uploaded_data['file_type'];
+			array_push($uploaded, array(
+				"name" => $uploaded_data['orig_name'],
+				"type" => $uploaded_data['file_type'],
+				'rq_name' => 'Proof of Payment'
+			));
+			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
+
+			$upload_success = false;
+			if (!empty($result)) {
+				$this->session->set_userdata('gdrive_folder', $result);
+				$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $result));
+			}
+			if (!empty($checkRequirement)) {
+				$this->mainmodel->updateRequirementLog(array(
+					'requirements_name' => 'proof_of_payment',
+					'requirements_date' => date("Y-m-d H:i:s"),
+					'status' => 'pending',
+					'reference_no' => $ref_no,
+					'file_submitted' => $uploaded_data['orig_name'],
+					'file_type' => $uploaded_data['file_type'],
+					// 'path_id' => empty($getId)?'':$getId
+				), 'proof_of_payment');
+			} else {
+				$this->mainmodel->newRequirementLog(array(
+					'requirements_name' => 'proof_of_payment',
+					'requirements_date' => date("Y-m-d H:i:s"),
+					'status' => 'status',
+					'reference_no' => $ref_no,
+					'file_submitted' => $orig_name,
+					'file_type' => $orig_type,
+					// 'path_id' => empty($getId)?'':$getId
+				));
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Upload Error');
+			redirect($_SERVER['HTTP_REFERER']);
+			exit;
+		}
+
+		// res.send();
+
+		$files = glob('express/assets/*'); // get all file names
+		foreach ($files as $file) {
+			if (in_array($file, $array_filestodelete)) {
+				if (is_file($file)) {
+					unlink($file); // delete file
+				}
+			}
+		}
+		$this->session->set_flashdata('success', 'Successfully Uploaded');
+		// $this->uploadProofOfPayment();
+		redirect(base_url('main/uploadProofOfPayment'));
+
+		// header('Refresh: X; URL='.base_url('main/uploadProofOfPayment'));
+	}
 	public function checkForGdriveUploader()
 	{
-		echo $this->session->userdata('email');
-		// $result = $this->gdrive_uploader->index();
-		// print_r($result);
-		// echo $result['status'];
+		// $
+		// echo $this->session->userdata('email');
+		// $result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
+		// $result = $this->gdrive_uploader->getAllFilesInFolder();
+		$result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_108820210415102145.jpg', 'folder_id' => $this->session->userdata('gdrive_folder')));
+		// $decode = json_decode($result,true);
+		// echo '<pre>'.print_r($decode,1).'</pre>';
+		echo $result;
+	}
+	public function testSession()
+	{
+		echo $this->session->userdata('gdrive_folder');
+	}
+	public function getProofOfPaymentImage()
+	{
+		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		$result = $this->gdrive_uploader->getFileId(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('gdrive_folder')));
+		if (!empty($result)) {
+			$this->mainmodel->updateRequirementLog(array('path_id' => $result), 'proof_of_payment');
+		}
+		echo json_encode($result);
+	}
+
+	public function assign_curriculum($param)
+	{
+
+		#get legends
+		$legends = $this->AdvisingModel->getlegend();
+
+		#get program_id
+		$Course = $this->AdvisingModel->get_course($param['reference_number']);
+
+		$inputs = array(
+			'reference_no' => $param['reference_number'],
+			'School_Year' => $legends['School_Year'],
+			'Program_ID' => $Course
+		);
+
+		#get curriculum id
+		$curriculumdata = $this->AdvisingModel->get_curriculum($inputs);
+		$inputs['curriculum'] = $curriculumdata['Curriculum_ID'];
+
+		#update curriculum data
+		$updatestatus = $this->AdvisingModel->update_student_curriculum($inputs);
+		return $updatestatus;
 	}
 }

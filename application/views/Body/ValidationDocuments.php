@@ -70,7 +70,7 @@ echo '</script>';
                                 <td style="text-align:center;"><?php echo $list['date'];?></td>
                                 
                             </tr>
-                            <?php } ?>
+                            <?php }?>
                         </tbody>
                     </table>
                 </div>

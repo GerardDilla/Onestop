@@ -8,6 +8,7 @@ class AssesmentModel extends CI_Model
         $this->db->select('*,
             si.Reference_Number AS Ref_Num_si,
             si.Student_Number AS Std_Num_si,
+            si.Course,
             ftc.Reference_Number AS Ref_Num_ftc,
             fec.Reference_Number AS Ref_Num_fec
         ');

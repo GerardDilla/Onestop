@@ -21,17 +21,22 @@ class temp_api extends CI_Controller
 		$this->load->model('AdvisingModel');
 		$this->load->model('FeesModel');
 		$this->load->model('RegFormModel');
-
+		$this->load->library('session');
 
 		#Temporary Keys
-		$this->reference_number = '14174';
-		$this->student_number = '20122411';
+		$this->reference_number = $this->session->userdata('reference_no');
+		$this->student_number = $this->session->userdata('Student_Number');
+
+		// $this->AdvisingModel->get_latest_section($this->reference_number)
+		// $this->section = $this->AdvisingModel->get_latest_section($this->reference_number);
+		// $this->curriculum = '';
 
 		#Temporary Legends : Must be auto generated
-		$this->legend_sy = '2019-2020';
-		$this->legend_sem = 'FIRST';
-		$this->section = '180';
-		$this->curriculum = '236';
+		$legend = $this->AdvisingModel->getlegend();
+		$this->legend_sy = $legend['School_Year'];
+		$this->legend_sem = $legend['Semester'];
+
+		$this->curriculum = $this->AdvisingModel->get_student_curriculum($this->reference_number);
 
 		#Generate current Date
 		$datestring = "%Y-%m-%d %H:%i:%s";
@@ -45,9 +50,9 @@ class temp_api extends CI_Controller
 	public function subjects()
 	{
 		$params = array(
-			'school_year' => $this->input->get('school_year'),
-			'semester' => $this->input->get('semester'),
-			'section' => $this->section,
+			'school_year' => $this->legend_sy,
+			'semester' => $this->legend_sem,
+			'section' => $this->input->get('section')
 		);
 		// die(json_encode($params));
 		$result = $this->AdvisingModel->block_schedule($params);
@@ -100,7 +105,7 @@ class temp_api extends CI_Controller
 			'Program' => '1',
 			'Major' => '0',
 			'Year_Level' => '1',
-			'Section' =>  $this->section,
+			'Section' =>  $this->input->post('section'),
 			'Graduating' =>  'NEEDS OTHER DATA',
 			'valid' => 1
 		);
@@ -125,9 +130,10 @@ class temp_api extends CI_Controller
 			'plan' => $this->input->get('plan'),
 			'school_year' => $this->legend_sy,
 			'semester' => $this->legend_sem,
-			'section' => $this->section
+			'section' => $this->input->get('section')
 		);
 		$array_fees = $this->display_fee($array_data);
+
 
 		#Checker if all needed data is complete
 		// if ($array_fees == NULL) {
@@ -200,9 +206,15 @@ class temp_api extends CI_Controller
 		//get year level
 		//$year_level = $this->AdvisingModel->get_year_level($array_data);
 		$year_level = $this->AdvisingModel->get_year_level($array_data);
-		if ($year_level[0]['Year_Level'] === 0) {
-			$year_level[0]['Year_Level'] = 1;
+		if (!empty($year_level)) {
+			if ($year_level[0]['Year_Level'] === 0) {
+				$year_level[0]['Year_Level'] = 1;
+			}
+		} else {
+			echo 0;
+			die();
 		}
+
 
 		$array_data['program_code'] = $student_info[0]['Course'];
 		$array_data['year_level'] = $year_level[0]['Year_Level'];
@@ -371,7 +383,7 @@ class temp_api extends CI_Controller
 			'semester' => $this->legend_sem,
 			'school_year' => $this->legend_sy,
 			'plan' => $this->input->get('plan'),
-			'section' => $this->section,
+			'section' => $this->input->get('section'),
 			// 'payment' => $this->input->post('payment'), #??
 			'payment' => 0,
 			'curriculum' => $this->curriculum,
@@ -422,11 +434,11 @@ class temp_api extends CI_Controller
 		//insert fees
 		$this->insert_enrollment_fees($array_data);
 
-		#Updates student information if new enrollee
-		if ($array_data['student_no'] === 0) {
+		// #Updates student information if new enrollee: REDUNDANT
+		// if ($array_data['student_no'] === 0) {
 
-			$this->AdvisingModel->update_student_curriculum($array_data);
-		}
+		// 	$this->AdvisingModel->update_student_curriculum($array_data);
+		// }
 
 		echo 'advising_success';
 	}
@@ -594,6 +606,8 @@ class temp_api extends CI_Controller
 
 	public function temporary_regform_ajax()
 	{
+
+
 		$reference_number = $this->reference_number;
 		if ($reference_number != '') {
 
@@ -605,7 +619,10 @@ class temp_api extends CI_Controller
 				'refnum' => $this->reference_number
 			);
 			$data['get_Advise'] = $this->RegFormModel->Get_advising_ajax($array);
-
+			if (empty($data['get_Advise'])) {
+				echo '0';
+				die();
+			}
 			foreach ($data['get_Advise']  as $row) {
 				$section         = $row->Section_Name;
 				$course        = $row->Course;
@@ -626,5 +643,60 @@ class temp_api extends CI_Controller
 			$data['get_totalunits']               = $this->RegFormModel->totalUnitsAdvising_TRF($array);
 			echo json_encode($data);
 		}
+	}
+
+	public function export_assessmentform()
+	{
+		$reference_number = $this->reference_number;
+		if ($reference_number != '') {
+
+			$searcharray['Reference_Number'] = $reference_number;
+			$AdvisedCheck = $this->AdvisingModel->check_advised($searcharray);
+			$array = array(
+				'sy' => $this->legend_sy,
+				'sem' => $this->legend_sem,
+				'refnum' => $this->reference_number
+			);
+			$data['get_Advise'] = $this->RegFormModel->Get_advising_ajax($array);
+			if (empty($data['get_Advise'])) {
+
+				echo false;
+				die();
+			}
+			foreach ($data['get_Advise']  as $row) {
+				$section         = $row->Section_Name;
+				$course        = $row->Course;
+				$sem           = $row->Semester;
+				$sy            = $row->School_Year;
+				$yl            = $row->YL;
+				$ref_num       = $row->Reference_Number;
+				$stu_num       = $row->Student_Number;
+				$admmitedSy    = $row->AdmittedSY;
+				$admmitedSem    = $row->AdmittedSEM;
+			}
+			$data['get_TotalCountSubject']       = $this->RegFormModel->Get_CountSubject_Advising_TRF($stu_num, $sem, $sy);
+			$data['get_labfees']                 = $this->RegFormModel->Get_LabFeesAdvising_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_miscfees']                = $this->RegFormModel->Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_otherfees']                = $this->RegFormModel->Get_OTHER_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
+			$data['get_tuitionfee']              = $this->RegFormModel->Get_Tuition_FEE_TRF($course, $sem, $sy, $yl, $ref_num, $admmitedSy, $admmitedSem);
+			//$data['get_totalcash']               = $this->RegForm_Model->Get_Total_CashPayment($ref_num,$sem,$sy);
+			$data['get_totalunits']               = $this->RegFormModel->totalUnitsAdvising_TRF($array);
+			// echo json_encode($data);
+		}
+		$this->load->view('Body/AssessmentContent/AssessmentForm', $data);
+	}
+
+	public function get_section()
+	{
+
+		#Get Program ID
+		$Course = $this->AdvisingModel->get_course($this->reference_number);
+
+		#Check if new student or old: Returns bool
+		$Feesdata = $this->AdvisingModel->getfees_history($this->reference_number);
+
+		#Get section based on whether feesdata is true(old student) or false(new student)
+		$Sections = $this->AdvisingModel->get_sections($Course, $Feesdata);
+		echo json_encode($Sections);
 	}
 }

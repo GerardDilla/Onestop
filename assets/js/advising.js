@@ -2,13 +2,15 @@
 
 $(document).ready(function () {
 
-    init_subjectlists();
+    // init_subjectlists();
 
     init_queuedlist();
 
     init_paymentmethod();
 
     init_assessmentform();
+
+    init_sectionlist();
 
     // jspdftest();
 
@@ -34,6 +36,10 @@ $(document).ready(function () {
 
     });
 
+    $('#section').click(function () {
+        init_subjectlists();
+    });
+
 
 });
 
@@ -56,11 +62,24 @@ function init_assessmentform() {
     result = ajax_assessmentform();
     result.success(function (response) {
 
-        response = JSON.parse(response);
-        console.log('-----------');
-        console.log(response);
-        assessmentform_renderer(response);
+        if (response != false) {
+            response = JSON.parse(response);
+            console.log('-----------');
+            assessmentform_renderer(response);
+        }
+
     });
+
+}
+
+function init_sectionlist() {
+
+    subjects = ajax_sectionlist();
+    subjects.success(function (response) {
+        response = JSON.parse(response);
+        section_renderer(response);
+        init_subjectlists();
+    })
 
 }
 
@@ -132,7 +151,8 @@ function ajax_adviseStudent(paymentplan) {
         async: true,
         type: 'GET',
         data: {
-            plan: paymentplan
+            plan: paymentplan,
+            section: $('#section').val(),
         }
     });
 }
@@ -151,7 +171,8 @@ function ajax_paymentmethod(paymentplan) {
         async: true,
         type: 'GET',
         data: {
-            plan: paymentplan
+            plan: paymentplan,
+            section: $('#section').val(),
         }
     });
 }
@@ -162,10 +183,14 @@ function ajax_subjectlist() {
         url: "/Onestop/index.php/temp_api/subjects",
         type: 'GET',
         data: {
-            school_year: '2020-2021',
-            semester: 'FIRST',
-            // section: '833',
+            section: $('#section').val(),
         }
+    });
+}
+function ajax_sectionlist() {
+
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/get_section",
     });
 }
 function ajax_insertqueue(schedcode) {
@@ -176,6 +201,7 @@ function ajax_insertqueue(schedcode) {
         type: 'POST',
         data: {
             schedcode: schedcode,
+            section: $('#section').val(),
         }
     });
 }
@@ -402,45 +428,17 @@ function assessmentform_renderer(resultdata = []) {
 
 }
 
-function demoFromHTML() {
-    var pdf = new jsPDF('p', 'pt', 'letter');
-    // source can be HTML-formatted string, or a reference
-    // to an actual DOM element from which the text will be scraped.
-    source = $('#content')[0];
+function section_renderer(data) {
 
-    // we support special element handlers. Register them with jQuery-style 
-    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-    // There is no support for any other type of selectors 
-    // (class, of compound) at this time.
-    specialElementHandlers = {
-        // element with id of "bypass" - jQuery style selector
-        '#bypassme': function (element, renderer) {
-            // true = "handled elsewhere, bypass text extraction"
-            return true
-        }
-    };
-    margins = {
-        top: 80,
-        bottom: 60,
-        left: 40,
-        width: 522
-    };
-    // all coords and widths are in jsPDF instance's declared units
-    // 'inches' in this case
-    pdf.fromHTML(
-        source, // HTML string or DOM elem ref.
-        margins.left, // x coord
-        margins.top, { // y coord
-        'width': margins.width, // max width of content on PDF
-        'elementHandlers': specialElementHandlers
-    },
+    $('#section').html('<option value="none" disabled selected>SELECT SECTION</option>');
+    $.each(data, function (index, result) {
+        $('#section').append('<option value="' + result['Section_ID'] + '">' + result['Section_Name'] + '</option>');
+    });
+}
 
-        function (dispose) {
-            // dispose: object with X, Y of the last line add to the PDF 
-            //          this allow the insertion of new lines after html
-            pdf.save('Test.pdf');
-        }, margins
-    );
+function assessment_exporter(url) {
+
+    exportpage = window.open(url, '_blank');
 }
 
 function get_militarytime() {

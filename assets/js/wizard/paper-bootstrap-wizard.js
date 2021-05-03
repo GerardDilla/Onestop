@@ -18,80 +18,7 @@ $(document).ready(function () {
 
     fetch_user_status();
 
-    function fetch_user_status() {
-        base_url = $("#assessment_section").data("baseurl");
-        // reference_number = "14174";
-        $("tab_registration").removeAttr("class");
-        $("tab_advising").removeAttr("class");
-        $("tab_student_information").removeAttr("class");
-        $.ajax({
-            type: "POST",
-            url: base_url + "main/wizard_tracker_status",
-            success: function (response) {
-                // alert(response);
-                result = JSON.parse(response);
-                registration = result.registration;
-                advising = result.advising;
-                student_information = result.student_information;
-                // alert(registration);
-                if (registration == 1) {
-                    tab_tab_payment();
-                    tab_registration();
-                    tab_advising();
-                    tab_student_information();
-                    $("#progress_bar").css("width", "85.5%");
-                    $("#payment").addClass("active");
-                } else if (advising == 1) {
-                    tab_registration();
-                    tab_advising();
-                    tab_student_information();
-                    $("#progress_bar").css("width", "62.5%");
-                    $("#registration").addClass("active");
-                } else if (student_information == 1) {
-                    tab_advising();
-                    tab_student_information();
-                    init_sectionlist();
-                    $("#progress_bar").css("width", "37.5%");
-                    $("#advising").addClass("active");
-                } else {
-                    tab_student_information();
-                    $("#progress_bar").css("width", "12.5%");
-                    $("#student_information").addClass("active");
-                }
 
-            },
-            error: function (response) { },
-        });
-
-
-    }
-
-    function tab_tab_payment() {
-        $("#tab_payment").attr("class", "active");
-        $("#tab_payment-circle").addClass("checked");
-        // $("#tab_payment-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
-        $("#tab_registration-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
-    }
-
-    function tab_registration() {
-        $("#tab_registration").attr("class", "active");
-        $("#tab_registration-circle").addClass("checked");
-        $("#tab_advising-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
-
-    }
-
-    function tab_advising() {
-        $("#tab_advising").attr("class", "active");
-        $("#tab_advising-circle").addClass("checked");
-        $("#tab_student_information-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
-
-    }
-
-    function tab_student_information() {
-        $("#tab_student_information").attr("class", "active");
-        $("#tab_student_information-circle").addClass("checked");
-
-    }
     // Wizard Initialization
     $(".wizard-card").bootstrapWizard({
         tabClass: "nav nav-pills",
@@ -177,3 +104,80 @@ $(document).ready(function () {
 
     $(".set-full-height").css("height", "auto");
 });
+
+function fetch_user_status() {
+    base_url = $("#assessment_section").data("baseurl");
+    // reference_number = "14174";
+    $("tab_registration").removeAttr("class");
+    $("tab_advising").removeAttr("class");
+    $("tab_student_information").removeAttr("class");
+    $.ajax({
+        type: "POST",
+        url: base_url + "main/wizard_tracker_status",
+        success: function (response) {
+            // alert(response);
+            result = JSON.parse(response);
+            registration = result.registration;
+            advising = result.advising;
+            student_information = result.student_information;
+            // alert(registration);
+            if (registration == 1) {
+                tab_tab_payment();
+                tab_registration();
+                tab_advising();
+                tab_student_information();
+                $("#progress_bar").css("width", "85.5%");
+                $("#payment").addClass("active");
+                $("#registration").addClass("active");
+            } else if (advising == 1) {
+                tab_registration();
+                tab_advising();
+                tab_student_information();
+                // alert('test');
+                $("#progress_bar").css("width", "62.5%");
+                $("#payment").addClass("active");
+            } else if (student_information == 1) {
+                tab_advising();
+                tab_student_information();
+                init_sectionlist();
+                $("#progress_bar").css("width", "37.5%");
+                $("#advising").addClass("active");
+            } else {
+                tab_student_information();
+                $("#progress_bar").css("width", "12.5%");
+                $("#student_information").addClass("active");
+            }
+
+        },
+        error: function (response) { },
+    });
+
+
+}
+
+function tab_tab_payment() {
+    $("#tab_payment").attr("class", "active");
+    $("#tab_payment-circle").addClass("checked");
+    // $("#tab_payment-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+    $("#tab_registration-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+}
+
+function tab_registration() {
+    $("#tab_registration").attr("class", "active");
+    $("#tab_registration-circle").addClass("checked");
+    $("#tab_advising-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+}
+
+function tab_advising() {
+    $("#tab_advising").attr("class", "active");
+    $("#tab_advising-circle").addClass("checked");
+    $("#tab_student_information-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+}
+
+function tab_student_information() {
+    $("#tab_student_information").attr("class", "active");
+    $("#tab_student_information-circle").addClass("checked");
+
+}

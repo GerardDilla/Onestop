@@ -13,13 +13,9 @@ class AssesmentModel extends CI_Model
             fec.Reference_Number AS Ref_Num_fec,
         ');
         $this->db->from('Student_Info si');
-        $this->db->join('Fees_Temp_College ftc', 'si.Reference_Number = ftc.Reference_Number', 'LEFT');
-        $this->db->join('Fees_Enrolled_College fec', 'si.Reference_Number = fec.Reference_Number', 'LEFT');
+        $this->db->join('Fees_Temp_College ftc', 'si.Reference_Number = ftc.Reference_Number and ftc.schoolyear = "' . $sy . '" and ftc.semester = "' . $sem . '"', 'LEFT');
+        $this->db->join('Fees_Enrolled_College fec', 'si.Reference_Number = fec.Reference_Number and fec.schoolyear = "' . $sy . '" and fec.semester = "' . $sem . '"', 'LEFT');
         $this->db->where('si.Reference_Number', $ref_no);
-        $this->db->where('ftc.schoolyear', $sy);
-        $this->db->where('ftc.schoolyear', $sy);
-        $this->db->where('fec.semester', $sem);
-        $this->db->where('fec.semester', $sem);
         $query = $this->db->get();
         // die($query->row_array()['Ref_Num_si']);
         return $query->row_array();

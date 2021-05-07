@@ -411,7 +411,7 @@ iziToast.show({
     position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
     progressBarColor: '#cc0000',
     overlay:true,
-    timeout:50000,
+    timeout:8000,
     buttons: [
         // ['<button>Ok</button>', function (instance, toast) {
         //     alert("Hello world!");

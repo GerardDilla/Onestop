@@ -339,4 +339,209 @@ class AdvisingModel extends CI_Model
             return false;
         }
     }
+
+    // For testing: remove on live
+    public function insert_enrolled_subject_test($data)
+    {
+
+
+        $result = $this->db->query("
+        
+        INSERT INTO EnrolledStudent_Subjects (
+            Reference_Number,
+            Student_Number,
+            Sched_Code,
+            Semester,
+            School_Year,
+            Scheduler,
+            Sdate,
+            `Status`,
+            Program,
+            Major,
+            Year_Level,
+            Payment_Plan,
+            Section
+          )
+          SELECT
+            Reference_Number,
+            Student_Number,
+            Sched_Code,
+            Semester,
+            School_Year,
+            Scheduler,
+            Sdate,
+            `Status`,
+            Program,
+            Major,
+            Year_Level,
+            Payment_Plan,
+            Section
+          FROM
+            Advising
+          WHERE Reference_Number = '" . $data['Reference_Number'] . "'
+          AND School_Year = '" . $data['School_Year'] . "'
+          AND Semester = '" . $data['Semester'] . "'
+          AND valid = '1'
+
+        ");
+        return $result;
+    }
+    public function insert_fees_test($data)
+    {
+
+        $this->db->query("
+        
+        INSERT INTO fees_enrolled_college (
+            Reference_Number,
+            course,
+            semester,
+            schoolyear,
+            YearLevel,
+            Scholarship,
+            discount,
+            fullpayment,
+            withdraw,
+            withdrawalfee,
+            pwithdrawalfee,
+            tuition_Fee,
+            InitialPayment,
+            First_Pay,
+            Second_Pay,
+            Third_Pay,
+            Fourth_Pay
+          )
+          SELECT
+            Reference_Number,
+            course,
+            semester,
+            schoolyear,
+            YearLevel,
+            Scholarship,
+            discount,
+            fullpayment,
+            withdraw,
+            withdrawalfee,
+            pwithdrawalfee,
+            tuition_Fee,
+            InitialPayment,
+            First_Pay,
+            Second_Pay,
+            Third_Pay,
+            Fourth_Pay
+          FROM
+            fees_temp_college
+          WHERE Reference_Number = '" . $data['Reference_Number'] . "'
+          AND schoolyear = '" . $data['School_Year'] . "'
+          AND semester = '" . $data['Semester'] . "'
+
+        ");
+        $this->db->reset_query();
+
+        $this->db->select('id');
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('schoolyear', $data['School_Year']);
+        $this->db->where('semester', $data['Semester']);
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit('1');
+        $result = $this->db->get('fees_enrolled_college');
+        $row = $result->row_array();
+        $last_id = $row['id'];
+        return $last_id;
+    }
+    public function insert_fees_items_test($id, $data)
+    {
+        $result = $this->db->query("
+        
+
+        INSERT INTO fees_enrolled_college_item (
+            Fees_Enrolled_College_Id,
+            Fees_Type,
+            Fees_Name,
+            Fees_Amount,
+            Scholarship_Discount,
+            valid
+          )
+          SELECT
+            '" . $id . "',
+            ftci.Fees_Type,
+            ftci.Fees_Name,
+            ftci.Fees_Amount,
+            ftci.Scholarship_Discount,
+            '1'
+          FROM
+            fees_temp_college_item AS ftci
+            JOIN fees_temp_college AS ftc
+            ON ftc.id = ftci.Fees_Temp_College_Id
+          WHERE ftc.Reference_Number = '" . $data['Reference_Number'] . "'
+          AND ftc.schoolyear = '" . $data['School_Year'] . "'
+          AND ftc.semester = '" . $data['Semester'] . "'
+        
+        
+        ");
+
+        return $result;
+
+        // INSERT INTO fees_enrolled_college_item (
+        //     Fees_Enrolled_College_Id,
+        //     Fees_Type,
+        //     Fees_Name,
+        //     Fees_Amount,
+        //     Scholarship_Discount
+        //   )
+        //   SELECT
+        //     Fees_Enrolled_College_Id,
+        //     Fees_Type,
+        //     Fees_Name,
+        //     Fees_Amount,
+        //     Scholarship_Discount
+        //   FROM
+        //     fees_temp_college_item
+        //   WHERE Fees_Temp_College_Id = '" . $id . "'
+
+        // ");
+
+
+
+    }
+    public function reset_progress($data)
+    {
+
+        #Remove Course
+        $this->db->set('Course', '');
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->update('Student_Info');
+        $this->db->reset_query();
+
+        #Remove Advising
+        $this->db->set('valid', 0);
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('School_Year', $data['School_Year']);
+        $this->db->where('Semester', $data['Semester']);
+        $this->db->update('Advising');
+        $this->db->reset_query();
+
+        #remove fees temp
+        $this->db->set('Reference_Number', 0);
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('schoolyear', $data['School_Year']);
+        $this->db->where('semester', $data['Semester']);
+        $this->db->update('fees_temp_college');
+        $this->db->reset_query();
+
+        #remove fees enrolled
+        $this->db->set('Reference_Number', 0);
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('schoolyear', $data['School_Year']);
+        $this->db->where('semester', $data['Semester']);
+        $this->db->update('fees_enrolled_college');
+        $this->db->reset_query();
+
+        #remove enrolled subjects
+        $this->db->set('Reference_Number', 0);
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('School_Year', $data['School_Year']);
+        $this->db->where('Semester', $data['Semester']);
+        $this->db->update('enrolledstudent_subjects');
+        $this->db->reset_query();
+    }
 }

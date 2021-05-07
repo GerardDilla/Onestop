@@ -58,10 +58,11 @@ class MainModel extends CI_Model {
         $ref_no = $this->session->userdata('reference_no');
         $this->db->where('requirements_name',$requirements_name);
         $this->db->where('reference_no',$ref_no);
-        return $this->db->get('requirements_log')->row_array(); 
+        return $this->db->get('requirements_log')->row_array();
     }
     public function newRequirementLog($data){
         $this->db->insert('requirements_log', $data);
+        return $this->db->insert_id();
     }
     public function updateRequirementLog($data,$req){
         $ref_no = $this->session->userdata('reference_no');
@@ -80,7 +81,7 @@ class MainModel extends CI_Model {
     }
     public function getRequirementsLogPerRefNo(){
         $ref_no = $this->session->userdata('reference_no');
-        $this->db->select('requirements_log.*,requirements.rq_name');
+        $this->db->select('requirements_log.*,requirements.rq_name,requirements.id_name');
         $this->db->from('requirements_log');
         $this->db->join('requirements','requirements_log.requirements_name = requirements.id_name','left');
         $this->db->where('reference_no',$ref_no);
@@ -90,5 +91,12 @@ class MainModel extends CI_Model {
         $this->db->select('status');
         $this->db->where($col,$value);
         return $this->db->get('student_account')->row_array();
+    }
+    public function insertProofOfPayments($data){
+        $this->db->insert('proof_of_payment_info', $data);
+    }
+    public function getProofOfPaymentInfo($req_id){
+        $this->db->where('req_id',$req_id);
+        return $this->db->get('proof_of_payment_info')->row_array();
     }
 }

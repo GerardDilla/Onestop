@@ -71,7 +71,7 @@ if($this->session->flashdata('error')!=''){
                     </span>
                 </div>
                 <div align="right">
-                    <button id="btnSubmit" type="submit" class="btn btn-info submit-button">Submit</button>
+                    <button id="btnSubmit" type="submit" class="btn btn-danger btn-sm submit-button">Submit</button>
                 </div>
                 </form>
             </div>

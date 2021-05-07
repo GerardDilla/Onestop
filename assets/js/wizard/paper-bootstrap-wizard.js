@@ -220,7 +220,7 @@ function fetch_user_status() {
                 tab_advising();
                 tab_student_information();
                 $("#progress_bar").css("width", "85.5%");
-                $("#payment").addClass("active");
+                // $("#payment").addClass("active");
                 $("#registration").addClass("active");
             } else if (advising == 1) {
                 tab_registration();

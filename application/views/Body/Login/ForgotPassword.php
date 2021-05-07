@@ -58,7 +58,7 @@ echo '});</script>';
         <div class="col-lg-6 col-md-6 col-sm-12 second_row login-row">
             <div class="form d-flex bg-white" style="background:transparent">
             <div class="content">
-                <form method="post" class="form-validate" action="<?php echo base_url('main/sendEmail');?>">
+                <form method="post" class="form-validate" action="<?php echo base_url('main/sendEmail');?>" tabindex="1">
                 <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
                 <span class="white-box"></span>
                 <div class="col-md-12" style="margin-bottom:40px">
@@ -143,24 +143,33 @@ function closeAnimation(){
     delay: function(el, i) { return i * 200 },
     direction: 'normal',
     // loop: true,
-    autoplay:true,
+    autoplay:false,
         begin: function(anim) {
-            goToLink();
-            var interval2 = window.setInterval(function(){
             // goToLink();
-            clearInterval(interval2);  
-            },1000);
+            setTimeout(() => {
+                goToLink()
+            }, 2000);
         }
     });
-    playPause.play();
+    // playPause.play();
     gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-    var t1 = gsap.timeline();
-    t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
-    $('.transition-effect').css('z-index','1001');
-    $('#amazing').css('z-index','1002');
+    
+    if( /Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        setTimeout(() => {
+            goToLink()
+        }, 2000);
+    }
+    else{
+        var t1 = gsap.timeline();
+        t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
+        $('.transition-effect').css('z-index','1001');
+        $('#amazing').css('z-index','1002');
+        playPause.play();
+        console.log('mobile')
+    }
 }
 function goToLink(){
     window.location.replace("<?php echo base_url('/')?>");

@@ -24,6 +24,7 @@ echo '</script>';
         </div>
         <div class="card-body">
         <form  id="form_submit" action="<?php echo base_url('main/validationDocumentsProcess');?>" method="post" enctype="multipart/form-data" >
+        <input type="hidden" value="0" name="if_married">
         <!-- <form  id="form_submit" action="http://localhost:4003/uploadtodrive/test_post2" method="post" enctype="multipart/form-data" > -->
             <div class="col-md-12" align="center">
                 <div class="table-responsive col-lg-12">
@@ -55,10 +56,11 @@ echo '</script>';
                                         ++$req_count;
                                     }
                                 }
-
+                                
                                 foreach($requirements as $list){
-                                array_push($requirements_list,$list['id_name']);
-                                $status = $list['status'];
+                                    if($list['id_name']!="marriage_certificate"){
+                                    array_push($requirements_list,$list['id_name']);
+                                    $status = $list['status'];
                             ?>
                             <tr>
                                 <td><?php echo $list['rq_name'];?></td>
@@ -70,7 +72,26 @@ echo '</script>';
                                 <td style="text-align:center;"><?php echo $list['date'];?></td>
                                 
                             </tr>
-                            <?php }?>
+                            <?php 
+                                    }
+                                    else{
+                            ?>
+                            <tr>
+                            <th colspan="5">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes"> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" checked="true"></th>
+                            </tr>
+                            <tr style="display:none;" id="married_certificate_div">
+                                <td><?php echo $list['rq_name'];?></td>
+                                <td>
+                                        <input <?php echo $req_count>0?'disabled="true"':''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name'];?>" id="<?php echo $list['id_name'];?>" type="file"><div class="invalid-feedback feedback-<?php echo $list['id_name'];?>"><i class="bx bx-radio-circle"></i>This is required.</div>
+                                    </td>
+                                <td><input <?php echo $req_count>0?'disabled="true"':''; ?> checked="checked" type="checkbox" class="form-check-input" name="check_<?php echo $list['id_name'];?>" onclick="toBeFollow(`<?php echo $list['id_name'];?>`)"></td>
+                                <td style="text-align:center;"><?php echo $list['status'];?></td>
+                                <td style="text-align:center;"><?php echo $list['date'];?></td>
+                            </tr>
+                            <?php   
+                                    }
+                                }
+                                ?>
                         </tbody>
                     </table>
                 </div>
@@ -87,6 +108,27 @@ echo '</script>';
 </section>
 
 <script>
+function ifMarried(val){
+    if(val=="yes"){
+        $(`input[name=yes]`).attr('checked',true);
+        $("input[name=no]").prop('checked', false);
+        $('input[name=if_married]').val('1');
+        $('#married_certificate_div').show();
+        $(`input[name=marriage_certificate]`).attr('required',true);
+        $("input[name=check_marriage_certificate]").attr('checked', false);
+    }
+    else if(val=="no"){
+        // alert('hello')
+        $("input[name=check_marriage_certificate]").attr('checked', true);
+        $(`input[name=no]`).attr('checked',true)
+        // $(`input[name=yes]`).attr('checked',false)
+        $("input[name=yes]").prop('checked', false); 
+        $('input[name=if_married]').val('0');
+        $('#married_certificate_div').hide();
+        $(`input[name=marriage_certificate]`).attr('required',false);
+        
+    }
+}
 function toBeFollow(id){
     if($(`input[name=check_${id}]`).is(':checked')){
         $(`input[name=${id}]`).attr('required',false);

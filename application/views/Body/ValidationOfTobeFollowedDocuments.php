@@ -59,8 +59,9 @@ echo '</script>';
                                 }
 
                                 foreach($requirements as $list){
-                                array_push($requirements_list,$list['id_name']);
-                                $status = $list['status'];
+                                    if($list['id_name']!='marriage_certificate'){
+                                    array_push($requirements_list,$list['id_name']);
+                                    $status = $list['status'];
                             ?>
                             <tr>
                                 <td><?php echo $list['rq_name'];?></td>
@@ -72,7 +73,25 @@ echo '</script>';
                                 <td style="text-align:center;"><?php echo $list['status']=="pending"?$list['date']:''; ?></td>
                                 
                             </tr>
-                            <?php } ?>
+                            <?php 
+                                    }
+                                    else{
+                                        if($list['if_married']==1){
+                            ?>
+                            <tr>
+                                <td><?php echo $list['rq_name'];?></td>
+                                <td>
+                                        <input <?php echo  $list['status']=="pending"?'disabled="true"':'required'; ?>  class="form-control form-control-sm" name="<?php echo $list['id_name'];?>" id="<?php echo $list['id_name'];?>" type="file"><div class="invalid-feedback feedback-<?php echo $list['id_name'];?>"><i class="bx bx-radio-circle"></i>This is required.</div>
+                                    </td>
+                                <!-- <td><input <?php echo  $list['status']=="pending"?'':'disabled="true"'; ?> <?php if($req_count>0){echo $list['status']==""?'checked="true"':''; }?> type="checkbox" class="form-check-input" name="check_<?php echo $list['id_name'];?>" onclick="toBeFollow(`<?php echo $list['id_name'];?>`)"></td> -->
+                                <td style="text-align:center;"><?php echo $list['status'];?></td>
+                                <td style="text-align:center;"><?php echo $list['status']=="pending"?$list['date']:''; ?></td>
+                                
+                            </tr>
+                            <?php       }
+                                    }
+                                }
+                            ?>
                             <!-- <tr class="table-active">
                                 <th colspan="4">Payment</th>
                             </tr>

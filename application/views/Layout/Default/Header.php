@@ -29,6 +29,9 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
 <link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
 <link href="<?php echo base_url() ?>assets/css/assesmentWizard.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="<?php echo base_url('assets/css/assessmentWizard.css');?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/forms.css');?>">
 <style>
     /* sticky sidenav responsive to content */
     #sidebar {

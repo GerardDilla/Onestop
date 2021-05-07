@@ -339,4 +339,8 @@ class AdvisingModel extends CI_Model
             return false;
         }
     }
+    public function convertTime($time){
+        $this->db->where('Time_From', $time);
+        return $this->db->get('time')->row_array();
+    }
 }

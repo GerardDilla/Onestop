@@ -16,7 +16,7 @@ class Main extends MY_Controller
 	}
 
 	public function index()
-	{
+	{	
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
 	}
@@ -636,7 +636,8 @@ class Main extends MY_Controller
 	public function uploadProofOfPayment()
 	{
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-
+		$getStudentAccountInfo = $this->mainmodel->getStudentAccountInfo($this->session->userdata('reference_no'));
+		$this->data['student_number'] = $getStudentAccountInfo['Student_Number'];
 		if (!empty($checkRequirement)) {
 			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
 			$this->data['gdrive_link'] = $checkRequirement['path_id'];
@@ -709,7 +710,8 @@ class Main extends MY_Controller
 					'acc_num' => $this->input->post('account_number'),
 					'acc_holder_name' => $this->input->post('holder_name'),
 					'payment_reference_no' => $this->input->post('reference_number'),
-					'ref_no' => $ref_no
+					'ref_no' => $ref_no,
+					'amount_paid' => $this->input->post('amount_paid')
 				));
 			}
 		} else {
@@ -781,5 +783,10 @@ class Main extends MY_Controller
 		#update curriculum data
 		$updatestatus = $this->AdvisingModel->update_student_curriculum($inputs);
 		return $updatestatus;
+	}
+	public function setApiSession(){
+		$this->session->set_userdata(array('random_shit'=>'asdasdasdasd'));
+		$random = $this->session->userdata('random_shit');
+		echo json_encode(array('random_number'=>$random));
 	}
 }

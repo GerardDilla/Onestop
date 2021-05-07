@@ -224,7 +224,7 @@
                 <div class="col-md-8" align="right"><button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button>&nbsp;<button style="display:none;" type="button" class="payment-page btn btn-sm btn-danger" id="submit-button">Submit</button></div>
             </div>
             <div class="col-md-12">
-                <button type="button" id="upload-proof-button" onclick="choosePayment('online_payment')" class="btn btn-lg btn-warning">Upload Proof of Payment</button>
+                <button type="button" id="upload-proof-button" onclick="choosePayment('online_payment')" class="btn btn-lg btn-success">Upload Proof of Payment</button>
             </div>
         </div>
         <div class="card-body">
@@ -279,7 +279,7 @@
                 </div> -->
                 <div class="col-md-3 col-lg-3 col-sm-12" style="margin:0;padding:0;">
                     <div class="col-md-12 payment-header">SDCA ONLINE PAYMENT</div>
-                    <div class="col-md-12 payment-body" style="margin-top:30px;"><button type="button" class="btn btn-success btn-lg btn-semi-round">Pay Here</button></div>
+                    <div class="col-md-12 payment-body" style="margin-top:30px;"><a href="https://stdominiccollege.edu.ph/SDCAPayment/" class="btn btn-success btn-lg btn-semi-round" target="_blank">Pay Here</a></div>
                 </div>
             </div>
             <div class="col-md-12 row payment-page" style="display:none">
@@ -305,7 +305,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 online-payment">
-                    <label class="input-label"><b>Account Number</b></label>
+                    <label class="input-label"><b>Account Holder Name</b></label>
                     <input type="text" class="form-control" name="holder_name" placeholder="...." style="">
                     <div class="invalid-feedback">
                         This is required.
@@ -321,6 +321,20 @@
                 <div class="col-md-3">
                     <label class="input-label"><b>Amount Paid</b></label>
                     <input type="text" class="form-control number-format" name="amount_paid" placeholder="₱ 0.00">
+                    <div class="invalid-feedback">
+                        This is required.
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="input-label"><b>Student Number</b></label>
+                    <input type="text" class="form-control" value="<?php echo $student_number==0?'':$student_number;?>" placeholder="You still have no Student Number" readonly>
+                    <div class="invalid-feedback">
+                        This is required.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="input-label"><b>Student Name</b></label>
+                    <input type="text" class="form-control" placeholder="Name" value="<?php echo strtoupper($this->session->userdata('first_name').' '.$this->session->userdata('middle_name').' '.$this->session->userdata('last_name'));?>" readonly>
                     <div class="invalid-feedback">
                         This is required.
                     </div>
@@ -386,6 +400,38 @@ var storagedata = new StorageData();
 //     console.log('Link:'+storagedata.getData());
 // },7000)
 // var image_url = "";
+iziToast.show({
+    theme: 'light',
+    icon: 'bi-exclamation-diamond-fill',
+    iconColor: '#cc0000',
+    title: 'NOTICE:',
+    message: 'If you are already paid, please upload your proof of payment!',
+    messageSize: '18',
+    // messageLineHeight: '30',
+    position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+    progressBarColor: '#cc0000',
+    overlay:true,
+    timeout:50000,
+    buttons: [
+        // ['<button>Ok</button>', function (instance, toast) {
+        //     alert("Hello world!");
+        // }, true],
+        ['<button>Ok</button>', function (instance, toast) {
+            instance.hide({
+                transitionOut: 'fadeOutUp',
+                onClosing: function(instance, toast, closedBy){
+                    console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                }
+            }, toast, 'buttonName');
+        }]
+    ],
+    // onOpening: function(instance, toast){
+    //     console.info('callback abriu!');
+    // },
+    onClosing: function(instance, toast, closedBy){
+        console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
+    }
+});
 $(".number-format").click(function () {
    $(this).select();
 });

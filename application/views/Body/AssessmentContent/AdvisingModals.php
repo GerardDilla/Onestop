@@ -1,4 +1,6 @@
+
 <!--Extra Large Modal -->
+<!-- <div id="calendar"></div> -->
 <div class="modal fade text-left w-100" id="subjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
@@ -55,7 +57,7 @@
 </div>
 
 <!--Extra Large Modal -->
-<div class="modal fade text-left w-100" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+<div class="modal fade text-left w-100" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true" style="width:100vw;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -64,7 +66,7 @@
                     <i data-feather="x"></i>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height:50vh;">
                 <table class="table table-lg" id="scheduleTable" style="width:100%">
                     <thead>
                         <tr>
@@ -418,7 +420,7 @@
     </div>
 </div>
 
-
+<!-- 14174 -->
 <div class="modal fade text-left modal-borderless" id="cashierPayment" tabindex="-1" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -451,3 +453,11 @@
         </div>
     </div>
 </div>
+<script>
+    var schedule_array = [700,730,800,830,900,930,1000,1030,1100,1130,1200,1230,1300,1330,1400,1430,1500,1530,1600,1650,1700,1750,1800,1830,1900,1930,2000,2030,2100];
+    var filtered = schedule_array.filter((time) => { return time >= 700 && time <= 1230});
+
+
+    console.log('this is filtered:'+filtered)
+</script>
+    

@@ -10,3 +10,5 @@
 <script src="<?php echo base_url('assets/js/iziToast.min.js'); ?>"></script>
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 <script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
+
+<!-- <script href="<?php echo base_url('https://cdn.jsdelivr.net/npm/fullcalendar@3.10.1/dist/fullcalendar.min.js'); ?>"></script> -->

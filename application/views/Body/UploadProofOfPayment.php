@@ -400,6 +400,38 @@ var storagedata = new StorageData();
 //     console.log('Link:'+storagedata.getData());
 // },7000)
 // var image_url = "";
+iziToast.show({
+    theme: 'light',
+    icon: 'bi-exclamation-diamond-fill',
+    iconColor: '#cc0000',
+    title: 'NOTICE:',
+    message: 'If you are already paid, please upload your proof of payment!',
+    messageSize: '18',
+    // messageLineHeight: '30',
+    position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+    progressBarColor: '#cc0000',
+    overlay:true,
+    timeout:50000,
+    buttons: [
+        // ['<button>Ok</button>', function (instance, toast) {
+        //     alert("Hello world!");
+        // }, true],
+        ['<button>Ok</button>', function (instance, toast) {
+            instance.hide({
+                transitionOut: 'fadeOutUp',
+                onClosing: function(instance, toast, closedBy){
+                    console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                }
+            }, toast, 'buttonName');
+        }]
+    ],
+    // onOpening: function(instance, toast){
+    //     console.info('callback abriu!');
+    // },
+    onClosing: function(instance, toast, closedBy){
+        console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
+    }
+});
 $(".number-format").click(function () {
    $(this).select();
 });

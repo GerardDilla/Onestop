@@ -16,7 +16,7 @@ class Main extends MY_Controller
 	}
 
 	public function index()
-	{
+	{	
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
 	}
@@ -784,5 +784,10 @@ class Main extends MY_Controller
 		#update curriculum data
 		$updatestatus = $this->AdvisingModel->update_student_curriculum($inputs);
 		return $updatestatus;
+	}
+	public function setApiSession(){
+		$this->session->set_userdata(array('random_shit'=>'asdasdasdasd'));
+		$random = $this->session->userdata('random_shit');
+		echo json_encode(array('random_number'=>$random));
 	}
 }

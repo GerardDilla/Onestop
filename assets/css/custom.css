@@ -11,7 +11,7 @@
 }
 
 div#main{
-    margin-left:300px;
+    /* margin-left:300px; */
     transition: all .5s ease-out;
   }
 /* span:after{
@@ -34,4 +34,18 @@ div#main{
 }
 .paymentbullet li a{
     width:100% !important;
+}
+.sched-subject{
+    background:white;
+    padding:10px;
+    border-radius:10px;
+}
+td.schedule-time{
+    margin:0 2px 0 2px;
+}
+.time-header{
+    position: sticky;
+    top: 0;
+    background:white;
+    overflow:hidden;
 }

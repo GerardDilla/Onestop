@@ -15,19 +15,24 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css'); ?>">
 <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.svg'); ?>" type="image/x-icon">
 <!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/simple-datatables/style.css'); ?>"> -->
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"> -->
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-password-validation-while-typing/css/jquery.passwordRequirements.css'); ?>" />
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziModal.min.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/assessmentWizard.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/waitMe/waitMe.min.css'); ?>">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/4.0.0/material-components-web.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.material.min.css">
+<!-- dataTables.responsive -->
 <script src="<?php echo base_url('assets/vendors/login_asset/js/jquery.min.js'); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.css'); ?>">
+
+
+
+<link rel="stylesheet" href="<?php echo base_url('assets/vendors/Datatable/DataTables-1.10.23/css/dataTables.bootstrap4.min.css');?>">
+<link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/Datatable2/Responsive-2.2.7/css/responsive.dataTables.min.css">
+<!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.css'); ?>"> -->
+
 <!-- <script href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.js'); ?>"></script> -->
 
 
@@ -41,7 +46,7 @@
     }
 
     div#main {
-        margin-left: 300px;
+        /* margin-left: 300px;   */
     }
 
     #pr-box i {

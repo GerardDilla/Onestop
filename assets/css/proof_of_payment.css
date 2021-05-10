@@ -1,0 +1,311 @@
+.image-uploader.has-files .uploaded-image{
+    width:80%;
+    /* background:blue; */
+    margin-right:10px;
+    max-height:50vh;
+    /* height:auto; */
+}
+.image-uploader.has-files .uploaded-image img{
+    display:block;
+    height:auto;
+    width:50vw;
+    max-height:70vh;
+}
+#uploaded_image{
+    /* text-align:center; */
+    height:auto;
+    width:50vw;
+    max-height:60vh;
+    /* margin-left:10vw; */
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+#uploaded_div{
+    /* border:1px solid #ccc;
+    border-radius:10px; */
+    /* padding:auto; */
+}
+.iziModal-header-title{color:black;}
+/* #view_image.iziModal{
+    width:100%;
+    max-width:100%;
+} */
+.button{
+    background:#C82525;
+    color:white;
+    margin-bottom:10px;
+}
+.button:hover{
+    color:white;
+    background:rgba(200,37,37,.7);
+}
+img.payment-logo{
+    width:120px;
+    height:auto;
+}
+strong.branch{
+    color:black;
+}
+.input-label{
+    text-indent:10px;
+}
+/* .button-1{
+    
+}
+.button-2{
+    
+}
+.button-3{
+
+} */
+/* thead,tbody{
+    text-align:center;
+} */
+.payment-header{
+    background:#B83232;
+    color:white;
+    /* margin-left:7px; */
+    padding:10px;
+    text-align:center;
+    font-weight:bold;
+}
+.payment-body{
+    text-align:center;
+    margin:10px 0px 10px 0px;
+}
+/* .payment-header div{
+    padding:10px;
+    text-align:center;
+    font-weight:bold;
+} */
+.aub{
+    padding-top:10px;
+}
+.rcbc{
+    /* padding-top:20%; */
+    padding-top:10px;
+}
+.bdo{
+    padding-top:10px;
+}
+.ub{
+    padding-top:10px;
+}
+.eastwest{
+    padding-top:10px;
+}
+/* @media (max-width:895px){
+    .aub,.rcbc,.bdo,.ub,.eastwest{1
+        padding-top:10px;
+    }
+} */
+.number-format::placeholder{
+    text-align:right;
+}
+.number-format{
+    text-align:right;
+}
+.slant{
+    /* border-right: 40px solid black;
+    border-bottom:40px solid black */
+}
+.slant:before{
+    position:absolute;
+    content: '';
+    width:40px;
+    height:55px;
+    bottom:-3px;
+    left:-6px;
+    background-color:white;
+    transform:rotate(20deg);
+    z-index:1;
+}
+.slant:after{
+    position:absolute;
+    content: '';
+    width:40px;
+    height:55px;
+    bottom:-8px;
+    right:-7px;
+    background-color:white;
+    transform:rotate(20deg);
+    z-index:1;
+}
+.btn-semi-round{
+    border-radius:10px;
+}
+.bills-payment-1{
+    /* border:solid black 1px; */
+    padding-left:90px;
+}
+.bills-payment-2{
+    display:none;
+}
+#upload-proof-button{
+    font-weight:bold;
+}
+.savings-account{
+    margin-left:50px;
+}
+.bank-logo{
+    text-align:right;
+}
+.bank-title{
+    text-align:left;
+}
+.bank-logo{
+     /* position:relative; */
+}
+.bank-logo:first-child{
+    padding-top:10px;
+}
+/* .bank-logo img{
+    position:absolute;
+    top:50%;
+    right:0;
+} */
+@media (max-width:768px){
+    .slant{
+        font-size:80%;
+    }
+    .bank-logo{
+        text-align:center;
+    }
+}
+
+@media (max-width:767px){
+    .bills-payment-1{
+        display:none;
+    }
+    .bills-payment-2{
+        display:block;
+    }
+}
+@media (max-width:600px){
+    .slant:after{
+        background-color:transparent;
+    }
+    .slant:before{
+        background-color:transparent;
+    }
+    .savings-account{
+        margin-left:0px;
+    }
+    .bank-logo{
+        text-align:center;
+    }
+    .bank-title{
+        text-align:center;
+    }
+}
+.btn-group-lg>.btn, .btn-lg {
+}
+.payment-card{
+    padding:15px 10px 15px 40px;
+    /* background:#d4d4d4; */
+    margin:10px;
+    position:relative;
+    /* padding-left:35px; */
+    border:1px solid #d4d4d4;
+    border-radius:5px;
+}
+.payment-card:hover{
+    border:1px solid #EE3B3B;
+}
+.payment-online{
+    padding:0px 15% 0px 15%;
+}
+.payment-online .payment-logo{
+    width:200px;
+    height:auto;
+    height:67px;
+}
+/* .payment-online */
+.payment-card::before{
+    content:'';
+    height:65px;
+    width:20px;
+    top:1;
+    left:5px;
+    margin-left:4px;
+    background:#9D0F0F;
+    position:absolute;
+    /* transition: all .5s linear; */
+}
+.account_number{
+    font-weight:bold;
+    color:black;
+    font-size:20px;
+    margin-top:20px;
+}
+.account-title{
+    background:#F1BE13;
+    color:black;
+    /* margin-top:10px; */
+    padding:5px 10px 5px 10px;
+    font-size:20px;
+    font-weight:bold;
+}
+.sdca_online{
+    color:#9D0F0F;
+    font-size:24px;
+    font-weight:bold;
+}
+a.sdca-link{
+    color:red;
+}
+.account-name-card{
+    padding:0;
+    margin:10px;
+}
+.account-name{
+    background:#9D0F0F;
+    padding:10px;
+    font-size:16px;
+    font-weight:bold;
+    color:white;
+}
+.sdcalogo{
+    position:absolute;
+    width:280px;
+    height:auto;
+    /* transform:translate(50%,50%) */
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    
+}
+.payment-head{
+    height:120px;
+    position:relative;
+}
+.payment-head-text{
+    background:#9D0F0F;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+    position:relative;
+}
+.payment-head-text span{
+    position:absolute;
+    /* transform:translate(50%,50%) */
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%)
+}
+.payment-head-text::after{
+    content:'';
+    height:120px;
+    width:45px;
+    background:#9D0F0F;
+    position:absolute;
+    top:0;
+    left:-22px;
+    transform: skewX(20deg);
+}
+#onlinepaymentModal .modal-dialog {
+    max-width: 650px; /* New width for default modal */
+}
+#overthecounterModal .modal-dialog{
+    max-width: 650px;
+}

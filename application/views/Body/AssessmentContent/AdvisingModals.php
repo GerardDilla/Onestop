@@ -453,4 +453,54 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-left w-100" id="overthecounterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <!-- <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel16">CHOOSE SUBJECTS</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+
+            </div> -->
+            <div class="modal-body">
+                <div class="col-md-12" align="center">
+                    <img src="<?php echo base_url('assets/images/PAYMENT_OTC.jpg')?>" style="height:80vh;width:auto;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade text-left w-100" id="onlinepaymentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <!-- <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel16">CHOOSE SUBJECTS</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+
+            </div> -->
+            <div class="modal-body">
+                <div class="col-md-12" align="center">
+                    <img src="<?php echo base_url('assets/images/PAYMENT_ONLINE.jpg')?>" style="height:80vh;width:auto;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
     

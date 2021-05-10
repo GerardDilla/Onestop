@@ -21,16 +21,17 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/css/assessmentWizard.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/waitMe/waitMe.min.css'); ?>">
-
+<link rel="stylesheet" href="<?php echo base_url('');?>assets/css/image-uploader.min.css">
 <!-- dataTables.responsive -->
 <script src="<?php echo base_url('assets/vendors/login_asset/js/jquery.min.js'); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
-
+<link rel="stylesheet" href="<?php echo base_url('assets/css/proof_of_payment.css'); ?>">
 
 
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/Datatable/DataTables-1.10.23/css/dataTables.bootstrap4.min.css');?>">
 <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/Datatable2/Responsive-2.2.7/css/responsive.dataTables.min.css">
+<script type="text/javascript" src="<?php echo base_url('');?>assets/js/image-uploader.min.js"></script>
+<link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
 <!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.css'); ?>"> -->
 
 <!-- <script href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.js'); ?>"></script> -->

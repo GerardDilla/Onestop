@@ -81,7 +81,7 @@ $('#courses').on('change', function() {
                 $('#majors').append(html);
             } else {
                 $('#majors').empty();
-                $('#majors').append("<option value='none' disabled selected>NO COURSE MAJOR</option>");
+                $('#majors').append("<option value='0' disabled selected>NO COURSE MAJOR</option>");
             }
         }
     })
@@ -121,7 +121,7 @@ function submit_course() {
     } else if (applied_status == 'freshmen') {
         $("#educ_new_student_label").prop("checked", true);
     } else {
-        izi_toast('Snap!', 'You did NOT select your STATUS!', 'red');
+        izi_toast('You did NOT select your STATUS!', 'Are you a new student or tranferee?', 'red');
         event.preventDefault();
         return
     }
@@ -132,6 +132,9 @@ function submit_course() {
                 event.preventDefault();
                 return;
             }
+        } else {
+            $('#shs_student_number').val('');
+            stundent_number_text = '';
         }
 
         event.preventDefault();

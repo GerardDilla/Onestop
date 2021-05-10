@@ -159,8 +159,11 @@
                             <?php
                             // if ($reference_number_from_session) {
                             if ($this->data['courses']) {
-                                foreach ($this->data['courses'] as $index => $course) {
-                                    echo "<option value='$course'>$course : " . $this->data['courses_info'][$index]['Program_Name'] . "</option>";
+                                // foreach ($this->data['courses'] as $index => $course) {
+                                //     echo "<option value='$course'>$course : " . $this->data['courses_info'][$index]['Program_Name'] . "</option>";
+                                // }
+                                foreach($this->data['courses'] as $course){
+                                    echo "<option value='".$course['Program_Code']."'>".$course['Program_Code']." : ".$course['Program_Name']."</option>";
                                 }
                             }
                             // } else {

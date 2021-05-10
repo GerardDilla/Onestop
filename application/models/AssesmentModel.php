@@ -118,4 +118,12 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
+
+    public function get_all_programs(){
+        $this->db->select('*');
+        $this->db->from('Programs');
+        $this->db->order_by('Program_Code', 'ASC');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

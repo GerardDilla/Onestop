@@ -233,22 +233,26 @@ class Main extends MY_Controller
 		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
 
 		// echo $this->session->userdata('reference_no');
-		$this->data['courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));
+		$this->data['student_courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));
 		$array = array();
-		foreach ($this->data['courses'] as $course) {
-			$course_info = $this->get_student_course_info($course);
+		foreach ($this->data['student_courses'] as $student_course) {
+			$course_info = $this->get_student_course_info($student_course);
 			$array[] = $course_info;
 		}
 		$this->data['courses_info'] = $array;
+
+		// All Programs
+		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
+		
 
 		$this->data['status'] = $this->wizard_tracker_status();
 
 		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
 		$this->data['course'] = $student_info_array['Course'];
 		//
-		$course_info = $this->get_student_course_info($student_info_array['Course']);
-		$this->data['program_code'] = $course_info['Program_Code'];
-		$this->data['program_name'] = $course_info['Program_Name'];
+		$picked_course = $this->get_student_course_info($student_info_array['Course']);
+		$this->data['program_code'] = $picked_course['Program_Code'];
+		$this->data['program_name'] = $picked_course['Program_Name'];
 		//
 		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
 		$this->data['major'] = $major['Program_Major'];
@@ -352,6 +356,7 @@ class Main extends MY_Controller
 		return $course_info;
 	}
 	// Get Program Major by Program Code
+	// Used For Ajax
 	public function get_student_course_major($program_code)
 	{
 		$major = $this->AssesmentModel->get_major_by_course($program_code);
@@ -370,14 +375,14 @@ class Main extends MY_Controller
 			if ($shs_status['status'] == 'empty') {
 				echo json_encode(array(
 					'title' => 'No Data Found in Database!',
-					'body' => 'NOTE NOTE NOTE',
+					'body' => '',
 					'status' => 'failed'
 				));
 				return;
 			} else if ($shs_status['status'] == 'dept') {
 				echo json_encode(array(
 					'title' => 'You still have BALANCE!',
-					'body' => 'NOTE NOTE NOTE',
+					'body' => '',
 					'status' => 'failed'
 				));
 				return;

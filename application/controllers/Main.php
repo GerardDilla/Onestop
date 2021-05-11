@@ -16,7 +16,7 @@ class Main extends MY_Controller
 	}
 
 	public function index()
-	{	
+	{
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
 	}
@@ -231,6 +231,7 @@ class Main extends MY_Controller
 		$this->data['advising'] = 'Body/AssessmentContent/Advising';
 		$this->data['payment'] = 'Body/AssessmentContent/Payment';
 		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
+		$this->data['registration'] = 'Body/AssessmentContent/Registration';
 
 		// echo $this->session->userdata('reference_no');
 		$this->data['courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));
@@ -784,9 +785,10 @@ class Main extends MY_Controller
 		$updatestatus = $this->AdvisingModel->update_student_curriculum($inputs);
 		return $updatestatus;
 	}
-	public function setApiSession(){
-		$this->session->set_userdata(array('random_shit'=>'asdasdasdasd'));
+	public function setApiSession()
+	{
+		$this->session->set_userdata(array('random_shit' => 'asdasdasdasd'));
 		$random = $this->session->userdata('random_shit');
-		echo json_encode(array('random_number'=>$random));
+		echo json_encode(array('random_number' => $random));
 	}
 }

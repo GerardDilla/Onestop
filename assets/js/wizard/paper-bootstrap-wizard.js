@@ -129,6 +129,8 @@ function fetch_user_status() {
                 $("#progress_bar").css("width", "85.5%");
                 // $("#payment").addClass("active");
                 $("#registration").addClass("active");
+                init_registrationform();
+                $('.wizard-proceed').hide();
             } else if (advising == 1) {
                 tab_registration();
                 tab_advising();

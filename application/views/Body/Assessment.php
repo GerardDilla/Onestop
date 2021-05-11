@@ -83,12 +83,13 @@ if ($this->session->flashdata('success') != "") {
                             <div class="tab-pane container" id="advising">
                                 <?php $this->load->view($this->data['advising']); ?>
                             </div>
-                            <div class="tab-pane container" id="registration">
-
-                            </div>
                             <div class="tab-pane container" id="payment">
                                 <?php $this->load->view($this->data['payment']); ?>
                             </div>
+                            <div class="tab-pane container" id="registration">
+                                <?php $this->load->view($this->data['registration']); ?>
+                            </div>
+
                         </div>
 
                         <div class="col-md-12" style="text-align:center">

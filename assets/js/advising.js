@@ -41,6 +41,19 @@ $(document).ready(function () {
         init_subjectlists();
     });
 
+    $('.setpaid_test').click(function () {
+        init_enroll_test();
+        fetch_user_status();
+    });
+
+    $('.reset_progress_test').click(function () {
+        init_reset_progress();
+        fetch_user_status();
+    });
+
+
+
+
 
 });
 
@@ -157,6 +170,33 @@ function init_scheduleplot() {
 
     schedule_tablerenderer($('#scheduleTable'), get_militarytime());
     paymentplan_tablerenderer
+}
+
+function init_enroll_test() {
+
+    ajax_enroll_test();
+
+
+}
+function init_reset_progress() {
+
+    ajax_reset_progress();
+
+
+}
+
+function ajax_enroll_test(paymentplan) {
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/setpaid_test",
+        async: true,
+    });
+}
+
+function ajax_reset_progress(paymentplan) {
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/reset_progress",
+        async: true,
+    });
 }
 
 function ajax_adviseStudent(paymentplan) {

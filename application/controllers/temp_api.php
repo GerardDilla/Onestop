@@ -705,4 +705,25 @@ class temp_api extends CI_Controller
 		$Sections = $this->AdvisingModel->get_sections($Course, $Feesdata);
 		echo json_encode($Sections);
 	}
+	public function setpaid_test()
+	{
+		$array = array(
+			'Reference_Number' => $this->reference_number,
+			'School_Year' => $this->legend_sy,
+			'Semester' => $this->legend_sem,
+		);
+		$this->AdvisingModel->insert_enrolled_subject_test($array);
+		$fees_id = $this->AdvisingModel->insert_fees_test($array);
+		$this->AdvisingModel->insert_fees_items_test($fees_id, $array);
+		// insert_fees_test
+	}
+	public function reset_progress()
+	{
+		$array = array(
+			'Reference_Number' => $this->reference_number,
+			'School_Year' => $this->legend_sy,
+			'Semester' => $this->legend_sem,
+		);
+		$this->AdvisingModel->reset_progress($array);
+	}
 }

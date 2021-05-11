@@ -16,7 +16,7 @@ class Main extends MY_Controller
 	}
 
 	public function index()
-	{
+	{	
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
 	}
@@ -544,7 +544,7 @@ class Main extends MY_Controller
 						'reference_no' => $ref_no,
 						'file_submitted' => $orig_name,
 						'file_type' => $file_type,
-						'if_married' => $id_name=='marriage_certificate'?$this->input->post('if_married'):0
+						'if_married' => $id_name == 'marriage_certificate' ? $this->input->post('if_married') : 0
 					));
 				}
 				// 
@@ -636,12 +636,13 @@ class Main extends MY_Controller
 	public function uploadProofOfPayment()
 	{
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-
+		$getStudentAccountInfo = $this->mainmodel->getStudentAccountInfo($this->session->userdata('reference_no'));
+		$this->data['student_number'] = $getStudentAccountInfo['Student_Number'];
 		if (!empty($checkRequirement)) {
 			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
 			$this->data['gdrive_link'] = $checkRequirement['path_id'];
 			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
-			$this->data['payment_type'] = empty($this->mainmodel->getProofOfPaymentInfo($checkRequirement['id']))?'':$this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])['payment_type'];
+			$this->data['payment_type'] = empty($this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])) ? '' : $this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])['payment_type'];
 		}
 		// echo '<pre>'.print_r($checkRequirement,1).'</pre>';
 		// exit;
@@ -691,9 +692,8 @@ class Main extends MY_Controller
 					'file_submitted' => $uploaded_data['orig_name'],
 					'file_type' => $uploaded_data['file_type'],
 					// 'path_id' => empty($getId)?'':$getId
-				),'proof_of_payment');
-			}
-			else{
+				), 'proof_of_payment');
+			} else {
 				$req_id = $this->mainmodel->newRequirementLog(array(
 					'requirements_name' => 'proof_of_payment',
 					'requirements_date' => date("Y-m-d H:i:s"),
@@ -710,7 +710,8 @@ class Main extends MY_Controller
 					'acc_num' => $this->input->post('account_number'),
 					'acc_holder_name' => $this->input->post('holder_name'),
 					'payment_reference_no' => $this->input->post('reference_number'),
-					'ref_no' => $ref_no
+					'ref_no' => $ref_no,
+					'amount_paid' => $this->input->post('amount_paid')
 				));
 			}
 		} else {
@@ -782,5 +783,10 @@ class Main extends MY_Controller
 		#update curriculum data
 		$updatestatus = $this->AdvisingModel->update_student_curriculum($inputs);
 		return $updatestatus;
+	}
+	public function setApiSession(){
+		$this->session->set_userdata(array('random_shit'=>'asdasdasdasd'));
+		$random = $this->session->userdata('random_shit');
+		echo json_encode(array('random_number'=>$random));
 	}
 }

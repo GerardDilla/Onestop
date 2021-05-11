@@ -5,7 +5,7 @@ const ChatService = require('./Service/ChatService');
 const bodyParser = require('body-parser');
 const uploadToGdrive = require("./route/uploadtogdrive");
 const gdriveuploader = require("./route/gdrivelibrary");
-
+const moment = require("moment")
 const app = express(feathers());
 
 app.use(express.json());
@@ -16,7 +16,7 @@ app.configure(socketio());
 app.configure(express.rest());
 // Register services
 app.get("/",(req,res)=>{
-    res.send('Welcome to OSE API')
+    res.send('Welcome to OSE API Date:'+moment().format('YYYY-MM-DD kk:mm:ss')) 
 });
 app.use('/chat-inquiry',new ChatService());
 app.use("/uploadtodrive",uploadToGdrive);

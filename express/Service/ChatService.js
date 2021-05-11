@@ -1,12 +1,12 @@
 const {getQuery,getQuery2} = require('../query/main');
 const moment = require('moment');
-class IdeaService {
+class ChatService {
   constructor() {
     this.ideas = [];
   }
 
   async find() {
-    let getdata = getQuery2('SELECT *,name_text as text,time_created as time FROM livestream WHERE 1 ORDER BY id ASC')
+    let getdata = getQuery('SELECT * FROM student_inquiry WHERE 1 ORDER BY id ASC')
     return getdata.then((result)=>{
       return result
     })
@@ -14,19 +14,18 @@ class IdeaService {
 
   async create(data) {
     console.log()
-    const this_time = moment().format('h:mm:ss a');
-    let getdata = getQuery2(`INSERT INTO livestream(name_text,tech,viewer,time_created) VALUES('${data.text}','${data.tech}','${data.viewer}','${this_time}')`)
+    const this_time = moment().format('YYYY-MM-DD kk:mm:ss')
+    let getdata = getQuery(`INSERT INTO student_inquiry(ref_no,message,date_created) VALUES(${data.ref_no},'${data.message}','${this_time}')`)
     getdata.then((result)=>{
       return result
     })
-    console.log('insert')
+    // console.log('insert')
     // getdata;
     return {
-      text:data.text,
-      tech:data.tech,
-      viewer:data.viewer,
-      time:this_time
+      message:data.message,
+      ref_no:data.ref_no,
+      date_created:this_time
     }
   }
 }
-module.exports = IdeaService
+module.exports = ChatService

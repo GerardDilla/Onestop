@@ -115,7 +115,7 @@
                 <h3>Payment Options</h3>
             </li>
             <li><a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a><br></li>
-            <li><button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#cashierPayment">OVER THE COUNTER</button><br></li>
+            <li><button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br></li>
             <li>
                 <hr>
                 <h4>Already Paid?</h4>

@@ -7,7 +7,7 @@
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
 <form id="proof_of_payment_form" action="<?php echo base_url('main/uploadProofOfPaymentProcess');?>" method="post" enctype="multipart/form-data">
-<input type="hidden" name="payment_type" value="">
+<input type="hidden" name="payment_type" value="online_payment">
     <div class="card" style="margin:none;">
         <div class="card-header">
             <div class="col-md-12 row">
@@ -193,28 +193,8 @@ else{
     </div>
 </div>
 <!-- onlinepaymentModal -->
-
+<?php if(empty($date_submitted)):?>
 <script>
-class StorageData{
-    constructor(){
-        this.data = [];
-    }
-    getData(){
-        return this.data;
-    }
-    changeData(changedata){
-        this.data = changedata;
-    }
-}
-var image_upload = "";
-var storagedata = new StorageData();
-
-// var datacatcher = storage.getData();
-// OnloadImage();
-// setTimeout(()=>{
-//     console.log('Link:'+storagedata.getData());
-// },7000)
-// var image_url = "";
 iziToast.show({
     theme: 'light',
     icon: 'bi-exclamation-diamond-fill',
@@ -247,6 +227,30 @@ iziToast.show({
         console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
     }
 });
+</script>
+<?php endif ?>
+<script>
+class StorageData{
+    constructor(){
+        this.data = [];
+    }
+    getData(){
+        return this.data;
+    }
+    changeData(changedata){
+        this.data = changedata;
+    }
+}
+var image_upload = "";
+var storagedata = new StorageData();
+
+// var datacatcher = storage.getData();
+// OnloadImage();
+// setTimeout(()=>{
+//     console.log('Link:'+storagedata.getData());
+// },7000)
+// var image_url = "";
+
 $(".number-format").click(function () {
    $(this).select();
 });

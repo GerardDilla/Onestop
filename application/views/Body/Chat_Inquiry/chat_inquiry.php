@@ -1,0 +1,1 @@
+<span class="chat-logo"><i class="bi bi-chat-text"></i></span>

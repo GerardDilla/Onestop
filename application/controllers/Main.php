@@ -697,7 +697,7 @@ class Main extends MY_Controller
 				$req_id = $this->mainmodel->newRequirementLog(array(
 					'requirements_name' => 'proof_of_payment',
 					'requirements_date' => date("Y-m-d H:i:s"),
-					'status' => 'status',
+					'status' => 'pending',
 					'reference_no' => $ref_no,
 					'file_submitted' => $orig_name,
 					'file_type' => $orig_type,

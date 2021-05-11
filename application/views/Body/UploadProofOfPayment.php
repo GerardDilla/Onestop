@@ -1,5 +1,9 @@
 
-
+<style>
+.payment-type{
+    display:none;
+}
+</style>
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
 <form id="proof_of_payment_form" action="<?php echo base_url('main/uploadProofOfPaymentProcess');?>" method="post" enctype="multipart/form-data">
@@ -9,17 +13,18 @@
             <div class="col-md-12 row">
                 <div class="col-lg-4 ">
                     <div class="form-group payment-type-div">
-                        <label class="input-label payment-page" style="display:none;"><b>Payment Type</b></label>
-                        <select class="form-select payment-page" name="payment-type" style="display:none;">
+                        <label class="input-label payment-page"><b>Payment Type</b></label>
+                        <select class="form-select payment-page" name="payment-type">
                             <option value="online_payment">Online Payment</option>
                             <option value="over_the_counter">Over the Counter</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-8" align="right"><button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button>&nbsp;<button style="display:none;" type="button" class="payment-page btn btn-sm btn-danger" id="submit-button">Submit</button></div>
+                <div class="col-md-8" align="right">&nbsp;<button type="button" class="payment-page btn btn-sm btn-danger" id="submit-button">Submit</button></div>
+                <!-- <button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button> -->
             </div>
             <div class="col-md-12">
-            <button type="button" id="upload-proof-button" onclick="choosePayment('online_payment')" class="btn btn-lg btn-warning">Upload Proof of Payment</button>
+            <button style="display:none;" type="button" id="upload-proof-button" onclick="choosePayment('online_payment')" class="btn btn-lg btn-warning">Upload Proof of Payment</button>
             </div>
         </div>
         <!-- <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#onlinepaymentModal">Online Payment</a><a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#overthecounterModal">Over the Counter</a> -->
@@ -90,7 +95,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12 payment-card"><font class="sdca_online">SDCA ONLINE PAYMENT SYSTEM</font><br><br><font style="font-weight:bold;color:black;font-size:19px">Type the link below to your browser to explore:</font><br><a class="sdca-link" href="https://stdominiccollege.edu.ph/SDCAPayment/" target="_blank">https://stdominiccollege.edu.ph/SDCAPayment/</a></div>
                 <div class="col-lg-5 col-md-5 col-sm-12 account-name-card"><div class="col-md-12 account-name">ACCOUNT NAME: <br>ST. DOMINIC COLLEGE OF ASIA, INC.</div></div>
             </div> -->
-            <div class="col-md-12 row payment-page" style="display:none">
+            <div class="col-md-12 row payment-page">
                 <div class="col-md-2 form-group online-payment">
                     <label class="input-label"><b>Bank Type</b></label>
                     <select class="form-select" name="bank_type">
@@ -119,7 +124,7 @@
                         This is required.
                     </div>
                 </div>
-                <div class="col-md-6 other-payment">
+                <div class="col-md-6 other-payment" style="display:none;">
                     <label class="input-label"><b>Reference Number/Receipt No.</b></label>
                     <input type="text" class="form-control" name="reference_number" placeholder="....">
                     <div class="invalid-feedback">

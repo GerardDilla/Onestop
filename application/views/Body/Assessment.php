@@ -44,13 +44,22 @@ if ($this->session->flashdata('success') != "") {
                                     <a href="#tab_advising_content" data-toggle="tab">
                                         <div id="tab_advising-circle" class="icon-circle">
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                            <i class="bi bi-card-checklist" id="bi_resize"></i>
+                                        </div>
+                                        REQUIREMENTS
+                                    </a>
+                                </li>
+                                <li id="tab_advising">
+                                    <a href="#tab_advising_content" data-toggle="tab">
+                                        <div id="tab_advising-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-clipboard-plus" id="bi_resize"></i>
                                         </div>
                                         ADVISING
                                     </a>
                                 </li>
-                                <li id="tab_registration">
-                                    <a href="#tab_registration_content" data-toggle="tab">
+                                <li id="tab_payment">
+                                    <a href="#payment" data-toggle="tab">
                                         <div id="tab_registration-circle" class="icon-circle">
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-cash-stack" id="bi_resize"></i>
@@ -58,8 +67,8 @@ if ($this->session->flashdata('success') != "") {
                                         PAYMENT
                                     </a>
                                 </li>
-                                <li id="tab_payment">
-                                    <a href="#tab_payment_content" data-toggle="tab">
+                                <li id="tab_registration">
+                                    <a href="#registration" data-toggle="tab">
                                         <div id="tab_payment-circle" class="icon-circle">
                                             <i class="bi bi-file-text" id="bi_resize"></i>
                                         </div>
@@ -75,11 +84,16 @@ if ($this->session->flashdata('success') != "") {
                         <br>
                         <!-- Inside Content -->
                         <div class="tab-content">
-                            <div class="tab-pane container" id="student_information_content">
+                            <div class="tab-pane container" id="student_information">
                                 <?php $this->load->view($this->data['student_information']); ?>
                             </div>
-                            <div class="tab-pane container" id="tab_advising_content">
+                            <div class="tab-pane container" id="advising">
                                 <?php $this->load->view($this->data['advising']); ?>
+                            </div>
+                            <div class="tab-pane container" id="requirements">
+                                <h3>REQUIREMENTS</h3>
+                                <hr>
+                                <?php $this->load->view($this->data['requirementstab']); ?>
                             </div>
                             <div class="tab-pane container" id="payment">
                                 <?php $this->load->view($this->data['payment']); ?>

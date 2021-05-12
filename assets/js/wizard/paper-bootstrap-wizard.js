@@ -42,7 +42,7 @@ $(document).ready(function () {
         },
 
         onTabClick: function (tab, navigation, index) {
-            // alert('clicked');
+            alert(index);
             // var $valid = $('.wizard-card form').valid();
             // if (!$valid) {
             //     return false;
@@ -142,8 +142,10 @@ function fetch_user_status() {
                 tab_advising();
                 tab_student_information();
                 init_sectionlist();
-                $("#progress_bar").css("width", "37.5%");
-                $("#advising").addClass("active");
+                // $("#progress_bar").css("width", "37.5%");
+                $("#progress_bar").css("width", "62.5%");
+                // $("#advising").addClass("active");
+                $("#requirements").addClass("active");
             } else {
                 tab_student_information();
                 $("#progress_bar").css("width", "12.5%");

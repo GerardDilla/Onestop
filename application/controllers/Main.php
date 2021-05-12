@@ -227,7 +227,21 @@ class Main extends MY_Controller
 	public function selfassesment()
 	{
 
+		#Validation of Documents 
+		$getRequirementsList = $this->mainmodel->getRequirementsList();
+		$count = 0;
+		foreach ($getRequirementsList as $list) {
+			$checkRequirement = $this->mainmodel->checkRequirement($list['id_name']);
+			$getRequirementsList[$count]['status'] = empty($checkRequirement['status']) ? '' : $checkRequirement['status'];
+			$getRequirementsList[$count]['date'] = empty($checkRequirement['requirements_date']) ? '' : date("M. j,Y g:ia", strtotime($checkRequirement['requirements_date']));
+			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
+			++$count;
+		}
+		// exit;
+		$this->data['requirements'] = $getRequirementsList;
+
 		$this->data['student_information'] = 'Body/AssessmentContent/StudentInformation';
+		$this->data['requirementstab'] = 'Body/ValidationDocuments';
 		$this->data['advising'] = 'Body/AssessmentContent/Advising';
 		$this->data['payment'] = 'Body/AssessmentContent/Payment';
 		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
@@ -264,6 +278,8 @@ class Main extends MY_Controller
 		// $this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
 		// $this->data['applied_status'] = $shs_bridge['applied_status'];
 
+
+
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
 	}
@@ -282,7 +298,7 @@ class Main extends MY_Controller
 			$data['registration'] = 1;
 		} else if ($status['Ref_Num_ftc'] != null) {
 			$data['advising'] = 1;
-		} else if ($status['Course'] != null) {
+		} else if ($status['Course'] != 'N/A') {
 			$data['student_information'] = 1;
 		} else {
 			$data['student_information'] = 0;

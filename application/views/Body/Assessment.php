@@ -61,7 +61,7 @@ if ($this->session->flashdata('success') != "") {
                                 <li id="tab_payment">
                                     <a href="#tab_payment_content" data-toggle="tab">
                                         <div id="tab_payment-circle" class="icon-circle">
-                                        <i class="bi bi-file-text" id="bi_resize"></i>
+                                            <i class="bi bi-file-text" id="bi_resize"></i>
                                         </div>
                                         REGISTRATION
                                     </a>
@@ -81,12 +81,13 @@ if ($this->session->flashdata('success') != "") {
                             <div class="tab-pane container" id="tab_advising_content">
                                 <?php $this->load->view($this->data['advising']); ?>
                             </div>
-                            <div class="tab-pane container" id="tab_registration_content">
-
-                            </div>
-                            <div class="tab-pane container" id="tab_payment_content">
+                            <div class="tab-pane container" id="payment">
                                 <?php $this->load->view($this->data['payment']); ?>
                             </div>
+                            <div class="tab-pane container" id="registration">
+                                <?php $this->load->view($this->data['registration']); ?>
+                            </div>
+
                         </div>
 
                         <div class="col-md-12" style="text-align:center">
@@ -131,7 +132,7 @@ if ($this->session->flashdata('success') != "") {
 
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?php echo base_url();?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js" ></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js"></script>
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
 

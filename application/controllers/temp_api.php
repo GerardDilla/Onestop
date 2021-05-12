@@ -645,7 +645,7 @@ class temp_api extends CI_Controller
 			$data['get_miscfees']                = $this->RegFormModel->Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
 			$data['get_otherfees']                = $this->RegFormModel->Get_OTHER_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
 			$data['get_tuitionfee']              = $this->RegFormModel->Get_Tuition_FEE_TRF($course, $sem, $sy, $yl, $ref_num, $admmitedSy, $admmitedSem);
-			//$data['get_totalcash']               = $this->RegForm_Model->Get_Total_CashPayment($ref_num,$sem,$sy);
+			//$data['get_totalcash']               = $this->RegFormModel->Get_Total_CashPayment($ref_num,$sem,$sy);
 			$data['get_totalunits']               = $this->RegFormModel->totalUnitsAdvising_TRF($array);
 			echo json_encode($data);
 		}
@@ -685,7 +685,7 @@ class temp_api extends CI_Controller
 			$data['get_miscfees']                = $this->RegFormModel->Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
 			$data['get_otherfees']                = $this->RegFormModel->Get_OTHER_FEE_TRF($ref_num, $course, $sem, $sy, $yl);
 			$data['get_tuitionfee']              = $this->RegFormModel->Get_Tuition_FEE_TRF($course, $sem, $sy, $yl, $ref_num, $admmitedSy, $admmitedSem);
-			//$data['get_totalcash']               = $this->RegForm_Model->Get_Total_CashPayment($ref_num,$sem,$sy);
+			//$data['get_totalcash']               = $this->RegFormModel->Get_Total_CashPayment($ref_num,$sem,$sy);
 			$data['get_totalunits']               = $this->RegFormModel->totalUnitsAdvising_TRF($array);
 			// echo json_encode($data);
 		}
@@ -707,6 +707,7 @@ class temp_api extends CI_Controller
 	}
 	public function setpaid_test()
 	{
+		# Will Remove: for development only
 		$array = array(
 			'Reference_Number' => $this->reference_number,
 			'School_Year' => $this->legend_sy,
@@ -719,11 +720,63 @@ class temp_api extends CI_Controller
 	}
 	public function reset_progress()
 	{
+		# Will Remove: for development only
 		$array = array(
 			'Reference_Number' => $this->reference_number,
 			'School_Year' => $this->legend_sy,
 			'Semester' => $this->legend_sem,
 		);
 		$this->AdvisingModel->reset_progress($array);
+	}
+	public function Forms()
+	{
+
+		$array = array(
+			'sy' => $this->legend_sy,
+			'sem' => $this->legend_sem,
+			'refnum' => $this->reference_number
+		);
+
+		# Stops if it doesnt receive reference number
+		if (!$array['refnum']) {
+			echo 'Reference Number Not Found';
+			die();
+		}
+
+		#Checkers if student is enrolled
+		$this->data['check_enrolled_student']  = $this->RegFormModel->Check_Enrolled_Student($array);
+		$this->data['check_fees_student']      = $this->RegFormModel->Check_Fees_Student($array);
+
+		if ($this->data['check_fees_student']->num_rows() == 0 && $this->data['check_enrolled_student']->num_rows() == 0) {
+
+			echo 'Not Enrolled';
+			die();
+		} else {
+
+			$this->data['student_data']  = $this->RegFormModel->Get_enrolled($array);
+			foreach ($this->data['student_data']  as $row) {
+
+				$array = array(
+					'section'    => $row['Section_Name'],
+					'course'     => $row['Program'],
+					'sem'        => $row['Semester'],
+					'sy'         => $row['School_Year'],
+					'yl'         => $row['YL'],
+					'ref_num'    => $row['Reference_Number'],
+					'stu_num'    => $row['Student_Number'],
+					'admmitedSy' => $row['AdmittedSY'],
+					'admmitedSem' => $row['AdmittedSEM']
+				);
+			}
+
+			$this->data['get_TotalCountSubject']       = $this->RegFormModel->Get_CountSubject_enrolled($array);
+			$this->data['get_labfees']                 = $this->RegFormModel->Get_LabFeesEnrolled($array);
+			$this->data['get_miscfees']                = $this->RegFormModel->Get_MISC_FEE($array);
+			$this->data['get_otherfees']                = $this->RegFormModel->Get_OTHER_FEE($array);
+			$this->data['get_totalcash']               = $this->RegFormModel->Get_Total_CashPayment($array);
+			$this->data['get_totalunits']              = $this->RegFormModel->totalUnitsEnrolled($array);
+		}
+
+		echo json_encode($this->data);
 	}
 }

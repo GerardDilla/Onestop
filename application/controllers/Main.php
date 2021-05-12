@@ -231,6 +231,7 @@ class Main extends MY_Controller
 		$this->data['advising'] = 'Body/AssessmentContent/Advising';
 		$this->data['payment'] = 'Body/AssessmentContent/Payment';
 		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
+		$this->data['registration'] = 'Body/AssessmentContent/Registration';
 
 		// echo $this->session->userdata('reference_no');
 		$this->data['student_courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));

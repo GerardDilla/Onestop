@@ -32,7 +32,7 @@ class RegFormModel extends CI_Model
     $this->db->from('EnrolledStudent_Subjects');
     $this->db->where('Semester = ', $array['sem']);
     $this->db->where('School_Year = ', $array['sy']);
-    $this->db->where('Student_Number = ', $array['refnum']);
+    $this->db->where('Reference_Number = ', $array['refnum']);
     $query = $this->db->get();
     return $query;
   }

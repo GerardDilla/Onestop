@@ -789,4 +789,20 @@ class Main extends MY_Controller
 		$random = $this->session->userdata('random_shit');
 		echo json_encode(array('random_number'=>$random));
 	}
+	
+	public function sdcaInquiry()
+	{
+		$getStudentInquiry = $this->mainmodel->getStudentInquiry();
+		$count = 0;
+		foreach($getStudentInquiry as $inquiry){
+			$getStudentInquiry[$count]['total_message'] = empty($this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']))?0:$this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']);
+			++$count;
+		}
+		// echo '<pre>'.print_r($this->mainmodel->countTotalUnseenMessage(1088),1).'</pre>';
+		// echo '<pre>'.print_r($getStudentInquiry,1).'</pre>';
+		// exit;
+		$this->data['getStudentInquiry'] = $getStudentInquiry;
+		$this->chat_template($this->view_directory->chatAdmin());
+	}
+	// public function 
 }

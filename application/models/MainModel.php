@@ -99,4 +99,22 @@ class MainModel extends CI_Model {
         $this->db->where('req_id',$req_id);
         return $this->db->get('proof_of_payment_info')->row_array();
     }
+    public function getStudentInquiry(){
+        $this->db->select('*');
+        $this->db->from('student_inquiry');
+        $this->db->join('student_info','student_inquiry.ref_no = student_info.Reference_Number');
+        $this->db->where('user_type','student');
+        $this->db->group_by('ref_no');
+        return $this->db->get()->result_array();
+    }
+    public function countTotalUnseenMessage($ref_no){
+        $this->db->select('count(id) as total_unseen');
+        $this->db->from('student_inquiry');
+        $this->db->where('ref_no',$ref_no);
+        $this->db->where('status <> ','seen');
+        $this->db->where('user_type','student');
+        $this->db->group_by('ref_no');
+        $result = $this->db->get()->row_array();
+        return $result['total_unseen'];
+    }
 }

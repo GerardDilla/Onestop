@@ -68,4 +68,9 @@ class view_directory
 		$data['title'] = 'Upload Proof of Payment';
 		return $data;	
 	}
+	public function chatAdmin(){
+		$data['view'] = $this->body.'/Chat_Inquiry/chat-admin';
+		$data['title'] = 'SDCA Inquiry';
+		return $data;		
+	}
 }

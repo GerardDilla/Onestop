@@ -13,12 +13,12 @@
 .chat-student{
     /* background:#3FD3B6; */
     color:black;
-    float:right;
+    float:left;
 }
 .chat-admin{
     /* background:#d4d4d4; */
     color:black;
-    float:left;
+    float:right;
 }
 .message-head{
     font-weight:bold;
@@ -30,17 +30,21 @@
     font-weight:700;
     font-size:15px;
 }
+
 .message-body{
     padding:10px 10px 10px 20px;
     min-height:50px;
     border-radius:10px;
     width:100%;
 }
+#someone-typing .message-body{
+    min-height:50px;
+}
 .chat-admin .message-body{
-    background:#d4d4d4;
+    background:#3FD3B6;
 }
 .chat-student .message-body{
-    background:#3FD3B6;
+    background:#d4d4d4;
     
 }
 .chat-textarea{
@@ -72,12 +76,44 @@
     border:1px solid red;
 } */
 </style>
-<span class="chat-logo" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"><i class="bi bi-chat-text"></i></span>
+<section class="section col-lg-12">
+    <div class="card" style="margin:none;">
+        <div class="card-header">
+        <h4>Jhon Norman Fabregas</h4>
+        </div>
+        <div class="card-body">
+            <div class="col-md-12 table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th width="15%">Total Unseen Message</th>
+                            <th width="15%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($getStudentInquiry as $inquiry_list):?>
+                        <tr>
+                            <td><?php echo $inquiry_list['First_Name'].' '.$inquiry_list['Middle_Name'].' '.$inquiry_list['Last_Name'];?></td>
+                            <td width="15%"><?php echo $inquiry_list['total_message']; ?></td>
+                            <td width="15%"><button class="btn btn-info" onclick="openModal('<?php echo $inquiry_list['ref_no'];?>','<?php echo $inquiry_list['First_Name'].' '.$inquiry_list['Middle_Name'].' '.$inquiry_list['Last_Name'];?>')" data-bs-toggle="modal" data-bs-target="#chatinquiryModal">open</button></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>     
+            </div>
+        </div>
+        <div class="card-footer">
+        
+        </div>
+    </div>
+    
+</section>
 <div class="modal fade text-left w-100" id="chatinquiryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel16"><img src="<?php echo base_url('assets/images/logo/sdcalogo.png')?>" style="width:150px;height:auto;"> &nbsp;&nbsp;&nbsp;SDCA Inquiry</h4>
+                <h4 class="modal-title" id="myModalLabel16"><img src="<?php echo base_url('assets/images/logo/sdcalogo.png')?>" style="width:150px;height:auto;"> &nbsp;&nbsp;&nbsp;<font id="student-name">SDCA Inquiry</font></h4>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
@@ -85,6 +121,8 @@
             </div>
             <div class="modal-body">
                 <div class="col-md-12" id="chat-box">
+                        <div id="chat-message"></div>
+                        <!-- <div id="someone-typing"><div class="col-md-12"><div class="chat-student chat"><div class="message-body">Someone is typing ... <time class="timeago" datetime="2021-05-12T10:29:42Z"></time></div></div></div></div> -->
                     <!-- <div class="col-md-12"><div class="chat-student chat"><div class="message-head">Jhon Norman Fabregas</div><div class="message-time">10:00 AM</div><div class="message-body">Hello</div></div></div>
                     <div class="col-md-12"><div class="chat-admin chat"><div class="message-head">Jhon Norman Fabregas</div><div class="message-time">10:00 AM</div><div class="message-body">Hello</div></div></div> -->
                 </div>
@@ -112,12 +150,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script>
 // $('#chat-box:last-child').css('background','red');
+var DURATION_IN_SECONDS = {
+  epochs: ['year', 'month', 'day', 'hour', 'minute'],
+  year: 31536000,
+  month: 2592000,
+  day: 86400,
+  hour: 3600,
+  minute: 60
+};
+
+function getDuration(seconds) {
+  var epoch, interval;
+
+  for (var i = 0; i < DURATION_IN_SECONDS.epochs.length; i++) {
+    epoch = DURATION_IN_SECONDS.epochs[i];
+    interval = Math.floor(seconds / DURATION_IN_SECONDS[epoch]);
+    if (interval >= 1) {
+      return {
+        interval: interval,
+        epoch: epoch
+      };
+    }
+  }
+
+};
+
+function timeSince(date) {
+  var seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  var duration = getDuration(seconds);
+  var suffix = (duration.interval > 1 || duration.interval === 0) ? 's' : '';
+  return duration.interval + ' ' + duration.epoch + suffix;
+};
+var choose_ref = "";
 const socket = io('http://localhost:4003');
 const app = feathers();
 app.configure(feathers.socketio(socket));
 
+$("time.timeago").timeago();
 // document.getElementById('form#inquiryForm').addEventListener('submit', sendInquiry);
 $('#inquiryForm button').on('click',function(){
+    // alert('hello');
     if($('#chat-textarea').html()!=""){
         app.service('chat-inquiry').create({
             message:$('#chat-textarea').html(),
@@ -125,10 +197,7 @@ $('#inquiryForm button').on('click',function(){
             type:'student'
         });
         $('#chat-textarea').html('');
-        // document.getElementById('chat-box').scrollTo(0,document.body.scrollHeight);
-        var child_count = 0;
         // $('.chat-card:last-child').focus();
-        
     }
 })
 $('#chat-textarea').on('keydown',function(e){
@@ -138,27 +207,29 @@ $('#chat-textarea').on('keydown',function(e){
         if($('#chat-textarea').html()!=""){
             app.service('chat-inquiry').create({
                 message:$('#chat-textarea').html(),
-                ref_no:'<?php echo $this->session->userdata('reference_no'); ?>',
-                type:'student'
+                ref_no:choose_ref,
+                type:'admin'
             });
             $('#chat-textarea').html('');
-            $('.chat-card')[21].focus();
+            // document.getElementById('chat-box').scrollTo(0,document.getElementById('chat-box').scrollHeight);
+            $('.chat-card:last-child').focus();
         }
     }
 })
 function renderIdea(data) {
-    console.log(data);
-    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+    // console.log(data);
+    if(choose_ref==data.ref_no){
         if(data.user_type=="student"){
-            document.getElementById('chat-box').innerHTML = document.getElementById('chat-box').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${data.date_created}</div><div class="message-body">${data.message}</div></div></div>`;
+            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time"><time class="timeago" datetime="2021-05-12T10:29:42Z"></time></div><div class="message-body">${data.message}</div></div></div>`;
         }
-        else{
-            document.getElementById('chat-box').innerHTML = document.getElementById('chat-box').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${data.date_created}</div><div class="message-body">${data.message}</div></div></div>`;
+        else{   
+            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time"><time class="timeago" datetime="2021-05-12T10:29:42Z"></time></div><div class="message-body">${data.message}</div></div></div>`;
             
         }
     }
+    
 }   
 async function init() {
 // Find ideas
@@ -168,6 +239,12 @@ const ideas = await app.service('chat-inquiry').find();
 ideas.forEach(renderIdea);
     app.service('chat-inquiry').on('created', renderIdea);
 }
+function openModal(ref,name){
+    choose_ref = ref;
+    $('#student-name').text(name);
+    $("#chat-message").empty();
+    init();
+}
 
-init();
+
 </script>

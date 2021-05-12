@@ -79,7 +79,7 @@
 <section class="section col-lg-12">
     <div class="card" style="margin:none;">
         <div class="card-header">
-        <h4>Jhon Norman Fabregas</h4>
+        <!-- <h4>Jhon Norman Fabregas</h4> -->
         </div>
         <div class="card-body">
             <div class="col-md-12 table-responsive">

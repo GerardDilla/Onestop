@@ -11,4 +11,7 @@
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/assesment.js" defer></script>
 <script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
-
+<!-- <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script> -->
+<!-- <script href="<?php echo base_url('https://cdn.jsdelivr.net/npm/fullcalendar@3.10.1/dist/fullcalendar.min.js'); ?>"></script> -->

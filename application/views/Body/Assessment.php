@@ -129,7 +129,9 @@ if ($this->session->flashdata('success') != "") {
 <!--  Plugin for the Wizard -->
 <script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript"></script>
 
-<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?php echo base_url();?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js" ></script>
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
 

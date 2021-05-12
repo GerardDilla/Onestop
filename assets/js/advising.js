@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
 
     // init_subjectlists();
@@ -17,13 +15,16 @@ $(document).ready(function () {
     $('#subjectTable').DataTable({
         "ordering": false
     });
-
+    
+    
+    // $('[data-toggle="tooltip"]').tooltip();
     $('#queueTable').DataTable({
-        "ordering": false,
+        ordering: false,
         "bPaginate": false,
         "bLengthChange": false,
+        "responsive": true,
+        // "bInfo" : false,
     });
-
     $('input[type=radio][name=payment-option]').change(function () {
 
         init_paymentmethod(this.value);
@@ -109,7 +110,7 @@ function init_subjectlists() {
 }
 
 function init_add_queue(row) {
-
+    console.log(row)
     schedcode = $(row).data('schedcode');
     ajax_insertqueue(schedcode);
     init_paymentmethod($('input[type=radio][name=payment-option]').value);
@@ -128,6 +129,19 @@ function init_remove_queue(row) {
 
 }
 
+function computeSched(start,end,this_day,subject,from,to){
+    var start_time = parseInt(start);
+    var end_time = parseInt(end);
+    var day = this_day=='S'?'SA':this_day;
+    var schedule_array = [700,730,800,830,900,930,1000,1030,1100,1130,1200,1230,1300,1330,1400,1430,1500,1530,1600,1630,1700,1730,1800,1830,1900,1930,2000,2030,2100];
+    var filtered = schedule_array.filter((time) => { return time >= start_time && time <= end_time});
+    console.log(filtered);
+    console.log(day);
+    $.each(filtered,function(index,val){
+        $(`#${val+'_'+day}`).css('background','#18EAC8');
+    })
+    $(`#${start_time+'_'+day}`).html(`<div class="sched-subject"><strong>${from+' to '+to}</strong><br>${subject}</div>`);
+}
 
 function init_queuedlist() {
 
@@ -275,8 +289,10 @@ function queue_tablerenderer(element = '', data = []) {
     tablebody = element.find('tbody');
     tablebody.html('');
     //array sched start loop
+    $('.schedule-time').css('background','white');
+    $('.schedule-time').html('');
     $.each(data, function (index, row) {
-
+        computeSched(row['Start_Time'],row['End_Time'],row['Day'],row['Course_Code'],row['from_time'],row['to_time'])
         tablebody.append($('<tr/>').append('\
         <td>'+ row['Sched_Code'] + '</td>\
         <td>'+ row['Course_Code'] + '</td>\
@@ -292,7 +308,7 @@ function queue_tablerenderer(element = '', data = []) {
         "ordering": false,
         "bPaginate": false,
         "bLengthChange": false,
-
+        "responsive":true
     });
 
 }
@@ -367,7 +383,7 @@ function schedule_tablerenderer(element, time = []) {
     tablehead.append('<th></th>');
     $.each(days, function (index, day) {
 
-        tablehead.append('<th>' + day + '</th>');
+        tablehead.append('<th class="text-center time-header">' + day + '</th>');
 
     });
     tablehead.append('</tr>');

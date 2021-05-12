@@ -758,7 +758,7 @@ class temp_api extends CI_Controller
 
 				$array = array(
 					'section'    => $row['Section_Name'],
-					'course'     => $row['Program'],
+					'course'     => $row['Course'],
 					'sem'        => $row['Semester'],
 					'sy'         => $row['School_Year'],
 					'yl'         => $row['YL'],

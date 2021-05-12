@@ -13,6 +13,20 @@ class view_directory
 		return $data;
 	}
 
+	public function digitalCitizenship()
+	{
+		$data['view'] = $this->body.'CitizenshipAndId/DigitalCitizenship';
+		$data['title'] = 'Digital Citizenship';
+		return $data;
+	}
+
+	public function idApplication()
+	{
+		$data['view'] = $this->body.'CitizenshipAndId/IdApplication';
+		$data['title'] = 'ID Application';
+		return $data;
+	}
+	
 
 	public function login()
 	{

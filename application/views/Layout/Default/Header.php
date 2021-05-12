@@ -32,12 +32,14 @@
 <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/Datatable2/Responsive-2.2.7/css/responsive.dataTables.min.css">
 <script type="text/javascript" src="<?php echo base_url('');?>assets/js/image-uploader.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
+<link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
+<link href="<?php echo base_url() ?>assets/css/assesmentWizard.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="<?php echo base_url('assets/css/assessmentWizard.css');?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/forms.css');?>">
 <!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.css'); ?>"> -->
 
 <!-- <script href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.js'); ?>"></script> -->
-
-
-
 <style>
     /* sticky sidenav responsive to content */
     #sidebar {

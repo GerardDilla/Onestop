@@ -9,6 +9,7 @@
 <script src="<?php echo base_url('assets/js/iziModal.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/iziToast.min.js'); ?>"></script>
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/assesment.js" defer></script>
 <script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
 <!-- <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script> -->
 <!-- <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script> -->

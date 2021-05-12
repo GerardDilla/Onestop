@@ -1,8 +1,8 @@
 searchVisible = 0;
 transparent = true;
-$(document).ready(function () {
+$(document).ready(function() {
 
-    $('.wizard-proceed').click(function () {
+    $('.wizard-proceed').click(function() {
 
         // Event handler when proceeding to next step
         if ($('#advising').hasClass('active')) {
@@ -33,7 +33,7 @@ $(document).ready(function () {
         //     }
         // },
 
-        onInit: function (tab, navigation, index) {
+        onInit: function(tab, navigation, index) {
             //check number of tabs and fill the entire row
             var $total = navigation.find("li").length;
             $width = 100 / $total;
@@ -41,7 +41,7 @@ $(document).ready(function () {
             navigation.find("li").css("width", $width + "%");
         },
 
-        onTabClick: function (tab, navigation, index) {
+        onTabClick: function(tab, navigation, index) {
             alert(index);
             // var $valid = $('.wizard-card form').valid();
             // if (!$valid) {
@@ -51,7 +51,7 @@ $(document).ready(function () {
             // }
         },
 
-        onTabShow: function (tab, navigation, index) {
+        onTabShow: function(tab, navigation, index) {
             var $total = navigation.find("li").length;
             var $current = index + 1;
 
@@ -80,11 +80,11 @@ $(document).ready(function () {
     });
 
     // Prepare the preview for profile picture
-    $("#wizard-picture").change(function () {
+    $("#wizard-picture").change(function() {
         readURL(this);
     });
 
-    $('[data-toggle="wizard-radio"]').click(function () {
+    $('[data-toggle="wizard-radio"]').click(function() {
         wizard = $(this).closest(".wizard-card");
         wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
         $(this).addClass("active");
@@ -92,7 +92,7 @@ $(document).ready(function () {
         $(this).find('[type="radio"]').attr("checked", "true");
     });
 
-    $('[data-toggle="wizard-checkbox"]').click(function () {
+    $('[data-toggle="wizard-checkbox"]').click(function() {
         if ($(this).hasClass("active")) {
             $(this).removeClass("active");
             $(this).find('[type="checkbox"]').removeAttr("checked");
@@ -114,7 +114,7 @@ function fetch_user_status() {
     $.ajax({
         type: "POST",
         url: base_url + "main/wizard_tracker_status",
-        success: function (response) {
+        success: function(response) {
             // alert(response);
             result = JSON.parse(response);
             registration = result.registration;
@@ -122,61 +122,78 @@ function fetch_user_status() {
             student_information = result.student_information;
             // alert(registration);
             if (registration == 1) {
-                tab_tab_payment();
-                tab_registration();
-                tab_advising();
                 tab_student_information();
-                $("#progress_bar").css("width", "85.5%");
+                tab_advising();
+                tab_payment();
+                tab_registration();
+                $("#progress_bar").css("width", "90%");
                 // $("#payment").addClass("active");
-                $("#registration").addClass("active");
+                $("#registration_content").addClass("active");
                 init_registrationform();
                 $('.wizard-proceed').hide();
             } else if (advising == 1) {
-                tab_registration();
-                tab_advising();
                 tab_student_information();
+                tab_advising();
+                tab_payment();
+
                 // alert('test');
-                $("#progress_bar").css("width", "62.5%");
-                $("#payment").addClass("active");
+                $("#progress_bar").css("width", "70%");
+                $("#payment_content").addClass("active");
             } else if (student_information == 1) {
-                tab_advising();
                 tab_student_information();
+                tab_advising();
                 init_sectionlist();
-                // $("#progress_bar").css("width", "37.5%");
-                $("#progress_bar").css("width", "62.5%");
-                // $("#advising").addClass("active");
-                $("#requirements").addClass("active");
+                $("#progress_bar").css("width", "50%");
+                // $("#progress_bar").css("width", "62.5%");
+                $("#advising_content").addClass("active");
+                // $("#requirements").addClass("active");
             } else {
                 tab_student_information();
                 $("#progress_bar").css("width", "12.5%");
-                $("#student_information").addClass("active");
+                $("#student_information_content").addClass("active");
             }
 
         },
-        error: function (response) { },
+        error: function(response) {},
     });
 
 
 }
 
-function tab_tab_payment() {
-    $("#tab_payment").attr("class", "active");
-    $("#tab_payment-circle").addClass("checked");
-    // $("#tab_payment-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
-    $("#tab_registration-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
-}
-
 function tab_registration() {
     $("#tab_registration").attr("class", "active");
     $("#tab_registration-circle").addClass("checked");
-    $("#tab_advising-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
 
+    $("#tab_payment-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+    // $("#tab_requirements-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+    $("#tab_registration").attr("data-toggle", "tab");
+    $("#tab_payment").removeAttr("data-toggle");
+}
+
+function tab_payment() {
+    $("#tab_payment").attr("class", "active");
+    $("#tab_payment-circle").addClass("checked");
+
+    $("#tab_advising-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+    // $("#tab_registration-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+    $("#tab_payment").attr("data-toggle", "tab");
+    $("#tab_advising").removeAttr("data-toggle");
 }
 
 function tab_advising() {
     $("#tab_advising").attr("class", "active");
     $("#tab_advising-circle").addClass("checked");
+    $("#tab_requirements-circle").addClass("checked");
+
     $("#tab_student_information-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+    // $("#tab_advising-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
+
+    $("#tab_requirements").attr("data-toggle", "tab");
+    $("#tab_advising").attr("data-toggle", "tab");
 
 }
 

@@ -16,7 +16,7 @@ class Main extends MY_Controller
 	}
 
 	public function index()
-	{	
+	{
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
 	}
@@ -243,56 +243,56 @@ class Main extends MY_Controller
 
 		// All Programs
 		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
-		
+
 
 		$this->data['status'] = $this->wizard_tracker_status();
 
 		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
 		$this->data['course'] = $student_info_array['Course'];
+		// die($this->data['course']);
 		//
 		$picked_course = $this->get_student_course_info($student_info_array['Course']);
+
 		$this->data['program_code'] = $picked_course['Program_Code'];
 		$this->data['program_name'] = $picked_course['Program_Name'];
 		//
 		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
 		$this->data['major'] = $major['Program_Major'];
 		//
-		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
-		$this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
-		$this->data['applied_status'] = $shs_bridge['applied_status'];
-		
+		// $shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
+		// $this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
+		// $this->data['applied_status'] = $shs_bridge['applied_status'];
+
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
 	}
-	// Waiting For Datas but Working
 	public function wizard_tracker_status()
 	{
-		$reference_number = $this->session->userdata('reference_no');
-		$status = $this->AssesmentModel->tracker_status($reference_number);
-		$data[] = '';
+		// $ref_no = $this->input->post('Reference_Number');
+		$ref_no = $this->session->userdata('reference_no');
+		$legend = $this->AdvisingModel->getlegend();
+		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		// $data['registration'] = 1;
 		// $data['advising'] = 1;
 		// $data['student_information'] = 1;
-		// echo $status;
-		if ($status['Course'] != 'N/A') {
-			$data = ['student_information'];
+
+
+		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+			$data['registration'] = 1;
+		} else if ($status['Ref_Num_ftc'] != null) {
+			$data['advising'] = 1;
+		} else if ($status['Course'] != null) {
+			$data['student_information'] = 1;
 		} else {
-			// $data['advising'] = 1;
+			$data['student_information'] = 0;
 		}
-		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
-		// 	$data['registration'] = 1;
-		// } else if ($status['Ref_Num_ftc'] != null) {
-		// 	$data['advising'] = 1;
-		// } else {
-		// 	$data['student_information'] = 1;
-		// }
-		// echo json_encode($data);
-		return $data;
+		echo json_encode($data);
+		// return json_encode($data);
 	}
 	// Waiting updates
-	public function shs_balance_checker($student_number = '',$applied_status='')
+	public function shs_balance_checker($student_number = '', $applied_status = '')
 	{
-		if($applied_status == 'freshmen'){
+		if ($applied_status == 'freshmen') {
 			if ($student_number != "" || $student_number != null || $student_number) {
 				// // $student_number = '20150349';
 				// $student_number = $this->input->post('student_number');
@@ -317,19 +317,19 @@ class Main extends MY_Controller
 					// echo "Empty";
 					$array['status'] = 'empty';
 				}
-			}else{
-				$array['status']='no_student_number';
+			} else {
+				$array['status'] = 'no_student_number';
 			}
-		}else{
-			$array['status']='transferee';
+		} else {
+			$array['status'] = 'transferee';
 		}
-		
+
 		return $array;
 	}
-	public function shs_balance_checker_echo($student_number = '',$applied_status='')
+	public function shs_balance_checker_echo($student_number = '', $applied_status = '')
 	{
 		if ($student_number != "" || $student_number != null) {
-			$array = $this->shs_balance_checker($student_number,$applied_status);
+			$array = $this->shs_balance_checker($student_number, $applied_status);
 			// die($array);
 			echo json_encode($array);
 		} else {
@@ -367,10 +367,9 @@ class Main extends MY_Controller
 	{
 		$check_course = $this->check_course_by_reference_number($this->session->userdata('reference_no'));
 		if ($check_course == 'none') {
-			$shs_status = $this->shs_balance_checker($this->input->post('student_number'),$this->input->post('status'));
+			$shs_status = $this->shs_balance_checker($this->input->post('student_number'), $this->input->post('status'));
 			// die(json_encode($shs_status));
-			if($shs_status == 'no_student_number'){
-
+			if ($shs_status == 'no_student_number') {
 			}
 			if ($shs_status['status'] == 'empty') {
 				echo json_encode(array(
@@ -402,7 +401,7 @@ class Main extends MY_Controller
 					'applied_status' => $this->input->post('status'),
 					'created_at' => $today,
 				);
-				$this->AssesmentModel->insert_shs_student_number($array_insert_shs);
+				// $this->AssesmentModel->insert_shs_student_number($array_insert_shs);
 				if ($update) {
 					echo json_encode(array(
 						'title' => 'Success',
@@ -855,9 +854,10 @@ class Main extends MY_Controller
 		$updatestatus = $this->AdvisingModel->update_student_curriculum($inputs);
 		return $updatestatus;
 	}
-	public function setApiSession(){
-		$this->session->set_userdata(array('random_shit'=>'asdasdasdasd'));
+	public function setApiSession()
+	{
+		$this->session->set_userdata(array('random_shit' => 'asdasdasdasd'));
 		$random = $this->session->userdata('random_shit');
-		echo json_encode(array('random_number'=>$random));
+		echo json_encode(array('random_number' => $random));
 	}
 }

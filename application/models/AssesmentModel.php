@@ -63,7 +63,7 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
-    
+
     public function get_course_program_code($program_code)
     {
         $this->db->select('*');
@@ -99,16 +99,16 @@ class AssesmentModel extends CI_Model
         return true;
     }
 
-    function insert_shs_student_number($array_insert)
-    {
-        $data = array(
-            'highered_reference_number' => $array_insert['highered_reference_number'],
-            'shs_student_number' => $array_insert['shs_student_number'],
-            'applied_status' => $array_insert['applied_status'],
-            'created_at' => $array_insert['created_at'],
-        );
-        $this->db->insert('senior_high_student_number', $data);
-    }
+    // function insert_shs_student_number($array_insert)
+    // {
+    //     $data = array(
+    //         'highered_reference_number' => $array_insert['highered_reference_number'],
+    //         'shs_student_number' => $array_insert['shs_student_number'],
+    //         'applied_status' => $array_insert['applied_status'],
+    //         'created_at' => $array_insert['created_at'],
+    //     );
+    //     $this->db->insert('senior_high_student_number', $data);
+    // }
 
     public function get_shs_student_number_by_reference_number($reference_number)
     {
@@ -119,7 +119,8 @@ class AssesmentModel extends CI_Model
         return $query->row_array();
     }
 
-    public function get_all_programs(){
+    public function get_all_programs()
+    {
         $this->db->select('*');
         $this->db->from('Programs');
         $this->db->order_by('Program_Code', 'ASC');

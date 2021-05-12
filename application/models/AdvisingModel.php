@@ -339,7 +339,8 @@ class AdvisingModel extends CI_Model
             return false;
         }
     }
-    public function convertTime($time){
+    public function convertTime($time)
+    {
         $this->db->where('Time_From', $time);
         return $this->db->get('time')->row_array();
     }
@@ -510,7 +511,7 @@ class AdvisingModel extends CI_Model
     {
 
         #Remove Course
-        $this->db->set('Course', '');
+        $this->db->set('Course', 'N/A');
         $this->db->where('Reference_Number', $data['Reference_Number']);
         $this->db->update('Student_Info');
         $this->db->reset_query();

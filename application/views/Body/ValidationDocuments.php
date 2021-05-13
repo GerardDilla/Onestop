@@ -103,12 +103,21 @@ echo '</script>';
                                         <th colspan="5">
                                             Do you want to be interviewed?
                                         <br>
-                                            <input type="radio" class="form-check-input" name="interview">  YES
+                                            <input type="radio" class="form-check-input" name="interview" value="YES">  YES
                                         <br>
-                                            <input type="radio" class="form-check-input" name="interview">  NO
+                                            <input type="radio" class="form-check-input" name="interview" value="NO">  NO
                                         </th>
                                     </tr>   
                                 <?php
+                                    }else{
+                                        echo "<tr><th colspan='2'>Do you want to be interviewed?<br><u>";
+                                        if($this->data['interview_status'] == 'YES'){
+                                            echo "<span style='color:green'><b>YES</b></span>! I want to be Interviewed.";
+                                        }
+                                        else if($this->data['interview_status'] == 'NO'){
+                                            echo "<span style='color:red'><b>NO</b></span>! I don't want to be Interviewed.";
+                                        }
+                                        echo "</u></th></tr>";
                                     }
                                 }
                                 ?>

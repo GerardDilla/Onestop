@@ -1,6 +1,37 @@
 searchVisible = 0;
 transparent = true;
 $(document).ready(function() {
+    $('.wizard-proceed-requirements').click(function() {
+        // alert('asdasdas');
+        baseurl = $('#assessment_section').data('baseurl');
+        var interview_value = $("input[name='interview']:checked").val();
+        if (!interview_value) {
+            iziToast.show({
+                title: 'Do you want to be interviewed? is REQUIRED',
+                message: 'Must select one to proceed',
+                position: 'center',
+                color: 'red',
+
+            });
+        } else {
+            $('.tab-content .tab-pane').removeClass('active');
+            $.ajax({
+                url: baseurl + 'main/interview_status',
+                type: 'POST',
+                data: {
+                    'interview': interview_value,
+                },
+                // dataType: 'json',
+                success: function() {
+
+                },
+            })
+            location.reload();
+            fetch_user_status();
+        }
+        // e.stopPropagation();
+        // e.preventDefault();
+    });
 
     $('.wizard-proceed').click(function() {
 
@@ -117,12 +148,12 @@ function fetch_user_status() {
         success: function(response) {
             // alert(response);
             result = JSON.parse(response);
-            registration = result.registration;
+            payment = result.payment;
             advising = result.advising;
             requirements = result.requirements;
             student_information = result.student_information;
             // alert(registration);
-            if (registration == 1) {
+            if (payment == 1) {
                 tab_student_information();
                 tab_requirements();
                 tab_advising();
@@ -158,6 +189,8 @@ function fetch_user_status() {
                 // $("#progress_bar").css("width", "62.5%");
                 // $("#advising_content").addClass("active");
                 $("#requirements_content").addClass("active");
+                $("#wizard-button-requirements").removeClass("wizard-proceed-hide");
+                $("#wizard-button").addClass("wizard-proceed-hide");
             } else {
                 tab_student_information();
                 $("#progress_bar").css("width", "12.5%");
@@ -172,7 +205,7 @@ function fetch_user_status() {
 }
 
 function tab_registration() {
-    $("#tab_registration").attr("class", "active");
+    // $("#tab_registration").attr("class", "wizard_li");
     $("#tab_registration-circle").addClass("checked");
 
     $("#tab_payment-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
@@ -183,10 +216,13 @@ function tab_registration() {
     $("#tab_payment").removeAttr("data-toggle");
 
     $("#li_registration").attr("class", "active");
+
+    $("#tab_payment").attr("class", "wizard_li");
+    $(".bi-cash-stack").addClass("wizard_li");
 }
 
 function tab_payment() {
-    $("#tab_payment").attr("class", "active");
+    // $("#tab_payment").attr("class", "wizard_li");
     $("#tab_payment-circle").addClass("checked");
 
     $("#tab_advising-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
@@ -196,10 +232,13 @@ function tab_payment() {
     $("#tab_advising").removeAttr("data-toggle");
 
     $("#li_payment").attr("class", "active");
+
+    $("#tab_advising").attr("class", "wizard_li");
+    $(".bi-clipboard-plus").addClass("wizard_li");
 }
 
 function tab_advising() {
-    $("#tab_advising").attr("class", "active");
+    // $("#tab_advising").attr("class", "wizard_li");
     $("#tab_advising-circle").addClass("checked");
     // $("#tab_requirements-circle").addClass("checked");
 
@@ -214,7 +253,7 @@ function tab_advising() {
 }
 
 function tab_requirements() {
-    $("#tab_requirements").attr("class", "active");
+    // $("#tab_requirements").attr("class", "wizard_li");
     $("#tab_requirements-circle").addClass("checked");
     // $("#tab_requirements-circle").addClass("checked");
 
@@ -224,11 +263,13 @@ function tab_requirements() {
 
     $("#tab_requirements").attr("data-toggle", "tab");
 
-    $("#li_requirements").attr("class", "active");
+    // $("#li_requirements").attr("class", "active");
+    $("#tab_student_information").attr("class", "wizard_li");
+    $(".bi-person-lines-fill").addClass("wizard_li");
 }
 
 function tab_student_information() {
-    $("#tab_student_information").attr("class", "active");
+    // $("#tab_student_information").attr("class", "wizard_li");
     $("#tab_student_information-circle").addClass("checked");
 
     $("#li_student_information").attr("class", "active");

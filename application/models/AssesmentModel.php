@@ -136,4 +136,14 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
+
+    public function update_interview_status($array_update)
+    {
+        $data = array(
+            'interview_status' => $array_update['interview'],
+        );
+        $this->db->where('reference_no', $array_update['reference_number']);
+        $this->db->update('student_account', $data);
+        return true;
+    }
 }

@@ -98,7 +98,7 @@
             <div class="col-md-12 row payment-page">
                 <div class="col-md-2 form-group online-payment">
                     <label class="input-label"><b>Bank Type</b></label>
-                    <select class="form-select" name="bank_type">
+                    <select required class="form-select" name="bank_type">
                         <option value="">Choose</option>
                         <option value="aub">AUB</option>
                         <option value="rcbc">RCBC</option>
@@ -112,14 +112,14 @@
                 </div>
                 <div class="col-md-3 online-payment">
                     <label class="input-label"><b>Account Number</b></label>
-                    <input type="text" class="form-control" name="account_number" placeholder="...." style="">
+                    <input required type="text" class="form-control" name="account_number" placeholder="...." style="">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
                 </div>
                 <div class="col-md-4 online-payment">
                     <label class="input-label"><b>Account Holder Name</b></label>
-                    <input type="text" class="form-control" name="holder_name" placeholder="...." style="">
+                    <input required type="text" class="form-control" name="holder_name" placeholder="...." style="">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="input-label"><b>Amount Paid</b></label>
-                    <input type="text" class="form-control number-format" name="amount_paid" placeholder="₱ 0.00">
+                    <input required type="text" class="form-control number-format" name="amount_paid" placeholder="₱ 0.00">
                     <div class="invalid-feedback">
                         This is required.
                     </div>

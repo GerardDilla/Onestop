@@ -294,8 +294,9 @@ class Main extends MY_Controller
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$data['registration'] = 0;
-		$data['advising'] = 2;
-		$data['student_information'] = 1;
+		$data['advising'] = 0;
+		$data['requirements'] = 0;
+		$data['student_information'] = 0;
 
 
 		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
@@ -880,5 +881,18 @@ class Main extends MY_Controller
 		$this->session->set_userdata(array('random_shit' => 'asdasdasdasd'));
 		$random = $this->session->userdata('random_shit');
 		echo json_encode(array('random_number' => $random));
+	}
+	public function ExportInquiry($ref = '')
+	{
+		$info  = $this->mainmodel->Get_Info($ref)->result_array();
+		$param = array(
+			'student_info' => $info[0],
+			'student_type' => 'HED',
+		);
+		$this->load->library('Student', $param);
+		$this->load->library('InquiryExport', $param);
+		$this->inquiryexport->Export($info);
+		//echo $ref;
+
 	}
 }

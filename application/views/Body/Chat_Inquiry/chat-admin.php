@@ -28,7 +28,7 @@
 .message-time{
     padding-left:10px;
     font-weight:700;
-    font-size:15px;
+    font-size:14px;
 }
 
 .message-body{
@@ -36,6 +36,14 @@
     min-height:50px;
     border-radius:10px;
     width:100%;
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -webkit-pre-wrap;          /* Chrome & Safari */ 
+    white-space: -pre-wrap;                 /* Opera 4-6 */
+    white-space: -o-pre-wrap;               /* Opera 7 */
+    white-space: pre-wrap;                  /* CSS3 */
+    word-wrap: break-word;                  /* Internet Explorer 5.5+ */
+    word-break: break-all;
+    white-space: normal;
 }
 #someone-typing .message-body{
     min-height:50px;
@@ -93,11 +101,11 @@
         </div>
         <div class="card-body">
             <div class="col-md-12 table-responsive">
-                <table class="table table-hover">
+                <table id="chatInquiryTable" class="table table-hover">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th width="15%">Total Unseen Message</th>
+                            <th width="15%">Total Messages</th>
                             <th width="15%">Action</th>
                         </tr>
                     </thead>
@@ -210,6 +218,7 @@ $('#inquiryForm button').on('click',function(){
             type:'admin'
         });
         $('#chat-textarea').html('');
+        
         // $('.chat-card:last-child').focus();
     }
 })
@@ -237,8 +246,8 @@ $('#chat-textarea').on('keydown',function(e){
     }
 })
 function renderIdea(data) {
-    console.log(data)
-    var current_time = moment(Date.parse(data.date_created)).format('YYYY-MM-DD kk:mm:ss');
+    var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
+    // +`(${moment(Date.parse(data.date_created)).fromNow()})`;
     // current_time = timeSince(current_time)
         if(data.user_type=="student"){
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
@@ -246,16 +255,34 @@ function renderIdea(data) {
         }
         else{   
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;
+            +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</time></div><div class="message-body">${data.message}</div></div></div>`;
             
         }
     // }
     
 }
+// $(document). bind("contextmenu",function(e){ return false; });
+async function getInquiryTableList(data){
+    // console.log(data.First_Name)
+    $('#chatInquiryTable tbody').empty();
+    var html = "";
+    $.each(data,function(index,val){
+        html += `<tr><td>${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}</td>`;
+        html += `<td>${val.total_message}</td>`;
+        html += `<td><button class="btn btn-info" onclick="openModal('${val.ref_no}','${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}')" data-bs-toggle="modal" data-bs-target="#chatinquiryModal">open</button></td></tr>`; 
+    })
+    $('#chatInquiryTable tbody').append(html);
+}
+// async function getInquiryList(){
+//     const ideas = await app.service('chat-inquiry').find();
+//     getInquiryTableList(ideas);
+// }
 function receivedMessage(data) 
 {
-    console.log(data)
-    var current_time = moment(Date.parse(data.date_created)).format('YYYY-MM-DD kk:mm:ss');
+    console.log(data.message_count);
+    getInquiryTableList(data.message_count);
+    var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
+    // +`(${moment(Date.parse(data.date_created)).fromNow()})`;
     // current_time = timeSince(current_time)
     if(data.user_type=="student"){
         document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
@@ -268,9 +295,11 @@ function receivedMessage(data)
     }
     $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
     // }
+    // getInquiryList();
     
 }
 async function typing(data){
+    console.log(data)
     if(choose_ref==data.ref_no){
         if(data.type=='student'){
             $('#someone-typing').show();
@@ -281,10 +310,11 @@ async function typing(data){
             typing_timeout = setTimeout(function(){
                 typing_timeout = null;
                 $('#someone-typing').hide();
-            },2000)
+            },500)
         }
     }
 }
+
 async function someone_typing(){
     app.service('chat-action').on('created', typing);
 }   
@@ -294,8 +324,9 @@ const ideas = await app.service('chat-inquiry').get({ref_no:ref});
 
 console.log(ideas);
     ideas.forEach(renderIdea);
-    app.service('chat-inquiry').on('created', receivedMessage);
+    
 }
+
 function openModal(ref,name){
     choose_ref = ref;
     $('#student-name').text(name);
@@ -306,6 +337,7 @@ function openModal(ref,name){
         $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
     // },1000)
 }
-
+app.service('chat-inquiry').on('created', receivedMessage);
+// getInquiryList();
 
 </script>

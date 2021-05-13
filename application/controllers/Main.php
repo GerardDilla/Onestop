@@ -798,9 +798,6 @@ class Main extends MY_Controller
 			$getStudentInquiry[$count]['total_message'] = empty($this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']))?0:$this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']);
 			++$count;
 		}
-		// echo '<pre>'.print_r($this->mainmodel->countTotalUnseenMessage(1088),1).'</pre>';
-		// echo '<pre>'.print_r($getStudentInquiry,1).'</pre>';
-		// exit;
 		$this->data['getStudentInquiry'] = $getStudentInquiry;
 		$this->chat_template($this->view_directory->chatAdmin());
 	}

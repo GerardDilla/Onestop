@@ -28,13 +28,21 @@
 .message-time{
     padding-left:10px;
     font-weight:700;
-    font-size:15px;
+    font-size:14px;
 }
 .message-body{
     padding:10px 10px 10px 20px;
     min-height:50px;
     border-radius:10px;
     width:100%;
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -webkit-pre-wrap;          /* Chrome & Safari */ 
+    white-space: -pre-wrap;                 /* Opera 4-6 */
+    white-space: -o-pre-wrap;               /* Opera 7 */
+    white-space: pre-wrap;                  /* CSS3 */
+    word-wrap: break-word;                  /* Internet Explorer 5.5+ */
+    word-break: break-all;
+    white-space: normal;
 }
 .chat-admin .message-body{
     background:#d4d4d4;
@@ -137,6 +145,11 @@ $('#inquiryForm button').on('click',function(){
         $('#chat-textarea').html('');
         // document.getElementById('chat-box').scrollTo(0,document.body.scrollHeight);
         var child_count = 0;
+        if(typing_timeout != null){
+            clearTimeout(typing_timeout)
+            typing_timeout = null 
+        }
+        $('#someone-typing').hide();
         // $('.chat-card:last-child').focus();
         
     }
@@ -159,19 +172,13 @@ $('#chat-textarea').on('keydown',function(e){
                 type:'student'
             });
             $('#chat-textarea').html('');
+
+            if(typing_timeout != null){
+                clearTimeout(typing_timeout)
+                typing_timeout = null 
+            }
+            $('#someone-typing').hide();
             // $('.chat-card')[21].focus();
-        }
-        else{
-            
-            
-            // if(typing_timeout != null){
-            //     clearTimeout(typing_timeout)
-            // }
-            // typing_timeout = setTimeout(function(){
-            //     $('#someone_typing').hide();
-            //     typing_timeout = null;
-            // },2000)
-            
         }
     }
 })
@@ -182,7 +189,7 @@ $('#chat-textarea').on('keyup',function(){
     });
 })
 function renderIdea(data) {
-    var current_time = moment(Date.parse(data.date_created)).format('YYYY-MM-DD kk:mm:ss');
+    var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
         if(data.user_type=="student"){
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
@@ -195,7 +202,7 @@ function renderIdea(data) {
     // }
 }
 function receivedMessage(data) {
-    var current_time = moment(Date.parse(data.date_created)).format('YYYY-MM-DD kk:mm:ss');
+    var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
         if(data.user_type=="student"){
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
@@ -223,7 +230,7 @@ async function typing(data){
             typing_timeout = setTimeout(function(){
                 typing_timeout = null;
                 $('#someone-typing').hide();
-            },2000)
+            },500)
         }
     }
 }

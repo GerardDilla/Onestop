@@ -107,7 +107,8 @@ if ($this->session->flashdata('success') != "") {
                         <div class="col-md-12" style="text-align:center">
                             <hr>
                             <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
-                            <button type="button" class="btn btn-lg btn-primary wizard-proceed">PROCEED</button>
+
+                            <button type="button" class="btn btn-lg btn-primary wizard-proceed" id="proceed-wizard">PROCEED</button>
                         </div>
 
                         <!-- /Inside Content -->

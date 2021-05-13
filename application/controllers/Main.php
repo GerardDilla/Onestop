@@ -228,6 +228,7 @@ class Main extends MY_Controller
 	{
 
 		#Validation of Documents 
+		// $reference_number = $this->session->userdata('reference_no');
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
 		$count = 0;
 		foreach ($getRequirementsList as $list) {
@@ -261,9 +262,12 @@ class Main extends MY_Controller
 
 
 		// $this->data['status'] = $this->wizard_tracker_status();
-
+		
 		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
 		$this->data['course'] = $student_info_array['Course'];
+
+		$student_account_info = $this->AssesmentModel->get_student_account_by_reference_number($this->session->userdata('reference_no'));
+		$this->data['interview_status'] = $student_account_info['interview_status'];
 		// die($this->data['course']);
 		//
 		$picked_course = $this->get_student_course_info($student_info_array['Course']);
@@ -289,20 +293,20 @@ class Main extends MY_Controller
 		$ref_no = $this->session->userdata('reference_no');
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
-		// $data['registration'] = 0;
-		// $data['advising'] = 0;
-		// $data['student_information'] = 0;
+		$data['registration'] = 0;
+		$data['advising'] = 2;
+		$data['student_information'] = 1;
 
 
-		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
-			$data['registration'] = 1;
-		} else if ($status['Ref_Num_ftc'] != null) {
-			$data['advising'] = 1;
-		} else if ($status['Course'] != 'N/A') {
-			$data['student_information'] = 1;
-		} else {
-			$data['student_information'] = 0;
-		}
+		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+		// 	$data['registration'] = 1;
+		// } else if ($status['Ref_Num_ftc'] != null) {
+		// 	$data['advising'] = 1;
+		// } else if ($status['Course'] != 'N/A') {
+		// 	$data['student_information'] = 1;
+		// } else {
+		// 	$data['student_information'] = 0;
+		// }
 		echo json_encode($data);
 		// return json_encode($data);
 	}

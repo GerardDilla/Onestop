@@ -127,4 +127,13 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+
+    public function get_student_account_by_reference_number($reference_number)
+    {
+        $this->db->select('*');
+        $this->db->from('student_account');
+        $this->db->where('reference_no', $reference_number);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
 }

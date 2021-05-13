@@ -96,6 +96,21 @@ echo '</script>';
                                 <?php
                                     }
                                 }
+                                if (isset($this->data['requirementstab'])) {
+                                    if($this->data['interview_status'] == null){
+                                ?>
+                                    <tr>
+                                        <th colspan="5">
+                                            Do you want to be interviewed?
+                                        <br>
+                                            <input type="radio" class="form-check-input" name="interview">  YES
+                                        <br>
+                                            <input type="radio" class="form-check-input" name="interview">  NO
+                                        </th>
+                                    </tr>   
+                                <?php
+                                    }
+                                }
                                 ?>
                             </tbody>
                         </table>

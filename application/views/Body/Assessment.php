@@ -12,11 +12,8 @@ if ($this->session->flashdata('success') != "") {
     $this->session->set_flashdata('success', '');
 }
 ?>
-<!-- <?php $this->load->helper('string');
-        echo random_string('alnum', 20); ?> -->
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
-<link href="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.css" rel="stylesheet" />
 <section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
 
     <div class="card">
@@ -31,10 +28,11 @@ if ($this->session->flashdata('success') != "") {
                             <div class="progress-with-circle">
                                 <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
                             </div>
+                            <div hidden id="assesment_hidden" data-status='<?php echo $this->data['status'][0] ?>'></div>
                             <!-- Progress Nav -->
                             <ul>
-                                <li id="tab_student_information">
-                                    <a>
+                                <li>
+                                    <a href="#student_information_content" id="tab_student_information">
                                         <div id="tab_student_information-circle" class="icon-circle">
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-person-lines-fill" id="bi_resize"></i>
@@ -42,8 +40,17 @@ if ($this->session->flashdata('success') != "") {
                                         STUDENT INFORMATION
                                     </a>
                                 </li>
-                                <li id="tab_advising">
-                                    <a>
+                                <li>
+                                    <a href="#requirements_content" id="tab_requirements">
+                                        <div id="tab_requirements-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                            <i class="bi bi-card-checklist" id="bi_resize"></i>
+                                        </div>
+                                        REQUIREMENTS
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#advising_content" id="tab_advising">
                                         <div id="tab_advising-circle" class="icon-circle">
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-clipboard-plus" id="bi_resize"></i>
@@ -51,19 +58,19 @@ if ($this->session->flashdata('success') != "") {
                                         ADVISING
                                     </a>
                                 </li>
-                                <li id="tab_registration">
-                                    <a>
-                                        <div id="tab_registration-circle" class="icon-circle">
+                                <li>
+                                    <a href="#payment_content" id="tab_payment">
+                                        <div id="tab_payment-circle" class="icon-circle">
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
-                                            <i class="bi bi-file-text" id="bi_resize"></i>
+                                            <i class="bi bi-cash-stack" id="bi_resize"></i>
                                         </div>
                                         PAYMENT
                                     </a>
                                 </li>
-                                <li id="tab_payment">
-                                    <a>
-                                        <div id="tab_payment-circle" class="icon-circle">
-                                            <i class="bi bi-cash-stack" id="bi_resize"></i>
+                                <li>
+                                    <a href="#registration_content" id="tab_registration">
+                                        <div id="tab_registration-circle" class="icon-circle">
+                                            <i class="bi bi-file-text" id="bi_resize"></i>
                                         </div>
                                         REGISTRATION
                                     </a>
@@ -77,16 +84,21 @@ if ($this->session->flashdata('success') != "") {
                         <br>
                         <!-- Inside Content -->
                         <div class="tab-content">
-                            <div class="tab-pane container" id="student_information">
+                            <div class="tab-pane container" id="student_information_content">
                                 <?php $this->load->view($this->data['student_information']); ?>
                             </div>
-                            <div class="tab-pane container" id="advising">
+                            <div class="tab-pane container" id="advising_content">
                                 <?php $this->load->view($this->data['advising']); ?>
                             </div>
-                            <div class="tab-pane container" id="payment">
+                            <div class="tab-pane container" id="requirements_content">
+                                <h3>REQUIREMENTS</h3>
+                                <hr>
+                                <?php $this->load->view($this->data['requirementstab']); ?>
+                            </div>
+                            <div class="tab-pane container" id="payment_content">
                                 <?php $this->load->view($this->data['payment']); ?>
                             </div>
-                            <div class="tab-pane container" id="registration">
+                            <div class="tab-pane container" id="registration_content">
                                 <?php $this->load->view($this->data['registration']); ?>
                             </div>
 
@@ -132,7 +144,9 @@ if ($this->session->flashdata('success') != "") {
 <!--  Plugin for the Wizard -->
 <script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript"></script>
 
-<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js"></script>
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
 

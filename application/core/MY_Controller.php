@@ -39,6 +39,8 @@ class MY_Controller extends CI_Controller
         $this->load->library('pagination');
 
         $this->title = 'Default';
+        
+        date_default_timezone_set('Asia/Manila');
     }
     public function default_template($body = array('view' => ''))
     {

@@ -63,6 +63,7 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
+
     public function get_course_program_code($program_code)
     {
         $this->db->select('*');
@@ -79,14 +80,51 @@ class AssesmentModel extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
-    public function update_course_by_reference_number($array)
+    public function get_major_by_id($id)
+    {
+        $this->db->select('*');
+        $this->db->from('Program_Majors');
+        $this->db->where('ID', $id);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    public function update_course_by_reference_number($array_update)
     {
         $data = array(
-            'Course' => $array['course'],
-            'Major' => $array['major'],
+            'Course' => $array_update['course'],
+            'Major' => $array_update['major'],
         );
-        $this->db->where('Reference_Number', $array['reference_number']);
+        $this->db->where('Reference_Number', $array_update['reference_number']);
         $this->db->update('Student_Info', $data);
         return true;
+    }
+
+    // function insert_shs_student_number($array_insert)
+    // {
+    //     $data = array(
+    //         'highered_reference_number' => $array_insert['highered_reference_number'],
+    //         'shs_student_number' => $array_insert['shs_student_number'],
+    //         'applied_status' => $array_insert['applied_status'],
+    //         'created_at' => $array_insert['created_at'],
+    //     );
+    //     $this->db->insert('senior_high_student_number', $data);
+    // }
+
+    public function get_shs_student_number_by_reference_number($reference_number)
+    {
+        $this->db->select('*');
+        $this->db->from('senior_high_student_number');
+        $this->db->where('highered_reference_number', $reference_number);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    public function get_all_programs()
+    {
+        $this->db->select('*');
+        $this->db->from('Programs');
+        $this->db->order_by('Program_Code', 'ASC');
+        $query = $this->db->get();
+        return $query->result_array();
     }
 }

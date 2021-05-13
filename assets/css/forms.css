@@ -1,0 +1,15 @@
+#button_icon {
+    color: white;
+}
+
+.title_color {
+    color: rgba(67, 94, 190, 1);
+}
+
+.required_field {
+    color: rgba(255, 0, 0, 1);
+}
+
+.text_note {
+    color: rgba(255, 0, 0, 1) !important;
+}

@@ -877,4 +877,18 @@ class Main extends MY_Controller
 		$random = $this->session->userdata('random_shit');
 		echo json_encode(array('random_number' => $random));
 	}
+	public function ExportInquiry($ref = '')
+	{
+
+		$info  = $this->mainmodel->Get_Info($ref)->result_array();
+		$param = array(
+			'student_info' => $info[0],
+			'student_type' => 'HED',
+		);
+		$this->load->library('Student', $param);
+		$this->load->library('InquiryExport', $param);
+		$this->inquiryexport->Export($info);
+		//echo $ref;
+
+	}
 }

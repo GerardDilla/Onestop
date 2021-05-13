@@ -291,6 +291,7 @@ class Main extends MY_Controller
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$data['registration'] = 0;
 		$data['advising'] = 0;
+		$data['requirements'] = 0;
 		$data['student_information'] = 0;
 
 
@@ -879,7 +880,6 @@ class Main extends MY_Controller
 	}
 	public function ExportInquiry($ref = '')
 	{
-
 		$info  = $this->mainmodel->Get_Info($ref)->result_array();
 		$param = array(
 			'student_info' => $info[0],

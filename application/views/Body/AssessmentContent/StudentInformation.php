@@ -24,6 +24,11 @@
                         </tr>
                     </tbody>
                 </table>
+                <a href="<?php echo base_url('/main/ExportInquiry/'.$this->session->userdata('reference_no'))?>" target="_blank">
+                    <div class="btn btn-sm btn-primary" for="success-outlined">
+                        EXPORT STUDENT INFORMATION
+                    </div>
+                </a>
                 <br>
             </div>
             <?php if ($this->data['course'] != 'N/A') {
@@ -162,8 +167,8 @@
                                 // foreach ($this->data['courses'] as $index => $course) {
                                 //     echo "<option value='$course'>$course : " . $this->data['courses_info'][$index]['Program_Name'] . "</option>";
                                 // }
-                                foreach($this->data['courses'] as $course){
-                                    echo "<option value='".$course['Program_Code']."'>".$course['Program_Code']." : ".$course['Program_Name']."</option>";
+                                foreach ($this->data['courses'] as $course) {
+                                    echo "<option value='" . $course['Program_Code'] . "'>" . $course['Program_Code'] . " : " . $course['Program_Name'] . "</option>";
                                 }
                             }
                             // } else {
@@ -195,5 +200,5 @@
 <!-- Will remove later in development -->
 
 <script>
-    
+
 </script>

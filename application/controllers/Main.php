@@ -289,20 +289,20 @@ class Main extends MY_Controller
 		$ref_no = $this->session->userdata('reference_no');
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
-		// $data['registration'] = 0;
-		// $data['advising'] = 0;
-		// $data['student_information'] = 0;
+		$data['registration'] = 0;
+		$data['advising'] = 0;
+		$data['student_information'] = 0;
 
 
-		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
-			$data['registration'] = 1;
-		} else if ($status['Ref_Num_ftc'] != null) {
-			$data['advising'] = 1;
-		} else if ($status['Course'] != 'N/A') {
-			$data['student_information'] = 1;
-		} else {
-			$data['student_information'] = 0;
-		}
+		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+		// 	$data['registration'] = 1;
+		// } else if ($status['Ref_Num_ftc'] != null) {
+		// 	$data['advising'] = 1;
+		// } else if ($status['Course'] != 'N/A') {
+		// 	$data['student_information'] = 1;
+		// } else {
+		// 	$data['student_information'] = 0;
+		// }
 		echo json_encode($data);
 		// return json_encode($data);
 	}

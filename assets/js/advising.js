@@ -177,8 +177,10 @@ function init_enroll_test() {
 }
 function init_reset_progress() {
 
-    ajax_reset_progress();
-
+    reset_status = ajax_reset_progress();
+    reset_status.success(function (result) {
+        location.reload();
+    });
 
 }
 

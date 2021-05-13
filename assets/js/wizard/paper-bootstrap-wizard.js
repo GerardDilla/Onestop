@@ -11,7 +11,6 @@ $(document).ready(function () {
             init_advise();
 
         }
-        $('.tab-content .tab-pane').removeClass('active');
         fetch_user_status();
 
     });
@@ -114,12 +113,14 @@ function fetch_user_status() {
     $.ajax({
         type: "POST",
         url: base_url + "main/wizard_tracker_status",
+        async: true,
         success: function (response) {
             // alert(response);
             result = JSON.parse(response);
             registration = result.registration;
             advising = result.advising;
             student_information = result.student_information;
+            $('.tab-pane .container').removeClass('active');
             // alert(registration);
             if (registration == 1) {
                 tab_student_information();

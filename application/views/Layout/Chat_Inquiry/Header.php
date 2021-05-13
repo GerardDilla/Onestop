@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="<?php echo base_url();?>assets/vendors/Datatable2/Responsive-2.2.7/css/responsive.dataTables.min.css">
 <script type="text/javascript" src="<?php echo base_url('');?>assets/js/image-uploader.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/iziToast.min.css'); ?>">
-
+<script src="<?php echo base_url('assets/js/moment.min.js'); ?>"></script>
 <!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.css'); ?>"> -->
 
 <!-- <script href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.js'); ?>"></script> -->

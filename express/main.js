@@ -2,6 +2,7 @@ const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
 const ChatService = require('./Service/ChatService');
+const ChatActionService = require('./Service/ChatActionService');
 const bodyParser = require('body-parser');
 const uploadToGdrive = require("./route/uploadtogdrive");
 const gdriveuploader = require("./route/gdrivelibrary");
@@ -19,6 +20,7 @@ app.get("/",(req,res)=>{
     res.send('Welcome to OSE API Date:'+moment().format('YYYY-MM-DD kk:mm:ss')) 
 });
 app.use('/chat-inquiry',new ChatService());
+app.use('/chat-action',new ChatActionService());
 app.use("/uploadtodrive",uploadToGdrive);
 app.use("/gdriveuploader",gdriveuploader);
 

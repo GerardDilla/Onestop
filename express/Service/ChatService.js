@@ -5,13 +5,21 @@ class ChatService {
     this.ideas = [];
   }
 
-  async find() {
-    let getdata = getQuery('SELECT * FROM student_inquiry WHERE 1 ORDER BY id ASC')
+  async find(data) {
+    // console.log(data)
+    let getdata = getQuery(`SELECT * FROM student_inquiry WHERE ref_no='${data.ref_no}' ORDER BY id ASC`)
     return getdata.then((result)=>{
+      console.log(result);
       return result
     }).catch(error=>{ return {error:error}});
   }
-
+  async get(data) {
+    // console.log(data)
+    let getdata = getQuery(`SELECT * FROM student_inquiry WHERE ref_no='${data.ref_no}' ORDER BY id ASC`)
+    return getdata.then((result)=>{
+      return result;
+    }).catch(error=>{ return {error:error}});
+  }
   async create(data) {
     // console.log()
     const this_time = moment().format('YYYY-MM-DD kk:mm:ss')

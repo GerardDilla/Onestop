@@ -43,6 +43,10 @@
     background:#3FD3B6;
     
 }
+#someone-typing .chat-admin .message-body{
+    background:white;
+    
+}
 .chat-textarea{
     display:inline-block;
     width:84%;
@@ -62,6 +66,9 @@
     white-space: normal;
     overflow-y:auto;
 }
+#hidden-div{
+    display:hidden;
+}
 /* #chat-box:last-child{
     border:2px solid red;
 } */
@@ -72,7 +79,7 @@
     border:1px solid red;
 } */
 </style>
-<span class="chat-logo" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"><i class="bi bi-chat-text"></i></span>
+<span class="chat-logo"  id="chat-logo" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"><i class="bi bi-chat-text"></i></span>
 <div class="modal fade text-left w-100" id="chatinquiryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
@@ -85,6 +92,7 @@
             </div>
             <div class="modal-body">
                 <div class="col-md-12" id="chat-box">
+                <div id="chat-message"></div>
                     <!-- <div class="col-md-12"><div class="chat-student chat"><div class="message-head">Jhon Norman Fabregas</div><div class="message-time">10:00 AM</div><div class="message-body">Hello</div></div></div>
                     <div class="col-md-12"><div class="chat-admin chat"><div class="message-head">Jhon Norman Fabregas</div><div class="message-time">10:00 AM</div><div class="message-body">Hello</div></div></div> -->
                 </div>
@@ -92,7 +100,7 @@
             <form id="inquiryForm">
             <div class="modal-footer">
                 <!-- <textarea></textarea> -->
-                
+                <div id="someone-typing" class="col-md-12" align="center" style="display:none;"><img src="<?php echo base_url('assets/images/827.gif')?>" style="width:50px;height:auto;"></div>
                 <div class="chat-textarea" contenteditable="true" id="chat-textarea"></div>
                 <!-- <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
@@ -112,6 +120,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script>
 // $('#chat-box:last-child').css('background','red');
+$('time.timeago').timeago();
+var typing_timeout = null;
 const socket = io('http://localhost:4003');
 const app = feathers();
 app.configure(feathers.socketio(socket));
@@ -131,8 +141,15 @@ $('#inquiryForm button').on('click',function(){
         
     }
 })
-$('#chat-textarea').on('keydown',function(e){
+$('#chat-logo').click(function(){
+    // console.log('asdasd')
+    // setTimeout(()=>{
+        $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
+    // },1000)
     
+
+})
+$('#chat-textarea').on('keydown',function(e){
     if(e.keyCode==13){
         e.preventDefault();
         if($('#chat-textarea').html()!=""){
@@ -142,32 +159,84 @@ $('#chat-textarea').on('keydown',function(e){
                 type:'student'
             });
             $('#chat-textarea').html('');
-            $('.chat-card')[21].focus();
-        }
-    }
-})
-function renderIdea(data) {
-    console.log(data);
-    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
-        if(data.user_type=="student"){
-            document.getElementById('chat-box').innerHTML = document.getElementById('chat-box').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${data.date_created}</div><div class="message-body">${data.message}</div></div></div>`;
+            // $('.chat-card')[21].focus();
         }
         else{
-            document.getElementById('chat-box').innerHTML = document.getElementById('chat-box').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${data.date_created}</div><div class="message-body">${data.message}</div></div></div>`;
+            
+            
+            // if(typing_timeout != null){
+            //     clearTimeout(typing_timeout)
+            // }
+            // typing_timeout = setTimeout(function(){
+            //     $('#someone_typing').hide();
+            //     typing_timeout = null;
+            // },2000)
             
         }
     }
+})
+$('#chat-textarea').on('keyup',function(){
+    app.service('chat-action').create({
+        ref_no:"<?php echo $this->session->userdata('reference_no');?>",
+        type:'student'
+    });
+})
+function renderIdea(data) {
+    var current_time = moment(Date.parse(data.date_created)).format('YYYY-MM-DD kk:mm:ss');
+    // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+        if(data.user_type=="student"){
+            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;
+        }
+        else{
+            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;  
+        }
+    // }
+}
+function receivedMessage(data) {
+    var current_time = moment(Date.parse(data.date_created)).format('YYYY-MM-DD kk:mm:ss');
+    // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+        if(data.user_type=="student"){
+            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;
+        }
+        else{
+            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;  
+        }
+        $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
+    // }
+}
+async function typing(data){
+    // console.log(data.type)
+    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+        if(data.type=="admin"){
+            $('#someone-typing').show();
+            // $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
+            // $('#chat-box').animate({scrollTop:10000000},800);
+            document.getElementById("chat-box").scrollTo(0,document.getElementById("chat-box").scrollHeight);
+            // $('#someone-typing').focus();
+            if(typing_timeout != null){
+                clearTimeout(typing_timeout)
+            }
+            typing_timeout = setTimeout(function(){
+                typing_timeout = null;
+                $('#someone-typing').hide();
+            },2000)
+        }
+    }
+}
+async function someone_typing(){
+    app.service('chat-action').on('created', typing);
 }   
-async function init() {
+async function init(ref_no) {
 // Find ideas
-const ideas = await app.service('chat-inquiry').find();
-
-// console.log(ideas);
-ideas.forEach(renderIdea);
-    app.service('chat-inquiry').on('created', renderIdea);
+const ideas = await app.service('chat-inquiry').get({ref_no:"<?php echo $this->session->userdata('reference_no');?>"});
+    ideas.forEach(renderIdea);
+    app.service('chat-inquiry').on('created', receivedMessage);
 }
 
+someone_typing();
 init();
 </script>

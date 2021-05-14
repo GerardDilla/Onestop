@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
 
     // init_subjectlists();
@@ -44,6 +42,7 @@ $(document).ready(function () {
     $('.setpaid_test').click(function () {
         init_enroll_test();
         fetch_user_status();
+        location.reload();
     });
 
     $('.reset_progress_test').click(function () {
@@ -215,6 +214,7 @@ function init_enroll_test() {
 
 
 }
+
 function init_reset_progress() {
 
     reset_status = ajax_reset_progress();
@@ -298,12 +298,14 @@ function ajax_subjectlist() {
         }
     });
 }
+
 function ajax_sectionlist() {
 
     return $.ajax({
         url: "/Onestop/index.php/temp_api/get_section",
     });
 }
+
 function ajax_insertqueue(schedcode) {
 
     return $.ajax({
@@ -345,6 +347,7 @@ function ajax_queuedlist() {
     });
 
 }
+
 function queue_tablerenderer(element = '', data = []) {
 
     element.DataTable().clear();
@@ -388,6 +391,7 @@ function queue_tablerenderer(element = '', data = []) {
     });
 
 }
+
 function subject_tablerenderer(element = '', data = []) {
 
     element.DataTable().clear();
@@ -401,24 +405,24 @@ function subject_tablerenderer(element = '', data = []) {
 
         if (data['status'] == true) {
             tablebody.append($('<tr/>').append('\
-            <td>'+ row['Sched_Code'] + '</td>\
-            <td>'+ row['Course_Code'] + '</td>\
-            <td>'+ row['Course_Title'] + '</td>\
-            <td>'+ row['Section_Name'] + '</td>\
-            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
-            <td>'+ row['Day'] + '</td>\
-            <td>'+ row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
-            <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="'+ row['Sched_Code'] + '">Add</btn></td>\
+            <td>' + row['Sched_Code'] + '</td>\
+            <td>' + row['Course_Code'] + '</td>\
+            <td>' + row['Course_Title'] + '</td>\
+            <td>' + row['Section_Name'] + '</td>\
+            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td>' + row['Day'] + '</td>\
+            <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+            <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
             '));
         } else {
             tablebody.append($('<tr/>').append('\
-            <td>'+ row['Sched_Code'] + '</td>\
-            <td>'+ row['Course_Code'] + '</td>\
-            <td>'+ row['Course_Title'] + '</td>\
-            <td>'+ row['Section_Name'] + '</td>\
-            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
-            <td>'+ row['Day'] + '</td>\
-            <td>'+ row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+            <td>' + row['Sched_Code'] + '</td>\
+            <td>' + row['Course_Code'] + '</td>\
+            <td>' + row['Course_Title'] + '</td>\
+            <td>' + row['Section_Name'] + '</td>\
+            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td>' + row['Day'] + '</td>\
+            <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
             <td></td>\
             '));
         }
@@ -698,6 +702,3 @@ function get_militarytime() {
     return time;
 
 }
-
-
-

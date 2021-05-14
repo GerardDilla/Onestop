@@ -48,7 +48,7 @@
     background:#d4d4d4;
 }
 .chat-student .message-body{
-    background:#3FD3B6;
+    background:#F54222;
     
 }
 #someone-typing .chat-admin .message-body{

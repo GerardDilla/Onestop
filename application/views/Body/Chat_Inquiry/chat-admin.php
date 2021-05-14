@@ -49,7 +49,7 @@
     min-height:50px;
 }
 .chat-admin .message-body{
-    background:#3FD3B6;
+    background:#F54222;
 }
 .chat-student .message-body{
     background:#d4d4d4;

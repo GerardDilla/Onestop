@@ -73,9 +73,9 @@ class Main extends MY_Controller
 		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
 		$this->data['major'] = $major['Program_Major'];
 		//
-		// $shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
-		// $this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
-		// $this->data['applied_status'] = $shs_bridge['applied_status'];
+		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
+		$this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
+		$this->data['applied_status'] = $shs_bridge['applied_status'];
 
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
@@ -294,7 +294,7 @@ class Main extends MY_Controller
 		// $data['payment'] = 0;
 		// $data['advising'] = 0;
 		// $data['requirements'] = 0;
-		// $data['student_information'] = 1;
+		// $data['student_information'] = 0;
 
 
 		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {

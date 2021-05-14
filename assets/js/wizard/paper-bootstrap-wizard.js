@@ -1,7 +1,7 @@
 searchVisible = 0;
 transparent = true;
-$(document).ready(function() {
-    $('.wizard-proceed-requirements').click(function() {
+$(document).ready(function () {
+    $('.wizard-proceed-requirements').click(function () {
         // alert('asdasdas');
         baseurl = $('#assessment_section').data('baseurl');
         var interview_value = $("input[name='interview']:checked").val();
@@ -22,7 +22,7 @@ $(document).ready(function() {
                     'interview': interview_value,
                 },
                 // dataType: 'json',
-                success: function() {
+                success: function () {
 
                 },
             })
@@ -33,7 +33,7 @@ $(document).ready(function() {
         // e.preventDefault();
     });
 
-    $('.wizard-proceed').click(function() {
+    $('.wizard-proceed').click(function () {
 
         // Event handler when proceeding to next step
         if ($('#advising_content').hasClass('active')) {
@@ -42,8 +42,7 @@ $(document).ready(function() {
             init_advise();
 
         }
-        $('.tab-content .tab-pane').removeClass('active');
-        fetch_user_status();
+
 
     });
 
@@ -64,7 +63,7 @@ $(document).ready(function() {
         //     }
         // },
 
-        onInit: function(tab, navigation, index) {
+        onInit: function (tab, navigation, index) {
             //check number of tabs and fill the entire row
             var $total = navigation.find("li").length;
             $width = 100 / $total;
@@ -72,7 +71,7 @@ $(document).ready(function() {
             navigation.find("li").css("width", $width + "%");
         },
 
-        onTabClick: function(tab, navigation, index) {
+        onTabClick: function (tab, navigation, index) {
             alert(index);
             // var $valid = $('.wizard-card form').valid();
             // if (!$valid) {
@@ -82,7 +81,7 @@ $(document).ready(function() {
             // }
         },
 
-        onTabShow: function(tab, navigation, index) {
+        onTabShow: function (tab, navigation, index) {
             var $total = navigation.find("li").length;
             var $current = index + 1;
 
@@ -111,11 +110,11 @@ $(document).ready(function() {
     });
 
     // Prepare the preview for profile picture
-    $("#wizard-picture").change(function() {
+    $("#wizard-picture").change(function () {
         readURL(this);
     });
 
-    $('[data-toggle="wizard-radio"]').click(function() {
+    $('[data-toggle="wizard-radio"]').click(function () {
         wizard = $(this).closest(".wizard-card");
         wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
         $(this).addClass("active");
@@ -123,7 +122,7 @@ $(document).ready(function() {
         $(this).find('[type="radio"]').attr("checked", "true");
     });
 
-    $('[data-toggle="wizard-checkbox"]').click(function() {
+    $('[data-toggle="wizard-checkbox"]').click(function () {
         if ($(this).hasClass("active")) {
             $(this).removeClass("active");
             $(this).find('[type="checkbox"]').removeAttr("checked");
@@ -145,13 +144,15 @@ function fetch_user_status() {
     $.ajax({
         type: "POST",
         url: base_url + "main/wizard_tracker_status",
-        success: function(response) {
+        async: true,
+        success: function (response) {
             // alert(response);
             result = JSON.parse(response);
             payment = result.payment;
             advising = result.advising;
             requirements = result.requirements;
             student_information = result.student_information;
+            $('.tab-pane .container').removeClass('active');
             // alert(registration);
             if (payment == 1) {
                 tab_student_information();
@@ -173,6 +174,7 @@ function fetch_user_status() {
                 // alert('test');
                 $("#progress_bar").css("width", "70%");
                 $("#payment_content").addClass("active");
+                
             } else if (requirements == 1) {
                 tab_student_information();
                 tab_requirements();
@@ -198,7 +200,7 @@ function fetch_user_status() {
             }
 
         },
-        error: function(response) {},
+        error: function (response) { },
     });
 
 

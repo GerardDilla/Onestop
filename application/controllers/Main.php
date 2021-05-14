@@ -20,6 +20,67 @@ class Main extends MY_Controller
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
 	}
+
+	public function selfassesment()
+	{
+
+		#Validation of Documents 
+		$getRequirementsList = $this->mainmodel->getRequirementsList();
+		$count = 0;
+		foreach ($getRequirementsList as $list) {
+			$checkRequirement = $this->mainmodel->checkRequirement($list['id_name']);
+			$getRequirementsList[$count]['status'] = empty($checkRequirement['status']) ? '' : $checkRequirement['status'];
+			$getRequirementsList[$count]['date'] = empty($checkRequirement['requirements_date']) ? '' : date("M. j,Y g:ia", strtotime($checkRequirement['requirements_date']));
+			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
+			++$count;
+		}
+		// exit;
+		$this->data['requirements'] = $getRequirementsList;
+
+		$this->data['student_information'] = 'Body/AssessmentContent/StudentInformation';
+		$this->data['requirementstab'] = 'Body/ValidationDocuments';
+		$this->data['advising'] = 'Body/AssessmentContent/Advising';
+		$this->data['payment'] = 'Body/AssessmentContent/Payment';
+		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
+		$this->data['registration'] = 'Body/AssessmentContent/Registration';
+
+		// echo $this->session->userdata('reference_no');
+		$this->data['student_courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));
+		$array = array();
+		foreach ($this->data['student_courses'] as $student_course) {
+			$course_info = $this->get_student_course_info($student_course);
+			$array[] = $course_info;
+		}
+		$this->data['courses_info'] = $array;
+
+		// All Programs
+		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
+
+		#Get from Student_Account Table
+		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($this->session->userdata('reference_no'));
+		$this->data['interview_status'] = $student_account['interview_status'];
+
+		#Get from Student_Info Table
+		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
+		$this->data['course'] = $student_info_array['Course'];
+
+		#Get Course Info
+		$picked_course = $this->get_student_course_info($student_info_array['Course']);
+		$this->data['program_code'] = $picked_course['Program_Code'];
+		$this->data['program_name'] = $picked_course['Program_Name'];
+
+		#Get Major
+		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
+		$this->data['major'] = $major['Program_Major'];
+		//
+		// $shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
+		// $this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
+		// $this->data['applied_status'] = $shs_bridge['applied_status'];
+
+		// die(json_encode($major));
+		$this->default_template($this->view_directory->assessment());
+	}
+
 	// OSE LOGIN ,Password Reset and Setup User Pass
 	public function setSession($data)
 	{
@@ -223,70 +284,6 @@ class Main extends MY_Controller
 	}
 
 	// Inside OSE
-
-	public function selfassesment()
-	{
-
-		#Validation of Documents 
-		// $reference_number = $this->session->userdata('reference_no');
-		$getRequirementsList = $this->mainmodel->getRequirementsList();
-		$count = 0;
-		foreach ($getRequirementsList as $list) {
-			$checkRequirement = $this->mainmodel->checkRequirement($list['id_name']);
-			$getRequirementsList[$count]['status'] = empty($checkRequirement['status']) ? '' : $checkRequirement['status'];
-			$getRequirementsList[$count]['date'] = empty($checkRequirement['requirements_date']) ? '' : date("M. j,Y g:ia", strtotime($checkRequirement['requirements_date']));
-			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
-			++$count;
-		}
-		// exit;
-		$this->data['requirements'] = $getRequirementsList;
-
-		$this->data['student_information'] = 'Body/AssessmentContent/StudentInformation';
-		$this->data['requirementstab'] = 'Body/ValidationDocuments';
-		$this->data['advising'] = 'Body/AssessmentContent/Advising';
-		$this->data['payment'] = 'Body/AssessmentContent/Payment';
-		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
-		$this->data['registration'] = 'Body/AssessmentContent/Registration';
-
-		// echo $this->session->userdata('reference_no');
-		$this->data['student_courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));
-		$array = array();
-		foreach ($this->data['student_courses'] as $student_course) {
-			$course_info = $this->get_student_course_info($student_course);
-			$array[] = $course_info;
-		}
-		$this->data['courses_info'] = $array;
-
-		// All Programs
-		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
-
-
-		// $this->data['status'] = $this->wizard_tracker_status();
-		
-		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
-		$this->data['course'] = $student_info_array['Course'];
-
-		$student_account_info = $this->AssesmentModel->get_student_account_by_reference_number($this->session->userdata('reference_no'));
-		$this->data['interview_status'] = $student_account_info['interview_status'];
-		// die($this->data['course']);
-		//
-		$picked_course = $this->get_student_course_info($student_info_array['Course']);
-
-		$this->data['program_code'] = $picked_course['Program_Code'];
-		$this->data['program_name'] = $picked_course['Program_Name'];
-		//
-		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
-		$this->data['major'] = $major['Program_Major'];
-		//
-		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
-		$this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
-		$this->data['applied_status'] = $shs_bridge['applied_status'];
-
-
-
-		// die(json_encode($major));
-		$this->default_template($this->view_directory->assessment());
-	}
 	public function wizard_tracker_status()
 	{
 		// $ref_no = $this->input->post('Reference_Number');
@@ -899,7 +896,8 @@ class Main extends MY_Controller
 
 	}
 
-	public function interview_status(){
+	public function interview_status()
+	{
 		$interview = $this->input->post('interview');
 		$array_update = array(
 			'reference_number' => $this->session->userdata('reference_no'),

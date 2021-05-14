@@ -547,5 +547,87 @@ class AdvisingModel extends CI_Model
         $this->db->where('Semester', $data['Semester']);
         $this->db->update('enrolledstudent_subjects');
         $this->db->reset_query();
+
+        $this->db->set('interview_status', null);
+        $this->db->where('reference_no', $data['Reference_Number']);
+        $this->db->update('student_account');
+        $this->db->reset_query();
+    }
+    public function check_existing_queue($data)
+    {
+
+        $this->db->select('Sched_Code');
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('Sched_Code', $data['Sched_Code']);
+        $this->db->where('valid', 1);
+        $query = $this->db->get('advising_session');
+        return $query->row_array();
+    }
+    public function count_subject_enrolled($data)
+    {
+
+        $query = $this->db->query("
+        
+            SELECT
+            COUNT(Reference_Number) +
+            (SELECT
+            COUNT(Reference_Number)
+            FROM
+            EnrolledStudent_Subjects
+            WHERE Sched_Code = '" . $data['Sched_Code'] . "'
+            AND Dropped = 0
+            AND Cancelled = 1) AS Occupants
+            FROM
+            Advising
+            WHERE Sched_Code = '" . $data['Sched_Code'] . "'
+            AND valid = 1
+
+        ")->row_array();
+        return $query['Occupants'];
+    }
+    public function check_advising_conflict($array_data)
+    {
+        $day_array = explode(',', $array_data['day_array']);
+
+        $where_check_time = '
+        ((C.`Start_Time` BETWEEN "' . $array_data['end_time'] . '" AND "' . $array_data['start_time'] . '") 
+        OR (C.`End_Time` BETWEEN "' . $array_data['end_time'] . '" AND "' . $array_data['start_time'] . '")
+        OR ("' . $array_data['start_time'] . '" BETWEEN C.`Start_Time` AND C.`End_Time` AND "' . $array_data['end_time'] . '"  BETWEEN C.`Start_Time` AND C.`End_Time` )
+        OR ("' . $array_data['start_time'] . '" >= C.`Start_Time` AND "' . $array_data['start_time'] . '" < C.`End_Time`)
+        OR ("' . $array_data['end_time'] . '" > C.`Start_Time` AND "' . $array_data['end_time'] . '" <= C.`End_Time`)
+        OR ("' . $array_data['start_time'] . '"  <= C.`Start_Time` AND "' . $array_data['end_time'] . '"  >= C.`End_Time`) )
+        ';
+
+        $this->db->select('*');
+        $this->db->from('advising_session AS ASess');
+        $this->db->join('Sched AS S', 'S.`Sched_Code` = ASess.`Sched_Code`', 'inner');
+        $this->db->join('Sched_Display AS C', 'ASess.`Sched_Display_ID` = C.`id`', 'inner');
+        //$this->db->join('Legend AS L', 'S.SchoolYear = L.School_Year AND S.Semester = L.Semester', 'inner');
+        $this->db->where('ASess.School_Year', $array_data['school_year']);
+        $this->db->where('ASess.Semester', $array_data['semester']);
+        $this->db->where('ASess.`Reference_Number`', $array_data['reference_no']);
+        $this->db->where('`ASess`.`valid`', 1);
+        $this->db->where('C.RoomID !=', 93); //excempt room TBA
+
+        $count = 0;
+        $dayget = '';
+        foreach ($day_array as $data) {
+            if ($count == 0) {
+                $dayget .= "`Day` LIKE '%$data%' ESCAPE '!'";
+                $count++;
+            } else {
+                $dayget .= "OR `Day`LIKE '%$data%' ESCAPE '!'";
+            }
+        }
+        $this->db->where('(' . $dayget . ')');
+
+        $this->db->where($where_check_time);
+
+        $query = $this->db->get();
+
+        // reset query
+        $this->db->reset_query();
+
+        return $query->result_array();
     }
 }

@@ -12,8 +12,7 @@ $(document).ready(function () {
 
     init_sectionlist();
 
-
-    // jspdftest();
+    $('.add-all-subject').hide();
 
     $('#subjectTable').DataTable({
         "ordering": false
@@ -37,7 +36,7 @@ $(document).ready(function () {
 
     });
 
-    $('#section').click(function () {
+    $('#section').change(function () {
         init_subjectlists();
     });
 
@@ -51,6 +50,9 @@ $(document).ready(function () {
         fetch_user_status();
     });
 
+    $('.add-all-subject').click(function () {
+        init_addAll();
+    });
 
 
 
@@ -67,6 +69,7 @@ function init_advise() {
         // response = JSON.parse(response);
         init_queuedlist();
         init_assessmentform();
+        fetch_user_status();
     })
 
 }
@@ -113,8 +116,24 @@ function init_subjectlists() {
     subjects.success(function (response) {
         console.log('tablerun');
         response = JSON.parse(response);
-        subject_tablerenderer($('#subjectTable'), response);
-        init_scheduleplot();
+        if (response['data'].length != 0) {
+            subject_tablerenderer($('#subjectTable'), response);
+            init_scheduleplot();
+            $('.add-all-subject').show();
+        } else {
+            $('.add-all-subject').hide();
+        }
+
+    })
+}
+
+function init_addAll() {
+
+    result = ajax_add_all_subjects();
+    result.success(function (response) {
+
+        init_queuedlist();
+        izi_toast('', 'Subjects Added to Queue', 'green', 'bottomRight');
     })
 
 }
@@ -122,9 +141,18 @@ function init_subjectlists() {
 function init_add_queue(row) {
 
     schedcode = $(row).data('schedcode');
-    ajax_insertqueue(schedcode);
-    init_paymentmethod($('input[type=radio][name=payment-option]').value);
-    init_queuedlist();
+    queue_status = ajax_insertqueue(schedcode);
+    queue_status.success(function (response) {
+        response = JSON.parse(response);
+        if (response['status'] == 0) {
+            izi_toast('', response['data'], 'red', 'bottomRight');
+        } else {
+            izi_toast('', 'Added to Queue', 'green', 'bottomRight');
+        }
+
+        init_paymentmethod($('input[type=radio][name=payment-option]').value);
+        init_queuedlist();
+    });
 
 }
 
@@ -132,9 +160,14 @@ function init_add_queue(row) {
 function init_remove_queue(row) {
 
     sessionid = $(row).data('sessionid');
-    ajax_removequeue(sessionid);
-    init_paymentmethod($('input[type=radio][name=payment-option]').value);
-    init_queuedlist();
+    queue_status = ajax_removequeue(sessionid);
+    queue_status.success(function (response) {
+
+        izi_toast('', 'Removed from Queue', 'green', 'bottomRight');
+
+        init_paymentmethod($('input[type=radio][name=payment-option]').value);
+        init_queuedlist();
+    });
 
 
 }
@@ -146,8 +179,14 @@ function init_queuedlist() {
     queue.success(function (response) {
 
         response = JSON.parse(response);
+        if (response.length != 0) {
+            console.log(response[0]['Section']);
+            // $('#section').val(response[0]['Section']);
+            init_paymentmethod();
+        }
         console.log(response);
         queue_tablerenderer($('#queueTable'), response);
+
     })
 
 }
@@ -177,8 +216,10 @@ function init_enroll_test() {
 }
 function init_reset_progress() {
 
-    ajax_reset_progress();
-
+    reset_status = ajax_reset_progress();
+    reset_status.success(function (result) {
+        location.reload();
+    });
 
 }
 
@@ -203,6 +244,17 @@ function ajax_adviseStudent(paymentplan) {
         type: 'GET',
         data: {
             plan: paymentplan,
+            section: $('#section').val(),
+        }
+    });
+}
+
+function ajax_add_all_subjects(paymentplan) {
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/queue_all_subjects",
+        async: true,
+        type: 'POST',
+        data: {
             section: $('#section').val(),
         }
     });
@@ -322,21 +374,32 @@ function subject_tablerenderer(element = '', data = []) {
 
     tablebody = element.find('tbody');
     tablebody.html('');
-
     //array sched start loop
-    $.each(data, function (index, row) {
+    $.each(data['data'], function (index, row) {
 
-        tablebody.append($('<tr/>').append('\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Course_Code'] + '</td>\
-        <td>'+ row['Course_Title'] + '</td>\
-        <td>'+ row['Section_Name'] + '</td>\
-        <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
-        <td>'+ row['Day'] + '</td>\
-        <td>'+ row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
-        <td><button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="'+ row['Sched_Code'] + '">Add</btn></td>\
-        ')
-        );
+        if (data['status'] == true) {
+            tablebody.append($('<tr/>').append('\
+            <td>'+ row['Sched_Code'] + '</td>\
+            <td>'+ row['Course_Code'] + '</td>\
+            <td>'+ row['Course_Title'] + '</td>\
+            <td>'+ row['Section_Name'] + '</td>\
+            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td>'+ row['Day'] + '</td>\
+            <td>'+ row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+            <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="'+ row['Sched_Code'] + '">Add</btn></td>\
+            '));
+        } else {
+            tablebody.append($('<tr/>').append('\
+            <td>'+ row['Sched_Code'] + '</td>\
+            <td>'+ row['Course_Code'] + '</td>\
+            <td>'+ row['Course_Title'] + '</td>\
+            <td>'+ row['Section_Name'] + '</td>\
+            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td>'+ row['Day'] + '</td>\
+            <td>'+ row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+            <td></td>\
+            '));
+        }
     });
 
     element.DataTable({

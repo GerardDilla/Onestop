@@ -795,7 +795,7 @@ class Main extends MY_Controller
 		$getStudentInquiry = $this->mainmodel->getStudentInquiry();
 		$count = 0;
 		foreach($getStudentInquiry as $inquiry){
-			$getStudentInquiry[$count]['total_message'] = empty($this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']))?0:$this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']);
+			$getStudentInquiry[$count]['total_message'] = $this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']);
 			++$count;
 		}
 		$this->data['getStudentInquiry'] = $getStudentInquiry;

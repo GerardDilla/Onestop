@@ -115,6 +115,6 @@ class MainModel extends CI_Model {
         $this->db->where('user_type','student');
         $this->db->group_by('ref_no');
         $result = $this->db->get()->row_array();
-        return $result['total_unseen'];
+        return empty($result['total_unseen'])?0:$result['total_unseen'];
     }
 }

@@ -9,6 +9,7 @@
     border-radius:10px;
     margin:5px;
     padding:10px;
+    position:relative;
 }
 .chat-student{
     /* background:#3FD3B6; */
@@ -43,6 +44,7 @@
     word-wrap: break-word;                  /* Internet Explorer 5.5+ */
     word-break: break-all;
     white-space: normal;
+    
 }
 .chat-admin .message-body{
     background:#d4d4d4;
@@ -77,6 +79,17 @@
 #hidden-div{
     display:hidden;
 }
+span.chat-status{
+    /* transform:translate(50%,50%); */
+    bottom:3px;
+    right:-9px;
+    position:absolute;
+    /* padding-right:10px;
+    padding-bottom:10px; */
+}
+/* .chat-card{
+    position:relative;
+} */
 /* #chat-box:last-child{
     border:2px solid red;
 } */
@@ -126,15 +139,21 @@
 </div>
 <script src="https://unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js" integrity="sha512-BCMqEPl2dokU3T/EFba7jrfL4FxgY6ryUh4rRC9feZw4yWUslZ3Uf/lPZ5/5UlEjn4prlQTRfIPYQkDrLCZJXA==" crossorigin="anonymous"></script>
 <script>
 // $('#chat-box:last-child').css('background','red');
 $('time.timeago').timeago();
 var typing_timeout = null;
+var modal_status = 0;
 const socket = io('http://localhost:4003');
 const app = feathers();
+var array_status = [];
+var status_running = false;
 app.configure(feathers.socketio(socket));
-
-// document.getElementById('form#inquiryForm').addEventListener('submit', sendInquiry);
+$('#chatinquiryModal').on('hidden.bs.modal', function (e) {
+    $('#chat-logo').show();
+    modal_status = 0;
+})
 $('#inquiryForm button').on('click',function(){
     if($('#chat-textarea').html()!=""){
         app.service('chat-inquiry').create({
@@ -142,6 +161,7 @@ $('#inquiryForm button').on('click',function(){
             ref_no:'<?php echo $this->session->userdata('reference_no'); ?>',
             type:'student'
         });
+        sendMessage();
         $('#chat-textarea').html('');
         // document.getElementById('chat-box').scrollTo(0,document.body.scrollHeight);
         var child_count = 0;
@@ -150,11 +170,20 @@ $('#inquiryForm button').on('click',function(){
             typing_timeout = null 
         }
         $('#someone-typing').hide();
+        
         // $('.chat-card:last-child').focus();
         
     }
 })
+$('#chatinquiryModal').mouseover(function(){
+    app.service('chat-inquiry').update("<?php echo $this->session->userdata('reference_no'); ?>",{
+        type:'student',
+    });
+    // updateToSeen();
+})
 $('#chat-logo').click(function(){
+    modal_status = 1;
+    $('#chat-logo').hide();
     // console.log('asdasd')
     // setTimeout(()=>{
         $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
@@ -166,11 +195,14 @@ $('#chat-textarea').on('keydown',function(e){
     if(e.keyCode==13){
         e.preventDefault();
         if($('#chat-textarea').html()!=""){
+            const uuid = uuidv4();
             app.service('chat-inquiry').create({
                 message:$('#chat-textarea').html(),
                 ref_no:'<?php echo $this->session->userdata('reference_no'); ?>',
-                type:'student'
+                type:'student',
+                return_id:uuid
             });
+            sendMessage(uuid);
             $('#chat-textarea').html('');
 
             if(typing_timeout != null){
@@ -178,6 +210,7 @@ $('#chat-textarea').on('keydown',function(e){
                 typing_timeout = null 
             }
             $('#someone-typing').hide();
+            
             // $('.chat-card')[21].focus();
         }
     }
@@ -188,16 +221,24 @@ $('#chat-textarea').on('keyup',function(){
         type:'student'
     });
 })
+function sendMessage(id){
+    var current_time = moment().format('MMM DD,YYYY h:kk a');
+    document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1" id="${id}"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${$('#chat-textarea').html()}<span class="chat-status"><i id="${id}_icon" class="bi bi-circle not-sent"></i></span></div></div></div>`;
+}
 function renderIdea(data) {
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
         if(data.user_type=="student"){
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;
+                +`<div class="col-md-12 chat-card"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}${data.status=="seen"?'<span class="chat-status"><i id="" class="bi-check2-all"></i></span>':''}</div></div></div>`;
         }
         else{
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;  
+                +`<div class="col-md-12 chat-card"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;  
+                // bi bi-circle
+                // bi bi-check-circle
+                // bi bi-check2-all
         }
     // }
 }
@@ -212,13 +253,55 @@ async function getInquiryTableList(data){
     })
     $('#chatInquiryTable tbody').append(html);
 }
+function updateToSeen(data){
+    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+        if(data.type=="admin"){
+            $('.sent').each(function(){
+                $(this).removeClass("sent");
+                $(this).removeClass("bi-circle");
+                $(this).removeClass("bi-check-circle");
+                $(this).addClass("bi-check2-all");
+            })
+        }
+    }
+}
+function setStatus(){
+    status_running = true;
+    array_status.map(value=>{
+        var x = document.getElementById(`${value}_icon`);
+        x.classList.remove("bi-circle")
+        x.classList.remove("not-sent")
+        x.classList.add("bi-check-circle")
+        x.classList.add("sent")
+        array_status = array_status.filter(this_value => { return this_value!=value });
+    })
+    status_running = false;
+}
+window.setInterval(()=>{
+    if(status_running==false){
+        setStatus()
+    }
+},2000);
+
 function receivedMessage(data) {
+    
     getInquiryTableList(data.message_count);
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
+    
     // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
         if(data.user_type=="student"){
-            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-                +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;
+            array_status.push(data.return_id);
+            // var this_timeout = setTimeout(()=>{
+            //     var x = document.querySelector(`#${data.return_id} span.chat-status i`);
+            //     x.classList.remove("bi-circle")
+            //     x.classList.add("bi-check-circle")
+            // },5000)
+            // if(!status_running){
+            //     setTimeout(()=>{
+            //         setStatus();
+            //     },1500)
+                
+            // }
         }
         else{
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
@@ -235,7 +318,8 @@ async function typing(data){
             // $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
             // $('#chat-box').animate({scrollTop:10000000},800);
             document.getElementById("chat-box").scrollTo(0,document.getElementById("chat-box").scrollHeight);
-            // $('#someone-typing').focus();
+            // $('#someone-typing').focus();\
+            
             if(typing_timeout != null){
                 clearTimeout(typing_timeout)
             }
@@ -249,13 +333,14 @@ async function typing(data){
 async function someone_typing(){
     app.service('chat-action').on('created', typing);
 }   
-async function init(ref_no) {
+async function init() {
 // Find ideas
 const ideas = await app.service('chat-inquiry').get({ref_no:"<?php echo $this->session->userdata('reference_no');?>"});
     ideas.forEach(renderIdea);
     app.service('chat-inquiry').on('created', receivedMessage);
-}
+    app.service('chat-inquiry').on('updated', updateToSeen);
 
+}
 someone_typing();
 init();
 </script>

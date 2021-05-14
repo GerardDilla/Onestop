@@ -21,6 +21,17 @@ class ChatService {
       return result;
     }).catch(error=>{ return {error:error}});
   }
+  async update(id,data){
+    console.log(data);
+    let getdata = getQuery(`UPDATE student_inquiry SET status = 'seen' WHERE ref_no = '${id}' AND user_type = '${data.type}'`)
+    getdata.then((result)=>{
+      return result
+    }).catch(error=>{ return {error:error}});
+    return {
+      ref_no:id,
+      type:data.type
+    }
+  }
   async create(data) {
     // console.log()
     const this_time = moment().format('YYYY-MM-DD kk:mm:ss')
@@ -38,6 +49,7 @@ class ChatService {
           ref_no:data.ref_no,
           date_created:this_time,
           user_type:data.type,
+          return_id:data.return_id,
           message_count:result}) }).catch(error=>{ console.log(error)})
       })
       return newval

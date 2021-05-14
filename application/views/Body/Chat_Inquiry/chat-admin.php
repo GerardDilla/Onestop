@@ -4,6 +4,7 @@
     max-width: 650px;
 }
 .chat{
+    position:relative;
     width:60%;
     min-height:50px;
     border-radius:10px;
@@ -80,6 +81,14 @@
     word-break: break-all;
     white-space: normal;
     overflow-y:auto;
+}
+span.chat-status{
+    /* transform:translate(50%,50%); */
+    bottom:3px;
+    right:-9px;
+    position:absolute;
+    /* padding-right:10px;
+    padding-bottom:10px; */
 }
 /* .modal-dialog{
     position:relative;
@@ -166,6 +175,7 @@
 </div>
 <script src="https://unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js" integrity="sha512-BCMqEPl2dokU3T/EFba7jrfL4FxgY6ryUh4rRC9feZw4yWUslZ3Uf/lPZ5/5UlEjn4prlQTRfIPYQkDrLCZJXA==" crossorigin="anonymous"></script>
 <script>
 // $('#chat-box:last-child').css('background','red');
 var typing_timeout = null;
@@ -206,32 +216,45 @@ var choose_ref = "";
 const socket = io('http://localhost:4003');
 const app = feathers();
 app.configure(feathers.socketio(socket));
+var array_status = [];
+var status_running = false;
 
 $("time.timeago").timeago();
 // document.getElementById('form#inquiryForm').addEventListener('submit', sendInquiry);
 $('#inquiryForm button').on('click',function(){
     // alert('hello');
     if($('#chat-textarea').html()!=""){
+        const uuid = uuidv4();
         app.service('chat-inquiry').create({
             message:$('#chat-textarea').html(),
-            ref_no:'<?php echo $this->session->userdata('reference_no'); ?>',
-            type:'admin'
+            ref_no:choose_ref,
+            type:'admin',
+            return_id:uuid
         });
+        sendMessage(uuid);
         $('#chat-textarea').html('');
         
-        // $('.chat-card:last-child').focus();
     }
+})
+$('#chatinquiryModal').mouseover(function(){
+    app.service('chat-inquiry').update(choose_ref,{
+        type:'admin',
+    });
+    // updateToSeen();
 })
 $('#chat-textarea').on('keydown',function(e){
     
     if(e.keyCode==13){
         e.preventDefault();
         if($('#chat-textarea').html()!=""){
+            const uuid = uuidv4();
             app.service('chat-inquiry').create({
                 message:$('#chat-textarea').html(),
                 ref_no:choose_ref,
-                type:'admin'
+                type:'admin',
+                return_id:uuid
             });
+            sendMessage(uuid);
             $('#chat-textarea').html('');
             // document.getElementById('chat-box').scrollTo(0,document.getElementById('chat-box').scrollHeight);
             // $('.chat-card:last-child').focus();
@@ -245,6 +268,11 @@ $('#chat-textarea').on('keydown',function(e){
         });
     }
 })
+function sendMessage(id){
+    var current_time = moment().format('MMM DD,YYYY h:kk a');
+    document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                +`<div class="col-md-12 chat-card" tab-index="1" id="${id}"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${$('#chat-textarea').html()}<span class="chat-status"><i id="${id}_icon" class="bi bi-circle not-sent"></i></span></div></div></div>`;
+}
 function renderIdea(data) {
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     // +`(${moment(Date.parse(data.date_created)).fromNow()})`;
@@ -255,7 +283,7 @@ function renderIdea(data) {
         }
         else{   
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-            +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</time></div><div class="message-body">${data.message}</div></div></div>`;
+            +`<div class="col-md-12 chat-card"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</time></div><div class="message-body">${data.message}${data.status=="seen"?'<span class="chat-status"><i class="bi bi-check2-all"></i></span>':''}</div></div></div>`;
             
         }
     // }
@@ -273,13 +301,39 @@ async function getInquiryTableList(data){
     })
     $('#chatInquiryTable tbody').append(html);
 }
-// async function getInquiryList(){
-//     const ideas = await app.service('chat-inquiry').find();
-//     getInquiryTableList(ideas);
-// }
+function updateToSeen(data){
+    console.log(data)
+    if(data.ref_no==choose_ref){
+        if(data.type=="student"){
+            $('.sent').each(function(){
+                $(this).removeClass("sent");
+                $(this).removeClass("bi-circle");
+                $(this).removeClass("bi-check-circle");
+                $(this).addClass("bi-check2-all");
+            })
+        }
+    }
+}
+function setStatus(){
+    status_running = true;
+    array_status.map(value=>{
+        var x = document.getElementById(`${value}_icon`);
+        x.classList.remove("bi-circle")
+        x.classList.remove("not-sent")
+        x.classList.add("bi-check-circle")
+        x.classList.add("sent")
+        array_status = array_status.filter(this_value => { return this_value!=value });
+    })
+    status_running = false;
+}
+window.setInterval(()=>{
+    if(status_running==false){
+        setStatus()
+    }
+},2000);
 function receivedMessage(data) 
 {
-    console.log(data.message_count);
+    // console.log(data.message_count);
     getInquiryTableList(data.message_count);
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     // +`(${moment(Date.parse(data.date_created)).fromNow()})`;
@@ -289,8 +343,9 @@ function receivedMessage(data)
             +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;
     }
     else{   
-        document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-            +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</time></div><div class="message-body">${data.message}</div></div></div>`;
+        array_status.push(data.return_id);
+        // document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+        //     +`<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</time></div><div class="message-body">${data.message}</div></div></div>`;
         
     }
     $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
@@ -338,6 +393,7 @@ function openModal(ref,name){
     // },1000)
 }
 app.service('chat-inquiry').on('created', receivedMessage);
+app.service('chat-inquiry').on('updated', updateToSeen);
 // getInquiryList();
 
 </script>

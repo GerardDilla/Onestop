@@ -27,7 +27,7 @@ echo '</script>';
                 <!-- <form  id="form_submit" action="http://localhost:4003/uploadtodrive/test_post2" method="post" enctype="multipart/form-data" > -->
                 <div class="col-md-12" align="center">
                     <div class="table-responsive col-lg-12">
-                        <table id="validationDocumentsTable" class="table table-light mb-0">
+                        <table id="validationDocumentsTable" class="table table-light mb-0" style="min-width:900px;">
                             <thead>
                                 <tr>
                                     <th>Requirements</th>

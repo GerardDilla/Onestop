@@ -38,6 +38,7 @@ $(document).ready(function () {
 
     $('#section').change(function () {
         init_subjectlists();
+
     });
 
     $('.setpaid_test').click(function () {
@@ -179,8 +180,8 @@ function init_queuedlist() {
     queue.success(function (response) {
 
         response = JSON.parse(response);
-        if (response.length != 0) {
-            console.log(response[0]['Section']);
+        if (response['data'].length != 0) {
+            // console.log(response['data'][0]['Section']);
             // $('#section').val(response[0]['Section']);
             init_paymentmethod();
         }
@@ -328,6 +329,14 @@ function ajax_removequeue(sessionID) {
     });
 }
 
+function ajax_removeAllqueue(sessionID) {
+
+    return $.ajax({
+        url: "/Onestop/index.php/temp_api/unqueue_all",
+        async: true,
+    });
+}
+
 function ajax_queuedlist() {
 
     return $.ajax({
@@ -345,17 +354,30 @@ function queue_tablerenderer(element = '', data = []) {
     tablebody = element.find('tbody');
     tablebody.html('');
     //array sched start loop
-    $.each(data, function (index, row) {
+    $.each(data['data'], function (index, row) {
 
-        tablebody.append($('<tr/>').append('\
-        <td>'+ row['Sched_Code'] + '</td>\
-        <td>'+ row['Course_Code'] + '</td>\
-        <td>'+ row['Course_Title'] + '</td>\
-        <td>'+ row['Section_Name'] + '</td>\
-        <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
-        <td><button type="button" class="btn btn-primary" onclick="init_remove_queue(this)" data-sessionid="'+ row['session_id'] + '">Remove</btn></td>\
-        ')
-        );
+        if (data['status'] == true) {
+            tablebody.append($('<tr/>').append('\
+            <td>'+ row['Sched_Code'] + '</td>\
+            <td>'+ row['Course_Code'] + '</td>\
+            <td>'+ row['Course_Title'] + '</td>\
+            <td>'+ row['Section_Name'] + '</td>\
+            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td><button type="button" class="btn btn-primary" onclick="init_remove_queue(this)" data-sessionid="'+ row['session_id'] + '">Remove</btn></td>\
+            ')
+            );
+        } else {
+            tablebody.append($('<tr/>').append('\
+            <td>'+ row['Sched_Code'] + '</td>\
+            <td>'+ row['Course_Code'] + '</td>\
+            <td>'+ row['Course_Title'] + '</td>\
+            <td>'+ row['Section_Name'] + '</td>\
+            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td></td>\
+            ')
+            );
+        }
+
     });
 
     element.DataTable({

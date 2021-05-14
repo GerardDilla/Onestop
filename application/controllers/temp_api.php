@@ -62,12 +62,16 @@ class temp_api extends CI_Controller
 	}
 	public function queue_subject_list()
 	{
-		$result = $this->AdvisingModel->get_queued_subjects($this->reference_number);
-		echo json_encode($result);
+		$output = array(
+			'status' => '',
+			'data' => '',
+		);
+		$output['status'] = $this->AdvisingModel->getfees_history($this->reference_number);
+		$output['data'] = $this->AdvisingModel->get_queued_subjects($this->reference_number);
+		echo json_encode($output);
 	}
 	public function queue_subject()
 	{
-
 		#preset outputa data
 		$output = array(
 			'status' => '0',
@@ -199,6 +203,11 @@ class temp_api extends CI_Controller
 		echo json_encode('removed');
 	}
 
+	public function unqueue_all()
+	{
+		$this->AdvisingModel->remove_all_advising_session($this->reference_number);
+		echo 'removed';
+	}
 
 	public function payment_plan()
 	{

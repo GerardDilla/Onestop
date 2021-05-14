@@ -201,7 +201,19 @@ function renderIdea(data) {
         }
     // }
 }
+async function getInquiryTableList(data){
+    // console.log(data.First_Name)
+    $('#chatInquiryTable tbody').empty();
+    var html = "";
+    $.each(data,function(index,val){
+        html += `<tr><td>${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}</td>`;
+        html += `<td>${val.total_message}</td>`;
+        html += `<td><button class="btn btn-info" onclick="openModal('${val.ref_no}','${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}')" data-bs-toggle="modal" data-bs-target="#chatinquiryModal">open</button></td></tr>`; 
+    })
+    $('#chatInquiryTable tbody').append(html);
+}
 function receivedMessage(data) {
+    getInquiryTableList(data.message_count);
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
         if(data.user_type=="student"){

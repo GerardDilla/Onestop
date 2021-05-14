@@ -1,4 +1,3 @@
-
 <!--Extra Large Modal -->
 <!-- <div id="calendar"></div> -->
 <div class="modal fade text-left w-100" id="subjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
@@ -50,6 +49,10 @@
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button type="button" class="btn btn-primary add-all-subject">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Add All</span>
                 </button>
             </div>
         </div>
@@ -465,7 +468,7 @@
             </div> -->
             <div class="modal-body">
                 <div class="col-md-12" align="center">
-                    <img src="<?php echo base_url('assets/images/PAYMENT_OTC.jpg')?>" style="height:80vh;width:auto;">
+                    <img src="<?php echo base_url('assets/images/PAYMENT_OTC.jpg') ?>" style="height:80vh;width:auto;">
                 </div>
             </div>
             <div class="modal-footer">
@@ -494,7 +497,7 @@
             </div> -->
             <div class="modal-body">
                 <div class="col-md-12" align="center">
-                    <img src="<?php echo base_url('assets/images/PAYMENT_ONLINE.jpg')?>" style="height:80vh;width:auto;">
+                    <img src="<?php echo base_url('assets/images/PAYMENT_ONLINE.jpg') ?>" style="height:80vh;width:auto;">
                 </div>
             </div>
             <div class="modal-footer">
@@ -507,4 +510,3 @@
         </div>
     </div>
 </div>
-    

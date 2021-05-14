@@ -42,7 +42,7 @@ $(document).ready(function () {
             init_advise();
 
         }
-        fetch_user_status();
+
 
     });
 
@@ -174,6 +174,7 @@ function fetch_user_status() {
                 // alert('test');
                 $("#progress_bar").css("width", "70%");
                 $("#payment_content").addClass("active");
+                
             } else if (requirements == 1) {
                 tab_student_information();
                 tab_requirements();

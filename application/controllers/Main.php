@@ -56,26 +56,26 @@ class Main extends MY_Controller
 		// All Programs
 		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
 
+		#Get from Student_Account Table
+		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($this->session->userdata('reference_no'));
+		$this->data['interview_status'] = $student_account['interview_status'];
 
-		// $this->data['status'] = $this->wizard_tracker_status();
-
+		#Get from Student_Info Table
 		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
 		$this->data['course'] = $student_info_array['Course'];
-		// die($this->data['course']);
-		//
-		$picked_course = $this->get_student_course_info($student_info_array['Course']);
 
+		#Get Course Info
+		$picked_course = $this->get_student_course_info($student_info_array['Course']);
 		$this->data['program_code'] = $picked_course['Program_Code'];
 		$this->data['program_name'] = $picked_course['Program_Name'];
-		//
+
+		#Get Major
 		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
 		$this->data['major'] = $major['Program_Major'];
 		//
 		// $shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
 		// $this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
 		// $this->data['applied_status'] = $shs_bridge['applied_status'];
-
-
 
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());

@@ -43,20 +43,22 @@ class temp_api extends CI_Controller
 		$time = time();
 		$this->date_now = date($datestring, $time);
 	}
-	public function index()
-	{
-		echo 'test';
-	}
 	public function subjects()
 	{
+		$output = array(
+			'status' => '',
+			'data' => '',
+		);
 		$params = array(
 			'school_year' => $this->legend_sy,
 			'semester' => $this->legend_sem,
 			'section' => $this->input->get('section')
 		);
+		#returns 1 if old student
+		$output['status'] = $this->AdvisingModel->getfees_history($this->reference_number);
 		// die(json_encode($params));
-		$result = $this->AdvisingModel->block_schedule($params);
-		echo json_encode($result);
+		$output['data'] = $this->AdvisingModel->block_schedule($params);
+		echo json_encode($output);
 	}
 	public function queue_subject_list()
 	{
@@ -66,33 +68,24 @@ class temp_api extends CI_Controller
 	public function queue_subject()
 	{
 
-		# 1. Check if required parameters are complete
+		#preset outputa data
+		$output = array(
+			'status' => '0',
+			'data' => '',
+		);
 
-		# 2. Check if slot is available
+		#Check if required parameters are complete / Compiles needed data
+		if (!$this->input->post('schedcode')) {
 
-		# 3. Check if there are schedule conflicts
-
-
-		//get year level
-		// $year_level = $this->AdvisingModel->get_year_level($array_data);
-		// $year_level = $this->AdvisingModel->get_year_level($array_data);
-		// if ($year_level[0]['Year_Level'] === 0) {
-		// 	$year_level[0]['Year_Level'] = 1;
-		// }
-
-		// //status
-		// if ($this->input->get('studType') === 'open') {
-		// 	$status = "IRREGULAR";
-		// } else {
-		// 	# code...
-		// 	$status = "REGULAR";
-		// }
+			$output['status'] = 0;
+			$output['data'] = 'No Subject given';
+			echo json_encode($output);
+			die();
+		}
 		$inputs = array(
 			'SchedCode' => $this->input->post('schedcode'),
 		);
 		$schedData = $this->AdvisingModel->get_sched_info($inputs['SchedCode'])[0];
-
-		//add the sched to session
 		$array_insert = array(
 			'Reference_Number' => $this->reference_number,
 			'Student_Number' => $this->student_number,
@@ -109,8 +102,93 @@ class temp_api extends CI_Controller
 			'Graduating' =>  'NEEDS OTHER DATA',
 			'valid' => 1
 		);
-		$status = $this->AdvisingModel->insert_sched_session($array_insert);
-		echo $status;
+
+		#Runs all Checkers pertaining to the subject being added
+		$status = $this->queueing_checkers($array_insert);
+		if ($status['status'] == 0) {
+			echo json_encode($status);
+			die();
+		}
+
+		$insert_status = $this->AdvisingModel->insert_sched_session($array_insert);
+		$output['status'] = 1;
+		$output['data'] = $insert_status;
+		echo json_encode($output);
+	}
+
+	public function queue_all_subjects()
+	{
+
+		$params = array(
+			'school_year' => $this->legend_sy,
+			'semester' => $this->legend_sem,
+			'section' => $this->input->post('section')
+		);
+		// die(json_encode($params));
+		$section_subjects = $this->AdvisingModel->block_schedule($params);
+		$insert_status = array();
+		foreach ($section_subjects as $subject) {
+
+			$schedData = $this->AdvisingModel->get_sched_info($subject['Sched_Code'])[0];
+			$array_insert = array(
+				'Reference_Number' => $this->reference_number,
+				'Student_Number' => $this->student_number,
+				'Sched_Code' => $schedData['Sched_Code'],
+				'Sched_Display_ID' => $schedData['sched_display_id'],
+				'Semester' => $this->legend_sem,
+				'School_Year' => $this->legend_sy,
+				'Scheduler' => 'SELF',
+				'Status' => '1',
+				'Program' => '1',
+				'Major' => '0',
+				'Year_Level' => '1',
+				'Section' =>  $this->input->post('section'),
+				'Graduating' =>  'NEEDS OTHER DATA',
+				'valid' => 1
+			);
+			$status = $this->queueing_checkers($array_insert);
+			if ($status['status'] == 0) {
+				#Conflicts present
+				$insert_status[$subject['Sched_Code']] = $status['data'];
+			} else {
+				#No Conflicts found
+				$insert_status[$subject['Sched_Code']] = $this->AdvisingModel->insert_sched_session($array_insert);
+			}
+		}
+		echo json_encode($insert_status);
+	}
+
+	private function queueing_checkers($data)
+	{
+		#preset outputa data, status = 1 being no conflicts
+		$output = array(
+			'status' => 1,
+			'data' => '',
+		);
+
+		#Check if Already Taken
+		$existing_status = $this->AdvisingModel->check_existing_queue($data);
+		if (!empty($existing_status)) {
+			$output['status'] = 0;
+			$output['data'] = 'Subject is already on Queue:' . $existing_status['Sched_Code'];
+		}
+
+		#Check if slot is available : Removed for testing
+		// $slot_status = $this->AdvisingModel->count_subject_enrolled($data);
+		// $new_slot = $slot_status + 1;
+		// if ($new_slot >= $schedData['Total_Slot']) {
+
+		// 	$output['status'] = 0;
+		// 	$output['data'] = 'The slots for this Subject is Full';
+		//  return $output;
+		// 	echo json_encode($output);
+		// 	die();
+		// }
+
+		#Check if there are schedule conflicts: TBF
+
+		#Check if there is pre requisite and if already taken: TBF
+		return $output;
 	}
 
 	public function unqueue_subject()

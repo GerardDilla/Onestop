@@ -291,23 +291,23 @@ class Main extends MY_Controller
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
-		// $data['payment'] = 0;
-		// $data['advising'] = 0;
-		// $data['requirements'] = 0;
-		// $data['student_information'] = 1;
+		$data['payment'] = 0;
+		$data['advising'] = 0;
+		$data['requirements'] = 1;
+		$data['student_information'] = 1;
 
 
-		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
-			$data['payment'] = 1;
-		} else if ($status['Ref_Num_ftc'] != null) {
-			$data['advising'] = 1;
-		} else if ($student_account['interview_status'] != null) {
-			$data['requirements'] = 1;
-		} else if ($status['Course'] != 'N/A') {
-			$data['student_information'] = 1;
-		} else {
-			$data['student_information'] = 0;
-		}
+		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+		// 	$data['payment'] = 1;
+		// } else if ($status['Ref_Num_ftc'] != null) {
+		// 	$data['advising'] = 1;
+		// } else if ($student_account['interview_status'] != null) {
+		// 	$data['requirements'] = 1;
+		// } else if ($status['Course'] != 'N/A') {
+		// 	$data['student_information'] = 1;
+		// } else {
+		// 	$data['student_information'] = 0;
+		// }
 		echo json_encode($data);
 		// return json_encode($data);
 	}

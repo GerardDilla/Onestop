@@ -11,13 +11,17 @@ $(document).ready(function () {
     init_assessmentform();
 
     init_sectionlist();
-
+    $('#somethingTable').DataTable({
+        ordering: false,
+        bPaginate: false,
+        bLengthChange: false,
+        responsive:true
+    });
     $('.add-all-subject').hide();
 
     $('#subjectTable').DataTable({
         "ordering": false
     });
-
     $('#queueTable').DataTable({
         "ordering": false,
         "bPaginate": false,
@@ -362,7 +366,7 @@ function queue_tablerenderer(element = '', data = []) {
         "ordering": false,
         "bPaginate": false,
         "bLengthChange": false,
-
+        "responsive":true
     });
 
 }

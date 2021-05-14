@@ -171,6 +171,53 @@
 
                     </tbody>
                 </table>
+                <table class="table table-striped" id="somethingTable">
+                    <thead>
+                        <tr>
+                            <th>Sched Code</th>
+                            <th>Course Code</th>
+                            <th>Course Title</th>
+                            <th>Section</th>
+                            <th>Units</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>20202021</td>
+                            <td>ITC123</td>
+                            <td>Programming Fundamentals</td>
+                            <td>BSIT1A</td>
+                            <td>5</td>
+                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>20202022</td>
+                            <td>ITC123</td>
+                            <td>Programming Fundamentals</td>
+                            <td>BSIT1A</td>
+                            <td>5</td>
+                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>20202023</td>
+                            <td>ITC123</td>
+                            <td>Programming Fundamentals</td>
+                            <td>BSIT1A</td>
+                            <td>5</td>
+                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>20202023</td>
+                            <td>ITC123</td>
+                            <td>Programming Fundamentals</td>
+                            <td>BSIT1A</td>
+                            <td>5</td>
+                            <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
 
             <div class="col-md-12">

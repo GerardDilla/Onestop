@@ -169,6 +169,7 @@ echo '</script>';
 
     }
     $('#form_submit').on('submit', function(e) {
+        alert('asdasd');
         e.preventDefault();
         var count = 0;
         var req_count = 0;

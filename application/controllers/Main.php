@@ -278,9 +278,9 @@ class Main extends MY_Controller
 		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
 		$this->data['major'] = $major['Program_Major'];
 		//
-		// $shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
-		// $this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
-		// $this->data['applied_status'] = $shs_bridge['applied_status'];
+		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
+		$this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
+		$this->data['applied_status'] = $shs_bridge['applied_status'];
 
 
 
@@ -294,9 +294,9 @@ class Main extends MY_Controller
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
-		// $data['payment'] = 1;
-		// $data['advising'] = 1;
-		// $data['requirements'] = 1;
+		// $data['payment'] = 0;
+		// $data['advising'] = 0;
+		// $data['requirements'] = 0;
 		// $data['student_information'] = 1;
 
 
@@ -426,7 +426,7 @@ class Main extends MY_Controller
 					'applied_status' => $this->input->post('status'),
 					'created_at' => $today,
 				);
-				// $this->AssesmentModel->insert_shs_student_number($array_insert_shs);
+				$this->AssesmentModel->insert_shs_student_number($array_insert_shs);
 				if ($update) {
 					echo json_encode(array(
 						'title' => 'Success',

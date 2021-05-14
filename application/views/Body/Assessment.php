@@ -23,7 +23,7 @@ if ($this->session->flashdata('success') != "") {
             <!-- Wizard container -->
             <div class="wizard-container">
                 <div class="card wizard-card" data-color="red" id="wizardProfile">
-                    <form action="" method="">
+                    <!-- <form action="" method=""> -->
                         <div class="wizard-navigation">
                             <div class="progress-with-circle">
                                 <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
@@ -125,7 +125,7 @@ if ($this->session->flashdata('success') != "") {
                                 <div class="clearfix"></div>
                             </div> 
                         -->
-                    </form>
+                    <!-- </form> -->
                 </div>
             </div>
             <!-- /wizard container -->

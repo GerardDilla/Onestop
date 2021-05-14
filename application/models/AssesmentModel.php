@@ -99,16 +99,16 @@ class AssesmentModel extends CI_Model
         return true;
     }
 
-    // function insert_shs_student_number($array_insert)
-    // {
-    //     $data = array(
-    //         'highered_reference_number' => $array_insert['highered_reference_number'],
-    //         'shs_student_number' => $array_insert['shs_student_number'],
-    //         'applied_status' => $array_insert['applied_status'],
-    //         'created_at' => $array_insert['created_at'],
-    //     );
-    //     $this->db->insert('senior_high_student_number', $data);
-    // }
+    function insert_shs_student_number($array_insert)
+    {
+        $data = array(
+            'highered_reference_number' => $array_insert['highered_reference_number'],
+            'shs_student_number' => $array_insert['shs_student_number'],
+            'applied_status' => $array_insert['applied_status'],
+            'created_at' => $array_insert['created_at'],
+        );
+        $this->db->insert('senior_high_student_number', $data);
+    }
 
     public function get_shs_student_number_by_reference_number($reference_number)
     {

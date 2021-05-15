@@ -482,6 +482,57 @@ function schedule_tablerenderer(element, time = []) {
 
 }
 
+$('#online_payment_form').submit(function(e) {
+    if (!$('.downpayment:checkbox').prop("checked")) {
+        if ($('.payment_check:checkbox:checked').length <= 0) {
+            iziToast.error({
+                title: 'Error: ',
+                message: 'Error',
+                position: 'topRight',
+            });
+            e.stopPropagation();
+            e.preventDefault();
+            return;
+        }
+    }
+});
+// $('#select_pay_submit').on('click', function(e) {
+//     $('input[name=select_pay]:checkbox:checked').each(function(i) {
+//         if ($(this).data('payment') == "" || $(this).data('payment') == null) {
+//             iziToast.error({
+//                 title: 'Error: ',
+//                 message: 'Error',
+//                 position: 'topRight',
+//             });
+//             e.stopPropagation();
+//             e.preventDefault();
+//             return;
+//         }
+//     });
+// })
+function downpayment_checked() {
+    if ($('.downpayment:checkbox').prop("checked")) {
+        $('.payment_check:checkbox').each(function(i) {
+            $(this).prop("disabled", true);
+            $(this).prop("checked", false);
+            $('#payment_total_value').html('5000.00');
+        });
+    } else {
+        $('.payment_check:checkbox').each(function(i) {
+            $(this).removeAttr('disabled');
+        });
+        $('#payment_total_value').html('0');
+    }
+}
+
+function get_total_value() {
+    var total = 0;
+    $('.payment_check:checkbox:checked').each(function(i) {
+        total += parseFloat($(this).data('paymentvalue'));
+    });
+    $('#payment_total_value').html(total);
+}
+
 function assessmentform_renderer(resultdata = []) {
 
     //Displays DATA
@@ -506,21 +557,50 @@ function assessmentform_renderer(resultdata = []) {
     $('#trf_tuition').html(resultdata['get_Advise'][0]['tuition_Fee']);
     $('#trf_misc').html(resultdata['get_miscfees'][0]['Fees_Amount']);
 
+    get_advise_initial = resultdata['get_Advise'][0]['InitialPayment'];
+    get_advise_first = resultdata['get_Advise'][0]['First_Pay'];
+    get_advise_second = resultdata['get_Advise'][0]['Second_Pay'];
+    get_advise_third = resultdata['get_Advise'][0]['Third_Pay'];
+    get_advise_fourth = resultdata['get_Advise'][0]['Fourth_Pay'];
+
     $('#trf_other').html(resultdata['get_otherfees'][0]['Fees_Amount']);
-    $('#trf_initial').html(resultdata['get_Advise'][0]['InitialPayment']);
-    $('#trf_first').html(resultdata['get_Advise'][0]['First_Pay']);
-    $('#trf_second').html(resultdata['get_Advise'][0]['Second_Pay']);
-    $('#trf_third').html(resultdata['get_Advise'][0]['Third_Pay']);
-    $('#trf_fourth').html(resultdata['get_Advise'][0]['Fourth_Pay']);
+    $('#trf_initial').html(get_advise_initial);
+    $('#trf_first').html(get_advise_first);
+    $('#trf_second').html(get_advise_second);
+    $('#trf_third').html(get_advise_third);
+    $('#trf_fourth').html(get_advise_fourth);
     $('#trf_scholar').html(resultdata['get_Advise'][0]['Scholarship']);
     $('#trf_scholar').html(resultdata['get_Advise'][0]['Scholarship']);
-    //Lab Fees 
+
+
+    total = parseFloat(get_advise_initial) + parseFloat(get_advise_first) +
+        parseFloat(get_advise_second) + parseFloat(get_advise_third) +
+        parseFloat(get_advise_fourth);
+    $('#initial_checkbox').attr('data-paymentvalue', get_advise_initial);
+    $('#initial_value').html(get_advise_initial);
+    $('#first_checkbox').attr('data-paymentvalue', get_advise_first);
+    $('#first_value').html(get_advise_first);
+    $('#second_checkbox').attr('data-paymentvalue', get_advise_second);
+    $('#second_value').html(get_advise_second);
+    $('#third_checkbox').attr('data-paymentvalue', get_advise_third);
+    $('#third_value').html(get_advise_third);
+    $('#fourth_checkbox').attr('data-paymentvalue', get_advise_fourth);
+    $('#fourth_value').html(get_advise_fourth);
+    if (
+        get_advise_first == 0 &&
+        get_advise_second == 0 &&
+        get_advise_third == 0 &&
+        get_advise_fourth == 0
+    ) {
+        $('#downpayment_tr').remove();
+    }
+    //Lab Fees
     /*
     labfee = 0;
     $.each(resultdata['get_labfees'], function(index, labresult) 
     {
         labfee = labfee + parseFloat(labresult['Lab_Fee']);  
-    }); 
+    });
     */
     labfee = parseFloat(resultdata['get_labfees'][0]['Fees_Amount']);
     $('#trf_lab').html(labfee.toFixed(2));

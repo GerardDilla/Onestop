@@ -693,8 +693,6 @@ class temp_api extends CI_Controller
 
 	public function temporary_regform_ajax()
 	{
-
-
 		$reference_number = $this->reference_number;
 		if ($reference_number != '') {
 
@@ -859,5 +857,55 @@ class temp_api extends CI_Controller
 		}
 
 		echo json_encode($this->data);
+	}
+
+	public function total_online_payment()
+	{
+		// die($this->reference_number);
+		$array = array(
+			'sy' => $this->legend_sy,
+			'sem' => $this->legend_sem,
+			'refnum' => $this->reference_number
+		);
+		$data['get_Advise'] = $this->RegFormModel->Get_advising_return_array($array);
+		$initial_pay = 0;
+		$first_pay = 0;
+		$second_pay = 0;
+		$third_pay = 0;
+		$fourth_pay = 0;
+		$selected_pay = $this->input->post('select_pay');
+		foreach ($selected_pay as $payment) {
+			if ($payment == 'initial') {
+				$initial_pay = $data['get_Advise'][0]['InitialPayment'];
+			}
+			if ($payment == 'first') {
+				$first_pay = $data['get_Advise'][0]['First_Pay'];
+			}
+			if ($payment == 'second') {
+				$second_pay = $data['get_Advise'][0]['Second_Pay'];
+			}
+			if ($payment == 'third') {
+				$third_pay = $data['get_Advise'][0]['Third_Pay'];
+			}
+			if ($payment == 'fourth') {
+				$fourth_pay = $data['get_Advise'][0]['Fourth_Pay'];
+			}
+			if ($payment == 'downpayment') {
+				$initial_pay = 0;
+				$first_pay = 0;
+				$second_pay = 0;
+				$third_pay = 0;
+				$fourth_pay = 0;
+				$downpayment = '5000.00';
+			}
+		}
+		$total = $initial_pay + $first_pay + $second_pay + $third_pay + $fourth_pay + $downpayment;
+		if ($total <= 0) {
+			$this->session->set_flashdata('online_payment_zero', 'Zero Total is ot valid!');
+			redirect('main/selfassesment');
+			die();
+		}
+		// die($total);
+		redirect("https://stdominiccollege.edu.ph/SDCAPayment/" . $total);
 	}
 }

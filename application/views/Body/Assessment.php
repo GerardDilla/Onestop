@@ -11,6 +11,13 @@ if ($this->session->flashdata('success') != "") {
     });</script>";
     $this->session->set_flashdata('success', '');
 }
+if($this->session->flashdata('online_payment_zero') != ""){
+    echo "<script>iziToast.error({
+        title: 'Zero Value On Payment: ',
+        message: 'Invalid',
+        position: 'topRight',
+    });</script>";
+}
 ?>
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->

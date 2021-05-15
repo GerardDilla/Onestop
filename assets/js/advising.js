@@ -35,6 +35,7 @@ $(document).ready(function () {
     });
 
     $('#section').change(function () {
+
         init_subjectlists();
 
     });
@@ -358,7 +359,7 @@ function queue_tablerenderer(element = '', data = []) {
     tablebody.html('');
     //array sched start loop
     $.each(data['data'], function (index, row) {
-
+        computeSched(row['Start_Time'], row['End_Time'], row['Day'], row['Course_Code'], row['Course_Title'], row['from_time'], row['to_time'])
         if (data['status'] == true) {
             tablebody.append($('<tr/>').append('\
             <td>'+ row['Sched_Code'] + '</td>\
@@ -701,4 +702,41 @@ function get_militarytime() {
     console.log(time);
     return time;
 
+}
+function computeSched(start, end, this_day, subject, title, from, to) {
+    var start_time = parseInt(start);
+    var end_time = parseInt(end);
+    var day = this_day == 'S' ? 'SA' : this_day;
+    var schedule_array = [700, 730, 800, 830, 900, 930, 1000, 1030, 1100, 1130, 1200, 1230, 1300, 1330, 1400, 1430, 1500, 1530, 1600, 1630, 1700, 1730, 1800, 1830, 1900, 1930, 2000, 2030, 2100];
+    var filtered = schedule_array.filter((time) => { return time >= start_time && time <= end_time });
+    console.log(filtered);
+    console.log(day);
+    $.each(filtered, function (index, val) {
+
+        if (day == "M") {
+            var bg_color = "EA49E5"
+        }
+        else if (day == "T") {
+            var bg_color = "18EAC8"
+        }
+        else if (day == "W") {
+            var bg_color = "EA5E18"
+        }
+        else if (day == "H") {
+            var bg_color = "EAD618"
+        }
+        else if (day == "F") {
+            var bg_color = "B1EA18"
+        }
+        else if (day == "SA") {
+            var bg_color = "1860EA"
+        }
+        else {
+            var bg_color = "18EA4A"
+        }
+
+        $(`#${val + '_' + day}`).css('background', `#${bg_color}`);
+    })
+    // $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${from + ' to ' + to}</strong><br>${subject}</div>`);
+    $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${title}</strong><br>${subject}</div>`);
 }

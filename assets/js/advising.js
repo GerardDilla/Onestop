@@ -101,8 +101,6 @@ $(document).ready(function () {
     });
 
 
-
-
 });
 
 
@@ -207,9 +205,7 @@ function init_remove_queue(row) {
     sessionid = $(row).data('sessionid');
     queue_status = ajax_removequeue(sessionid);
     queue_status.success(function (response) {
-
-        izi_toast('', 'Removed from Queue', 'green', 'bottomRight');
-
+        izi_toast('', `Removed from Queue: ${response}`, 'green', 'bottomRight');
         init_paymentmethod($('input[type=radio][name=payment-option]').value);
         init_queuedlist();
     });

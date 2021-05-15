@@ -99,6 +99,14 @@ class AdvisingModel extends CI_Model
         $this->db->where('ID', $id);
         $this->db->update('advising_session');
     }
+    public function get_coursecode_via_session($session_id)
+    {
+        $this->db->select('Sched.Course_Code');
+        $this->db->join('Sched', 'Sched.Sched_Code = advising_session.Sched_Code');
+        $this->db->where('advising_session.ID', $session_id);
+        $query = $this->db->get('advising_session');
+        return $query->row_array();
+    }
     public function remove_all_advising_session($refnum)
     {
         $this->db->set('valid', 0);

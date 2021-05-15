@@ -1,7 +1,7 @@
 searchVisible = 0;
 transparent = true;
-$(document).ready(function() {
-    $('.wizard-proceed-requirements').click(function() {
+$(document).ready(function () {
+    $('.wizard-proceed-requirements').click(function () {
         // alert('asdasdas');
         baseurl = $('#assessment_section').data('baseurl');
         var interview_value = $("input[name='interview']:checked").val();
@@ -22,7 +22,7 @@ $(document).ready(function() {
                     'interview': interview_value,
                 },
                 // dataType: 'json',
-                success: function() {
+                success: function () {
 
                 },
             })
@@ -33,14 +33,51 @@ $(document).ready(function() {
         // e.preventDefault();
     });
 
-    $('.wizard-proceed').click(function() {
+    $('.wizard-proceed').click(function () {
 
         // Event handler when proceeding to next step
         if ($('#advising_content').hasClass('active')) {
-            console.log('ready to advise');
-            // Came from advising.js
-            location.reload();
-            init_advise();
+
+            iziToast.question({
+                timeout: false,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'advise_question',
+                zindex: 1500,
+                message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YES</b></button>', function (instance, toast) {
+
+                        console.log('ready to advise');
+                        // Came from advising.js
+                        init_advise();
+                        location.reload();
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+
+                        event.preventDefault();
+                        $('#section').val('none');
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function (instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function (instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+
 
         }
 
@@ -64,7 +101,7 @@ $(document).ready(function() {
         //     }
         // },
 
-        onInit: function(tab, navigation, index) {
+        onInit: function (tab, navigation, index) {
             //check number of tabs and fill the entire row
             var $total = navigation.find("li").length;
             $width = 100 / $total;
@@ -72,7 +109,7 @@ $(document).ready(function() {
             navigation.find("li").css("width", $width + "%");
         },
 
-        onTabClick: function(tab, navigation, index) {
+        onTabClick: function (tab, navigation, index) {
             alert(index);
             // var $valid = $('.wizard-card form').valid();
             // if (!$valid) {
@@ -82,7 +119,7 @@ $(document).ready(function() {
             // }
         },
 
-        onTabShow: function(tab, navigation, index) {
+        onTabShow: function (tab, navigation, index) {
             var $total = navigation.find("li").length;
             var $current = index + 1;
 
@@ -111,11 +148,11 @@ $(document).ready(function() {
     });
 
     // Prepare the preview for profile picture
-    $("#wizard-picture").change(function() {
+    $("#wizard-picture").change(function () {
         readURL(this);
     });
 
-    $('[data-toggle="wizard-radio"]').click(function() {
+    $('[data-toggle="wizard-radio"]').click(function () {
         wizard = $(this).closest(".wizard-card");
         wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
         $(this).addClass("active");
@@ -123,7 +160,7 @@ $(document).ready(function() {
         $(this).find('[type="radio"]').attr("checked", "true");
     });
 
-    $('[data-toggle="wizard-checkbox"]').click(function() {
+    $('[data-toggle="wizard-checkbox"]').click(function () {
         if ($(this).hasClass("active")) {
             $(this).removeClass("active");
             $(this).find('[type="checkbox"]').removeAttr("checked");
@@ -146,7 +183,7 @@ function fetch_user_status() {
         type: "POST",
         url: base_url + "main/wizard_tracker_status",
         async: true,
-        success: function(response) {
+        success: function (response) {
             // alert(response);
             result = JSON.parse(response);
             payment = result.payment;
@@ -201,7 +238,7 @@ function fetch_user_status() {
             }
 
         },
-        error: function(response) {},
+        error: function (response) { },
     });
 
 

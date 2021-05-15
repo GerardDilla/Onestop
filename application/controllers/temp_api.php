@@ -214,8 +214,9 @@ class temp_api extends CI_Controller
 	{
 
 		$id = $this->input->post('sessionId');
+		$session = $this->AdvisingModel->get_coursecode_via_session($id);
 		$this->AdvisingModel->remove_advising_session($id);
-		echo json_encode('removed');
+		echo $session['Course_Code'];
 	}
 
 	public function unqueue_all()

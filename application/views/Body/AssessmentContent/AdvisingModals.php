@@ -485,28 +485,91 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade text-left w-100" id="onlinepaymentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
-            <!-- <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel16">CHOOSE SUBJECTS</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <i data-feather="x"></i>
-                </button>
+            <form action="<?php echo base_url('/temp_api/total_online_payment') ?>" target="_blank" method="POST" id="online_payment_form">
+                <div class="modal-body">
+                    <div class="alert alert-light-info color-warning">
+                        <i class="bi bi-exclamation-circle"></i>
+                        PLEASE CHECK WHAT YOU WANT TO PAY
+                    </div>
 
-            </div> -->
-            <div class="modal-body">
-                <div class="col-md-12" align="center">
-                    <img src="<?php echo base_url('assets/images/PAYMENT_ONLINE.jpg') ?>" style="height:80vh;width:auto;">
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <td>
+                                <label for="initial_checkbox">
+                                    <input type="checkbox" onclick="get_total_value()" name="select_pay[]" class="form-check-input form-check-primary payment_check" value="initial" id="initial_checkbox">
+                                    <strong> Initial Payment:</strong>
+                                </label>
+                            </td>
+                            <td id="initial_value"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="first_checkbox">
+                                    <input type="checkbox" onclick="get_total_value()" name="select_pay[]" class="form-check-input form-check-primary payment_check" value="first" id="first_checkbox">
+                                    <strong> First Payment:</strong>
+                                </label>
+                            </td>
+                            <td id="first_value"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="second_checkbox">
+                                    <input type="checkbox" onclick="get_total_value()" name="select_pay[]" class="form-check-input form-check-primary payment_check" value="second" id="second_checkbox">
+                                    <strong> Second Payment:</strong>
+                                </label>
+                            </td>
+                            <td id="second_value"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="third_checkbox">
+                                    <input type="checkbox" onclick="get_total_value()" name="select_pay[]" class="form-check-input form-check-primary payment_check" value="third" id="third_checkbox">
+                                    <strong> Third Payment:</strong>
+                                </label>
+                            </td>
+                            <td id="third_value"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="fourth_checkbox">
+                                    <input type="checkbox" onclick="get_total_value()" name="select_pay[]" class="form-check-input form-check-primary payment_check" value="fourth" id="fourth_checkbox">
+                                    <strong> Fourth Payment:</strong>
+                                </label>
+                            </td>
+                            <td id="fourth_value"></td>
+                        </tr>
+                        <tr id="downpayment_tr">
+                            <td>
+                                <label for="downpayment_checkbox">
+                                    <input type="checkbox" onclick="downpayment_checked()" name="select_pay[]" class="form-check-input form-check-primary downpayment" value="downpayment" id="downpayment_checkbox">
+                                    <strong> DownPayment:</strong>
+                                </label>
+                            </td>
+                            <td>5000.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total:</strong></td>
+                            <td id="payment_total_value"></td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
-                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                <div class="modal-footer">
+                    <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
+
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <input type="submit" class="btn btn-primary" id="select_pay_submit">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
-                </button>
-            </div>
+                    <span class="d-none d-sm-block"></span>
+                    </input>
+                </div>
+            </form>
         </div>
     </div>
 </div>

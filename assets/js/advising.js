@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    init_sectionlist()
+    init_sectionlist();
 
     init_queuedlist();
 
@@ -353,6 +353,7 @@ function ajax_sectionlist() {
 
     return $.ajax({
         url: "/Onestop/index.php/temp_api/get_section",
+        async: true,
     });
 }
 

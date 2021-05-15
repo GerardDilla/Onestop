@@ -55,7 +55,7 @@ class AdvisingModel extends CI_Model
 
     public function get_sched_info($schedCode)
     {
-        $this->db->select('*, C.id AS sched_display_id, T1.Schedule_Time AS stime, T2.Schedule_Time AS etime');
+        $this->db->select('*, C.id AS sched_display_id, T1.Schedule_Time AS stime, T2.Schedule_Time AS etime, C.Start_Time AS SDstart, C.End_Time AS SDend');
         $this->db->from('Sections AS A');
         $this->db->join('Sched AS B', 'A.Section_ID = B.Section_ID', 'inner');
         $this->db->join('Sched_Display AS C', 'B.Sched_Code = C.Sched_Code', 'inner');
@@ -593,6 +593,7 @@ class AdvisingModel extends CI_Model
     }
     public function check_advising_conflict($array_data)
     {
+        #Parameters: Start time, End time, Days, Reference Number
         $day_array = explode(',', $array_data['day_array']);
 
         $where_check_time = '

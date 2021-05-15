@@ -108,10 +108,13 @@ class temp_api extends CI_Controller
 		);
 
 		#Runs all Checkers pertaining to the subject being added
-		$status = $this->queueing_checkers($array_insert);
-		if ($status['status'] == 0) {
-			echo json_encode($status);
-			die();
+		$status = $this->queueing_checkers($array_insert, $schedData);
+		if ($status['status'] == 1) {
+
+			$output['status'] = 0;
+			$output['data'] = $status['data'];
+			echo json_encode($output);
+			die;
 		}
 
 		$insert_status = $this->AdvisingModel->insert_sched_session($array_insert);
@@ -150,8 +153,8 @@ class temp_api extends CI_Controller
 				'Graduating' =>  'NEEDS OTHER DATA',
 				'valid' => 1
 			);
-			$status = $this->queueing_checkers($array_insert);
-			if ($status['status'] == 0) {
+			$status = $this->queueing_checkers($array_insert, $schedData);
+			if ($status['status'] == 1) {
 				#Conflicts present
 				$insert_status[$subject['Sched_Code']] = $status['data'];
 			} else {
@@ -162,19 +165,17 @@ class temp_api extends CI_Controller
 		echo json_encode($insert_status);
 	}
 
-	private function queueing_checkers($data)
+	private function queueing_checkers($data, $sched_data = array())
 	{
-		#preset outputa data, status = 1 being no conflicts
-		$output = array(
-			'status' => 1,
-			'data' => '',
-		);
+		#preset
+		$output['status'] = 0;
+		$output['data'] = '';
 
 		#Check if Already Taken
 		$existing_status = $this->AdvisingModel->check_existing_queue($data);
 		if (!empty($existing_status)) {
-			$output['status'] = 0;
-			$output['data'] = 'Subject is already on Queue:' . $existing_status['Sched_Code'];
+			$output['status'] = 1;
+			$output['data'] = 'Subject is already on Queue';
 		}
 
 		#Check if slot is available : Removed for testing
@@ -182,27 +183,27 @@ class temp_api extends CI_Controller
 		// $new_slot = $slot_status + 1;
 		// if ($new_slot >= $schedData['Total_Slot']) {
 
-		// 	$output['status'] = 0;
-		// 	$output['data'] = 'The slots for this Subject is Full';
-		//  return $output;
+		// 	$output['status'] = 1;
+		// 	$output['data']= 'The slots for this Subject is Full';
 		// 	echo json_encode($output);
 		// 	die();
 		// }
 
 		#Check if there are schedule conflicts
-
-		$array_data['start_time'] = $course_info[0]['sched_start_time'];
-		$array_data['end_time'] = $course_info[0]['sched_end_time'];
-		$array_data['day_array'] = $course_info[0]['Day'];
-
-		$conflict_check = $this->Student_Model->check_advising_conflict($array_data);
+		$conflict_checker_parameters = array(
+			'reference_no' => $data['Reference_Number'],
+			'start_time' => $sched_data['SDstart'],
+			'end_time' => $sched_data['SDend'],
+			'day_array' => $sched_data['Day'],
+			'school_year' => $this->legend_sy,
+			'semester' => $this->legend_sem,
+		);
+		#Parameters: Start time, End time, Days, Reference Number
+		$conflict_check = $this->AdvisingModel->check_advising_conflict($conflict_checker_parameters);
 		if ($conflict_check) {
-			$array_output['success'] = 0;
-			$array_output['message'] = "Conflict with " . $conflict_check[0]['Course_Code'] . ". Choose another schedule";
-			echo json_encode($array_output);
-			return;
+			$output['status'] = 1;
+			$output['data'] = 'Subject is in Conflict with: ' . $sched_data['Course_Code'];
 		}
-
 
 		#Check if there is pre requisite and if already taken: TBF
 		return $output;

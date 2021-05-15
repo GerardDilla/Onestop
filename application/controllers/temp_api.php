@@ -176,6 +176,7 @@ class temp_api extends CI_Controller
 		if (!empty($existing_status)) {
 			$output['status'] = 1;
 			$output['data'] = 'Subject is already on Queue';
+			return $output;
 		}
 
 		#Check if slot is available : Removed for testing
@@ -185,8 +186,7 @@ class temp_api extends CI_Controller
 
 		// 	$output['status'] = 1;
 		// 	$output['data']= 'The slots for this Subject is Full';
-		// 	echo json_encode($output);
-		// 	die();
+		// 	return $output;
 		// }
 
 		#Check if there are schedule conflicts
@@ -202,7 +202,8 @@ class temp_api extends CI_Controller
 		$conflict_check = $this->AdvisingModel->check_advising_conflict($conflict_checker_parameters);
 		if ($conflict_check) {
 			$output['status'] = 1;
-			$output['data'] = 'Subject is in Conflict with: ' . $sched_data['Course_Code'];
+			$output['data'] = 'Subject is in Conflict with: ' . $conflict_check[0]['Course_Code'];
+			return $output;
 		}
 
 		#Check if there is pre requisite and if already taken: TBF

@@ -206,6 +206,7 @@ class temp_api extends CI_Controller
 	public function unqueue_all()
 	{
 		$this->AdvisingModel->remove_all_advising_session($this->reference_number);
+		
 		echo 'removed';
 	}
 
@@ -775,7 +776,10 @@ class temp_api extends CI_Controller
 
 	public function get_section()
 	{
-
+		$output = array(
+			'section_id' => '',
+			'sections' => '',
+		);
 		#Get Program ID
 		$Course = $this->AdvisingModel->get_course($this->reference_number);
 
@@ -783,8 +787,15 @@ class temp_api extends CI_Controller
 		$Feesdata = $this->AdvisingModel->getfees_history($this->reference_number);
 
 		#Get section based on whether feesdata is true(old student) or false(new student)
-		$Sections = $this->AdvisingModel->get_sections($Course, $Feesdata);
-		echo json_encode($Sections);
+		$output['sections'] = $this->AdvisingModel->get_sections($Course, $Feesdata);
+
+		$queue = $this->AdvisingModel->get_queued_subjects($this->reference_number);
+		if (!empty($queue)) {
+			$output['section_id'] = $queue[0]['Section_ID'];
+		} else {
+			$output['section_id'] = 'none';
+		}
+		echo json_encode($output);
 	}
 	public function setpaid_test()
 	{

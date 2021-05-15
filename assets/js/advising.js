@@ -36,7 +36,56 @@ $(document).ready(function () {
 
     $('#section').change(function () {
 
-        init_subjectlists();
+        if ($('#queueTable').data('queueResult') == 0) {
+            init_subjectlists();
+        } else {
+
+            iziToast.question({
+                timeout: false,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'queue_question',
+                zindex: 1500,
+                message: 'Changing Section will remove all Queued Subjects. Do you want to proceed?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YES</b></button>', function (instance, toast) {
+
+                        // Remove Queue Code
+                        init_remove_all_queue();
+
+                        // Display new choices
+                        init_subjectlists();
+
+                        init_paymentmethod();
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+
+                        event.preventDefault();
+                        $('#section').val('none');
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function (instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function (instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+
+        }
+
+
 
     });
 
@@ -119,7 +168,6 @@ function init_subjectlists() {
         response = JSON.parse(response);
         if (response['data'].length != 0) {
             subject_tablerenderer($('#subjectTable'), response);
-            init_scheduleplot();
             $('.add-all-subject').show();
         } else {
             $('.add-all-subject').hide();
@@ -203,12 +251,6 @@ function init_paymentmethod(value = 'installment') {
     })
 }
 
-function init_scheduleplot() {
-
-    schedule_tablerenderer($('#scheduleTable'), get_militarytime());
-    paymentplan_tablerenderer
-}
-
 function init_enroll_test() {
 
     ajax_enroll_test();
@@ -222,6 +264,15 @@ function init_reset_progress() {
     reset_status.success(function (result) {
         location.reload();
     });
+
+}
+
+function init_remove_all_queue() {
+
+    removal_status = ajax_removeAllqueue();
+    removal_status.success(function (result) {
+        init_queuedlist();
+    })
 
 }
 
@@ -357,6 +408,7 @@ function queue_tablerenderer(element = '', data = []) {
 
     tablebody = element.find('tbody');
     tablebody.html('');
+    count = 0;
     //array sched start loop
     $.each(data['data'], function (index, row) {
         computeSched(row['Start_Time'], row['End_Time'], row['Day'], row['Course_Code'], row['Course_Title'], row['from_time'], row['to_time'])
@@ -381,8 +433,9 @@ function queue_tablerenderer(element = '', data = []) {
             ')
             );
         }
-
+        count++;
     });
+    $('#queueTable').data('queueResult', count);
 
     element.DataTable({
         "ordering": false,
@@ -397,7 +450,6 @@ function subject_tablerenderer(element = '', data = []) {
 
     element.DataTable().clear();
     element.DataTable().destroy();
-
 
     tablebody = element.find('tbody');
     tablebody.html('');
@@ -673,9 +725,10 @@ function registrationform_renderer(resultdata = []) {
 function section_renderer(data) {
 
     $('#section').html('<option value="none" disabled selected>SELECT SECTION</option>');
-    $.each(data, function (index, result) {
+    $.each(data['sections'], function (index, result) {
         $('#section').append('<option value="' + result['Section_ID'] + '">' + result['Section_Name'] + '</option>');
     });
+    $('#section').val(data['section_id']);
 }
 
 function assessment_exporter(url) {

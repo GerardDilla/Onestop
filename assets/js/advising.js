@@ -1,14 +1,10 @@
 $(document).ready(function () {
 
-    // init_subjectlists();
+    init_sectionlist()
 
     init_queuedlist();
 
-    init_paymentmethod();
-
     init_assessmentform();
-
-    init_sectionlist();
 
     $('.add-all-subject').hide();
 
@@ -272,6 +268,7 @@ function init_remove_all_queue() {
     removal_status = ajax_removeAllqueue();
     removal_status.success(function (result) {
         init_queuedlist();
+        init_paymentmethod();
     })
 
 }
@@ -338,6 +335,7 @@ function ajax_paymentmethod(paymentplan) {
             section: $('#section').val(),
         }
     });
+
 }
 
 function ajax_subjectlist() {
@@ -395,6 +393,7 @@ function ajax_queuedlist() {
 
     return $.ajax({
         url: "/Onestop/index.php/temp_api/queue_subject_list",
+        async: true,
         type: 'POST'
     });
 
@@ -500,11 +499,33 @@ function subject_tablerenderer(element = '', data = []) {
 
 function paymentplan_tablerenderer(data = []) {
 
-    $('#other_fee').html(data['other_fee']);
-    $('#misc_fee').html(data['misc_fee']);
-    $('#lab_fee').html(data['lab_fee']);
-    $('#tuition_fee').html(data['tuition_fee']);
-    $('#total_fee').html(data['total_fee']);
+    if ($('#queueTable').data('queueResult') == 0) {
+
+        default_val = '0.00';
+        $('#other_fee').html(default_val);
+        $('#misc_fee').html(default_val);
+        $('#lab_fee').html(default_val);
+        $('#tuition_fee').html(default_val);
+        $('#total_fee').html(default_val);
+
+    } else {
+
+        other_fee = parseFloat(data['other_fee']);
+        misc_fee = parseFloat(data['misc_fee']);
+        lab_fee = parseFloat(data['lab_fee']);
+        tuition_fee = parseFloat(data['tuition_fee']);
+        total_fee = parseFloat(data['total_fee']);
+
+        $('#other_fee').html(other_fee.toFixed(2));
+        $('#misc_fee').html(misc_fee.toFixed(2));
+        $('#lab_fee').html(lab_fee.toFixed(2));
+        $('#tuition_fee').html(tuition_fee.toFixed(2));
+        $('#total_fee').html(total_fee.toFixed(2));
+
+
+    }
+
+
 
 }
 
@@ -575,7 +596,7 @@ function assessmentform_renderer(resultdata = []) {
     }); 
     */
     labfee = parseFloat(resultdata['get_labfees'][0]['Fees_Amount']);
-    $('#trf_lab').html(labfee.toFixed(2));
+    $('#trf_lab').html(labfee);
 
     //Total Fees
     total_fees = parseFloat(resultdata['get_Advise'][0]['tuition_Fee']) +
@@ -583,7 +604,7 @@ function assessmentform_renderer(resultdata = []) {
         labfee +
         parseFloat(resultdata['get_otherfees'][0]['Fees_Amount']);
 
-    $('#trf_total_fees').html(total_fees.toFixed(2));
+    $('#trf_total_fees').html(total_fees);
 
 
     //Displays Sched
@@ -669,7 +690,7 @@ function registrationform_renderer(resultdata = []) {
     }); 
     */
     labfee = parseFloat(resultdata['get_labfees'][0]['Fees_Amount']);
-    $('#reg_lab').html(labfee.toFixed(2));
+    $('#reg_lab').html(labfee);
 
     //Total Fees
     total_fees = parseFloat(resultdata['student_data'][0]['tuition_Fee']) +
@@ -677,7 +698,7 @@ function registrationform_renderer(resultdata = []) {
         labfee +
         parseFloat(resultdata['get_otherfees'][0]['Fees_Amount']);
 
-    $('#reg_total_fees').html(total_fees.toFixed(2));
+    $('#reg_total_fees').html(total_fees);
 
 
     //Displays Sched

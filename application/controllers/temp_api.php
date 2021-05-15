@@ -189,7 +189,20 @@ class temp_api extends CI_Controller
 		// 	die();
 		// }
 
-		#Check if there are schedule conflicts: TBF
+		#Check if there are schedule conflicts
+
+		$array_data['start_time'] = $course_info[0]['sched_start_time'];
+		$array_data['end_time'] = $course_info[0]['sched_end_time'];
+		$array_data['day_array'] = $course_info[0]['Day'];
+
+		$conflict_check = $this->Student_Model->check_advising_conflict($array_data);
+		if ($conflict_check) {
+			$array_output['success'] = 0;
+			$array_output['message'] = "Conflict with " . $conflict_check[0]['Course_Code'] . ". Choose another schedule";
+			echo json_encode($array_output);
+			return;
+		}
+
 
 		#Check if there is pre requisite and if already taken: TBF
 		return $output;
@@ -206,7 +219,7 @@ class temp_api extends CI_Controller
 	public function unqueue_all()
 	{
 		$this->AdvisingModel->remove_all_advising_session($this->reference_number);
-		
+
 		echo 'removed';
 	}
 

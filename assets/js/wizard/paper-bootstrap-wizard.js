@@ -1,49 +1,50 @@
 searchVisible = 0;
 transparent = true;
 $(document).ready(function() {
+    // $('#submit_val_doc').click(function(e) {
+    //     baseurl = $('#assessment_section').data('baseurl');
+    //     var interview_value = $("input[name='interview']:checked").val();
+    //     if (interview_value == 'YES' || interview_value == 'NO') {
+    //         $('.tab-content .tab-pane').removeClass('active');
+    //         $.ajax({
+    //                 url: baseurl + 'main/interview_status',
+    //                 type: 'POST',
+    //                 data: {
+    //                     'interview': interview_value,
+    //                 },
+    //                 success: function() {},
+    //             })
+    //             // fetch_user_status();
+    //     } else {
+    //         iziToast.show({
+    //             title: 'Do you want to be interviewed? is REQUIRED',
+    //             message: 'Must select one to proceed',
+    //             position: 'center',
+    //             color: 'red',
+
+    //         });
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //     }
+    // });
     $('.wizard-proceed-requirements').click(function() {
-        // alert('asdasdas');
-        baseurl = $('#assessment_section').data('baseurl');
-        var interview_value = $("input[name='interview']:checked").val();
-        if (!interview_value) {
-            iziToast.show({
-                title: 'Do you want to be interviewed? is REQUIRED',
-                message: 'Must select one to proceed',
-                position: 'center',
-                color: 'red',
 
-            });
-        } else {
-            $('.tab-content .tab-pane').removeClass('active');
-            $.ajax({
-                url: baseurl + 'main/interview_status',
-                type: 'POST',
-                data: {
-                    'interview': interview_value,
-                },
-                // dataType: 'json',
-                success: function() {
-
-                },
-            })
-            location.reload();
-            fetch_user_status();
-        }
-        // e.stopPropagation();
-        // e.preventDefault();
     });
 
-    $('.wizard-proceed').click(function() {
-
+    $('.wizard-proceed-advising').click(function() {
         // Event handler when proceeding to next step
-        if ($('#advising_content').hasClass('active')) {
-            console.log('ready to advise');
-            // Came from advising.js
-            location.reload();
-            init_advise();
+        // if ($('#advising_content').hasClass('active')) {
+        wizard_payment();
 
-        }
+        init_advise();
+        fetch_user_status();
+        console.log('ready to advise');
+        // Came from advising.js
+        // location.reload();
+        // }
+    });
 
+    $('.wizard-proceed-student_info').click(function() {
 
     });
 
@@ -154,57 +155,74 @@ function fetch_user_status() {
             requirements = result.requirements;
             student_information = result.student_information;
             $('.tab-pane .container').removeClass('active');
-            // alert(registration);
             if (payment == 1) {
-                tab_student_information();
-                tab_requirements();
-                tab_advising();
-                tab_payment();
-                tab_registration();
-                $("#progress_bar").css("width", "90%");
-                // $("#payment").addClass("active");
-                $("#registration_content").addClass("active");
-                init_registrationform();
-                $('.wizard-proceed').hide();
+                wizard_registration()
             } else if (advising == 1) {
-                tab_student_information();
-                tab_requirements();
-                tab_advising();
-                tab_payment();
-
-                // alert('test');
-                $("#progress_bar").css("width", "70%");
-                $("#payment_content").addClass("active");
-
+                wizard_payment();
             } else if (requirements == 1) {
-                tab_student_information();
-                tab_requirements();
-                tab_advising();
-                // alert('test');
-                $("#progress_bar").css("width", "50%");
-                // $("#requirements_content").addClass("active");
-                $("#advising_content").addClass("active");
+                wizard_advising();
             } else if (student_information == 1) {
-                tab_student_information();
-                tab_requirements();
-                init_sectionlist();
-                $("#progress_bar").css("width", "30%");
-                // $("#progress_bar").css("width", "62.5%");
-                // $("#advising_content").addClass("active");
-                $("#requirements_content").addClass("active");
-                $("#wizard-button-requirements").removeClass("wizard-proceed-hide");
-                $("#wizard-button").addClass("wizard-proceed-hide");
+                wizard_requirements();
             } else {
-                tab_student_information();
-                $("#progress_bar").css("width", "12.5%");
-                $("#student_information_content").addClass("active");
+                wizard_student_info();
             }
-
         },
         error: function(response) {},
     });
 
 
+}
+
+function wizard_registration() {
+    tab_student_information();
+    tab_requirements();
+    tab_advising();
+    tab_payment();
+    tab_registration();
+    $("#progress_bar").css("width", "90%");
+    // $("#payment").addClass("active");
+    $("#registration_content").addClass("active");
+    init_registrationform();
+    $('.wizard-proceed').hide();
+}
+
+function wizard_payment() {
+    tab_student_information();
+    tab_requirements();
+    tab_advising();
+    tab_payment();
+    // alert('test');
+    $("#progress_bar").css("width", "70%");
+    $("#payment_content").addClass("active");
+    $("#advising_content").removeClass("active");
+}
+
+function wizard_advising() {
+    tab_student_information();
+    tab_requirements();
+    tab_advising();
+    // alert('test');
+    $("#progress_bar").css("width", "50%");
+    // $("#requirements_content").addClass("active");
+    $("#advising_content").addClass("active");
+}
+
+function wizard_requirements() {
+    tab_student_information();
+    tab_requirements();
+    init_sectionlist();
+    $("#progress_bar").css("width", "30%");
+    // $("#progress_bar").css("width", "62.5%");
+    // $("#advising_content").addClass("active");
+    $("#requirements_content").addClass("active");
+    // $("#wizard-button-requirements").removeClass("wizard-proceed-hide");
+    // $("#wizard-button").addClass("wizard-proceed-hide");
+}
+
+function wizard_student_info() {
+    tab_student_information();
+    $("#progress_bar").css("width", "12.5%");
+    $("#student_information_content").addClass("active");
 }
 
 function tab_registration() {

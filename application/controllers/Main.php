@@ -548,6 +548,14 @@ class Main extends MY_Controller
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
 		date_default_timezone_set('Asia/manila');
 		$ref_no = $this->session->userdata('reference_no');
+		// for interview radio button
+		$interview = $this->input->post('interview');
+		$array_update = array(
+			'reference_number' => $ref_no,
+			'interview' => $this->input->post('interview'),
+		);
+
+		$this->AssesmentModel->update_interview_status($array_update);
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
 		// $config['upload_path'] = './assets/student/'.$this->session->userdata('student_folder').'/requirement';
 		$config['upload_path'] = './express/assets/';
@@ -896,14 +904,9 @@ class Main extends MY_Controller
 
 	}
 
-	public function interview_status()
-	{
-		$interview = $this->input->post('interview');
-		$array_update = array(
-			'reference_number' => $this->session->userdata('reference_no'),
-			'interview' => $interview,
-		);
-		$this->AssesmentModel->update_interview_status($array_update);
-		// die($post);
-	}
+	// public function interview_status()
+	// {
+		
+	// 	// die($post);
+	// }
 }

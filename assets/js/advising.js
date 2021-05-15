@@ -138,7 +138,30 @@ function computeSched(start,end,this_day,subject,from,to){
     console.log(filtered);
     console.log(day);
     $.each(filtered,function(index,val){
-        $(`#${val+'_'+day}`).css('background','#18EAC8');
+        
+        if(day=="M"){
+            var bg_color = "EA49E5"
+        }
+        else if(day=="T"){
+            var bg_color = "18EAC8"
+        }
+        else if(day=="W"){
+            var bg_color = "EA5E18"
+        }
+        else if(day=="H"){
+            var bg_color = "EAD618"
+        }
+        else if(day=="F"){
+            var bg_color = "B1EA18"
+        }
+        else if(day=="SA"){
+            var bg_color = "1860EA"
+        }
+        else{
+            var bg_color = "18EA4A"
+        }
+
+        $(`#${val+'_'+day}`).css('background',`#${bg_color}`);
     })
     $(`#${start_time+'_'+day}`).html(`<div class="sched-subject"><strong>${from+' to '+to}</strong><br>${subject}</div>`);
 }
@@ -383,7 +406,7 @@ function schedule_tablerenderer(element, time = []) {
     tablehead.append('<th></th>');
     $.each(days, function (index, day) {
 
-        tablehead.append('<th class="text-center time-header">' + day + '</th>');
+        tablehead.append('<th class="text-center time-header" width="13%">' + day + '</th>');
 
     });
     tablehead.append('</tr>');

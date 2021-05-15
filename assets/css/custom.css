@@ -39,6 +39,7 @@ div#main{
     background:white;
     padding:10px;
     border-radius:10px;
+    font-size:70%;
 }
 td.schedule-time{
     margin:0 2px 0 2px;

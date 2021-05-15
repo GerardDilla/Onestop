@@ -22,7 +22,7 @@ class ChatService {
     }).catch(error=>{ return {error:error}});
   }
   async update(id,data){
-    console.log(data);
+    // console.log(data);
     let getdata = getQuery(`UPDATE student_inquiry SET status = 'seen' WHERE ref_no = '${id}' AND user_type = '${data.type}'`)
     getdata.then((result)=>{
       return result

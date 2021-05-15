@@ -10,6 +10,7 @@
     border-radius:10px;
     margin:5px;
     padding:10px;
+    position:relative;
 }
 .chat-student{
     /* background:#3FD3B6; */
@@ -50,7 +51,8 @@
     min-height:50px;
 }
 .chat-admin .message-body{
-    background:#F54222;
+    background:#FF554D;
+    color:white;
 }
 .chat-student .message-body{
     background:#d4d4d4;
@@ -87,6 +89,7 @@ span.chat-status{
     bottom:3px;
     right:-9px;
     position:absolute;
+    color:black;
     /* padding-right:10px;
     padding-bottom:10px; */
 }

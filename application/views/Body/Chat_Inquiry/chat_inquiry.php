@@ -50,7 +50,8 @@
     background:#d4d4d4;
 }
 .chat-student .message-body{
-    background:#F54222;
+    background:#FF554D;
+    color:white;
     
 }
 #someone-typing .chat-admin .message-body{
@@ -84,6 +85,7 @@ span.chat-status{
     bottom:3px;
     right:-9px;
     position:absolute;
+    color:black;
     /* padding-right:10px;
     padding-bottom:10px; */
 }

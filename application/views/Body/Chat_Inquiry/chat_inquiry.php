@@ -89,20 +89,9 @@ span.chat-status{
     /* padding-right:10px;
     padding-bottom:10px; */
 }
-/* .chat-card{
-    position:relative;
-} */
-/* #chat-box:last-child{
-    border:2px solid red;
-} */
-/* .chat:last-child{
-    background:red;
-} */
-/* .chat-card:last-child{
-    border:1px solid red;
-} */
 </style>
-<span class="chat-logo"  id="chat-logo" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"><i class="bi bi-chat-text"></i></span>
+<!-- data-bs-toggle="modal" data-bs-target="#chatinquiryModal" -->
+<span class="chat-logo"  id="chat-logo" <?php echo strtotime(date("Y-m-d H:i:s")) >= strtotime(date("Y-m-d 08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))?' onclick="timeWarning()"':' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"'; ?>><i class="bi bi-chat-text"></i></span>
 <div class="modal fade text-left w-100" id="chatinquiryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
@@ -156,6 +145,41 @@ $('#chatinquiryModal').on('hidden.bs.modal', function (e) {
     $('#chat-logo').show();
     modal_status = 0;
 })
+function timeWarning(){
+    iziToast.show({
+        theme: 'light',
+        icon: 'bi-exclamation-diamond-fill',
+        iconColor: '#cc0000',
+        title: 'NOTICE:',
+        message: 'SDCA Inquiry is only available from 8:00am to 5:00pm!',
+        messageSize: '18',
+        // messageLineHeight: '30',
+        position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+        progressBarColor: '#cc0000',
+        overlay:true,
+        timeout:8000,
+        buttons: [
+            // ['<button>Ok</button>', function (instance, toast) {
+            //     alert("Hello world!");
+            // }, true],
+            ['<button>Ok</button>', function (instance, toast) {
+                instance.hide({
+                    transitionOut: 'fadeOutUp',
+                    onClosing: function(instance, toast, closedBy){
+                        // console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                        $('#chat-logo').show();
+                    }
+                }, toast, 'buttonName');
+            }]
+        ],
+        // onOpening: function(instance, toast){
+        //     console.info('callback abriu!');
+        // },
+        onClosing: function(instance, toast, closedBy){
+            $('#chat-logo').show(); // tells if it was closed by 'drag' or 'button'
+        }
+    });
+}
 $('#inquiryForm button').on('click',function(){
     if($('#chat-textarea').html()!=""){
         app.service('chat-inquiry').create({
@@ -183,9 +207,11 @@ $('#chatinquiryModal').mouseover(function(){
     });
     // updateToSeen();
 })
-$('#chat-logo').click(function(){
+$('#chat-logo').click(function(e){
+    // e.preventDefault();
     modal_status = 1;
     $('#chat-logo').hide();
+    
     // console.log('asdasd')
     // setTimeout(()=>{
         $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
@@ -228,33 +254,43 @@ function sendMessage(id){
     document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
                 +`<div class="col-md-12 chat-card" tab-index="1" id="${id}"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${$('#chat-textarea').html()}<span class="chat-status"><i id="${id}_icon" class="bi bi-circle not-sent"></i></span></div></div></div>`;
 }
-function renderIdea(data) {
-    var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
+function renderIdea(all) {
+    
     // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
-        if(data.user_type=="student"){
+        var render_count = 0;
+        $.each(all,function(index,data){
+            var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
+            ++render_count;
+            if(data.user_type=="student"){
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-                +`<div class="col-md-12 chat-card"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}${data.status=="seen"?'<span class="chat-status"><i id="" class="bi-check2-all"></i></span>':''}</div></div></div>`;
-        }
-        else{
-            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-                +`<div class="col-md-12 chat-card"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;  
-                // bi bi-circle
-                // bi bi-check-circle
-                // bi bi-check2-all
-        }
+                +`<div class="col-md-12 chat-card"><div class="chat-student chat"><div class="message-head"></div><div class="message-time">${current_time}</div><div class="message-body">${data.message}${data.status=="seen"?'<span class="chat-status"><i id="" class="bi-check2-all"></i></span>':'<span class="chat-status sent"><i class="bi"></i></span>'}</div></div></div>`;
+                if(render_count==1){
+                    welcomeMessage();
+                }
+            }
+            else{
+                document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+                    +`<div class="col-md-12 chat-card"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;  
+                    // bi bi-circle
+                    // bi bi-check-circle
+                    // bi bi-check2-all
+            }
+            
+        })
+        
     // }
 }
-async function getInquiryTableList(data){
-    // console.log(data.First_Name)
-    $('#chatInquiryTable tbody').empty();
-    var html = "";
-    $.each(data,function(index,val){
-        html += `<tr><td>${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}</td>`;
-        html += `<td>${val.total_message}</td>`;
-        html += `<td><button class="btn btn-info" onclick="openModal('${val.ref_no}','${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}')" data-bs-toggle="modal" data-bs-target="#chatinquiryModal">open</button></td></tr>`; 
-    })
-    $('#chatInquiryTable tbody').append(html);
-}
+// async function getInquiryTableList(data){
+//     // console.log(data.First_Name)
+//     $('#chatInquiryTable tbody').empty();
+//     var html = "";
+//     $.each(data,function(index,val){
+//         html += `<tr><td>${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}</td>`;
+//         html += `<td>${val.total_message}</td>`;
+//         html += `<td><button class="btn btn-info" onclick="openModal('${val.ref_no}','${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}')" data-bs-toggle="modal" data-bs-target="#chatinquiryModal">open</button></td></tr>`; 
+//     })
+//     $('#chatInquiryTable tbody').append(html);
+// }
 function updateToSeen(data){
     if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
         if(data.type=="admin"){
@@ -284,26 +320,31 @@ window.setInterval(()=>{
         setStatus()
     }
 },2000);
-
+function welcomeMessage(){
+    var current_message = "Hi, how can I help you?";
+    // setTimeout(()=>{
+        document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
+            +`<div class="col-md-12 chat-card"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time"></time></div><div class="message-body">${current_message}</div></div></div>`;
+    // },2000)
+}
 function receivedMessage(data) {
     
-    getInquiryTableList(data.message_count);
+    // getInquiryTableList(data.message_count);
+
+    var get_current_count = data.message_count.find(data=> data.ref_no=="<?php echo $this->session->userdata('reference_no');?>")
+    
+    // total_message
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     
     // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
         if(data.user_type=="student"){
             array_status.push(data.return_id);
-            // var this_timeout = setTimeout(()=>{
-            //     var x = document.querySelector(`#${data.return_id} span.chat-status i`);
-            //     x.classList.remove("bi-circle")
-            //     x.classList.add("bi-check-circle")
-            // },5000)
-            // if(!status_running){
-            //     setTimeout(()=>{
-            //         setStatus();
-            //     },1500)
+            if(get_current_count.total_message==1){
+                setTimeout(()=>{
+                    welcomeMessage();
+                },2000)
                 
-            // }
+            }
         }
         else{
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
@@ -338,7 +379,7 @@ async function someone_typing(){
 async function init() {
 // Find ideas
 const ideas = await app.service('chat-inquiry').get({ref_no:"<?php echo $this->session->userdata('reference_no');?>"});
-    ideas.forEach(renderIdea);
+    renderIdea(ideas);
     app.service('chat-inquiry').on('created', receivedMessage);
     app.service('chat-inquiry').on('updated', updateToSeen);
 

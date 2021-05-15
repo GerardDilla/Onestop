@@ -23,7 +23,7 @@ class ChatService {
   }
   async update(id,data){
     // console.log(data);
-    let getdata = getQuery(`UPDATE student_inquiry SET status = 'seen' WHERE ref_no = '${id}' AND user_type = '${data.type}'`)
+    let getdata = getQuery(`UPDATE student_inquiry SET status = 'seen' WHERE ref_no = '${id}' AND user_type <> '${data.type}'`)
     getdata.then((result)=>{
       return result
     }).catch(error=>{ return {error:error}});
@@ -41,7 +41,7 @@ class ChatService {
     }).catch(error=>{ return {error:error}});
     // console.log('insert')
     // getdata;
-    var current_message_count = getQuery(`SELECT student_info.First_Name,student_info.Middle_Name,student_info.Last_Name,student_info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message FROM student_inquiry INNER JOIN student_info ON student_inquiry.ref_no = student_info.Reference_Number  WHERE user_type = "student" AND status = "not seen" GROUP BY student_inquiry.ref_no ORDER BY student_info.First_Name ASC`)
+    var current_message_count = getQuery(`SELECT student_info.First_Name,student_info.Middle_Name,student_info.Last_Name,student_info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message FROM student_inquiry INNER JOIN student_info ON student_inquiry.ref_no = student_info.Reference_Number  WHERE user_type = "student" GROUP BY student_inquiry.ref_no ORDER BY student_info.First_Name ASC`)
     
     var getCurrent = async function() {
       var newval = new Promise ((resolve,reject)=>{

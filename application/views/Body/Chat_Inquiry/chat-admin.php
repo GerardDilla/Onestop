@@ -286,12 +286,13 @@ function renderIdea(data) {
         }
         else{   
             document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML
-            +`<div class="col-md-12 chat-card"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</time></div><div class="message-body">${data.message}${data.status=="seen"?'<span class="chat-status"><i class="bi bi-check2-all"></i></span>':''}</div></div></div>`;
+            +`<div class="col-md-12 chat-card"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</time></div><div class="message-body">${data.message}${data.status=="seen"?'<span class="chat-status"><i class="bi bi-check2-all"></i></span>':'<span class="chat-status sent"><i class="bi"></i></span>'}</div></div></div>`;
             
         }
     // }
     
 }
+
 // $(document). bind("contextmenu",function(e){ return false; });
 async function getInquiryTableList(data){
     // console.log(data.First_Name)

@@ -17,7 +17,7 @@
     <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
     <br><br>
     <div class="table-responsive">
-        <table class="mdl-data-table table table-hover" id="queueTable" data-queue-result='wqewqewq' width="100%">
+        <table class="mdl-data-table table table-hover" id="queueTable" data-queue-result='wqewqewq' data-units='0' width="100%">
             <thead>
                 <tr>
                     <th width="15%">Sched Code</th>

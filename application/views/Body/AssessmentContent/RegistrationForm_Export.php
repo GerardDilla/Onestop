@@ -28,31 +28,32 @@
             <img src="<?php echo base_url('assets/images/logo/SdcaHeader.jpg'); ?>" style="width:100%; height:auto">
             <h5>ASSESSMENT FORM</h5>
             <hr>
-            <table style="width:100%">
+            <table style="width:100%; color:#000">
                 <tbody>
+
                     <tr class="success" style="font-size: 12px; text-align:left">
                         <td width="40%" style="padding:0px 10px 0px 0px" valign="top">
-                            <strong>REFERENCE NUMBER:</strong> <span id="reg_rn"></span> <br>
-                            <strong>NAME:</strong> <span id="reg_name" class="capitalizetext"></span> <br>
-                            <strong>ADDRESS:</strong> <span id="reg_address"></span> <br>
+                            <strong>REFERENCE NUMBER:</strong> <?php echo $get_Advise[0]->Reference_Number; ?> <br>
+                            <strong>NAME:</strong> <?php echo $get_Advise[0]->First_Name . ' ' . $get_Advise[0]->Middle_Name . ' ' . $get_Advise[0]->Last_Name; ?> <br>
+                            <strong>ADDRESS:</strong> <?php echo $get_Advise[0]->Address_No . ', ' . $get_Advise[0]->Address_Street . ', ' . $get_Advise[0]->Address_Subdivision . ', ' . $get_Advise[0]->Address_Barangay . ', ' . $get_Advise[0]->Address_City . ', ' . $get_Advise[0]->Address_Province; ?> <br>
                         </td>
                         <td width="20%" style="padding:0px 10px 0px 0px" valign="top">
-                            <strong>SEMESTER:</strong> <span id="reg_sem"></span> <br>
-                            <strong>COURSE:</strong> <span id="reg_course"></span> <br>
+                            <strong>SEMESTER:</strong> <?php echo $get_Advise[0]->Semester; ?> <br>
+                            <strong>COURSE:</strong> <?php echo $get_Advise[0]->Course; ?> <br>
                         </td>
                         <td width="20%" style="padding:0px 10px 0px 0px" valign="top">
-                            <strong>SCHOOL YEAR:</strong> <span id="reg_sy"></span> <br>
-                            <strong>YEAR LEVEL:</strong> <span id="reg_yl"></span> <br>
+                            <strong>SCHOOL YEAR:</strong> <?php echo $get_Advise[0]->School_Year; ?> <br>
+                            <strong>YEAR LEVEL:</strong> <?php echo $get_Advise[0]->Year_Level; ?> <br>
                         </td>
                         <td width="20%" style="padding:0px 10px 0px 0px" valign="top">
-                            <strong>SECTION:</strong> <span id="reg_sec"></span> <br>
-                            <strong>DATE:</strong> <span id="reg_date"></span> <br>
+                            <strong>SECTION:</strong> <?php echo $get_Advise[0]->Section; ?> <br>
+                            <strong>DATE:</strong> <?php echo date("Y-m-d"); ?> <br>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <hr>
-            <table>
+            <table style="width:100%">
                 <thead>
                     <tr class="success" style="font-size: 13px; text-align:left">
                         <th style="padding-right: 10px;">Sched Code</th>
@@ -64,8 +65,50 @@
                         <th style="padding-right: 10px;">Room</th>
                     </tr>
                 </thead>
-                <tbody id="registration_form" style="font-size: 12px; text-align:left">
-
+                <tbody style="font-size: 12px; text-align:left">
+                    <?php
+                    $sched_checking = '';
+                    $units = 0;
+                    $subjectcount = 0;
+                    ?>
+                    <?php foreach ($get_Advise as $data) : ?>
+                        <?php if ($sched_checking != $data->Sched_Code) : ?>
+                            <tr>
+                                <td>
+                                    <?php echo $data->Sched_Code; ?>
+                                </td>
+                                <td>
+                                    <?php echo $data->Course_Code; ?>
+                                </td>
+                                <td>
+                                    <?php echo $data->Course_Title; ?>
+                                </td>
+                                <td>
+                                    <?php echo $data->Course_Lec_Unit + $data->Course_Lab_Unit; ?>
+                                </td>
+                                <td id="<?php echo $data->Sched_Code; ?>_day">
+                                    <?php echo $data->Day; ?>
+                                </td>
+                                <td id="<?php echo $data->Sched_Code; ?>_time">
+                                    <?php echo $data->START . '-' . $data->END; ?>
+                                </td>
+                                <td id="<?php echo $data->Sched_Code; ?>_room">
+                                    <?php echo $data->Room; ?>
+                                </td>
+                            </tr>
+                        <?php else : ?>
+                            <script>
+                                $('#<?php echo $data->Sched_Code; ?>_day').append(', <?php echo $data->Day; ?>');
+                                $('#<?php echo $data->Sched_Code; ?>_time').append(', <?php echo $data->START . ' - ' . $data->END ?>');
+                                $('#<?php echo $data->Sched_Code; ?>_room').append(', <?php echo $data->Room; ?>');
+                            </script>
+                        <?php endif; ?>
+                        <?php
+                        $units = $units + ($data->Course_Lec_Unit + $data->Course_Lab_Unit);
+                        $sched_checking = $data->Sched_Code;
+                        $subjectcount++
+                        ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
             <hr>
@@ -73,56 +116,60 @@
                 <tbody>
                     <tr>
                         <td><strong>Tuition:</strong></td>
-                        <td class="feesbox" id="reg_tuition"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->tuition_Fee; ?></td>
 
                         <td><strong>Initial Payment:</strong></td>
-                        <td class="feesbox" id="reg_initial"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->InitialPayment; ?></td>
 
                         <td><strong>Total Units:</strong></td>
-                        <td class="feesbox" id="reg_total_units"></td>
+                        <td class="feesbox"><?php echo $units; ?></td>
                     </tr>
                     <tr>
                         <td><strong>Misc Fees:</strong></td>
-                        <td class="feesbox" id="reg_misc"></td>
+                        <td class="feesbox"><?php echo $get_miscfees[0]->Fees_Amount; ?></td>
 
                         <td><strong>First:</strong></td>
-                        <td class="feesbox" id="reg_first"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->First_Pay; ?></td>
 
                         <td><strong>Total Subjects:</strong></td>
-                        <td class="feesbox" id="reg_total_subject"></td>
+                        <td class="feesbox"><?php echo $subjectcount; ?></td>
                     </tr>
                     <tr>
                         <td><strong>Lab Fees:</strong></td>
-                        <td class="feesbox" id="reg_lab"></td>
+                        <td class="feesbox"><?php echo $get_labfees[0]->Fees_Amount; ?></td>
 
                         <td><strong>Second:</strong></td>
-                        <td class="feesbox" id="reg_second"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->Second_Pay; ?></td>
 
                         <td><strong>Scholar:</strong></td>
-                        <td class="feesbox" id="reg_scholar"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->Scholarship; ?></td>
                     </tr>
                     <tr>
                         <td><strong>Other Fees:</strong></td>
-                        <td class="feesbox" id="reg_other"></td>
+                        <td class="feesbox"><?php echo $get_otherfees[0]->Fees_Amount; ?></td>
 
                         <td><strong>Third:</strong></td>
-                        <td class="feesbox" id="reg_third"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->Third_Pay; ?></td>
 
                         <td></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td><strong>Total Fees:</strong></td>
-                        <td class="feesbox" id="reg_total_fees"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->tuition_Fee + $get_miscfees[0]->Fees_Amount + $get_otherfees[0]->Fees_Amount; ?></td>
 
                         <td><strong>Fourth:</strong></td>
-                        <td class="feesbox" id="reg_fourth"></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->Fourth_Pay; ?></td>
 
                         <td></td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
+            <br>
+            <label>
+                <h6><u>NOTE: THIS IS NOT A PROOF OF OFFICIAL ENROLLMENT</u></h6>
+            </label>
         </div>
     </div>
 </body>

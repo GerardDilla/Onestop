@@ -65,3 +65,6 @@ td.schedule-time{
     color:red;
     font-size:4.5em;
 }
+.wizard-container .tab-content{
+    margin-top:10% !important;
+}

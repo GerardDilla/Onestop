@@ -188,9 +188,9 @@
 
                         </select>
                     </fieldset>
-                    <button class="btn btn-sm btn-primary" onclick="submit_course()" for="success-outlined">
+                    <!-- <button class="btn btn-sm btn-primary" onclick="submit_course()" for="success-outlined">
                         SUBMIT COURSE
-                    </button>
+                    </button> -->
                 </div>
             <?php
             }

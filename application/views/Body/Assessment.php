@@ -96,7 +96,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                             <div class="col-md-12" style="text-align:center">
                                 <hr>
                                 <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
-                                <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" id="wizard-button">PROCEED</button>
+                                <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>
                             </div>
                         </div>
                         <div class="tab-pane container" id="advising_content">

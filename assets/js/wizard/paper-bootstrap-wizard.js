@@ -31,13 +31,13 @@ $(document).ready(function() {
 
     });
 
-    $('.wizard-proceed-advising').click(function() {
+    $('.wizard-proceed-advising').click(function(e) {
         // Event handler when proceeding to next step
         // if ($('#advising_content').hasClass('active')) {
-        wizard_payment();
+
 
         // init_advise();
-        fetch_user_status();
+
         // console.log('ready to advise');
         iziToast.question({
             timeout: false,
@@ -53,6 +53,9 @@ $(document).ready(function() {
 
                     console.log('ready to advise');
                     // Came from advising.js
+
+                    wizard_payment();
+                    fetch_user_status();
                     init_advise();
                     // location.reload();
 
@@ -63,13 +66,13 @@ $(document).ready(function() {
                 }, true],
                 ['<button>NO</button>', function(instance, toast) {
 
-                    event.preventDefault();
+                    e.preventDefault();
                     $('#section').val('none');
                     instance.hide({
                         transitionOut: 'fadeOut'
                     }, toast, 'button');
 
-                }],
+                }, true],
             ],
             onClosing: function(instance, toast, closedBy) {
                 console.info('Closing | closedBy: ' + closedBy);

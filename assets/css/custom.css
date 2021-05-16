@@ -47,7 +47,7 @@ td.schedule-time{
 .time-header{
     position: sticky;
     top: 0;
-    background:white;
+    background:white !important;
     overflow:hidden;
 }
 .chat-logo{

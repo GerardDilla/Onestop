@@ -17,77 +17,46 @@
     <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
     <br><br>
     <div class="table-responsive">
-    <table class="mdl-data-table table table-hover" id="queueTable" width="100%">
-        <thead>
-            <tr>
-                <th width="15%">Sched Code</th>
-                <th width="15%">Subject Code</th>
-                <th>Subject Title</th>
-                <th width="10%">Section</th>
-                <th width="10%">Units</th>
-                <th width="10%"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <!-- <tr>
-                <td>20202021</td>
-                <td>ITC123</td>
-                <td>Programming Fundamentals</td>
-                <td>BSIT1A</td>
-                <td>5</td>
-                <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-            </tr>
-            <tr>
-                <td>20202022</td>
-                <td>ITC123</td>
-                <td>Programming Fundamentals</td>
-                <td>BSIT1A</td>
-                <td>5</td>
-                <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-            </tr>
-            <tr>
-                <td>20202023</td>
-                <td>ITC123</td>
-                <td>Programming Fundamentals</td>
-                <td>BSIT1A</td>
-                <td>5</td>
-                <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-            </tr>
-            <tr>
-                <td>20202023</td>
-                <td>ITC123</td>
-                <td>Programming Fundamentals</td>
-                <td>BSIT1A</td>
-                <td>5</td>
-                <td><a href="#" class="btn btn-sm btn-info">Remove</a></td>
-            </tr> -->
+        <table class="mdl-data-table table table-hover" id="queueTable" data-queue-result='wqewqewq' width="100%">
+            <thead>
+                <tr>
+                    <th width="15%">Sched Code</th>
+                    <th width="15%">Subject Code</th>
+                    <th>Subject Title</th>
+                    <th width="10%">Section</th>
+                    <th width="10%">Units</th>
+                    <th width="10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        </tbody>
-    </table>
+
+            </tbody>
+        </table>
     </div>
     <br><br>
 </div>

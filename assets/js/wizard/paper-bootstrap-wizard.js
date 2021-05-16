@@ -37,9 +37,47 @@ $(document).ready(function () {
 
         // Event handler when proceeding to next step
         if ($('#advising_content').hasClass('active')) {
-            console.log('ready to advise');
-            // Came from advising.js
-            init_advise();
+
+            iziToast.question({
+                timeout: false,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'advise_question',
+                zindex: 1500,
+                message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YES</b></button>', function (instance, toast) {
+
+                        console.log('ready to advise');
+                        // Came from advising.js
+                        init_advise();
+                        location.reload();
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+
+                        event.preventDefault();
+                        $('#section').val('none');
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function (instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function (instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+
 
         }
 
@@ -174,7 +212,7 @@ function fetch_user_status() {
                 // alert('test');
                 $("#progress_bar").css("width", "70%");
                 $("#payment_content").addClass("active");
-                
+
             } else if (requirements == 1) {
                 tab_student_information();
                 tab_requirements();

@@ -24,14 +24,16 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="<?php echo base_url('/main/ExportInquiry/'.$this->session->userdata('reference_no'))?>" target="_blank">
+                <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank">
                     <div class="btn btn-sm btn-primary" for="success-outlined">
                         EXPORT STUDENT INFORMATION
                     </div>
                 </a>
                 <br>
             </div>
-            <?php if ($this->data['course'] != 'N/A') {
+            <?php
+            $data_course = empty($this->data['course']) ? 'N/A' : $this->data['course'];
+            if ($data_course != 'N/A') {
                 // Have course
 
             ?>
@@ -40,7 +42,8 @@
                     <h6>CHOOSE YOUR STATUS</h6>
                     <br>
                     <?php
-                    if ($this->data['applied_status'] == 'freshmen') {
+                    $data_applied_status = empty($this->data['applied_status']) ? 'NULL' : $this->data['applied_status'];
+                    if ($data_applied_status == 'freshmen') {
                     ?>
                         <input type="radio" class="btn-check" name="eductype" id="success-outlined" data-etype='freshmen' autocomplete="off" disabled checked="checked">
                         <label class="btn btn-sm btn-outline-primary" for="success-outlined">
@@ -59,8 +62,8 @@
 
                 </div>
                 <?php
-
-                if ($this->data['shs_student_number'] > 0) {
+                $data_shs_student_number = empty($this->data['shs_student_number']) ? 0 : $this->data['shs_student_number'];
+                if ($data_shs_student_number > 0) {
                 ?>
                     <div class="col-md-12 shs-verification">
                         <br>

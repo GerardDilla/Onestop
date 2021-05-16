@@ -955,7 +955,25 @@ class Main extends MY_Controller
 		$this->chat_template($this->view_directory->chatAdmin());
 	}
 	public function forTest(){
-		echo strtotime(date("Y-m-d H:i:s")) >= strtotime(date("Y-m-d 08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))?'yes':'no'; 
+		// echo strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))?'yes':'no'; 
+		// echo date("H:i:s",1621123200).'<br>';
+		// echo strtotime(date("H:i:s"));
+		// 1621120907
+		// 1621123200
+		// 1621171768
+		// if(strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00"))){
+		// 	echo "yes";
+		// }
+		// else{
+		// 	echo "no";
+		// }
+		if(strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))){
+			echo "yes";
+		}
+		else{
+			echo "no";
+		}
+		
 	}
 	// public function 
 }

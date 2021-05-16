@@ -94,7 +94,14 @@ span.chat-status{
 <?php 
 // echo strtotime(date("Y-m-d H:i:s")) >= strtotime(date("Y-m-d 08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))?' onclick="timeWarning()"':' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"'; 
 ?>
-<span class="chat-logo"  id="chat-logo" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"><i class="bi bi-chat-text"></i></span>
+<span class="chat-logo"  id="chat-logo" <?php 
+if(strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))){
+    echo ' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"';
+}
+else{
+    echo ' onclick="timeWarning()"';
+}
+?>><i class="bi bi-chat-text"></i></span>
 <div class="modal fade text-left w-100" id="chatinquiryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">

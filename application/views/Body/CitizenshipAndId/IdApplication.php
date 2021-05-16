@@ -1,171 +1,200 @@
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
     <div class="alert alert-light-danger color-danger">
-        <i class="bi bi-exclamation-circle"></i>
-        PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM
+        <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
+        NOTE: Only NAME can be edited.<br>
+        <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
     </div>
     <div class="card">
         <div class="row">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p>
-                                    <span class="title_color">ID Application Status</span>
-                                    <span class="required_field"> *</span>
-                                </p>
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input form-check-primary" name="customCheck" id="customColorCheck1">
-                                    <label for="customColorCheck1">New ͏Student</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input form-check-primary" name="customCheck" id="customColorCheck2">
-                                    <label for="customColorCheck2">Old Student</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input form-check-primary" name="customCheck" id="customColorCheck3">
-                                    <label for="customColorCheck3">Replacement</label>
-                                </div>
-                                <br>
-                            </div>
+                        <form action="<?php echo base_url(); ?>Forms/submit_id_application" method="POST" id="id_application_form">
 
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Receipt Number</span>
-                                    <span class="required_field"> *</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Receipt Number">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Reference Number</span>
+                                        <!-- <span class="required_field"> *</span> -->
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" readonly class="form-control" id="id_reference_number" name="ref_no" placeholder="Reference Number">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">LRN - Learner's Reference Number</span>
-                                    <!-- <span class="required_field"> *</span> -->
-                                    (<small class="text-muted">for BEd and SHS only</small>)
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Learner's Reference Number">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <p>
-                                    <span class="title_color">Student Number</span>
-                                    <span class="required_field"> *</span><br>
+
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Student Number</span>
+                                        <!-- <span class="required_field"> *</span><br>
                                     <small class="text-muted">Can be found on your registration form.
                                         <br>
                                         <span class="text_note">Note</span>: If not found, proceed to Registrars Office for your Student Number
 
-                                    </small>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Student Number">
+                                    </small> -->
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" readonly class="form-control" id="id_student_number" name="std_num" placeholder="Student Number">
+                                    </div>
                                 </div>
-                            </div>
-                            <p>
-                                <span class="title_color">Full Name</span>
-                                <span class="required_field"> *</span> (
-                                <small class="text-muted">First Name, M.I, Lastname</small>)
-                            </p>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="First Name" id="first_name">
-                                    <!-- <button class="input-group-text btn-primary" title="Edit Data">
+                                <p>
+                                    <span class="title_color">Full Name</span>
+                                    <span class="required_field"> *</span> (
+                                    <small class="text-muted">First Name, Middle Name, Last Name</small>)
+                                </p>
+                                <div class="col-md-4">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="First Name">
+                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
                                         <i class="bi bi-pencil-square" id="button_icon"></i>
                                     </button> -->
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" title="Middle Initial">M.I</span>
-                                    <input type="text" class="form-control" placeholder="Middle Initial" id="middle_name">
-                                    <!-- <button class="input-group-text btn-primary" title="Edit Data">
+                                <div class="col-md-4">
+                                    <div class="input-group mb-3">
+                                        <!-- <span class="input-group-text" title="Middle Initial">M.I</span> -->
+                                        <input type="text" class="form-control" id="id_middle_name" name="middle_name" placeholder="Middle Name">
+                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
                                         <i class="bi bi-pencil-square" id="button_icon"></i>
                                     </button> -->
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Last Name" id="last_name">
-                                    <!-- <button class="input-group-text btn-primary" title="Edit Data">
+                                <div class="col-md-4">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Last Name">
+                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
                                         <i class="bi bi-pencil-square" id="button_icon"></i>
                                     </button> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>
+                                        <span class="title_color">Course</span>
+                                        <!-- <span class="required_field"> *</span> -->
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" readonly class="form-control" id="id_course" placeholder="Course">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>
+                                        <span class="title_color">ID Picture</span>
+                                        <span class="required_field"> *</span>
+                                        <small><br>
+                                            <span class="text_note">Photo Requirements</span>: Half Body Photo only, wearing School Uniform with White Background.
+                                            <br>
+                                            <span class="text_note">NOTE</span>: USE YOUR STUDENT NUMBER TO NAME YOUR PHOTO ONLY.
+                                        </small>
+                                    </p>
+                                    <input type="file" class="form-control" id="inputGroupFile01">
+                                </div>
+                                <div class="col-md-12">
+                                    <p>
+                                        <span class="title_color">Signature</span>
+                                        <span class="required_field"> *</span>
+                                        <small>
+                                            <!-- <br> -->
+                                            <!-- <span class="text_note">Reminder</span>: For Higher Education (HED) Students only.
+                                        <br> -->
+                                            <span class="text_note">NOTE</span>: USE YOUR SETUDENT NUMBER TO NAMe YOUR SIGANTURE ONLY
+                                        </small>
+                                    </p>
+                                    <input type="file" class="form-control" id="inputGroupFile01">
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Name</span>
+                                        <!-- <span class="required_field"> *</span> -->
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" readonly class="form-control" id="id_gurdian_name" placeholder="Guardian Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Address</span>
+                                        <!-- <span class="required_field"> *</span> -->
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" readonly class="form-control" id="id_gurdian_address" placeholder="Guardian Address">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Contact Number</span>
+                                        <!-- <span class="required_field"> *</span> -->
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" readonly class="form-control" id="id_gurdian_number" placeholder="Guardian Contact Number">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Relationship</span>
+                                        <!-- <span class="required_field"> *</span> -->
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" readonly class="form-control" id="id_gurdian_relationship" placeholder="Guardian Email Address">
+                                    </div>
+                                </div>
+                                <div class="col-md-8"></div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary" style="float: right;">Submit</button>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <p>
-                                    <span class="title_color">Course</span>
-                                    <span class="required_field"> *</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Course">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <p>
-                                    <span class="title_color">ID Picture</span>
-                                    <span class="required_field"> *</span>
-                                    <small><br>
-                                        <span class="text_note">Photo Requirements</span>: Half Body Photo only, wearing School Uniform with White Background.
-                                        <br>
-                                        <span class="text_note">NOTE</span>: USE YOUR STUDENT NUMBER TO NAME YOUR PHOTO ONLY.
-                                    </small>
-                                </p>
-                                <input type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-12">
-                                <p>
-                                    <span class="title_color">Signature</span>
-                                    <span class="required_field"> *</span>
-                                    <small><br>
-                                        <span class="text_note">Reminder</span>: For Higher Education (HED) Students only.
-                                        <br>
-                                        <span class="text_note">NOTE</span>: USE YOUR SETUDENT NUMBER TO NAM EYOUR SIGANTURE ONLY
-                                    </small>
-                                </p>
-                                <input type="file" class="form-control" id="inputGroupFile01">
-                                <br>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Name</span>
-                                    <span class="required_field"> *</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Guardian Name">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Address</span>
-                                    <span class="required_field"> *</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Guardian Address">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Contact Number</span>
-                                    <span class="required_field"> *</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Guardian Contact Number">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Email Address</span>
-                                    <span class="required_field"> *</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Guardian Email Address">
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+    <?php
+    if ($this->session->flashdata('success')) {
+    ?>
+        iziToast.success({
+            title: 'OK',
+            message: 'Successfully inserted record!',
+        });
+    <?php
+    }
+    if ($this->session->flashdata('error')) {
+    ?>
+        iziToast.error({
+            title: 'Error',
+            message: 'Already have data',
+        });
+    <?php
+    }
+
+    ?>
+    $(document).ready(function() {
+        student_information();
+        $("#id_application_form").submit(function(e) {
+
+            if ($('input[type=text]').val() == '') {
+                e.preventDefault();
+            }
+        });
+    });
+
+    function student_information() {
+        $.ajax({
+            url: 'ajaxGetStudent',
+            dataType: 'JSON',
+            success: function(response) {
+                $('#id_reference_number').val(response['Reference_Number']);
+                $('#id_student_number').val(response['Reference_Number']);
+                $('#id_first_name').val(response['First_Name']);
+                $('#id_middle_name').val(response['Middle_Name']);
+                $('#id_last_name').val(response['Last_Name']);
+                $('#id_course').val(response['Course'] + " : " + response['Program_Name']);
+                $('#id_gurdian_name').val(response['Guardian_Name']);
+                $('#id_gurdian_address').val(response['Guardian_Address']);
+                $('#id_gurdian_number').val(response['Guardian_Contact']);
+                $('#id_gurdian_relationship').val(response['Guardian_Contact']);
+            }
+        })
+    }
+</script>

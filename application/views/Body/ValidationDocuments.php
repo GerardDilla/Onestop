@@ -93,26 +93,25 @@ echo '</script>';
                                             <td style="text-align:center;"><?php echo $list['status']; ?></td>
                                             <td style="text-align:center;"><?php echo $list['date']; ?></td>
                                         </tr>
-                                <?php
+                                    <?php
                                     }
                                 }
                                 if (isset($this->data['requirementstab'])) {
-                                    if($this->data['interview_status'] == null){
-                                ?>
-                                    <tr>
-                                        <th colspan="5">
-                                            Do you want to be interviewed?
-                                            <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
-                                        <label for="interview_no">  NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
-                                        </th>
-                                    </tr>   
+                                    if ($this->data['interview_status'] == null) {
+                                    ?>
+                                        <tr>
+                                            <th colspan="5">
+                                                Do you want to be interviewed?
+                                                <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
+                                                <label for="interview_no"> NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
+                                            </th>
+                                        </tr>
                                 <?php
-                                    }else{
+                                    } else {
                                         echo "<tr><th colspan='2'>Do you want to be interviewed?<br><u>";
-                                        if($this->data['interview_status'] == 'YES'){
+                                        if ($this->data['interview_status'] == 'YES') {
                                             echo "<span style='color:green'><b>YES</b></span>! I want to be Interviewed.";
-                                        }
-                                        else if($this->data['interview_status'] == 'NO'){
+                                        } else if ($this->data['interview_status'] == 'NO') {
                                             echo "<span style='color:red'><b>NO</b></span>! I don't want to be Interviewed.";
                                         }
                                         echo "</u></th></tr>";
@@ -211,14 +210,14 @@ echo '</script>';
                 ++count;
             }
         })
-        if (req_count == 0) {
-            iziToast.error({
-                title: 'Error: ',
-                message: 'You should atleast pass 1 or more requirement/s!!',
-                position: 'topRight',
-            });
-        }
-        if (count == 0 && req_count > 0) {
+        // if (req_count == 0) {
+        //     iziToast.error({
+        //         title: 'Error: ',
+        //         message: 'You should atleast pass 1 or more requirement/s!!',
+        //         position: 'topRight',
+        //     });
+        // }
+        if (count == 0) {
             // FORM SUBMISSION
             $('button[type=submit]').attr('disabled', 'disabled');
             $('#form_submit')[0].submit();

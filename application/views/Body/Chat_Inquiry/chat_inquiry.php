@@ -332,7 +332,7 @@ function welcomeMessage(){
 }
 function receivedMessage(data) {
     
-    // getInquiryTableList(data.message_count);
+    // getInquiryTableList(data.total_message);
 
     var get_current_count = data.message_count.find(data=> data.ref_no=="<?php echo $this->session->userdata('reference_no');?>")
     

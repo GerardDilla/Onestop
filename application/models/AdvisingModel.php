@@ -20,13 +20,15 @@ class AdvisingModel extends CI_Model
         C.End_Time,
         R.`Room`,
         I.Instructor_Name,
-        C.id AS sched_display_id
+        C.id AS sched_display_id,
+        SP.Course_Code as sp_pre_req
         ');
         $this->db->from('Sections AS A');
         $this->db->join('Sched AS B', 'A.Section_ID = B.Section_ID', 'left');
         $this->db->join('Sched_Display AS C', 'B.Sched_Code = C.Sched_Code', 'left');
         //$this->db->join('Legend AS D', 'B.SchoolYear = D.School_Year AND B.Semester = D.Semester', 'inner');
         $this->db->join('Subject AS E', 'E.Course_Code = B.Course_Code', 'left');
+        $this->db->join('Subject_Prerequisite AS SP', 'SP.Subject_ID = E.ID', 'left');
         $this->db->join('Room AS R', 'C.RoomID = R.ID', 'inner');
         $this->db->join('Instructor AS I', 'I.ID = C.Instructor_ID', 'left');
         $this->db->where('A.Active', 1);
@@ -55,12 +57,13 @@ class AdvisingModel extends CI_Model
 
     public function get_sched_info($schedCode)
     {
-        $this->db->select('*, C.id AS sched_display_id, T1.Schedule_Time AS stime, T2.Schedule_Time AS etime, C.Start_Time AS SDstart, C.End_Time AS SDend');
+        $this->db->select('*, C.id AS sched_display_id, T1.Schedule_Time AS stime, T2.Schedule_Time AS etime, C.Start_Time AS SDstart, C.End_Time AS SDend,SP.Course_Code as sp_pre_req');
         $this->db->from('Sections AS A');
         $this->db->join('Sched AS B', 'A.Section_ID = B.Section_ID', 'inner');
         $this->db->join('Sched_Display AS C', 'B.Sched_Code = C.Sched_Code', 'inner');
         //$this->db->join('Legend AS D', 'B.SchoolYear = D.School_Year AND B.Semester = D.Semester', 'inner');
         $this->db->join('`Subject` AS E', 'E.Course_Code = B.Course_Code', 'inner');
+        $this->db->join('Subject_Prerequisite AS SP', 'SP.Subject_ID = E.ID', 'left');
         $this->db->join('Room AS R', 'C.RoomID = R.ID', 'inner');
         $this->db->join('Time AS T1', 'C.Start_Time = T1.Time_From', 'inner');
         $this->db->join('Time AS T2', 'C.End_Time = T2.Time_To', 'inner');
@@ -565,6 +568,11 @@ class AdvisingModel extends CI_Model
         $this->db->set('interview_status', null);
         $this->db->where('reference_no', $data['Reference_Number']);
         $this->db->update('student_account');
+        $this->db->reset_query();
+
+        $this->db->set('reference_no', 0);
+        $this->db->where('reference_no', $data['Reference_Number']);
+        $this->db->update('requirements_log');
         $this->db->reset_query();
     }
     public function check_existing_queue($data)

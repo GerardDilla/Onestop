@@ -22,6 +22,10 @@
                         </select>
                     </fieldset>
                 </div>
+                <p class="col-md-12" style="color:#cc0000" id="transferee_message">
+                    Transferee Students can only see subjects that has no Pre-Requisite Subjects
+                </p>
+
                 <hr>
 
                 <table class="mdl-data-table" id="subjectTable" style="width:100%">

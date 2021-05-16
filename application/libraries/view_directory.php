@@ -85,6 +85,11 @@ class view_directory
 	public function chatAdmin(){
 		$data['view'] = $this->body.'/Chat_Inquiry/chat-admin';
 		$data['title'] = 'SDCA Inquiry';
-		return $data;		
+		return $data;	
+	}	
+	public function enrollmentBreakdown(){
+		$data['view'] = $this->body.'EnrollmentBreakdown';
+		$data['title'] = 'Enrollment Breakdown';
+		return $data;	
 	}
 }

@@ -8,6 +8,8 @@ $(document).ready(function () {
 
     $('.add-all-subject').hide();
 
+    $('#transferee_message').hide();
+
     $('#subjectTable').DataTable({
         "ordering": false
     });
@@ -453,32 +455,76 @@ function subject_tablerenderer(element = '', data = []) {
 
     tablebody = element.find('tbody');
     tablebody.html('');
+
+    if (data['type'] == 'transferee') {
+        $('#transferee_message').show();
+    } else {
+        $('#transferee_message').hide();
+    }
     //array sched start loop
     $.each(data['data'], function (index, row) {
 
-        if (data['status'] == true) {
-            tablebody.append($('<tr/>').append('\
-            <td>' + row['Sched_Code'] + '</td>\
-            <td>' + row['Course_Code'] + '</td>\
-            <td>' + row['Course_Title'] + '</td>\
-            <td>' + row['Section_Name'] + '</td>\
-            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
-            <td>' + row['Day'] + '</td>\
-            <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
-            <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
-            '));
+
+        if (data['type'] == 'transferee') {
+
+            if (row['sp_pre_req'] == null) {
+
+                if (data['status'] == true) {
+                    tablebody.append($('<tr/>').append('\
+                    <td>' + row['Sched_Code'] + '</td>\
+                    <td>' + row['Course_Code'] + '</td>\
+                    <td>' + row['Course_Title'] + '</td>\
+                    <td>' + row['Section_Name'] + '</td>\
+                    <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                    <td>' + row['Day'] + '</td>\
+                    <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+                    <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
+                    '));
+                } else {
+                    tablebody.append($('<tr/>').append('\
+                    <td>' + row['Sched_Code'] + '</td>\
+                    <td>' + row['Course_Code'] + '</td>\
+                    <td>' + row['Course_Title'] + '</td>\
+                    <td>' + row['Section_Name'] + '</td>\
+                    <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                    <td>' + row['Day'] + '</td>\
+                    <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+                    <td></td>\
+                    '));
+                }
+
+            }
+
         } else {
-            tablebody.append($('<tr/>').append('\
-            <td>' + row['Sched_Code'] + '</td>\
-            <td>' + row['Course_Code'] + '</td>\
-            <td>' + row['Course_Title'] + '</td>\
-            <td>' + row['Section_Name'] + '</td>\
-            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
-            <td>' + row['Day'] + '</td>\
-            <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
-            <td></td>\
-            '));
+
+            if (data['status'] == true) {
+                tablebody.append($('<tr/>').append('\
+                <td>' + row['Sched_Code'] + '</td>\
+                <td>' + row['Course_Code'] + '</td>\
+                <td>' + row['Course_Title'] + '</td>\
+                <td>' + row['Section_Name'] + '</td>\
+                <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                <td>' + row['Day'] + '</td>\
+                <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+                <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
+                '));
+            } else {
+                tablebody.append($('<tr/>').append('\
+                <td>' + row['Sched_Code'] + '</td>\
+                <td>' + row['Course_Code'] + '</td>\
+                <td>' + row['Course_Title'] + '</td>\
+                <td>' + row['Section_Name'] + '</td>\
+                <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                <td>' + row['Day'] + '</td>\
+                <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
+                <td></td>\
+                '));
+            }
         }
+
+
+        console.log('type: ' + data['type'] + ':' + row['sp_pre_req']);
+
     });
 
     element.DataTable({

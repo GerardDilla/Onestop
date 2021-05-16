@@ -211,14 +211,14 @@ echo '</script>';
                 ++count;
             }
         })
-        if (req_count == 0) {
-            iziToast.error({
-                title: 'Error: ',
-                message: 'You should atleast pass 1 or more requirement/s!!',
-                position: 'topRight',
-            });
-        }
-        if (count == 0 && req_count > 0) {
+        // if (req_count == 0) {
+        //     iziToast.error({
+        //         title: 'Error: ',
+        //         message: 'You should atleast pass 1 or more requirement/s!!',
+        //         position: 'topRight',
+        //     });
+        // }
+        if (count == 0) {
             // FORM SUBMISSION
             $('button[type=submit]').attr('disabled', 'disabled');
             $('#form_submit')[0].submit();

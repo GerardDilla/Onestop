@@ -81,6 +81,11 @@ class Main extends MY_Controller
 		$this->default_template($this->view_directory->assessment());
 	}
 
+	public function get_student_information(){
+		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
+		echo json_encode($student_info_array);
+	}
+
 	// OSE LOGIN ,Password Reset and Setup User Pass
 	public function setSession($data)
 	{
@@ -548,6 +553,14 @@ class Main extends MY_Controller
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
 		date_default_timezone_set('Asia/manila');
 		$ref_no = $this->session->userdata('reference_no');
+		// for interview radio button
+		$interview = $this->input->post('interview');
+		$array_update = array(
+			'reference_number' => $ref_no,
+			'interview' => $this->input->post('interview'),
+		);
+
+		$this->AssesmentModel->update_interview_status($array_update);
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
 		// $config['upload_path'] = './assets/student/'.$this->session->userdata('student_folder').'/requirement';
 		$config['upload_path'] = './express/assets/';

@@ -102,10 +102,8 @@ echo '</script>';
                                     <!-- <tr>
                                         <th colspan="5">
                                             Do you want to be interviewed?
-                                        <br>
-                                            <input type="radio" class="form-check-input" name="interview" value="YES">  YES
-                                        <br>
-                                            <input type="radio" class="form-check-input" name="interview" value="NO">  NO
+                                            <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
+                                        <label for="interview_no">  NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
                                         </th>
                                     </tr>    -->
                                 <?php
@@ -127,7 +125,7 @@ echo '</script>';
                     <div class="col-md-12 col-sm-12" align="right" style="margin-top:10px">
                         <?php
                         if ($req_count == 0) {
-                            echo '<button type="submit" class="btn btn-info">Submit</button>';
+                            echo '<button type="submit" class="btn btn-info" id="submit_val_doc">Submit</button>';
                         }
                         ?>
                         <div>
@@ -169,7 +167,6 @@ echo '</script>';
 
     }
     $('#form_submit').on('submit', function(e) {
-        alert('asdasd');
         e.preventDefault();
         var count = 0;
         var req_count = 0;

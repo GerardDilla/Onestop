@@ -1,86 +1,86 @@
 searchVisible = 0;
 transparent = true;
-$(document).ready(function () {
-    $('.wizard-proceed-requirements').click(function () {
-        // alert('asdasdas');
-        baseurl = $('#assessment_section').data('baseurl');
-        var interview_value = $("input[name='interview']:checked").val();
-        if (!interview_value) {
-            iziToast.show({
-                title: 'Do you want to be interviewed? is REQUIRED',
-                message: 'Must select one to proceed',
-                position: 'center',
-                color: 'red',
+$(document).ready(function() {
+    // $('#submit_val_doc').click(function(e) {
+    //     baseurl = $('#assessment_section').data('baseurl');
+    //     var interview_value = $("input[name='interview']:checked").val();
+    //     if (interview_value == 'YES' || interview_value == 'NO') {
+    //         $('.tab-content .tab-pane').removeClass('active');
+    //         $.ajax({
+    //                 url: baseurl + 'main/interview_status',
+    //                 type: 'POST',
+    //                 data: {
+    //                     'interview': interview_value,
+    //                 },
+    //                 success: function() {},
+    //             })
+    //             // fetch_user_status();
+    //     } else {
+    //         iziToast.show({
+    //             title: 'Do you want to be interviewed? is REQUIRED',
+    //             message: 'Must select one to proceed',
+    //             position: 'center',
+    //             color: 'red',
 
-            });
-        } else {
-            $('.tab-content .tab-pane').removeClass('active');
-            $.ajax({
-                url: baseurl + 'main/interview_status',
-                type: 'POST',
-                data: {
-                    'interview': interview_value,
-                },
-                // dataType: 'json',
-                success: function () {
+    //         });
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //     }
+    // });
+    $('.wizard-proceed-requirements').click(function() {
 
-                },
-            })
-            location.reload();
-            fetch_user_status();
-        }
-        // e.stopPropagation();
-        // e.preventDefault();
     });
 
-    $('.wizard-proceed').click(function () {
-
+    $('.wizard-proceed-advising').click(function() {
         // Event handler when proceeding to next step
-        if ($('#advising_content').hasClass('active')) {
+        // if ($('#advising_content').hasClass('active')) {
+        wizard_payment();
 
-            iziToast.question({
-                timeout: false,
-                close: false,
-                overlay: true,
-                displayMode: 'once',
-                id: 'advise_question',
-                zindex: 1500,
-                message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
-                position: 'center',
-                buttons: [
-                    ['<button><b>YES</b></button>', function (instance, toast) {
+        // init_advise();
+        fetch_user_status();
+        // console.log('ready to advise');
+        iziToast.question({
+            timeout: false,
+            close: false,
+            overlay: true,
+            displayMode: 'once',
+            id: 'advise_question',
+            zindex: 1500,
+            message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
+            position: 'center',
+            buttons: [
+                ['<button><b>YES</b></button>', function(instance, toast) {
 
-                        console.log('ready to advise');
-                        // Came from advising.js
-                        init_advise();
-                        location.reload();
+                    console.log('ready to advise');
+                    // Came from advising.js
+                    init_advise();
+                    // location.reload();
 
-                        instance.hide({
-                            transitionOut: 'fadeOut'
-                        }, toast, 'button');
+                    instance.hide({
+                        transitionOut: 'fadeOut'
+                    }, toast, 'button');
 
-                    }, true],
-                    ['<button>NO</button>', function (instance, toast) {
+                }, true],
+                ['<button>NO</button>', function(instance, toast) {
 
-                        event.preventDefault();
-                        $('#section').val('none');
-                        instance.hide({
-                            transitionOut: 'fadeOut'
-                        }, toast, 'button');
+                    event.preventDefault();
+                    $('#section').val('none');
+                    instance.hide({
+                        transitionOut: 'fadeOut'
+                    }, toast, 'button');
 
-                    }],
-                ],
-                onClosing: function (instance, toast, closedBy) {
-                    console.info('Closing | closedBy: ' + closedBy);
-                },
-                onClosed: function (instance, toast, closedBy) {
-                    console.info('Closed | closedBy: ' + closedBy);
-                }
-            });
+                }],
+            ],
+            onClosing: function(instance, toast, closedBy) {
+                console.info('Closing | closedBy: ' + closedBy);
+            },
+            onClosed: function(instance, toast, closedBy) {
+                console.info('Closed | closedBy: ' + closedBy);
+            }
+        });
+    });
 
-
-        }
-
+    $('.wizard-proceed-student_info').click(function() {
 
     });
 
@@ -101,7 +101,7 @@ $(document).ready(function () {
         //     }
         // },
 
-        onInit: function (tab, navigation, index) {
+        onInit: function(tab, navigation, index) {
             //check number of tabs and fill the entire row
             var $total = navigation.find("li").length;
             $width = 100 / $total;
@@ -109,7 +109,7 @@ $(document).ready(function () {
             navigation.find("li").css("width", $width + "%");
         },
 
-        onTabClick: function (tab, navigation, index) {
+        onTabClick: function(tab, navigation, index) {
             alert(index);
             // var $valid = $('.wizard-card form').valid();
             // if (!$valid) {
@@ -119,7 +119,7 @@ $(document).ready(function () {
             // }
         },
 
-        onTabShow: function (tab, navigation, index) {
+        onTabShow: function(tab, navigation, index) {
             var $total = navigation.find("li").length;
             var $current = index + 1;
 
@@ -148,11 +148,11 @@ $(document).ready(function () {
     });
 
     // Prepare the preview for profile picture
-    $("#wizard-picture").change(function () {
+    $("#wizard-picture").change(function() {
         readURL(this);
     });
 
-    $('[data-toggle="wizard-radio"]').click(function () {
+    $('[data-toggle="wizard-radio"]').click(function() {
         wizard = $(this).closest(".wizard-card");
         wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
         $(this).addClass("active");
@@ -160,7 +160,7 @@ $(document).ready(function () {
         $(this).find('[type="radio"]').attr("checked", "true");
     });
 
-    $('[data-toggle="wizard-checkbox"]').click(function () {
+    $('[data-toggle="wizard-checkbox"]').click(function() {
         if ($(this).hasClass("active")) {
             $(this).removeClass("active");
             $(this).find('[type="checkbox"]').removeAttr("checked");
@@ -183,7 +183,7 @@ function fetch_user_status() {
         type: "POST",
         url: base_url + "main/wizard_tracker_status",
         async: true,
-        success: function (response) {
+        success: function(response) {
             // alert(response);
             result = JSON.parse(response);
             payment = result.payment;
@@ -191,57 +191,74 @@ function fetch_user_status() {
             requirements = result.requirements;
             student_information = result.student_information;
             $('.tab-pane .container').removeClass('active');
-            // alert(registration);
             if (payment == 1) {
-                tab_student_information();
-                tab_requirements();
-                tab_advising();
-                tab_payment();
-                tab_registration();
-                $("#progress_bar").css("width", "90%");
-                // $("#payment").addClass("active");
-                $("#registration_content").addClass("active");
-                init_registrationform();
-                $('.wizard-proceed').hide();
+                wizard_registration()
             } else if (advising == 1) {
-                tab_student_information();
-                tab_requirements();
-                tab_advising();
-                tab_payment();
-
-                // alert('test');
-                $("#progress_bar").css("width", "70%");
-                $("#payment_content").addClass("active");
-
+                wizard_payment();
             } else if (requirements == 1) {
-                tab_student_information();
-                tab_requirements();
-                tab_advising();
-                // alert('test');
-                $("#progress_bar").css("width", "50%");
-                // $("#requirements_content").addClass("active");
-                $("#advising_content").addClass("active");
+                wizard_advising();
             } else if (student_information == 1) {
-                tab_student_information();
-                tab_requirements();
-                init_sectionlist();
-                $("#progress_bar").css("width", "30%");
-                // $("#progress_bar").css("width", "62.5%");
-                // $("#advising_content").addClass("active");
-                $("#requirements_content").addClass("active");
-                $("#wizard-button-requirements").removeClass("wizard-proceed-hide");
-                $("#wizard-button").addClass("wizard-proceed-hide");
+                wizard_requirements();
             } else {
-                tab_student_information();
-                $("#progress_bar").css("width", "12.5%");
-                $("#student_information_content").addClass("active");
+                wizard_student_info();
             }
-
         },
-        error: function (response) { },
+        error: function(response) {},
     });
 
 
+}
+
+function wizard_registration() {
+    tab_student_information();
+    tab_requirements();
+    tab_advising();
+    tab_payment();
+    tab_registration();
+    $("#progress_bar").css("width", "90%");
+    // $("#payment").addClass("active");
+    $("#registration_content").addClass("active");
+    init_registrationform();
+    $('.wizard-proceed').hide();
+}
+
+function wizard_payment() {
+    tab_student_information();
+    tab_requirements();
+    tab_advising();
+    tab_payment();
+    // alert('test');
+    $("#progress_bar").css("width", "70%");
+    $("#payment_content").addClass("active");
+    $("#advising_content").removeClass("active");
+}
+
+function wizard_advising() {
+    tab_student_information();
+    tab_requirements();
+    tab_advising();
+    // alert('test');
+    $("#progress_bar").css("width", "50%");
+    // $("#requirements_content").addClass("active");
+    $("#advising_content").addClass("active");
+}
+
+function wizard_requirements() {
+    tab_student_information();
+    tab_requirements();
+    init_sectionlist();
+    $("#progress_bar").css("width", "30%");
+    // $("#progress_bar").css("width", "62.5%");
+    // $("#advising_content").addClass("active");
+    $("#requirements_content").addClass("active");
+    // $("#wizard-button-requirements").removeClass("wizard-proceed-hide");
+    // $("#wizard-button").addClass("wizard-proceed-hide");
+}
+
+function wizard_student_info() {
+    tab_student_information();
+    $("#progress_bar").css("width", "12.5%");
+    $("#student_information_content").addClass("active");
 }
 
 function tab_registration() {

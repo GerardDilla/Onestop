@@ -2,35 +2,68 @@
     <div class="col-md-12">
         <!-- <div id="base_url" class="base_url" data-baseurl="<?php echo base_url(); ?>"></div> -->
         <div class="row">
-            <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION</h6>
+            <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION
+                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
+            </h6>
             <div class="col-md-6">
-                <table class="table" style="display: block; overflow: auto;">
+                <table class="table table-striped table-hover" style="display: block; overflow: auto;">
                     <tbody>
                         <tr>
+                            <td>REFERENCE NUMBER:</td>
+                            <td id="stud_info_reference_number"></td>
+                        </tr>
+                        <tr>
                             <td>FIRST NAME:</td>
-                            <td>JUAN</td>
+                            <td id="stud_info_first_name"></td>
                         </tr>
                         <tr>
                             <td>MIDDLE NAME:</td>
-                            <td>DELA</td>
+                            <td id="stud_info_middle_name"></td>
                         </tr>
                         <tr>
                             <td>LAST NAME:</td>
-                            <td>CRUZ</td>
+                            <td id="stud_info_last_name"></td>
                         </tr>
                         <tr>
-                            <td>REFERENCE NUMBER:</td>
-                            <td>123456</td>
+                            <td>COURSE:</td>
+                            <td id="stud_info_course"></td>
                         </tr>
                     </tbody>
                 </table>
-                <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank">
-                    <div class="btn btn-sm btn-primary" for="success-outlined">
-                        EXPORT STUDENT INFORMATION
-                    </div>
-                </a>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped table-hover" style="display: block; overflow: auto;">
+                    <tbody>
+                        <tr>
+                            <td>ADDRESS:</td>
+                            <td id="stud_info_address"></td>
+                        </tr>
+                        <tr>
+                            <td>CONTACT NUMBER:</td>
+                            <td id="stud_info_contact"></td>
+                        </tr>
+                        <tr>
+                            <td>FIRST CHOICE:</td>
+                            <td id="stud_info_first_choice"></td>
+                        </tr>
+                        <tr>
+                            <td>SECOND CHOICE:</td>
+                            <td id="stud_info_second_name"></td>
+                        </tr>
+                        <tr>
+                            <td>THIRD CHOICE:</td>
+                            <td id="stud_info_third_name"></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <br>
             </div>
+            <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank">
+                <div class="btn btn-sm btn-primary" for="success-outlined">
+                    DOWNLOAD APPLICATION
+                </div>
+            </a>
+            <br>
             <?php
             $data_course = empty($this->data['course']) ? 'N/A' : $this->data['course'];
             if ($data_course != 'N/A') {
@@ -188,9 +221,9 @@
 
                         </select>
                     </fieldset>
-                    <button class="btn btn-sm btn-primary" onclick="submit_course()" for="success-outlined">
+                    <!-- <button class="btn btn-sm btn-primary" onclick="submit_course()" for="success-outlined">
                         SUBMIT COURSE
-                    </button>
+                    </button> -->
                 </div>
             <?php
             }

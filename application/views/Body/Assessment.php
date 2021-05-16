@@ -1,6 +1,24 @@
-
-<!-- <?php $this->load->helper('string');
-        echo random_string('alnum', 20); ?> -->
+<?php
+// if ($this->session->flashdata('success') != "") {
+//     echo "<script>iziToast.show({
+//         theme: 'dark',
+//         icon: 'icon-person',
+//         title: 'Welcome',
+//         message: '" . $this->session->flashdata('success') . "',
+//         position: 'topRight',
+//         progressBarColor: '#cc0000',
+//         image: '" . base_url('assets/vendors/login_asset/img/sdcalogo.png') . "',
+//     });</script>";
+//     $this->session->set_flashdata('success', '');
+// }
+if ($this->session->flashdata('online_payment_zero') != "") {
+    echo "<script>iziToast.error({
+        title: 'Zero Value On Payment: ',
+        message: 'Invalid',
+        position: 'topRight',
+    });</script>";
+}
+?>
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
 <section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
@@ -69,40 +87,116 @@
                             </ul>
                             <!-- /Progress Nav -->
                         </div>
-                        <br>
-                        <br>
-                        <br>
-                        <!-- Inside Content -->
-                        <div class="tab-content">
-                            <div class="tab-pane container" id="student_information_content">
-                                <?php $this->load->view($this->data['student_information']); ?>
-                            </div>
-                            <div class="tab-pane container" id="advising_content">
-                                <?php $this->load->view($this->data['advising']); ?>
-                            </div>
-                            <div class="tab-pane container" id="requirements_content">
-                                <h3>REQUIREMENTS</h3>
+                        <div hidden id="assesment_hidden" data-status='<?php echo $this->data['status'][0] ?>'></div>
+                        <!-- Progress Nav -->
+                        <ul>
+                            <li id="li_student_information">
+                                <a href="#student_information_content" id="tab_student_information">
+                                    <div id="tab_student_information-circle" class="icon-circle">
+                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                        <i class="bi bi-person-lines-fill" id="bi_resize"></i>
+                                    </div>
+                                    STUDENT INFORMATION
+                                </a>
+                            </li>
+                            <li id="li_requirements">
+                                <a href="#requirements_content" id="tab_requirements">
+                                    <div id="tab_requirements-circle" class="icon-circle">
+                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                        <i class="bi bi-card-checklist" id="bi_resize"></i>
+                                    </div>
+                                    REQUIREMENTS
+                                </a>
+                            </li>
+                            <li id="li_advising">
+                                <a href="#advising_content" id="tab_advising">
+                                    <div id="tab_advising-circle" class="icon-circle">
+                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                        <i class="bi bi-clipboard-plus" id="bi_resize"></i>
+                                    </div>
+                                    ADVISING
+                                </a>
+                            </li>
+                            <li id="li_payment">
+                                <a href="#payment_content" id="tab_payment">
+                                    <div id="tab_payment-circle" class="icon-circle">
+                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                        <i class="bi bi-cash-stack" id="bi_resize"></i>
+                                    </div>
+                                    PAYMENT
+                                </a>
+                            </li>
+                            <li id="li_registration">
+                                <a href="#registration_content" id="tab_registration">
+                                    <div id="tab_registration-circle" class="icon-circle">
+                                        <i class="bi bi-file-text" id="bi_resize"></i>
+                                    </div>
+                                    REGISTRATION
+                                </a>
+                            </li>
+
+                        </ul>
+                        <!-- /Progress Nav -->
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <!-- Inside Content -->
+                    <div class="tab-content">
+                        <div class="tab-pane container" id="student_information_content">
+                            <?php $this->load->view($this->data['student_information']); ?>
+                            <div class="col-md-12" style="text-align:center">
                                 <hr>
-                                <?php $this->load->view($this->data['requirementstab']); ?>
+                                <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>
                             </div>
-                            <div class="tab-pane container" id="payment_content">
-                                <?php $this->load->view($this->data['payment']); ?>
-                            </div>
-                            <div class="tab-pane container" id="registration_content">
-                                <?php $this->load->view($this->data['registration']); ?>
-                            </div>
-
                         </div>
-
-                        <div class="col-md-12" style="text-align:center">
+                        <div class="tab-pane container" id="advising_content">
+                            <?php $this->load->view($this->data['advising']); ?>
+                            <div class="col-md-12" style="text-align:center">
+                                <hr>
+                                <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                <button type="button" class="btn btn-lg btn-primary wizard-proceed-advising" id="wizard-button">PROCEED</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane container" id="requirements_content">
+                            <h3>REQUIREMENTS</h3>
+                            <hr>
+                            <?php $this->load->view($this->data['requirementstab']); ?>
+                            <div class="col-md-12" style="text-align:center">
+                                <hr>
+                                <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                <!-- <?php if ($this->data['interview_status'] == null) { ?>
+                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed wizard-proceed-requirements" id="wizard-button-requirements">PROCEED</button>
+                                <?php
+                                }
+                                ?> -->
+                            </div>
+                        </div>
+                        <div class="tab-pane container" id="payment_content">
+                            <?php $this->load->view($this->data['payment']); ?>
+                            <div class="col-md-12" style="text-align:center">
+                                <hr>
+                                <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane container" id="registration_content">
+                            <?php $this->load->view($this->data['registration']); ?>
+                            <div class="col-md-12" style="text-align:center">
+                                <hr>
+                                <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-12" style="text-align:center">
                             <hr>
                             <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
-                            <button type="button" class="btn btn-lg btn-primary wizard-proceed-hide wizard-proceed-requirements " id="wizard-button-requirements">PROCEED</button>
                             <button type="button" class="btn btn-lg btn-primary wizard-proceed" id="wizard-button">PROCEED</button>
-                        </div>
+                        </div> -->
+                    </div>
 
-                        <!-- /Inside Content -->
-                        <!-- For Button Next 
+
+                    <!-- /Inside Content -->
+                    <!-- For Button Next 
                             <div class="wizard-footer">
                                 <div class="pull-right">
                                     <input type='button' class='btn btn-next btn-fill btn-warning btn-wd' name='next' value='Next' />

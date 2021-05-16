@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     // init_subjectlists();
 
@@ -22,36 +22,36 @@ $(document).ready(function () {
         "bLengthChange": false,
     });
 
-    $('input[type=radio][name=payment-option]').change(function () {
+    $('input[type=radio][name=payment-option]').change(function() {
 
         init_paymentmethod(this.value);
 
     });
 
-    $('#advise_button').click(function () {
+    $('#advise_button').click(function() {
 
         init_advise();
 
     });
 
-    $('#section').change(function () {
+    $('#section').change(function() {
 
         init_subjectlists();
 
     });
 
-    $('.setpaid_test').click(function () {
+    $('.setpaid_test').click(function() {
         init_enroll_test();
         fetch_user_status();
         location.reload();
     });
 
-    $('.reset_progress_test').click(function () {
+    $('.reset_progress_test').click(function() {
         init_reset_progress();
         fetch_user_status();
     });
 
-    $('.add-all-subject').click(function () {
+    $('.add-all-subject').click(function() {
         init_addAll();
     });
 
@@ -65,7 +65,7 @@ function init_advise() {
 
     plan = $('input[type=radio][name=payment-option]:checked').val();
     result = ajax_adviseStudent(plan);
-    result.success(function (response) {
+    result.success(function(response) {
 
         // response = JSON.parse(response);
         init_queuedlist();
@@ -78,7 +78,7 @@ function init_advise() {
 function init_assessmentform() {
 
     result = ajax_assessmentform();
-    result.success(function (response) {
+    result.success(function(response) {
 
         if (response != false) {
             response = JSON.parse(response);
@@ -93,7 +93,7 @@ function init_assessmentform() {
 function init_registrationform() {
 
     result = ajax_registrationform();
-    result.success(function (response) {
+    result.success(function(response) {
         response = JSON.parse(response);
         registrationform_renderer(response);
     })
@@ -103,7 +103,7 @@ function init_registrationform() {
 function init_sectionlist() {
 
     subjects = ajax_sectionlist();
-    subjects.success(function (response) {
+    subjects.success(function(response) {
         response = JSON.parse(response);
         section_renderer(response);
         init_subjectlists();
@@ -114,7 +114,7 @@ function init_sectionlist() {
 function init_subjectlists() {
 
     subjects = ajax_subjectlist();
-    subjects.success(function (response) {
+    subjects.success(function(response) {
         console.log('tablerun');
         response = JSON.parse(response);
         if (response['data'].length != 0) {
@@ -131,7 +131,7 @@ function init_subjectlists() {
 function init_addAll() {
 
     result = ajax_add_all_subjects();
-    result.success(function (response) {
+    result.success(function(response) {
 
         init_queuedlist();
         izi_toast('', 'Subjects Added to Queue', 'green', 'bottomRight');
@@ -143,7 +143,7 @@ function init_add_queue(row) {
 
     schedcode = $(row).data('schedcode');
     queue_status = ajax_insertqueue(schedcode);
-    queue_status.success(function (response) {
+    queue_status.success(function(response) {
         response = JSON.parse(response);
         if (response['status'] == 0) {
             izi_toast('', response['data'], 'red', 'bottomRight');
@@ -162,7 +162,7 @@ function init_remove_queue(row) {
 
     sessionid = $(row).data('sessionid');
     queue_status = ajax_removequeue(sessionid);
-    queue_status.success(function (response) {
+    queue_status.success(function(response) {
 
         izi_toast('', 'Removed from Queue', 'green', 'bottomRight');
 
@@ -177,7 +177,7 @@ function init_remove_queue(row) {
 function init_queuedlist() {
 
     queue = ajax_queuedlist();
-    queue.success(function (response) {
+    queue.success(function(response) {
 
         response = JSON.parse(response);
         if (response['data'].length != 0) {
@@ -195,7 +195,7 @@ function init_queuedlist() {
 function init_paymentmethod(value = 'installment') {
 
     result = ajax_paymentmethod(value);
-    result.success(function (response) {
+    result.success(function(response) {
 
         response = JSON.parse(response);
         console.log(response);
@@ -219,7 +219,7 @@ function init_enroll_test() {
 function init_reset_progress() {
 
     reset_status = ajax_reset_progress();
-    reset_status.success(function (result) {
+    reset_status.success(function(result) {
         location.reload();
     });
 
@@ -358,28 +358,26 @@ function queue_tablerenderer(element = '', data = []) {
     tablebody = element.find('tbody');
     tablebody.html('');
     //array sched start loop
-    $.each(data['data'], function (index, row) {
+    $.each(data['data'], function(index, row) {
         computeSched(row['Start_Time'], row['End_Time'], row['Day'], row['Course_Code'], row['Course_Title'], row['from_time'], row['to_time'])
         if (data['status'] == true) {
             tablebody.append($('<tr/>').append('\
-            <td>'+ row['Sched_Code'] + '</td>\
-            <td>'+ row['Course_Code'] + '</td>\
-            <td>'+ row['Course_Title'] + '</td>\
-            <td>'+ row['Section_Name'] + '</td>\
-            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
-            <td><button type="button" class="btn btn-primary" onclick="init_remove_queue(this)" data-sessionid="'+ row['session_id'] + '">Remove</btn></td>\
-            ')
-            );
+            <td>' + row['Sched_Code'] + '</td>\
+            <td>' + row['Course_Code'] + '</td>\
+            <td>' + row['Course_Title'] + '</td>\
+            <td>' + row['Section_Name'] + '</td>\
+            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td><button type="button" class="btn btn-primary" onclick="init_remove_queue(this)" data-sessionid="' + row['session_id'] + '">Remove</btn></td>\
+            '));
         } else {
             tablebody.append($('<tr/>').append('\
-            <td>'+ row['Sched_Code'] + '</td>\
-            <td>'+ row['Course_Code'] + '</td>\
-            <td>'+ row['Course_Title'] + '</td>\
-            <td>'+ row['Section_Name'] + '</td>\
-            <td>'+ (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td>' + row['Sched_Code'] + '</td>\
+            <td>' + row['Course_Code'] + '</td>\
+            <td>' + row['Course_Title'] + '</td>\
+            <td>' + row['Section_Name'] + '</td>\
+            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
             <td></td>\
-            ')
-            );
+            '));
         }
 
     });
@@ -402,7 +400,7 @@ function subject_tablerenderer(element = '', data = []) {
     tablebody = element.find('tbody');
     tablebody.html('');
     //array sched start loop
-    $.each(data['data'], function (index, row) {
+    $.each(data['data'], function(index, row) {
 
         if (data['status'] == true) {
             tablebody.append($('<tr/>').append('\
@@ -473,7 +471,7 @@ function schedule_tablerenderer(element, time = []) {
     tablehead.html('');
     tablehead.append('<tr>');
     tablehead.append('<th></th>');
-    $.each(days, function (index, day) {
+    $.each(days, function(index, day) {
 
         tablehead.append('<th>' + day + '</th>');
 
@@ -541,7 +539,7 @@ function assessmentform_renderer(resultdata = []) {
     sched_checking = '';
     units = 0;
     subjectcount = 0;
-    $.each(resultdata['get_Advise'], function (index, result) {
+    $.each(resultdata['get_Advise'], function(index, result) {
         row = $("<tr/>");
         if (sched_checking != result['Sched_Code']) {
 
@@ -635,7 +633,7 @@ function registrationform_renderer(resultdata = []) {
     sched_checking = '';
     units = 0;
     subjectcount = 0;
-    $.each(resultdata['student_data'], function (index, result) {
+    $.each(resultdata['student_data'], function(index, result) {
         row = $("<tr/>");
         if (sched_checking != result['Sched_Code']) {
 
@@ -673,7 +671,7 @@ function registrationform_renderer(resultdata = []) {
 function section_renderer(data) {
 
     $('#section').html('<option value="none" disabled selected>SELECT SECTION</option>');
-    $.each(data, function (index, result) {
+    $.each(data, function(index, result) {
         $('#section').append('<option value="' + result['Section_ID'] + '">' + result['Section_Name'] + '</option>');
     });
 }
@@ -703,6 +701,7 @@ function get_militarytime() {
     return time;
 
 }
+
 function computeSched(start, end, this_day, subject, title, from, to) {
     var start_time = parseInt(start);
     var end_time = parseInt(end);
@@ -711,32 +710,26 @@ function computeSched(start, end, this_day, subject, title, from, to) {
     var filtered = schedule_array.filter((time) => { return time >= start_time && time <= end_time });
     console.log(filtered);
     console.log(day);
-    $.each(filtered, function (index, val) {
+    $.each(filtered, function(index, val) {
 
-        if (day == "M") {
-            var bg_color = "EA49E5"
-        }
-        else if (day == "T") {
-            var bg_color = "18EAC8"
-        }
-        else if (day == "W") {
-            var bg_color = "EA5E18"
-        }
-        else if (day == "H") {
-            var bg_color = "EAD618"
-        }
-        else if (day == "F") {
-            var bg_color = "B1EA18"
-        }
-        else if (day == "SA") {
-            var bg_color = "1860EA"
-        }
-        else {
-            var bg_color = "18EA4A"
-        }
+            if (day == "M") {
+                var bg_color = "EA49E5"
+            } else if (day == "T") {
+                var bg_color = "18EAC8"
+            } else if (day == "W") {
+                var bg_color = "EA5E18"
+            } else if (day == "H") {
+                var bg_color = "EAD618"
+            } else if (day == "F") {
+                var bg_color = "B1EA18"
+            } else if (day == "SA") {
+                var bg_color = "1860EA"
+            } else {
+                var bg_color = "18EA4A"
+            }
 
-        $(`#${val + '_' + day}`).css('background', `#${bg_color}`);
-    })
-    // $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${from + ' to ' + to}</strong><br>${subject}</div>`);
+            $(`#${val + '_' + day}`).css('background', `#${bg_color}`);
+        })
+        // $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${from + ' to ' + to}</strong><br>${subject}</div>`);
     $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${title}</strong><br>${subject}</div>`);
 }

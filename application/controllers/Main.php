@@ -81,6 +81,11 @@ class Main extends MY_Controller
 		$this->default_template($this->view_directory->assessment());
 	}
 
+	public function get_student_information(){
+		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
+		echo json_encode($student_info_array);
+	}
+
 	// OSE LOGIN ,Password Reset and Setup User Pass
 	public function setSession($data)
 	{

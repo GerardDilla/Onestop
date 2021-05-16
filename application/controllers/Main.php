@@ -705,16 +705,31 @@ class Main extends MY_Controller
 			// echo json_encode(array("msg" => $e));
 		}
 	}
+	// Payment Notification
 	public function notifyWhenPaymentSubmitted($ref_no = "", $amount = "", $email = "")
 	{
+		
 		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
 		//  CC to Accounting notification
 		$student_email = "";
-		if ($student_info['Email'] != "") {
-			$student_email = $student_info['Email'];
-		} else {
+		if ($email != "") {
 			$student_email = $email;
+		} else {
+			$student_email = $student_info['Email'];
 		}
+		$all_uploadeddata = array(
+			'ref_no' => $ref_no,
+			'amount' => $amount
+		);
+		$string = http_build_query($all_uploadeddata);
+        $ch = curl_init("http://localhost:4003/api/NotifyIfSubmitted/");
+        curl_setopt($ch,CURLOPT_POST,true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+		curl_exec($ch);
+        curl_close($ch);
+		
 		$email_data = array(
 			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
 			'reply_to' => 'jfabregas@sdca.edu.ph',

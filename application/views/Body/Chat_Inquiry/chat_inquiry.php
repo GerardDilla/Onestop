@@ -386,4 +386,40 @@ const ideas = await app.service('chat-inquiry').get({ref_no:"<?php echo $this->s
 }
 someone_typing();
 init();
+
+function notifyIfSubmitted(data){
+    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+        iziToast.show({
+            theme: 'light',
+            icon: 'bi-emoji-laughing',
+            iconColor: '#cc0000',
+            title: '',
+            message: 'Your payment has been successfully processed. Thank you for Paying!',
+            // messageSize: '18',
+            // messageLineHeight: '30',
+            position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+            progressBarColor: '#cc0000',
+            // overlay:true,
+            timeout:8000,
+            buttons: [
+                // ['<button>Ok</button>', function (instance, toast) {
+                //     alert("Hello world!");
+                // }, true],
+                ['<button>Ok</button>', function (instance, toast) {
+                    instance.hide({
+                        transitionOut: 'fadeOutUp',
+                        onClosing: function(instance, toast, closedBy){
+                            // console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                            
+                        }
+                    }, toast, 'buttonName');
+                }]
+            ],
+            onClosing: function(instance, toast, closedBy){
+                
+            }
+        }); 
+    }
+}
+app.service('notification').on('created', notifyIfSubmitted);
 </script>

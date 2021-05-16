@@ -88,27 +88,27 @@ $(document).ready(function() {
     })
 
     init_student_info();
-});
-$('#courses').on('change', function() {
-    program_code = $('#courses').children("option:selected").val();
-    $.ajax({
-        url: "get_student_information",
-        dataType: "json",
-        success: function(response) {
-            $('#majors').empty();
-            html = ""
-            if ($.trim(response) != '') {
-                $.each(response, function(key, value) {
-                    html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
-                });
-                $('#majors').append(html);
-            } else {
+
+    $('#courses').on('change', function() {
+        program_code = $('#courses').children("option:selected").val();
+        $.ajax({
+            url: "get_student_information",
+            dataType: "json",
+            success: function(response) {
                 $('#majors').empty();
                 $('#majors').append("<option value='0' disabled selected>NO COURSE MAJOR</option>");
+                html = ""
+                if (response.length > 0) {
+                    $.each(response, function(key, value) {
+                        html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
+                    });
+                    $('#majors').empty();
+                    $('#majors').append(html);
+                }
             }
-        }
+        })
     })
-})
+});
 
 function init_student_info() {
     $.ajax({

@@ -74,14 +74,15 @@ class Main extends MY_Controller
 		$this->data['major'] = $major['Program_Major'];
 		//
 		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
-		$this->data['shs_student_number'] = empty($shs_bridge)?'':$shs_bridge['shs_student_number'];
-		$this->data['applied_status'] = empty($shs_bridge)?'':$shs_bridge['applied_status'];
+		$this->data['shs_student_number'] = empty($shs_bridge) ? '' : $shs_bridge['shs_student_number'];
+		$this->data['applied_status'] = empty($shs_bridge) ? '' : $shs_bridge['applied_status'];
 
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
 	}
 
-	public function get_student_information(){
+	public function get_student_information()
+	{
 		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
 		echo json_encode($student_info_array);
 	}
@@ -721,7 +722,7 @@ class Main extends MY_Controller
 	// Payment Notification
 	public function notifyWhenPaymentSubmitted($ref_no = "", $amount = "", $email = "")
 	{
-		
+
 		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
 		//  CC to Accounting notification
 		$student_email = "";
@@ -735,14 +736,14 @@ class Main extends MY_Controller
 			'amount' => $amount
 		);
 		$string = http_build_query($all_uploadeddata);
-        $ch = curl_init("http://localhost:4003/api/NotifyIfSubmitted/");
-        curl_setopt($ch,CURLOPT_POST,true);
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-        // curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+		$ch = curl_init("http://localhost:4003/api/NotifyIfSubmitted/");
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+		// curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 		curl_exec($ch);
-        curl_close($ch);
-		
+		curl_close($ch);
+
 		$email_data = array(
 			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
 			'reply_to' => 'jfabregas@sdca.edu.ph',
@@ -934,20 +935,47 @@ class Main extends MY_Controller
 		$this->AssesmentModel->update_interview_status($array_update);
 		// die($post);
 	}
-	
+
 	public function sdcaInquiry()
 	{
 		$getStudentInquiry = $this->mainmodel->getStudentInquiry();
 		$count = 0;
-		foreach($getStudentInquiry as $inquiry){
+		foreach ($getStudentInquiry as $inquiry) {
 			$getStudentInquiry[$count]['total_message'] = $this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']);
 			++$count;
 		}
 		$this->data['getStudentInquiry'] = $getStudentInquiry;
 		$this->chat_template($this->view_directory->chatAdmin());
 	}
-	public function forTest(){
-		echo strtotime(date("Y-m-d H:i:s")) >= strtotime(date("Y-m-d 08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))?'yes':'no'; 
+	public function forTest()
+	{
+		echo strtotime(date("Y-m-d H:i:s")) >= strtotime(date("Y-m-d 08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00")) ? 'yes' : 'no';
 	}
 	// public function 
+
+	public function enrollment_breakdown()
+	{
+		$this->default_template($this->view_directory->enrollmentBreakdown());
+	}
+	// public function ajaxBreakdownProofOfPayment(){
+	// 	$proof = $this->mainmodel->getPoofOfPaymentLog();
+	// 	echo json_encode($proof);
+	// }
+	public function ajaxBreakdownRequirements()
+	{
+		$array_completefiles = array();
+		$getRequirementsLogPerRefNo = $this->mainmodel->getAllRequirementsLogByRef();
+		foreach ($getRequirementsLogPerRefNo as $reqloglist=>$values) {
+			// if ($reqloglist['requirements_name'] != "proof_of_payment") {
+				array_push($array_completefiles, array(
+					"name" => $values['requirements_name'],
+					"status" => $values['status'],
+					"req_date" => $values['requirements_date'],
+					"if_married" => $values['if_married']
+				));
+			// }
+		}
+		echo json_encode($getRequirementsLogPerRefNo);
+	}
+	
 }

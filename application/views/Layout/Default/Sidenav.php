@@ -3,7 +3,7 @@
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
                 <div class="logo">
-                    <a href="index.html"><img src="<?php echo base_url('assets/images/logo/DOSE LOGO.png');?>" alt="Logo" srcset=""></a>
+                    <a href="index.html"><img src="<?php echo base_url('assets/images/logo/DOSE LOGO.png'); ?>" alt="Logo" srcset=""></a>
                     <hr>
                     <h6 style="text-align: center;">ADMISSIONS PORTAL</h6>
                 </div>
@@ -42,6 +42,12 @@
                     <a href="<?php echo base_url('main/uploadProofOfPayment') ?>" class='sidebar-link'>
                         <i class="bi bi-credit-card-fill"></i>
                         <span>Proof of Payment</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="<?php echo base_url('main/enrollment_breakdown') ?>" class='sidebar-link'>
+                        <i class="bi bi-menu-app-fill"></i>
+                        <span>Enrollment Breakdown</span>
                     </a>
                 </li>
 

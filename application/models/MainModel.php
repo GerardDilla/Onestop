@@ -65,6 +65,13 @@ class MainModel extends CI_Model
     {
         return $this->db->get('requirements')->result_array();
     }
+    public function getAllRequirementsLogByRef()
+    {
+        $ref_no = $this->session->userdata('reference_no');
+        // $this->db->where('requirements_name', 'proof_of_payment');
+        $this->db->where('reference_no', $ref_no);
+        return $this->db->get('requirements_log')->result_array();
+    }
     public function checkRequirement($requirements_name)
     {
         $ref_no = $this->session->userdata('reference_no');

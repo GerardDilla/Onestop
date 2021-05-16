@@ -569,6 +569,7 @@ class Main extends MY_Controller
 		$array_files = array();
 		$array_filestodelete = array();
 		$array_completefiles = array();
+		$upload_count = 0;
 		try {
 			$email_data = array(
 				'send_to' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name'),
@@ -578,7 +579,7 @@ class Main extends MY_Controller
 				'title' => 'Student Requirements',
 				'message' => 'Email/ValidationOfDocument'
 			);
-
+			
 			foreach ($getRequirementsList as $list) {
 				$id_name = $list['id_name'];
 				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
@@ -591,22 +592,7 @@ class Main extends MY_Controller
 				if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "") {
 					$req_status = 'pending';
 					if ($this->upload->do_upload($id_name)) {
-						$uploaded_data = $this->upload->data();
-						array_push($array_files, array(
-							"name" => $uploaded_data['orig_name'],
-							"type" => $uploaded_data['file_type'],
-							'rq_name' => $list['rq_name']
-						));
-						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-					} else {
-						// echo json_encode(array("msg" => $this->upload->display_errors()));
-						$this->session->set_flashdata('error', $this->upload->display_errors());
-						// redirect(base_url('main/validationOfDocuments'));exit;
-						redirect($_SERVER['HTTP_REFERER']);
-					}
-				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to be follow") {
-					$req_status = 'pending';
-					if ($this->upload->do_upload($id_name)) {
+						++$upload_count;
 						$uploaded_data = $this->upload->data();
 						array_push($array_files, array(
 							"name" => $uploaded_data['orig_name'],
@@ -620,6 +606,23 @@ class Main extends MY_Controller
 						// redirect(base_url('main/validationOfDocuments'));exit;
 						redirect($_SERVER['HTTP_REFERER']);
 						exit;
+					}
+				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to be follow") {
+					$req_status = 'pending';
+					if ($this->upload->do_upload($id_name)) {
+						$uploaded_data = $this->upload->data();
+						array_push($array_files, array(
+							"name" => $uploaded_data['orig_name'],
+							"type" => $uploaded_data['file_type'],
+							'rq_name' => $list['rq_name']
+						));
+						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+					} else {
+						// echo json_encode(array("msg" => $this->upload->display_errors()));
+						// $this->session->set_flashdata('error', $this->upload->display_errors());
+						
+						// redirect($_SERVER['HTTP_REFERER']);
+						// exit;
 					}
 				}
 
@@ -670,46 +673,51 @@ class Main extends MY_Controller
 			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
 			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
+			if($upload_count>0){
+				$string = http_build_query($all_uploadeddata);
+				$ch = curl_init("http://localhost:4003/uploadtodrive/");
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-			$string = http_build_query($all_uploadeddata);
-			$ch = curl_init("http://localhost:4003/uploadtodrive/");
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-			$result = curl_exec($ch);
-			if ($result != null && $result != "") {
-				$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
-					'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
-					'requirements' => $array_completefiles,
-					'datetime' => date("Y-m-d H:i:s"),
-					'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
-				));
-				$files = glob('express/assets/*'); // get all file names
-				foreach ($files as $file) {
-					if (in_array($file, $array_filestodelete)) {
-						if (is_file($file)) {
-							unlink($file); // delete file
+				$result = curl_exec($ch);
+				if ($result != null && $result != "") {
+					$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
+						'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
+						'requirements' => $array_completefiles,
+						'datetime' => date("Y-m-d H:i:s"),
+						'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
+					));
+					$files = glob('express/assets/*'); // get all file names
+					foreach ($files as $file) {
+						if (in_array($file, $array_filestodelete)) {
+							if (is_file($file)) {
+								unlink($file); // delete file
+							}
 						}
 					}
+					$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $result));
+					$this->session->set_flashdata('success', 'Successfully submitted!!');
+					redirect($_SERVER['HTTP_REFERER']);
+				} else {
+					$files = glob('express/assets/*'); // get all file names
+					foreach ($files as $file) {
+						if (in_array($file, $array_filestodelete)) {
+							if (is_file($file)) {
+								unlink($file); // delete file
+							}
+						}
+					}
+					$this->mainmodel->revertIfErrorInRequirementUpload();
+					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
+					redirect($_SERVER['HTTP_REFERER']);
 				}
-				$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $result));
+				curl_close($ch);
+			}
+			else{
 				$this->session->set_flashdata('success', 'Successfully submitted!!');
 				redirect($_SERVER['HTTP_REFERER']);
-			} else {
-				$files = glob('express/assets/*'); // get all file names
-				foreach ($files as $file) {
-					if (in_array($file, $array_filestodelete)) {
-						if (is_file($file)) {
-							unlink($file); // delete file
-						}
-					}
-				}
-				$this->mainmodel->revertIfErrorInRequirementUpload();
-				$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
-				redirect($_SERVER['HTTP_REFERER']);
 			}
-			curl_close($ch);
 			// echo json_encode(array("msg" => 'Successfully Uploaded'));
 		} catch (\Exception $e) {
 			// echo $e;

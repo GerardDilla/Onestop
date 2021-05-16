@@ -130,6 +130,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
                                     <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <a href="<?php echo base_url(); ?>index.php/temp_api/export_registrationform" target="_blank" class="btn btn-lg btn-success">Print Registration Form</a>
                                 </div>
                             </div>
                             <!-- <div class="col-md-12" style="text-align:center">

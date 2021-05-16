@@ -11,14 +11,13 @@ $(document).ready(function () {
     init_assessmentform();
 
     init_sectionlist();
-    $('#somethingTable').DataTable({
+    $('.add-all-subject').hide();
+    $('#validationDocumentsTable').DataTable({
         ordering: false,
         bPaginate: false,
         bLengthChange: false,
         responsive:true
     });
-    $('.add-all-subject').hide();
-
     $('#subjectTable').DataTable({
         "ordering": false
     });

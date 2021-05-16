@@ -26,18 +26,19 @@ if ($this->session->flashdata('success') != "") {
                     <!-- <form action="" method=""> -->
                         <div class="wizard-navigation">
                             <div class="progress-with-circle">
-                                <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
+                                <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 10%;"></div>
                             </div>
                             <div hidden id="assesment_hidden" data-status='<?php echo $this->data['status'][0] ?>'></div>
                             <!-- Progress Nav -->
+                            
                             <ul>
-                                <li id="li_student_information">
+                                <li id="li_student_information" >
                                     <a href="#student_information_content" id="tab_student_information">
                                         <div id="tab_student_information-circle" class="icon-circle">
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-person-lines-fill" id="bi_resize"></i>
                                         </div>
-                                        STUDENT INFORMATION
+                                        <span class="max-respo">STUDENT INFORMATION</span><span class="min-respo">S.I.</span>
                                     </a>
                                 </li>
                                 <li id="li_requirements">
@@ -46,7 +47,7 @@ if ($this->session->flashdata('success') != "") {
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-card-checklist" id="bi_resize"></i>
                                         </div>
-                                        REQUIREMENTS
+                                        <span class="max-respo">REQUIREMENTS</span><span class="min-respo">R.</span>
                                     </a>
                                 </li>
                                 <li id="li_advising">
@@ -55,7 +56,7 @@ if ($this->session->flashdata('success') != "") {
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-clipboard-plus" id="bi_resize"></i>
                                         </div>
-                                        ADVISING
+                                        <span class="max-respo">ADVISING</span><span class="min-respo">A.</span>
                                     </a>
                                 </li>
                                 <li id="li_payment">
@@ -64,7 +65,7 @@ if ($this->session->flashdata('success') != "") {
                                             <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                             <i class="bi bi-cash-stack" id="bi_resize"></i>
                                         </div>
-                                        PAYMENT
+                                        <span class="max-respo">PAYMENT</span><span class="min-respo">P.</span>
                                     </a>
                                 </li>
                                 <li id="li_registration">
@@ -72,7 +73,7 @@ if ($this->session->flashdata('success') != "") {
                                         <div id="tab_registration-circle" class="icon-circle">
                                             <i class="bi bi-file-text" id="bi_resize"></i>
                                         </div>
-                                        REGISTRATION
+                                        <span class="max-respo">REGISTRATION</span><span class="min-respo">R.</span>
                                     </a>
                                 </li>
 
@@ -151,7 +152,12 @@ if ($this->session->flashdata('success') != "") {
 
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
+<script>
 
+
+</script>
+<script src="<?php echo base_url('assets/js/notify.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/notify.min.js'); ?>"></script>
 <!-- Temporary Loading script -->
 <script>
     $(document).ajaxStart(function() {

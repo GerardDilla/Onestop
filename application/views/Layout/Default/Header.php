@@ -39,6 +39,9 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/css/forms.css');?>">
 <!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.css'); ?>"> -->
 
+<link rel="stylesheet" href="<?php echo base_url('assets/css/dashboard_responsiveness.css');?>">
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<!-- <script src="<?php echo base_url('assets/js/notify.js'); ?>"></script> -->
 <!-- <script href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.js'); ?>"></script> -->
 <style>
     /* sticky sidenav responsive to content */

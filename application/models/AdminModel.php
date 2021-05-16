@@ -11,8 +11,8 @@ class AdminModel extends CI_Model
         $this->db->select('User_Position');
         $this->db->select('UserName');
         $this->db->where('UserName',$credentials['username']);
-        $this->db->where('Password',$credentials['password']);
-        // $this->db->where('AES_DECRYPT(`Password`, \''.$credentials['password'].'\') = \''.$credentials['password'].'\'');
+        // $this->db->where('Password',$credentials['password']);
+        $this->db->where('AES_DECRYPT(`Password`, \''.$credentials['password'].'\') = \''.$credentials['password'].'\'');
         $this->db->where('tabValid',1);
         $this->db->from('Users');
         $query = $this->db->get()->row_array();
@@ -40,6 +40,3 @@ class AdminModel extends CI_Model
         return empty($result['total_unseen'])?0:$result['total_unseen'];
     }
 }
-
-
-?>

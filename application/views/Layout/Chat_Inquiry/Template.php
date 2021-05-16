@@ -42,7 +42,23 @@
         <!-- <?php if($inquiry) echo $inquiry;?> -->
         <!-- <span class="chat-logo"><i class="bi bi-chat-text"></i></span> -->
     </div>
-
+    <?php
+        if($this->session->flashdata('success')!=''){
+            echo "<script>
+            iziToast.show({
+            icon: 'bi bi-check2-square',
+            title: 'Hi! ',
+            message: `".$this->session->flashdata('success')."`,
+            position: 'topCenter',
+            progressBarColor: '#cc0000',
+            onClosing: function(instance, toast, closedBy){
+            },
+            onClosed: function(instance, toast, closedBY){
+                
+            }
+        });</script>";
+        }
+    ?>
     <!-- Scripts Content -->
     
 

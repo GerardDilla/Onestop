@@ -34,6 +34,12 @@ class view_directory
 		$data['title'] = 'Login';
 		return $data;
 	}
+	public function admin_login(){
+		$data['view'] = $this->body . 'Admin/Login';
+		$data['title'] = 'Login';
+		return $data;
+	}
+
 	public function forgotPassword()
 	{
 		$data['view'] = $this->body . 'Login/ForgotPassword';

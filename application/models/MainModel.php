@@ -139,14 +139,7 @@ class MainModel extends CI_Model
         return $query;
     }
 
-    public function getStudentInquiry(){
-        $this->db->select('*');
-        $this->db->from('student_inquiry');
-        $this->db->join('student_info','student_inquiry.ref_no = student_info.Reference_Number');
-        $this->db->where('user_type','student');
-        $this->db->group_by('ref_no');
-        return $this->db->get()->result_array();
-    }
+    
     public function countTotalUnseenMessage($ref_no){
         $this->db->select('count(id) as total_unseen');
         $this->db->from('student_inquiry');

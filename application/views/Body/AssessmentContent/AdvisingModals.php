@@ -1,7 +1,7 @@
 <!--Extra Large Modal -->
 <!-- <div id="calendar"></div> -->
 <div class="modal fade text-left w-100" id="subjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel16">CHOOSE SUBJECTS</h4>

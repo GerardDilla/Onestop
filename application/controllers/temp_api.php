@@ -108,10 +108,13 @@ class temp_api extends CI_Controller
 		);
 
 		#Runs all Checkers pertaining to the subject being added
-		$status = $this->queueing_checkers($array_insert);
-		if ($status['status'] == 0) {
-			echo json_encode($status);
-			die();
+		$status = $this->queueing_checkers($array_insert, $schedData);
+		if ($status['status'] == 1) {
+
+			$output['status'] = 0;
+			$output['data'] = $status['data'];
+			echo json_encode($output);
+			die;
 		}
 
 		$insert_status = $this->AdvisingModel->insert_sched_session($array_insert);
@@ -150,8 +153,8 @@ class temp_api extends CI_Controller
 				'Graduating' =>  'NEEDS OTHER DATA',
 				'valid' => 1
 			);
-			$status = $this->queueing_checkers($array_insert);
-			if ($status['status'] == 0) {
+			$status = $this->queueing_checkers($array_insert, $schedData);
+			if ($status['status'] == 1) {
 				#Conflicts present
 				$insert_status[$subject['Sched_Code']] = $status['data'];
 			} else {
@@ -162,19 +165,18 @@ class temp_api extends CI_Controller
 		echo json_encode($insert_status);
 	}
 
-	private function queueing_checkers($data)
+	private function queueing_checkers($data, $sched_data = array())
 	{
-		#preset outputa data, status = 1 being no conflicts
-		$output = array(
-			'status' => 1,
-			'data' => '',
-		);
+		#preset
+		$output['status'] = 0;
+		$output['data'] = '';
 
 		#Check if Already Taken
 		$existing_status = $this->AdvisingModel->check_existing_queue($data);
 		if (!empty($existing_status)) {
-			$output['status'] = 0;
-			$output['data'] = 'Subject is already on Queue:' . $existing_status['Sched_Code'];
+			$output['status'] = 1;
+			$output['data'] = 'Subject is already on Queue';
+			return $output;
 		}
 
 		#Check if slot is available : Removed for testing
@@ -182,14 +184,27 @@ class temp_api extends CI_Controller
 		// $new_slot = $slot_status + 1;
 		// if ($new_slot >= $schedData['Total_Slot']) {
 
-		// 	$output['status'] = 0;
-		// 	$output['data'] = 'The slots for this Subject is Full';
-		//  return $output;
-		// 	echo json_encode($output);
-		// 	die();
+		// 	$output['status'] = 1;
+		// 	$output['data']= 'The slots for this Subject is Full';
+		// 	return $output;
 		// }
 
-		#Check if there are schedule conflicts: TBF
+		#Check if there are schedule conflicts
+		$conflict_checker_parameters = array(
+			'reference_no' => $data['Reference_Number'],
+			'start_time' => $sched_data['SDstart'],
+			'end_time' => $sched_data['SDend'],
+			'day_array' => $sched_data['Day'],
+			'school_year' => $this->legend_sy,
+			'semester' => $this->legend_sem,
+		);
+		#Parameters: Start time, End time, Days, Reference Number
+		$conflict_check = $this->AdvisingModel->check_advising_conflict($conflict_checker_parameters);
+		if ($conflict_check) {
+			$output['status'] = 1;
+			$output['data'] = 'Subject is in Conflict with: ' . $conflict_check[0]['Course_Code'];
+			return $output;
+		}
 
 		#Check if there is pre requisite and if already taken: TBF
 		return $output;
@@ -199,13 +214,15 @@ class temp_api extends CI_Controller
 	{
 
 		$id = $this->input->post('sessionId');
+		$session = $this->AdvisingModel->get_coursecode_via_session($id);
 		$this->AdvisingModel->remove_advising_session($id);
-		echo json_encode('removed');
+		echo $session['Course_Code'];
 	}
 
 	public function unqueue_all()
 	{
 		$this->AdvisingModel->remove_all_advising_session($this->reference_number);
+
 		echo 'removed';
 	}
 
@@ -773,7 +790,10 @@ class temp_api extends CI_Controller
 
 	public function get_section()
 	{
-
+		$output = array(
+			'section_id' => '',
+			'sections' => '',
+		);
 		#Get Program ID
 		$Course = $this->AdvisingModel->get_course($this->reference_number);
 
@@ -781,8 +801,15 @@ class temp_api extends CI_Controller
 		$Feesdata = $this->AdvisingModel->getfees_history($this->reference_number);
 
 		#Get section based on whether feesdata is true(old student) or false(new student)
-		$Sections = $this->AdvisingModel->get_sections($Course, $Feesdata);
-		echo json_encode($Sections);
+		$output['sections'] = $this->AdvisingModel->get_sections($Course, $Feesdata);
+
+		$queue = $this->AdvisingModel->get_queued_subjects($this->reference_number);
+		if (!empty($queue)) {
+			$output['section_id'] = $queue[0]['Section_ID'];
+		} else {
+			$output['section_id'] = 'none';
+		}
+		echo json_encode($output);
 	}
 	public function setpaid_test()
 	{

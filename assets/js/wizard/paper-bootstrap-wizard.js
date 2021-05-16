@@ -36,12 +36,48 @@ $(document).ready(function() {
         // if ($('#advising_content').hasClass('active')) {
         wizard_payment();
 
-        init_advise();
+        // init_advise();
         fetch_user_status();
-        console.log('ready to advise');
-        // Came from advising.js
-        // location.reload();
-        // }
+        // console.log('ready to advise');
+        iziToast.question({
+            timeout: false,
+            close: false,
+            overlay: true,
+            displayMode: 'once',
+            id: 'advise_question',
+            zindex: 1500,
+            message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
+            position: 'center',
+            buttons: [
+                ['<button><b>YES</b></button>', function(instance, toast) {
+
+                    console.log('ready to advise');
+                    // Came from advising.js
+                    init_advise();
+                    // location.reload();
+
+                    instance.hide({
+                        transitionOut: 'fadeOut'
+                    }, toast, 'button');
+
+                }, true],
+                ['<button>NO</button>', function(instance, toast) {
+
+                    event.preventDefault();
+                    $('#section').val('none');
+                    instance.hide({
+                        transitionOut: 'fadeOut'
+                    }, toast, 'button');
+
+                }],
+            ],
+            onClosing: function(instance, toast, closedBy) {
+                console.info('Closing | closedBy: ' + closedBy);
+            },
+            onClosed: function(instance, toast, closedBy) {
+                console.info('Closed | closedBy: ' + closedBy);
+            }
+        });
     });
 
     $('.wizard-proceed-student_info').click(function() {

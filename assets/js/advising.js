@@ -405,6 +405,7 @@ function queue_tablerenderer(element = '', data = []) {
     tablebody = element.find('tbody');
     tablebody.html('');
     count = 0;
+    units = 0;
     //array sched start loop
     $.each(data['data'], function(index, row) {
         computeSched(row['Start_Time'], row['End_Time'], row['Day'], row['Course_Code'], row['Course_Title'], row['from_time'], row['to_time'])
@@ -428,8 +429,12 @@ function queue_tablerenderer(element = '', data = []) {
             '));
         }
         count++;
+        units = units + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit']));
+        console.log(units);
     });
     $('#queueTable').data('queueResult', count);
+    $('#queueTable').data('units', units);
+    // alert($('#queueTable').data('units'));
 
     element.DataTable({
         "ordering": false,

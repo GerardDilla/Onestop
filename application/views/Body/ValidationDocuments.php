@@ -27,7 +27,7 @@ echo '</script>';
                 <!-- <form  id="form_submit" action="http://localhost:4003/uploadtodrive/test_post2" method="post" enctype="multipart/form-data" > -->
                 <div class="col-md-12" align="center">
                     <div class="table-responsive col-lg-12">
-                        <table class="table table-light mb-0">
+                        <table id="validationDocumentsTable" class="table table-light mb-0" style="min-width:900px;">
                             <thead>
                                 <tr>
                                     <th>Requirements</th>
@@ -80,9 +80,9 @@ echo '</script>';
                                     <?php
                                     } else {
                                     ?>
-                                        <tr>
+                                        <!-- <tr>
                                             <th colspan="5">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes"> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" checked="true"></th>
-                                        </tr>
+                                        </tr> -->
                                         <tr style="display:none;" id="married_certificate_div">
                                             <td><?php echo $list['rq_name']; ?></td>
                                             <td>
@@ -99,13 +99,13 @@ echo '</script>';
                                 if (isset($this->data['requirementstab'])) {
                                     if($this->data['interview_status'] == null){
                                 ?>
-                                    <tr>
+                                    <!-- <tr>
                                         <th colspan="5">
                                             Do you want to be interviewed?
                                             <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
                                         <label for="interview_no">  NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
                                         </th>
-                                    </tr>   
+                                    </tr>    -->
                                 <?php
                                     }else{
                                         echo "<tr><th colspan='2'>Do you want to be interviewed?<br><u>";

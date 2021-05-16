@@ -7,7 +7,7 @@
 <section class="section col-sm-12">
 <?php if(empty($date_submitted)){?>
 <form id="proof_of_payment_form" action="<?php echo base_url('main/uploadProofOfPaymentProcess');?>" method="post" enctype="multipart/form-data">
-<input type="hidden" name="payment_type" value="">
+<input type="hidden" name="payment_type" value="online_payment">
     <div class="card" style="margin:none;">
         <div class="card-header">
             <div class="col-md-12 row">
@@ -98,7 +98,7 @@
             <div class="col-md-12 row payment-page">
                 <div class="col-md-2 form-group online-payment">
                     <label class="input-label"><b>Bank Type</b></label>
-                    <select class="form-select" name="bank_type">
+                    <select required class="form-select" name="bank_type">
                         <option value="">Choose</option>
                         <option value="aub">AUB</option>
                         <option value="rcbc">RCBC</option>
@@ -112,14 +112,14 @@
                 </div>
                 <div class="col-md-3 online-payment">
                     <label class="input-label"><b>Account Number</b></label>
-                    <input type="text" class="form-control" name="account_number" placeholder="...." style="">
+                    <input required type="text" class="form-control" name="account_number" placeholder="...." style="">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
                 </div>
                 <div class="col-md-4 online-payment">
                     <label class="input-label"><b>Account Holder Name</b></label>
-                    <input type="text" class="form-control" name="holder_name" placeholder="...." style="">
+                    <input required type="text" class="form-control" name="holder_name" placeholder="...." style="">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="input-label"><b>Amount Paid</b></label>
-                    <input type="text" class="form-control number-format" name="amount_paid" placeholder="₱ 0.00">
+                    <input required type="text" class="form-control number-format" name="amount_paid" placeholder="₱ 0.00">
                     <div class="invalid-feedback">
                         This is required.
                     </div>
@@ -193,28 +193,8 @@ else{
     </div>
 </div>
 <!-- onlinepaymentModal -->
-
+<?php if(empty($date_submitted)):?>
 <script>
-class StorageData{
-    constructor(){
-        this.data = [];
-    }
-    getData(){
-        return this.data;
-    }
-    changeData(changedata){
-        this.data = changedata;
-    }
-}
-var image_upload = "";
-var storagedata = new StorageData();
-
-// var datacatcher = storage.getData();
-// OnloadImage();
-// setTimeout(()=>{
-//     console.log('Link:'+storagedata.getData());
-// },7000)
-// var image_url = "";
 iziToast.show({
     theme: 'light',
     icon: 'bi-exclamation-diamond-fill',
@@ -247,6 +227,30 @@ iziToast.show({
         console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
     }
 });
+</script>
+<?php endif ?>
+<script>
+class StorageData{
+    constructor(){
+        this.data = [];
+    }
+    getData(){
+        return this.data;
+    }
+    changeData(changedata){
+        this.data = changedata;
+    }
+}
+var image_upload = "";
+var storagedata = new StorageData();
+
+// var datacatcher = storage.getData();
+// OnloadImage();
+// setTimeout(()=>{
+//     console.log('Link:'+storagedata.getData());
+// },7000)
+// var image_url = "";
+
 $(".number-format").click(function () {
    $(this).select();
 });

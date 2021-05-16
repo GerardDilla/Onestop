@@ -74,8 +74,8 @@ class Main extends MY_Controller
 		$this->data['major'] = $major['Program_Major'];
 		//
 		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
-		$this->data['shs_student_number'] = $shs_bridge['shs_student_number'];
-		$this->data['applied_status'] = $shs_bridge['applied_status'];
+		$this->data['shs_student_number'] = empty($shs_bridge)?'':$shs_bridge['shs_student_number'];
+		$this->data['applied_status'] = empty($shs_bridge)?'':$shs_bridge['applied_status'];
 
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
@@ -718,16 +718,31 @@ class Main extends MY_Controller
 			// echo json_encode(array("msg" => $e));
 		}
 	}
+	// Payment Notification
 	public function notifyWhenPaymentSubmitted($ref_no = "", $amount = "", $email = "")
 	{
+		
 		$student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
 		//  CC to Accounting notification
 		$student_email = "";
-		if ($student_info['Email'] != "") {
-			$student_email = $student_info['Email'];
-		} else {
+		if ($email != "") {
 			$student_email = $email;
+		} else {
+			$student_email = $student_info['Email'];
 		}
+		$all_uploadeddata = array(
+			'ref_no' => $ref_no,
+			'amount' => $amount
+		);
+		$string = http_build_query($all_uploadeddata);
+        $ch = curl_init("http://localhost:4003/api/NotifyIfSubmitted/");
+        curl_setopt($ch,CURLOPT_POST,true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+		curl_exec($ch);
+        curl_close($ch);
+		
 		$email_data = array(
 			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
 			'reply_to' => 'jfabregas@sdca.edu.ph',
@@ -802,7 +817,7 @@ class Main extends MY_Controller
 				$req_id = $this->mainmodel->newRequirementLog(array(
 					'requirements_name' => 'proof_of_payment',
 					'requirements_date' => date("Y-m-d H:i:s"),
-					'status' => 'status',
+					'status' => 'pending',
 					'reference_no' => $ref_no,
 					'file_submitted' => $orig_name,
 					'file_type' => $orig_type,
@@ -909,9 +924,27 @@ class Main extends MY_Controller
 
 	}
 
-	// public function interview_status()
-	// {
-		
-	// 	// die($post);
-	// }
+	public function interview_status()
+	{
+		$interview = $this->input->post('interview');
+		$array_update = array(
+			'reference_number' => $this->session->userdata('reference_no'),
+			'interview' => $interview,
+		);
+		$this->AssesmentModel->update_interview_status($array_update);
+		// die($post);
+	}
+	
+	public function sdcaInquiry()
+	{
+		$getStudentInquiry = $this->mainmodel->getStudentInquiry();
+		$count = 0;
+		foreach($getStudentInquiry as $inquiry){
+			$getStudentInquiry[$count]['total_message'] = $this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']);
+			++$count;
+		}
+		$this->data['getStudentInquiry'] = $getStudentInquiry;
+		$this->chat_template($this->view_directory->chatAdmin());
+	}
+	// public function 
 }

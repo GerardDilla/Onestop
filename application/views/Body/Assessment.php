@@ -1,16 +1,16 @@
 <?php
-if ($this->session->flashdata('success') != "") {
-    echo "<script>iziToast.show({
-        theme: 'dark',
-        icon: 'icon-person',
-        title: 'Welcome',
-        message: '" . $this->session->flashdata('success') . "',
-        position: 'topRight',
-        progressBarColor: '#cc0000',
-        image: '" . base_url('assets/vendors/login_asset/img/sdcalogo.png') . "',
-    });</script>";
-    $this->session->set_flashdata('success', '');
-}
+// if ($this->session->flashdata('success') != "") {
+//     echo "<script>iziToast.show({
+//         theme: 'dark',
+//         icon: 'icon-person',
+//         title: 'Welcome',
+//         message: '" . $this->session->flashdata('success') . "',
+//         position: 'topRight',
+//         progressBarColor: '#cc0000',
+//         image: '" . base_url('assets/vendors/login_asset/img/sdcalogo.png') . "',
+//     });</script>";
+//     $this->session->set_flashdata('success', '');
+// }
 if ($this->session->flashdata('online_payment_zero') != "") {
     echo "<script>iziToast.error({
         title: 'Zero Value On Payment: ',
@@ -31,9 +31,61 @@ if ($this->session->flashdata('online_payment_zero') != "") {
             <div class="wizard-container">
                 <div class="card wizard-card" data-color="red" id="wizardProfile">
                     <!-- <form action="" method=""> -->
-                    <div class="wizard-navigation">
-                        <div class="progress-with-circle">
-                            <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
+                        <div class="wizard-navigation">
+                            <div class="progress-with-circle">
+                                <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 10%;"></div>
+                            </div>
+                            <div hidden id="assesment_hidden" data-status='<?php echo $this->data['status'][0] ?>'></div>
+                            <!-- Progress Nav -->
+                            
+                            <ul>
+                                <li id="li_student_information" >
+                                    <a href="#student_information_content" id="tab_student_information">
+                                        <div id="tab_student_information-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                            <i class="bi bi-person-lines-fill" id="bi_resize"></i>
+                                        </div>
+                                        <span class="max-respo">STUDENT INFORMATION</span><span class="min-respo">S.I.</span>
+                                    </a>
+                                </li>
+                                <li id="li_requirements">
+                                    <a href="#requirements_content" id="tab_requirements">
+                                        <div id="tab_requirements-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                            <i class="bi bi-card-checklist" id="bi_resize"></i>
+                                        </div>
+                                        <span class="max-respo">REQUIREMENTS</span><span class="min-respo">R.</span>
+                                    </a>
+                                </li>
+                                <li id="li_advising">
+                                    <a href="#advising_content" id="tab_advising">
+                                        <div id="tab_advising-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                            <i class="bi bi-clipboard-plus" id="bi_resize"></i>
+                                        </div>
+                                        <span class="max-respo">ADVISING</span><span class="min-respo">A.</span>
+                                    </a>
+                                </li>
+                                <li id="li_payment">
+                                    <a href="#payment_content" id="tab_payment">
+                                        <div id="tab_payment-circle" class="icon-circle">
+                                            <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
+                                            <i class="bi bi-cash-stack" id="bi_resize"></i>
+                                        </div>
+                                        <span class="max-respo">PAYMENT</span><span class="min-respo">P.</span>
+                                    </a>
+                                </li>
+                                <li id="li_registration">
+                                    <a href="#registration_content" id="tab_registration">
+                                        <div id="tab_registration-circle" class="icon-circle">
+                                            <i class="bi bi-file-text" id="bi_resize"></i>
+                                        </div>
+                                        <span class="max-respo">REGISTRATION</span><span class="min-respo">R.</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <!-- /Progress Nav -->
                         </div>
                         <div hidden id="assesment_hidden" data-status='<?php echo $this->data['status'][0] ?>'></div>
                         <!-- Progress Nav -->
@@ -180,9 +232,15 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js"></script>
+
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
+<script>
 
+
+</script>
+<script src="<?php echo base_url('assets/js/notify.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/notify.min.js'); ?>"></script>
 <!-- Temporary Loading script -->
 <script>
     $(document).ajaxStart(function() {

@@ -66,8 +66,16 @@ class temp_api extends CI_Controller
 			'status' => '',
 			'data' => '',
 		);
+		
+		$result = $this->AdvisingModel->get_queued_subjects($this->reference_number);
+		$count = 0;
+		foreach($result as $list){
+			$result[$count]['from_time'] = $this->AdvisingModel->convertTime($list['Start_Time'])['Schedule_Time'];
+			$result[$count]['to_time'] = $this->AdvisingModel->convertTime($list['End_Time'])['Schedule_Time'];
+			++$count;
+		}
 		$output['status'] = $this->AdvisingModel->getfees_history($this->reference_number);
-		$output['data'] = $this->AdvisingModel->get_queued_subjects($this->reference_number);
+		$output['data'] = $result;
 		echo json_encode($output);
 	}
 	public function queue_subject()

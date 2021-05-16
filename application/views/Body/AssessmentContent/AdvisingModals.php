@@ -70,17 +70,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-lg" id="scheduleTable" style="width:100%" cellspacing="2">
+                <table class="table table-lg" id="scheduleTable" style="width:100%">
                     <thead>
                         <tr>
                             <th class="time-header">Time</th>
-                            <th class="time-header text-center">M</th>
-                            <th class="time-header text-center">T</th>
-                            <th class="time-header text-center">W</th>
-                            <th class="time-header text-center">TH</th>
-                            <th class="time-header text-center">F</th>
-                            <th class="time-header text-center">S</th>
-                            <th class="time-header text-center">A</th>
+                            <th class="time-header text-center" width="10%">M</th>
+                            <th class="time-header text-center" width="10%">T</th>
+                            <th class="time-header text-center" width="10%">W</th>
+                            <th class="time-header text-center" width="10%">TH</th>
+                            <th class="time-header text-center" width="10%">F</th>
+                            <th class="time-header text-center" width="10%">S</th>
+                            <th class="time-header text-center" width="10%">A</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -50,3 +50,18 @@ td.schedule-time{
     background:white !important;
     overflow:hidden;
 }
+.chat-logo{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    z-index:10000;
+    
+}
+.chat-logo i{
+    font-size: 4em;
+    transition: font-size .2s;
+}
+.chat-logo i:hover{
+    color:red;
+    font-size:4.5em;
+}

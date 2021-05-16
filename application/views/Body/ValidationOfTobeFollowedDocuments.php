@@ -31,7 +31,7 @@ echo '</script>';
                         <thead>
                             <tr>
                                 <th>Requirements</th>
-                                <th max-width="20%">Add File</th>
+                                <th>Add File</th>
                                 <!-- <th style="text-align:center;"></th> -->
                                 <th style="text-align:center;" width="15%">Status</th>
                                 <th style="text-align:center;" width="15%">Date</th>

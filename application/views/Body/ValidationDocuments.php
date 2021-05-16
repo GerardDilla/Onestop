@@ -33,20 +33,20 @@ echo '</script>';
                                     <th>Requirements</th>
                                     <th max-width="20%">Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font>
                                     </th>
-                                    <th style="text-align:center;">TBF</th>
+                                    <th style="text-align:center;">To be Follow</th>
                                     <th style="text-align:center;" width="15%">Status</th>
                                     <th style="text-align:center;" width="15%">Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- <tr>
-                                <td>Documents</td>
-                                <td>
-                                    <input required class="form-control form-control-sm" name="document" id="document" type="file"><div class="invalid-feedback feedback-3"><i class="bx bx-radio-circle"></i>This is required.</div>
-                                </td>
-                                <td style="text-align:center;">Active</td>
-                                <td style="text-align:center;"><?php echo date("Y-m-d H:i:s") ?></td>
-                            </tr> -->
+                                    <td>Documents</td>
+                                    <td>
+                                        <input required class="form-control form-control-sm" name="document" id="document" type="file"><div class="invalid-feedback feedback-3"><i class="bx bx-radio-circle"></i>This is required.</div>
+                                    </td>
+                                    <td style="text-align:center;">Active</td>
+                                    <td style="text-align:center;"><?php echo date("Y-m-d H:i:s") ?></td>
+                                </tr> -->
                                 <?php
                                 $status = "";
                                 // $requirements = $this->data['requirements'];
@@ -80,9 +80,9 @@ echo '</script>';
                                     <?php
                                     } else {
                                     ?>
-                                        <!-- <tr>
+                                        <tr>
                                             <th colspan="5">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes"> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" checked="true"></th>
-                                        </tr> -->
+                                        </tr>
                                         <tr style="display:none;" id="married_certificate_div">
                                             <td><?php echo $list['rq_name']; ?></td>
                                             <td>
@@ -99,13 +99,13 @@ echo '</script>';
                                 if (isset($this->data['requirementstab'])) {
                                     if($this->data['interview_status'] == null){
                                 ?>
-                                    <!-- <tr>
+                                    <tr>
                                         <th colspan="5">
                                             Do you want to be interviewed?
                                             <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
                                         <label for="interview_no">  NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
                                         </th>
-                                    </tr>    -->
+                                    </tr>   
                                 <?php
                                     }else{
                                         echo "<tr><th colspan='2'>Do you want to be interviewed?<br><u>";

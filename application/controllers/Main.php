@@ -946,5 +946,8 @@ class Main extends MY_Controller
 		$this->data['getStudentInquiry'] = $getStudentInquiry;
 		$this->chat_template($this->view_directory->chatAdmin());
 	}
+	public function forTest(){
+		echo strtotime(date("Y-m-d H:i:s")) >= strtotime(date("Y-m-d 08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))?' onclick="timeWarning()"':''; 
+	}
 	// public function 
 }

@@ -87,57 +87,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                             </ul>
                             <!-- /Progress Nav -->
                         </div>
-                        <div hidden id="assesment_hidden" data-status='<?php echo $this->data['status'][0] ?>'></div>
-                        <!-- Progress Nav -->
-                        <ul>
-                            <li id="li_student_information">
-                                <a href="#student_information_content" id="tab_student_information">
-                                    <div id="tab_student_information-circle" class="icon-circle">
-                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
-                                        <i class="bi bi-person-lines-fill" id="bi_resize"></i>
-                                    </div>
-                                    STUDENT INFORMATION
-                                </a>
-                            </li>
-                            <li id="li_requirements">
-                                <a href="#requirements_content" id="tab_requirements">
-                                    <div id="tab_requirements-circle" class="icon-circle">
-                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
-                                        <i class="bi bi-card-checklist" id="bi_resize"></i>
-                                    </div>
-                                    REQUIREMENTS
-                                </a>
-                            </li>
-                            <li id="li_advising">
-                                <a href="#advising_content" id="tab_advising">
-                                    <div id="tab_advising-circle" class="icon-circle">
-                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
-                                        <i class="bi bi-clipboard-plus" id="bi_resize"></i>
-                                    </div>
-                                    ADVISING
-                                </a>
-                            </li>
-                            <li id="li_payment">
-                                <a href="#payment_content" id="tab_payment">
-                                    <div id="tab_payment-circle" class="icon-circle">
-                                        <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
-                                        <i class="bi bi-cash-stack" id="bi_resize"></i>
-                                    </div>
-                                    PAYMENT
-                                </a>
-                            </li>
-                            <li id="li_registration">
-                                <a href="#registration_content" id="tab_registration">
-                                    <div id="tab_registration-circle" class="icon-circle">
-                                        <i class="bi bi-file-text" id="bi_resize"></i>
-                                    </div>
-                                    REGISTRATION
-                                </a>
-                            </li>
-
-                        </ul>
-                        <!-- /Progress Nav -->
-                    </div>
+                        
                     <br>
                     <br>
                     <br>

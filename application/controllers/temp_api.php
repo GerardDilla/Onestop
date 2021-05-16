@@ -62,7 +62,16 @@ class temp_api extends CI_Controller
 	}
 	public function queue_subject_list()
 	{
-		$result = $this->AdvisingModel->get_queued_subjects($this->reference_number);
+		// $result = $this->AdvisingModel->get_queued_subjects($this->reference_number);
+		$result = $this->AdvisingModel->get_queued_subjects(1088);
+		$count = 0;
+		foreach($result as $list){
+			$result[$count]['from_time'] = $this->AdvisingModel->convertTime($list['Start_Time'])['Schedule_Time'];
+			$result[$count]['to_time'] = $this->AdvisingModel->convertTime($list['End_Time'])['Schedule_Time'];
+			++$count;
+		}
+		
+		// echo '<pre>'.print_r($result,1).'</pre>';
 		echo json_encode($result);
 	}
 	public function queue_subject()

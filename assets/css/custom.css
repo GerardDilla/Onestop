@@ -39,6 +39,7 @@ div#main{
     background:white;
     padding:10px;
     border-radius:10px;
+    font-size:70%;
 }
 td.schedule-time{
     margin:0 2px 0 2px;
@@ -48,4 +49,19 @@ td.schedule-time{
     top: 0;
     background:white;
     overflow:hidden;
+}
+.chat-logo{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    z-index:10000;
+    
+}
+.chat-logo i{
+    font-size: 4em;
+    transition: font-size .2s;
+}
+.chat-logo i:hover{
+    color:red;
+    font-size:4.5em;
 }

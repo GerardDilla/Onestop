@@ -789,7 +789,7 @@ class Main extends MY_Controller
 				$req_id = $this->mainmodel->newRequirementLog(array(
 					'requirements_name' => 'proof_of_payment',
 					'requirements_date' => date("Y-m-d H:i:s"),
-					'status' => 'status',
+					'status' => 'pending',
 					'reference_no' => $ref_no,
 					'file_submitted' => $orig_name,
 					'file_type' => $orig_type,
@@ -906,4 +906,17 @@ class Main extends MY_Controller
 		$this->AssesmentModel->update_interview_status($array_update);
 		// die($post);
 	}
+	
+	public function sdcaInquiry()
+	{
+		$getStudentInquiry = $this->mainmodel->getStudentInquiry();
+		$count = 0;
+		foreach($getStudentInquiry as $inquiry){
+			$getStudentInquiry[$count]['total_message'] = $this->mainmodel->countTotalUnseenMessage($inquiry['ref_no']);
+			++$count;
+		}
+		$this->data['getStudentInquiry'] = $getStudentInquiry;
+		$this->chat_template($this->view_directory->chatAdmin());
+	}
+	// public function 
 }

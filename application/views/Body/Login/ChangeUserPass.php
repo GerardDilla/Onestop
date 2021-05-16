@@ -10,6 +10,9 @@
     margin: 3px 0 0;
     font-weight: bold;
 }
+#input_username:hover{
+    cursor:pointer;
+}
 </style>
 <?php
 if($this->session->flashdata('error')!=''){
@@ -47,24 +50,25 @@ if($this->session->flashdata('error')!=''){
                 <form method="post" id="form_process" class="form-validate" action="<?php echo base_url('main/changeUserPassProcess');?>">
                     <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
                     <span class="white-box"></span>
+                    <br>
                     <input type="hidden" name="JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=" value="<?php echo $key;?>">
                     
                     <!-- <div class="col-md-12" style="margin-bottom:40px">
                     <h1>Forgot Password</h1>
                 </div> -->
-                <div class="form-group anim3">
-                    <input required autocomplete="off" id="login-new" type="text" name="username" required data-msg="Please enter your new password" class="pr-password input-material">
+                <div class="form-group anim3" id="input_username">
+                    <input required autocomplete="off" type="text" name="username" data-msg="Please enter your new username" class="input-material">
                     <label for="login-new" class="label-material" style="color:black;font-weight:bold;">Input your Username</label>
                 </div>
                 <div class="form-group anim3">
-                    <input required autocomplete="off" id="login-new" type="password" name="new_password" required data-msg="Please enter your new password" class="pr-password input-material">
+                    <input required autocomplete="off" type="password" name="new_password" data-msg="Please enter your new password" class="pr-password input-material">
                     <label for="login-new" class="label-material" style="color:black;font-weight:bold;">Input your Password</label>
                     <span class="show-password">
                         <i id="show_new_password" class="bi bi-eye-fill" onclick="showPassword('new_password')" aria-hidden="true"></i>
                     </span>
                 </div>
                 <div class="form-group anim3">
-                    <input required autocomplete="off" id="login-confirm" type="password" name="confirm_password" required data-msg="Incorrect confirm password" class="input-material">
+                    <input required autocomplete="off" id="login-confirm" type="password" name="confirm_password" data-msg="Incorrect confirm password" class="input-material">
                     <label for="login-confirm" class="label-material" style="color:black;font-weight:bold;">Confirm Password</label>
                     <span class="show-password">
                         <i id="show_confirm_password" class="bi bi-eye-fill" onclick="showPassword('confirm_password')" aria-hidden="true"></i>

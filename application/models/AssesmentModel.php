@@ -64,6 +64,16 @@ class AssesmentModel extends CI_Model
         return $query->row_array();
     }
 
+    public function get_student_with_course($reference_number)
+    {
+        $this->db->select('*');
+        $this->db->from('Student_Info si');
+        $this->db->where('Reference_Number', $reference_number);
+        $this->db->join('Programs p', 'si.Course = p.Program_Code','LEFT');
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
     public function get_course_program_code($program_code)
     {
         $this->db->select('*');

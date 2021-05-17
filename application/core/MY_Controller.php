@@ -33,6 +33,7 @@ class MY_Controller extends CI_Controller
         $this->load->library('session');
         $this->load->database();
         $this->load->model('MainModel', 'mainmodel');
+        $this->load->model('AdminModel', 'adminmodel');
         $this->load->model('AssesmentModel');
         $this->load->model('AdvisingModel');
         $this->load->library('encryption');

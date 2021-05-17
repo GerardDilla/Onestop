@@ -107,4 +107,12 @@
             <br>
         </div>
     </div>
+    <div class="col-md-2">
+        <a href="<?php echo base_url('forms/digital_citizenship') ?>" style="color:inherit"><button class="btn btn-primary">Digital Citizenship</button></a>
+        <br><br>
+    </div>
+    <div class="col-md-2">
+        <a href="<?php echo base_url('forms/id_application') ?>" style="color:inherit"><button class="btn btn-primary">ID Application</button></a>
+    </div>
+    <div class="col-md-4"></div>
 </div>

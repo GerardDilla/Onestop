@@ -45,7 +45,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+                <!-- <li class="sidebar-item">
                     <a href="<?php echo base_url('forms/digital_citizenship') ?>" class='sidebar-link'>
                         <i class="bi bi-credit-card-fill"></i>
                         <span>Digital Citizenship</span>
@@ -57,7 +57,7 @@
                         <i class="bi bi-credit-card-fill"></i>
                         <span>ID Application</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>

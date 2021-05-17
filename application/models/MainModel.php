@@ -7,7 +7,7 @@ class MainModel extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('student_account');
-        $this->db->join('student_info', 'student_account.reference_no = student_info.Reference_Number', 'left');
+        $this->db->join('Student_Info', 'student_account.reference_no = Student_Info.Reference_Number', 'left');
         $this->db->where('username', $username);
         $this->db->where('password', $password);
         $this->db->where('status', 'active');
@@ -17,7 +17,7 @@ class MainModel extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('student_account');
-        $this->db->join('student_info', 'student_account.reference_no = student_info.Reference_Number', 'left');
+        $this->db->join('Student_Info', 'student_account.reference_no = Student_Info.Reference_Number', 'left');
         $this->db->where('automated_code', $key);
         $this->db->where('automated_code !=', '');
         return $this->db->get()->row_array();
@@ -39,10 +39,10 @@ class MainModel extends CI_Model
     }
     public function checkEmail($email)
     {
-        $this->db->select('student_account.*,student_info.First_Name,student_info.Last_Name');
+        $this->db->select('student_account.*,Student_Info.First_Name,Student_Info.Last_Name');
         $this->db->from('student_account');
-        $this->db->join('student_info', 'student_account.reference_no = student_info.Reference_Number');
-        $this->db->where('student_info.Email', $email);
+        $this->db->join('Student_Info', 'student_account.reference_no = Student_Info.Reference_Number');
+        $this->db->where('Student_Info.Email', $email);
         return $this->db->get()->row_array();
     }
     public function getAllStudAccount()
@@ -100,7 +100,7 @@ class MainModel extends CI_Model
     public function getStudentAccountInfo($ref_no)
     {
         $this->db->where('Reference_Number', $ref_no);
-        return $this->db->get('student_info')->row_array();
+        return $this->db->get('Student_Info')->row_array();
     }
     public function getRequirementsLogPerRefNo()
     {
@@ -139,22 +139,24 @@ class MainModel extends CI_Model
         return $query;
     }
 
-    public function getStudentInquiry(){
+    public function getStudentInquiry()
+    {
         $this->db->select('*');
         $this->db->from('student_inquiry');
-        $this->db->join('student_info','student_inquiry.ref_no = student_info.Reference_Number');
-        $this->db->where('user_type','student');
+        $this->db->join('Student_Info', 'student_inquiry.ref_no = Student_Info.Reference_Number');
+        $this->db->where('user_type', 'student');
         $this->db->group_by('ref_no');
         return $this->db->get()->result_array();
     }
-    public function countTotalUnseenMessage($ref_no){
+    public function countTotalUnseenMessage($ref_no)
+    {
         $this->db->select('count(id) as total_unseen');
         $this->db->from('student_inquiry');
-        $this->db->where('ref_no',$ref_no);
-        $this->db->where('status <> ','seen');
-        $this->db->where('user_type','student');
+        $this->db->where('ref_no', $ref_no);
+        $this->db->where('status <> ', 'seen');
+        $this->db->where('user_type', 'student');
         $this->db->group_by('ref_no');
         $result = $this->db->get()->row_array();
-        return empty($result['total_unseen'])?0:$result['total_unseen'];
+        return empty($result['total_unseen']) ? 0 : $result['total_unseen'];
     }
 }

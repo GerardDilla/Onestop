@@ -96,9 +96,9 @@ $query_builder = TRUE;
 // );
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => 'asdf',
+	'hostname' => '10.0.0.52',
+	'username' => 'JHON',
+	'password' => 'JHON',
 	'database' => 'schoolsysdb',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

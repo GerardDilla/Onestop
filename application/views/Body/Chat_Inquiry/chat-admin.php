@@ -306,7 +306,6 @@ async function getInquiryTableList(data){
     $('#chatInquiryTable tbody').append(html);
 }
 function updateToSeen(data){
-    console.log(data)
     if(data.ref_no==choose_ref){
         if(data.type=="student"){
             $('.sent').each(function(){
@@ -337,6 +336,7 @@ window.setInterval(()=>{
 },2000);
 function receivedMessage(data) 
 {
+    console.log(data)
     // console.log(data.message_count);
     getInquiryTableList(data.message_count);
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');

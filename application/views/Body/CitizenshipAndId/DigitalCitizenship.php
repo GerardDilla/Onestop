@@ -1,9 +1,19 @@
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
-    <div class="alert alert-light-danger color-danger">
-        <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
-        NOTE: Only NAME can be edited.<br>
-        <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
-    </div>
+    <?php
+    if ($this->data['digital'] === true) {
+    ?>
+        <div class="alert alert-light-danger color-danger">
+            <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
+            NOTE: Only NAME can be edited.<br>
+            <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
+        </div>
+    <?php } else { ?>
+        <div class="alert alert-light-danger color-danger">
+            <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
+            NOTE: You have already submited, Please wait for an update.<br>
+            <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
+        </div>
+    <?php } ?>
     <div class="card">
         <div class="row">
             <div class="card">
@@ -18,27 +28,36 @@
                                 </p>
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Last Name" name="last_name" id="digital_last_name">
-                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
-                                        <i class="bi bi-pencil-square" id="button_icon"></i>
-                                    </button> -->
+                                        <?php
+                                        if ($this->data['digital'] === true) {
+                                            echo '<input type="text" class="form-control" placeholder="Last Name" name="last_name" id="digital_last_name">';
+                                        } else {
+                                            echo '<input type="text" class="form-control" readonly placeholder="Last Name" name="last_name" id="digital_last_name">';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Given Name" name="first_name" id="digital_first_name">
-                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
-                                        <i class="bi bi-pencil-square" id="button_icon"></i>
-                                    </button> -->
+                                        <?php
+                                        if ($this->data['digital'] === true) {
+                                            echo '<input type="text" class="form-control" placeholder="Given Name" name="first_name" id="digital_first_name">';
+                                        } else {
+                                            echo '<input type="text" class="form-control" readonly placeholder="Given Name" name="first_name" id="digital_first_name">';
+                                        }
+                                        ?>
+
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
-                                        <!-- <span class="input-group-text">M.I</span> -->
-                                        <input type="text" class="form-control" placeholder="Middle Initial" name="middle_name" id="digital_middle_name">
-                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
-                                        <i class="bi bi-pencil-square" id="button_icon"></i>
-                                    </button> -->
+                                        <?php
+                                        if ($this->data['digital'] === true) {
+                                            echo '<input type="text" class="form-control" placeholder="Middle Initial" name="middle_name" id="digital_middle_name">';
+                                        } else {
+                                            echo '<input type="text" class="form-control" readonly placeholder="Middle Initial" name="middle_name" id="digital_middle_name">';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
 
@@ -104,10 +123,14 @@
                                     </div>
                                     <br><br><br>
                                 </div> -->
-                                <div class="col-md-8"></div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary" style="float: right;">Submit</button>
-                                </div>
+                                <?php
+                                if ($this->data['digital'] === true) {
+                                ?>
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary" style="float: right;">Submit</button>
+                                    </div>
+                                <?php } ?>
 
                             </div>
                         </form>

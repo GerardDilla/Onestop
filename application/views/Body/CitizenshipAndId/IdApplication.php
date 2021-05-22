@@ -1,9 +1,19 @@
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
-    <div class="alert alert-light-danger color-danger">
-        <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
-        NOTE: Only NAME can be edited.<br>
-        <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
-    </div>
+    <?php
+    if ($this->data['id_app'] === true) {
+    ?>
+        <div class="alert alert-light-danger color-danger">
+            <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
+            NOTE: Only NAME can be edited.<br>
+            <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
+        </div>
+    <?php } else { ?>
+        <div class="alert alert-light-danger color-danger">
+            <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
+            NOTE: You have already submited, Please wait for an update.<br>
+            <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
+        </div>
+    <?php } ?>
     <div class="card">
         <div class="row">
             <div class="card">
@@ -15,7 +25,6 @@
                                 <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Reference Number</span>
-                                        <!-- <span class="required_field"> *</span> -->
                                     </p>
                                     <div class="input-group mb-3">
                                         <input type="text" readonly class="form-control" id="id_reference_number" name="ref_no" placeholder="Reference Number">
@@ -25,12 +34,6 @@
                                 <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Student Number</span>
-                                        <!-- <span class="required_field"> *</span><br>
-                                    <small class="text-muted">Can be found on your registration form.
-                                        <br>
-                                        <span class="text_note">Note</span>: If not found, proceed to Registrars Office for your Student Number
-
-                                    </small> -->
                                     </p>
                                     <div class="input-group mb-3">
                                         <input type="text" readonly class="form-control" id="id_student_number" name="std_num" placeholder="Student Number">
@@ -43,33 +46,41 @@
                                 </p>
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="First Name">
-                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
-                                        <i class="bi bi-pencil-square" id="button_icon"></i>
-                                    </button> -->
+                                        <?php
+                                        if ($this->data['id_app'] === true) {
+                                            echo '<input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="First Name">';
+                                        } else {
+                                            echo '<input type="text" readonly class="form-control" id="id_first_name" name="first_name" placeholder="First Name">';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
-                                        <!-- <span class="input-group-text" title="Middle Initial">M.I</span> -->
-                                        <input type="text" class="form-control" id="id_middle_name" name="middle_name" placeholder="Middle Name">
-                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
-                                        <i class="bi bi-pencil-square" id="button_icon"></i>
-                                    </button> -->
+                                        <?php
+                                        if ($this->data['id_app'] === true) {
+                                            echo '<input type="text" class="form-control" id="id_middle_name" name="middle_name" placeholder="Middle Name">';
+                                        } else {
+                                            echo '<input type="text" class="form-control" readonly id="id_middle_name" name="middle_name" placeholder="Middle Name">';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Last Name">
-                                        <!-- <button class="input-group-text btn-primary" title="Edit Data">
-                                        <i class="bi bi-pencil-square" id="button_icon"></i>
-                                    </button> -->
+                                        <?php
+                                        if ($this->data['id_app'] === true) {
+                                            echo '<input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Last Name">';
+                                        } else {
+                                            echo '<input type="text" class="form-control" readonly id="id_last_name" name="last_name" placeholder="Last Name">';
+                                        }
+                                        ?>
+
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <p>
                                         <span class="title_color">Course</span>
-                                        <!-- <span class="required_field"> *</span> -->
                                     </p>
                                     <div class="input-group mb-3">
                                         <input type="text" readonly class="form-control" id="id_course" placeholder="Course">
@@ -92,9 +103,6 @@
                                         <span class="title_color">Signature</span>
                                         <span class="required_field"> *</span>
                                         <small>
-                                            <!-- <br> -->
-                                            <!-- <span class="text_note">Reminder</span>: For Higher Education (HED) Students only.
-                                        <br> -->
                                             <span class="text_note">NOTE</span>: USE YOUR SETUDENT NUMBER TO NAMe YOUR SIGANTURE ONLY
                                         </small>
                                     </p>
@@ -104,7 +112,6 @@
                                 <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Guardian Name</span>
-                                        <!-- <span class="required_field"> *</span> -->
                                     </p>
                                     <div class="input-group mb-3">
                                         <input type="text" readonly class="form-control" id="id_gurdian_name" placeholder="Guardian Name">
@@ -113,7 +120,6 @@
                                 <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Guardian Address</span>
-                                        <!-- <span class="required_field"> *</span> -->
                                     </p>
                                     <div class="input-group mb-3">
                                         <input type="text" readonly class="form-control" id="id_gurdian_address" placeholder="Guardian Address">
@@ -122,7 +128,6 @@
                                 <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Guardian Contact Number</span>
-                                        <!-- <span class="required_field"> *</span> -->
                                     </p>
                                     <div class="input-group mb-3">
                                         <input type="text" readonly class="form-control" id="id_gurdian_number" placeholder="Guardian Contact Number">
@@ -131,16 +136,19 @@
                                 <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Guardian Relationship</span>
-                                        <!-- <span class="required_field"> *</span> -->
                                     </p>
                                     <div class="input-group mb-3">
                                         <input type="text" readonly class="form-control" id="id_gurdian_relationship" placeholder="Guardian Email Address">
                                     </div>
                                 </div>
-                                <div class="col-md-8"></div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary" style="float: right;">Submit</button>
-                                </div>
+                                <?php
+                                if ($this->data['id_app'] === true) {
+                                ?>
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary" style="float: right;">Submit</button>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </form>
                     </div>

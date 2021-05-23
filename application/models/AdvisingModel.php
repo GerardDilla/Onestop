@@ -359,7 +359,7 @@ class AdvisingModel extends CI_Model
     public function convertTime($time)
     {
         $this->db->where('Time_From', $time);
-        return $this->db->get('time')->row_array();
+        return $this->db->get('Time')->row_array();
     }
     // For testing: remove on live
     public function insert_enrolled_subject_test($data)

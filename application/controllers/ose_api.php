@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class ose_api extends CI_Controller
+class Ose_api extends CI_Controller
 {
 	protected $reference_number;
 	protected $student_number;

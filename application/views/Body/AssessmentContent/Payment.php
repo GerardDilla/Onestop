@@ -130,7 +130,7 @@
             </li>
 
             <li>
-                <button type="button" class="btn btn-lg btn-success setpaid_test">Set As Paid (FOR TESTING)</button>
+                <!-- <button type="button" class="btn btn-lg btn-success setpaid_test">Set As Paid (FOR TESTING)</button> -->
             </li>
 
             <li style="text-align:center"><img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>

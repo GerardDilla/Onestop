@@ -117,14 +117,33 @@ span.chat-status{
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Level</th>
+                            <th>Course</th>
                             <th width="15%">Total Messages</th>
                             <th width="15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($getStudentInquiry as $inquiry_list):?>
+                        <?php
+                        $level = "";
+                        if($inquiry_list['YearLevel']=="1"){
+                            $level = "1st Year";
+                        }
+                        else if($inquiry_list['YearLevel']=="2"){
+                            $level = "2nd Year";
+                        }
+                        else if($inquiry_list['YearLevel']=="3"){
+                            $level = "3rd Year";
+                        }
+                        else if($inquiry_list['YearLevel']=="4"){
+                            $level = "4th Year";
+                        }
+                        ?>
                         <tr>
                             <td><?php echo $inquiry_list['First_Name'].' '.$inquiry_list['Middle_Name'].' '.$inquiry_list['Last_Name'];?></td>
+                            <td><?php echo $level; ?></td>
+                            <td><?php echo $inquiry_list['Course']; ?></td>
                             <td width="15%"><?php echo $inquiry_list['total_message']; ?></td>
                             <td width="15%"><button class="btn btn-info" onclick="openModal('<?php echo $inquiry_list['ref_no'];?>','<?php echo $inquiry_list['First_Name'].' '.$inquiry_list['Middle_Name'].' '.$inquiry_list['Last_Name'];?>')" data-bs-toggle="modal" data-bs-target="#chatinquiryModal">open</button></td>
                         </tr>
@@ -299,14 +318,29 @@ async function getInquiryTableList(data){
     $('#chatInquiryTable tbody').empty();
     var html = "";
     $.each(data,function(index,val){
+        var level = ""
+        if(val.YearLevel=="1"){
+            level = "1st Year"
+        }
+        else if(val.YearLevel=="2"){
+            level = "2nd Year"
+        }
+        else if(val.YearLevel=="3"){
+            level = "3rd Year"
+        }
+        else if(val.YearLevel=="4"){
+            level = "4th Year"
+        }
+
         html += `<tr><td>${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}</td>`;
+        html += `<td>${level}</td>`;
+        html += `<td>${val.Course}</td>`;
         html += `<td>${val.total_message}</td>`;
         html += `<td><button class="btn btn-info" onclick="openModal('${val.ref_no}','${val.First_Name+' '+val.Middle_Name+' '+val.Last_Name}')" data-bs-toggle="modal" data-bs-target="#chatinquiryModal">open</button></td></tr>`; 
     })
     $('#chatInquiryTable tbody').append(html);
 }
 function updateToSeen(data){
-    console.log(data)
     if(data.ref_no==choose_ref){
         if(data.type=="student"){
             $('.sent').each(function(){
@@ -337,6 +371,7 @@ window.setInterval(()=>{
 },2000);
 function receivedMessage(data) 
 {
+    console.log(data)
     // console.log(data.message_count);
     getInquiryTableList(data.message_count);
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');

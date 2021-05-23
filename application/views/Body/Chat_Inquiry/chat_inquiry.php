@@ -340,9 +340,9 @@ function welcomeMessage(){
 function receivedMessage(data) {
     
     // getInquiryTableList(data.total_message);
-
+    console.log(data);
     var get_current_count = data.message_count.find(data=> data.ref_no=="<?php echo $this->session->userdata('reference_no');?>")
-    
+    var get
     // total_message
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     

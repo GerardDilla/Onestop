@@ -1867,9 +1867,10 @@ select option {
 }
 
 .login-page .container {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   z-index: 999;
-  padding: 20px;
+  height:100%;
+  /* padding: 20px; */
   position: relative;
 }
 

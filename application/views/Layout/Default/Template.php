@@ -6,13 +6,12 @@
     <!-- Header Content -->
     <title><?php if ($Title) echo $Title; ?></title>
     <?php if ($Header) echo $Header; ?>
-
+    
 </head>
 
 <body>
 
     <div id="app">
-
         <!-- Sidebar Content -->
         <?php if ($Sidenav) echo $Sidenav; ?>
 
@@ -29,7 +28,7 @@
             <div class="page-heading">
                 <h3><?php if ($Title) echo $Title; ?></h3>
             </div>
-
+            <?php if ($Script) echo $Script; ?>
             <!-- Body Content -->
             <div class="page-content">
                 <?php if ($Body) echo $Body; ?>
@@ -39,11 +38,13 @@
             <?php if ($Footer) echo $Footer; ?>
 
         </div>
-
+        <?php if($inquiry) echo $inquiry;?>
+        
+        <!-- <span class="chat-logo"><i class="bi bi-chat-text"></i></span> -->
     </div>
 
     <!-- Scripts Content -->
-    <?php if ($Script) echo $Script; ?>
+    
 
 </body>
 

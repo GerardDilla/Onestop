@@ -11,7 +11,7 @@
 }
 
 div#main{
-    margin-left:300px;
+    /* margin-left:300px; */
     transition: all .5s ease-out;
   }
 /* span:after{
@@ -25,3 +25,46 @@ div#main{
     background:white;
 }
  */
+.paymentbullet li{
+    list-style-type:none;
+    margin:10px;
+}
+.paymentbullet li button{
+    width:100% !important;
+}
+.paymentbullet li a{
+    width:100% !important;
+}
+.sched-subject{
+    background:white;
+    padding:10px;
+    border-radius:10px;
+    font-size:70%;
+}
+td.schedule-time{
+    margin:0 2px 0 2px;
+}
+.time-header{
+    position: sticky;
+    top: 0;
+    background:white !important;
+    overflow:hidden;
+}
+.chat-logo{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    z-index:10000;
+    
+}
+.chat-logo i{
+    font-size: 4em;
+    transition: font-size .2s;
+}
+.chat-logo i:hover{
+    color:red;
+    font-size:4.5em;
+}
+.wizard-container .tab-content{
+    margin-top:10% !important;
+}

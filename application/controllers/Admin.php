@@ -13,24 +13,25 @@ class Admin extends MY_Controller
 	}
 
 	public function index()
-	{   
-        // if(empty(session("admin_id"))){
-        //     $this->login_template($this->view_directory->admin_login());
+	{
+		// if(empty(session("admin_id"))){
+		//     $this->login_template($this->view_directory->admin_login());
 		//     $this->appkey = 'testkey101';
-        // }else{
-        //     redirect(base_url('main/sdcainquiry'));
-        // }
-        $this->login_template($this->view_directory->admin_login());
-        $this->appkey = 'testkey101';
+		// }else{
+		//     redirect(base_url('index.php/Main/sdcainquiry'));
+		// }
+		$this->login_template($this->view_directory->admin_login());
+		$this->appkey = 'testkey101';
 	}
-    public function loginProcess(){
-        try {
+	public function loginProcess()
+	{
+		try {
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
 
-			$data = $this->adminmodel->login(array('username'=>$username,'password'=>$password));
-			if(!empty($data)){
-                $this->session->set_userdata("admin_id",$data['User_ID']);
+			$data = $this->adminmodel->login(array('username' => $username, 'password' => $password));
+			if (!empty($data)) {
+				$this->session->set_userdata("admin_id", $data['User_ID']);
 				$this->session->set_flashdata('success', $data['User_FullName']);
 				redirect(base_url('admin/sdcainquiry'));
 			} else {
@@ -41,8 +42,8 @@ class Admin extends MY_Controller
 			$this->session->set_flashdata('msg', $e);
 			redirect($_SERVER['HTTP_REFERER']);
 		}
-    }
-    public function sdcaInquiry()
+	}
+	public function sdcaInquiry()
 	{
 		$getStudentInquiry = $this->adminmodel->getStudentInquiry();
 		$count = 0;
@@ -53,9 +54,10 @@ class Admin extends MY_Controller
 		$this->data['getStudentInquiry'] = $getStudentInquiry;
 		$this->chat_template($this->view_directory->chatAdmin());
 	}
-    public function logout(){
-        $this->session->set_userdata("admin_id");
-        redirect(base_url('admin/'));
-    }
-    // public function loginProc
+	public function logout()
+	{
+		$this->session->set_userdata("admin_id");
+		redirect(base_url('admin/'));
+	}
+	// public function loginProc
 }

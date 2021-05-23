@@ -54,8 +54,7 @@ $(document).ready(function () {
                     console.log('ready to advise');
                     // Came from advising.js
 
-                    wizard_payment();
-                    fetch_user_status();
+                    // wizard_payment();
                     init_advise();
                     // location.reload();
 

@@ -150,7 +150,7 @@ class Main extends MY_Controller
 			if (!empty($data)) {
 				$this->setSession($data);
 				$this->session->set_flashdata('success', $data['First_Name'] . ' ' . $data['Last_Name']);
-				redirect(base_url('main/selfassesment'));
+				redirect(base_url('index.php/Main/selfassesment'));
 			} else {
 				$this->session->set_flashdata('msg', 'Incorrect username or password!!');
 				redirect(base_url('/'));
@@ -188,11 +188,11 @@ class Main extends MY_Controller
 			} else {
 				// echo array('type'=>'error','msg' => 'You input a wrong email!!');
 				$this->session->set_flashdata('msg', 'You input a wrong email!!');
-				redirect(base_url('main/forgotPassword'));
+				redirect(base_url('index.php/Main/forgotPassword'));
 			}
 		} catch (\Exception $e) {
 			$this->session->set_flashdata('msg', $e);
-			redirect(base_url('main/forgotPassword'));
+			redirect(base_url('index.php/Main/forgotPassword'));
 		}
 	}
 	public function changePassword($key = '')
@@ -265,7 +265,7 @@ class Main extends MY_Controller
 				}
 				$this->setSession($data);
 				$this->session->set_flashdata('success', $data['First_Name'] . ' ' . $data['Last_Name']);
-				redirect(base_url('main/selfassesment'));
+				redirect(base_url('index.php/Main/selfassesment'));
 			} else {
 				// echo 'not empty';
 				$this->session->set_flashdata('error', 'This username is not available to used!!');
@@ -482,14 +482,14 @@ class Main extends MY_Controller
 					'password' => $new_password
 				));
 				$this->session->set_flashdata('success', 'You Successfully changed your password!');
-				redirect(base_url('main/passwordReset'));
+				redirect(base_url('index.php/Main/passwordReset'));
 			} else {
 				$this->session->set_flashdata('error', 'Incorrect old password!!');
-				redirect(base_url('main/passwordReset'));
+				redirect(base_url('index.php/Main/passwordReset'));
 			}
 		} catch (\Exception $e) {
 			$this->session->set_flashdata('error', $e);
-			redirect(base_url('main/passwordReset'));
+			redirect(base_url('index.php/Main/passwordReset'));
 		}
 	}
 	public function dataTable()
@@ -580,7 +580,7 @@ class Main extends MY_Controller
 				'title' => 'Student Requirements',
 				'message' => 'Email/ValidationOfDocument'
 			);
-			
+
 			foreach ($getRequirementsList as $list) {
 				$id_name = $list['id_name'];
 				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
@@ -604,7 +604,7 @@ class Main extends MY_Controller
 					} else {
 						// echo json_encode(array("msg" => $this->upload->display_errors()));
 						$this->session->set_flashdata('error', $this->upload->display_errors());
-						// redirect(base_url('main/validationOfDocuments'));exit;
+						// redirect(base_url('index.php/Main/validationOfDocuments'));exit;
 						redirect($_SERVER['HTTP_REFERER']);
 						exit;
 					}
@@ -621,7 +621,7 @@ class Main extends MY_Controller
 					} else {
 						// echo json_encode(array("msg" => $this->upload->display_errors()));
 						// $this->session->set_flashdata('error', $this->upload->display_errors());
-						
+
 						// redirect($_SERVER['HTTP_REFERER']);
 						// exit;
 					}
@@ -674,7 +674,7 @@ class Main extends MY_Controller
 			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
 			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
-			if($upload_count>0){
+			if ($upload_count > 0) {
 				$string = http_build_query($all_uploadeddata);
 				$ch = curl_init("http://localhost:4003/uploadtodrive/");
 				curl_setopt($ch, CURLOPT_POST, true);
@@ -714,8 +714,7 @@ class Main extends MY_Controller
 					redirect($_SERVER['HTTP_REFERER']);
 				}
 				curl_close($ch);
-			}
-			else{
+			} else {
 				$this->session->set_flashdata('success', 'Successfully submitted!!');
 				redirect($_SERVER['HTTP_REFERER']);
 			}
@@ -861,9 +860,9 @@ class Main extends MY_Controller
 		}
 		$this->session->set_flashdata('success', 'Successfully Uploaded');
 		// $this->uploadProofOfPayment();
-		redirect(base_url('main/uploadProofOfPayment'));
+		redirect(base_url('index.php/Main/uploadProofOfPayment'));
 
-		// header('Refresh: X; URL='.base_url('main/uploadProofOfPayment'));
+		// header('Refresh: X; URL='.base_url('index.php/Main/uploadProofOfPayment'));
 	}
 	public function checkForGdriveUploader()
 	{
@@ -973,17 +972,16 @@ class Main extends MY_Controller
 	{
 		$array_completefiles = array();
 		$getRequirementsLogPerRefNo = $this->mainmodel->getAllRequirementsLogByRef();
-		foreach ($getRequirementsLogPerRefNo as $reqloglist=>$values) {
+		foreach ($getRequirementsLogPerRefNo as $reqloglist => $values) {
 			// if ($reqloglist['requirements_name'] != "proof_of_payment") {
-				array_push($array_completefiles, array(
-					"name" => $values['requirements_name'],
-					"status" => $values['status'],
-					"req_date" => $values['requirements_date'],
-					"if_married" => $values['if_married']
-				));
+			array_push($array_completefiles, array(
+				"name" => $values['requirements_name'],
+				"status" => $values['status'],
+				"req_date" => $values['requirements_date'],
+				"if_married" => $values['if_married']
+			));
 			// }
 		}
 		echo json_encode($getRequirementsLogPerRefNo);
 	}
-	
 }

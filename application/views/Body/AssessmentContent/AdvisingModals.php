@@ -452,7 +452,7 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
                 </button>
-                <!-- <button onclick="assessment_exporter('<?php echo site_url('temp_api/export_assessmentform') ?>')" class="btn btn-primary ml-1">
+                <!-- <button onclick="assessment_exporter('<?php echo site_url('ose_api/export_assessmentform') ?>')" class="btn btn-primary ml-1">
                     <i class="bx bx-check d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Download Assessment Form</span>
                 </button> -->
@@ -481,10 +481,6 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
                 </button>
-                <button onclick="assessment_exporter('<?php echo site_url('temp_api/export_assessmentform') ?>')" class="btn btn-primary ml-1">
-                    <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Download Assessment Form</span>
-                </button>
             </div>
         </div>
     </div>
@@ -493,7 +489,7 @@
 <div class="modal fade text-left w-100" id="onlinepaymentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
-            <form action="<?php echo base_url('/temp_api/total_online_payment') ?>" target="_blank" method="POST" id="online_payment_form">
+            <form action="<?php echo base_url('/ose_api/total_online_payment') ?>" target="_blank" method="POST" id="online_payment_form">
                 <div class="modal-body">
                     <div class="alert alert-light-info color-warning">
                         <i class="bi bi-exclamation-circle"></i>

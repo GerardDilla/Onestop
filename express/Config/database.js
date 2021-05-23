@@ -2,9 +2,9 @@
 const mysql = require('mysql')
 var pool = mysql.createPool({
     connectionLimit: 10,
-    host: '10.0.0.52',
-    user: 'JHON',
-    password: 'JHON',
+    host: 'localhost',
+    user: 'root',
+    password: 'asdf',
     database: 'schoolsysdb'
 })
 

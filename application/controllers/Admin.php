@@ -57,5 +57,13 @@ class Admin extends MY_Controller
         $this->session->set_userdata("admin_id");
         redirect(base_url('admin/'));
     }
+	public function getFilter(){
+		if(filter_var('jfabregas@sdca.edu.ph',FILTER_VALIDATE_EMAIL) == true){
+			echo "totoo";
+		}
+		else{
+			echo "di totoo";
+		}
+	}
     // public function loginProc
 }

@@ -15,7 +15,7 @@ class ChatModel {
         return current_message_count.then((result)=>{ return result}).catch(error=> console.log(error));
     }
     async MessageCountPerRefNo(data){
-        var current_message_count = getQuery(`SELECT student_info.First_Name,student_info.Middle_Name,student_info.Last_Name,student_info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message FROM student_inquiry INNER JOIN student_info ON student_inquiry.ref_no = student_info.Reference_Number  WHERE user_type = "student" AND ref_no = "${data.ref_no}" GROUP BY student_inquiry.ref_no ORDER BY student_info.First_Name ASC`)
+        var current_message_count = getQuery(`SELECT student_info.YearLevel,student_info.Course,student_info.First_Name,student_info.Middle_Name,student_info.Last_Name,student_info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message FROM student_inquiry INNER JOIN student_info ON student_inquiry.ref_no = student_info.Reference_Number  WHERE user_type = "student" AND ref_no = "${data.ref_no}" GROUP BY student_inquiry.ref_no ORDER BY student_info.First_Name ASC`)
         return current_message_count.then((result)=>{ return result}).catch(error=> console.log(error)); 
     }
     async insertFromChatInquiry(data){

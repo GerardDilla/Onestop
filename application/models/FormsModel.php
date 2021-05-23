@@ -37,6 +37,7 @@ class FormsModel extends CI_Model
 			'first_name' => $array['first_name'],
 			'middle_name' => $array['middle_name'],
 			'last_name' => $array['last_name'],
+            'gdrive_folder_id' => $array['gdrive_folder_id']
 			// 'course' => $array['course'],
 			// 'email' => $array['email'],
 			// 'request' => $array['request'],

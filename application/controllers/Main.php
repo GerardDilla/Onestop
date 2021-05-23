@@ -13,6 +13,7 @@ class Main extends MY_Controller
 	{
 		parent::__construct();
 		$this->studentdata = array();
+		$this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
 	}
 
 	public function index()
@@ -689,6 +690,7 @@ class Main extends MY_Controller
 						'datetime' => date("Y-m-d H:i:s"),
 						'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
 					));
+
 					$files = glob('express/assets/*'); // get all file names
 					foreach ($files as $file) {
 						if (in_array($file, $array_filestodelete)) {

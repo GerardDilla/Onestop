@@ -35,7 +35,7 @@ class gdrive_uploader
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
         curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        // curl_setopt($ch, CURLOPT_FAILONERROR, true);
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
           $error_msg = curl_error($ch);

@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <form action="<?php echo base_url(); ?>Forms/submit_id_application" method="POST" id="id_application_form">
+                        <form action="<?php echo base_url(); ?>Forms/submit_id_application" method="POST" id="id_application_form" enctype="multipart/form-data">
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -96,7 +96,7 @@
                                             <span class="text_note">NOTE</span>: USE YOUR STUDENT NUMBER TO NAME YOUR PHOTO ONLY.
                                         </small>
                                     </p>
-                                    <input type="file" class="form-control" id="inputGroupFile01">
+                                    <input type="file" class="form-control" name="id_picture" id="inputGroupFile01">
                                 </div>
                                 <div class="col-md-12">
                                     <p>
@@ -106,7 +106,7 @@
                                             <span class="text_note">NOTE</span>: USE YOUR SETUDENT NUMBER TO NAMe YOUR SIGANTURE ONLY
                                         </small>
                                     </p>
-                                    <input type="file" class="form-control" id="inputGroupFile01">
+                                    <input type="file" class="form-control" name="signature" id="inputGroupFile01">
                                     <br>
                                 </div>
                                 <div class="col-md-6">

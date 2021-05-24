@@ -146,7 +146,7 @@ else{
 $('time.timeago').timeago();
 var typing_timeout = null;
 var modal_status = 0;
-const socket = io('http://localhost:4003');
+const socket = io('http://stdominiccollege.edu.ph:4003');
 const app = feathers();
 var array_status = [];
 var status_running = false;

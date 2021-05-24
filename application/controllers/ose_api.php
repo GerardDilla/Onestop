@@ -1007,6 +1007,7 @@ class Ose_api extends CI_Controller
 
 			echo 'Not Enrolled';
 			die();
+			
 		} else {
 
 			$this->data['student_data']  = $this->RegFormModel->Get_enrolled($array);

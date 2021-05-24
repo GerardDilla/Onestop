@@ -2,9 +2,9 @@
 const mysql = require('mysql')
 var pool = mysql.createPool({
     connectionLimit: 10,
-    host: 'localhost',
-    user: 'root',
-    password: '',
+    host: '10.0.0.9',
+    user: 'schoolsysdb',
+    password: 'Wpd2$Ya=$dCA<KXM25>',
     database: 'schoolsysdb'
 })
 
@@ -25,3 +25,4 @@ pool.getConnection((err, connection) => {
 })
 
 module.exports = pool
+

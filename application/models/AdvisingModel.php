@@ -546,7 +546,7 @@ class AdvisingModel extends CI_Model
         $this->db->where('Reference_Number', $data['Reference_Number']);
         $this->db->where('schoolyear', $data['School_Year']);
         $this->db->where('semester', $data['Semester']);
-        $this->db->update('fees_temp_college');
+        $this->db->update('Fees_Temp_College');
         $this->db->reset_query();
 
         #remove fees enrolled
@@ -554,7 +554,7 @@ class AdvisingModel extends CI_Model
         $this->db->where('Reference_Number', $data['Reference_Number']);
         $this->db->where('schoolyear', $data['School_Year']);
         $this->db->where('semester', $data['Semester']);
-        $this->db->update('fees_enrolled_college');
+        $this->db->update('Fees_Enrolled_College');
         $this->db->reset_query();
 
         #remove enrolled subjects
@@ -562,7 +562,7 @@ class AdvisingModel extends CI_Model
         $this->db->where('Reference_Number', $data['Reference_Number']);
         $this->db->where('School_Year', $data['School_Year']);
         $this->db->where('Semester', $data['Semester']);
-        $this->db->update('enrolledstudent_subjects');
+        $this->db->update('EnrolledStudent_Subjects');
         $this->db->reset_query();
 
         $this->db->set('interview_status', null);

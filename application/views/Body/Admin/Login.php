@@ -34,7 +34,7 @@ else if($this->session->flashdata('success')!=''){
 }
 ?>
 <style>
-    @media screen (pointer:coarse) and (orientation: landscape) {
+    @media (pointer:coarse) and (orientation: landscape) {
         html {
             transform: rotate(-90deg);
             transform-origin: left top;

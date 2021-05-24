@@ -77,7 +77,7 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a href="logout" class='sidebar-link'>
+                    <a href="<?php echo base_url('admin/logout');?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>
                         <span>Logout</span>
                     </a>

@@ -24,6 +24,18 @@
                         <span>Student Inquiry</span>
                     </a>
                 </li>
+                <li class="sidebar-item <?php echo $tab_active == 'Digital Citizenship' ? 'active' : ''; ?>">
+                    <a href="<?php echo base_url('Admin/digitalCitizenship') ?>" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
+                        <span>Digital Citizenship</span>
+                    </a>
+                </li>
+                <li class="sidebar-item <?php echo $tab_active == 'ID Application' ? 'active' : ''; ?>">
+                    <a href="<?php echo base_url('Admin/idApplication') ?>" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
+                        <span>ID Application</span>
+                    </a>
+                </li>
                 <!-- <li class="sidebar-item">
                     <a href="<?php echo base_url('main/validationOfDocuments') ?>" class='sidebar-link'>
                         <i class="bi bi-card-checklist"></i>

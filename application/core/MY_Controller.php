@@ -66,7 +66,7 @@ class MY_Controller extends CI_Controller
         //     $this->session->set_flashdata('msg', 'Session Expired!!');
         //     redirect(base_url('/'));
         // }
-        $directory = 'Layout/Chat_Inquiry/';
+        $directory = 'Layout/Admin_Default/';
         $this->template['Title'] = $this->data['tab_active'] = $body['title'] ? $body['title'] : $this->title;
         $this->template['Header'] = $this->load->view($directory . 'Header.php', $this->data, true);
         $this->template['Sidenav'] = $this->load->view($directory . 'Sidenav.php', $this->data, true);

@@ -37,9 +37,18 @@ class Forms extends MY_Controller
 				'last_name' => $last_name,
 			);
 			$digital_id = $this->FormsModel->digital_citizenship($array);
+			$accounts = $this->input->post('concern');
+			foreach (empty($accounts) ?: $accounts as $account) {
+				$array_account = array(
+					'digital_id' => $digital_id,
+					'request' => $account,
+					'status' => 'pending',
+				);
+				$this->FormsModel->digital_citizenship_account($array_account);
+			}
 			$this->session->set_flashdata('success', 'Digital Citizenship send');
 			redirect('forms/digital_citizenship');
-		}else{
+		} else {
 			$this->session->set_flashdata('error', 'Already Created');
 			redirect('forms/digital_citizenship');
 		}
@@ -74,7 +83,7 @@ class Forms extends MY_Controller
 			$digital_id = $this->FormsModel->id_application($array);
 			$this->session->set_flashdata('success', 'ID Application send');
 			redirect('forms/id_application');
-		}else{
+		} else {
 			$this->session->set_flashdata('error', 'Already Have Data');
 			redirect('forms/id_application');
 		}

@@ -19,6 +19,17 @@ class FormsModel extends CI_Model
         $lastid = $this->db->insert_id();
         return $lastid;
     }
+    public function digital_citizenship_account($array)
+    {
+        // optional: just to make sure that the field names are correct
+        $data = array(
+            'digital_id' => $array['digital_id'],
+			'request' => $array['request'],
+			'status' => $array['status'],
+		);
+        $this->db->insert('digital_citizenship_accounts', $data);
+        $lastid = $this->db->insert_id();
+    }
     // check if already in the database
     public function check_student_digital($reference_number)
     {
@@ -37,9 +48,7 @@ class FormsModel extends CI_Model
 			'first_name' => $array['first_name'],
 			'middle_name' => $array['middle_name'],
 			'last_name' => $array['last_name'],
-			// 'course' => $array['course'],
-			// 'email' => $array['email'],
-			// 'request' => $array['request'],
+			'status' => $array['status'],
 		);
         $this->db->insert('id_application', $data);
         $lastid = $this->db->insert_id();

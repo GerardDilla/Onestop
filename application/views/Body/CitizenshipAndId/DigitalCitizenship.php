@@ -1,3 +1,8 @@
+<style>
+    .form-check-input[type="checkbox"][readonly] {
+        pointer-events: none;
+    }
+</style>
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
     <?php
     if ($this->data['digital'] === true) {
@@ -86,19 +91,19 @@
                                         <span class="required_field">NOTE</span>: This are the accounts you will get.
                                     </p>
                                     <div class="form-check">
-                                        <input type="checkbox" checked disabled class="form-check-input form-check-primary" name="concern[]" id="concern_gmail" value="sdca_gmail_account">
+                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_gmail" value="sdca_gmail_account" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
                                         <label for="customColorCheck1">SDCA Gmail Account</label>
                                     </div>
                                     <div class="form-check">
-                                        <input type="checkbox" checked disabled class="form-check-input form-check-primary" name="concern[]" id="concern_portal" value="student_portal">
+                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_portal" value="student_portal" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
                                         <label for="customColorCheck2">Student Portal</label>
                                     </div>
                                     <div class="form-check">
-                                        <input type="checkbox" checked disabled class="form-check-input form-check-primary" name="concern[]" id="concern_blackboard" value="blackboard_account">
+                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_blackboard" value="blackboard_account" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
                                         <label for="customColorCheck3">Blackboard Account</label>
                                     </div>
                                     <div class="form-check">
-                                        <input type="checkbox" checked disabled class="form-check-input form-check-primary" name="concern[]" id="concern_365" value="microsoft_office_365">
+                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_365" value="microsoft_office_365" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
                                         <label for="customColorCheck4">Microsoft Office 365</label>
                                     </div>
                                 </div>

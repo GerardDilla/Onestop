@@ -92,7 +92,17 @@ class view_directory
 		$data['view'] = $this->body.'/Chat_Inquiry/chat-admin';
 		$data['title'] = 'SDCA Inquiry';
 		return $data;	
-	}	
+	}
+	public function adminDigitalCitizenship(){
+		$data['view'] = $this->body.'Admin/AdminDigitalCitizenship';
+		$data['title'] = 'Admin Digital Citizenship';
+		return $data;	
+	}
+	public function adminIdApplication(){
+		$data['view'] = $this->body.'Admin/AdminIdApplication';
+		$data['title'] = 'Admin ID Application';
+		return $data;	
+	}
 	public function enrollmentBreakdown(){
 		$data['view'] = $this->body.'EnrollmentBreakdown';
 		$data['title'] = 'Enrollment Breakdown';

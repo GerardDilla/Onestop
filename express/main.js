@@ -9,6 +9,10 @@ const uploadToGdrive = require("./route/uploadtogdrive");
 const gdriveuploader = require("./route/gdrivelibrary");
 const moment = require("moment")
 const app = express(feathers());
+const path = require("path");
+const fs = require("fs");
+const https = require("https");
+const cors = require("cors");
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -20,6 +24,7 @@ app.configure(express.rest());
 app.get("/",(req,res)=>{
     res.send('Welcome to OSE API Date:'+moment().format('YYYY-MM-DD kk:mm:ss')) 
 });
+app.use(cors);
 app.use('/chat-inquiry',new ChatService());
 app.use('/chat-action',new ChatActionService());
 app.use('/notification',new NotificationService());
@@ -37,16 +42,17 @@ app.on('connection', conn => app.channel('stream').join(conn));
 // Publish events to stream
 app.publish(data => app.channel('stream'));
 
-const PORT = process.env.PORT || 4003;
+const PORT = 6433
 
-app
-  .listen(PORT)
-  .on('listening', () =>
-    console.log(`Realtime server running on port ${PORT}`)
-  );
-  const httpsServer = https.createServer({
-    key: fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'resources', 'privatekey.pem')),
-    cert: fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'resources', 'certificate.pem')),
-    rejectUnauthorized: false,
-    requestCert: false
-  }, app).listen(7889);
+// app
+//   .listen(PORT)
+//   .on('listening', () =>
+//     console.log(`Realtime server running on port ${PORT}`)
+//   );
+
+const sslServer = https.createServer({
+  key: fs.readFileSync(path.join(__dirname,'cred','key.pem')),
+  cert: fs.readFileSync(path.join(__dirname,'cred','cert.pem'))
+},app)
+sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API Localhost:${PORT}`))
+

@@ -13,6 +13,7 @@ class Main extends MY_Controller
 	{
 		parent::__construct();
 		$this->studentdata = array();
+		$this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
 	}
 
 	public function index()
@@ -571,6 +572,7 @@ class Main extends MY_Controller
 		$array_filestodelete = array();
 		$array_completefiles = array();
 		$upload_count = 0;
+		$error_count = 0;
 		try {
 			$email_data = array(
 				'send_to' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name'),
@@ -602,11 +604,7 @@ class Main extends MY_Controller
 						));
 						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
 					} else {
-						// echo json_encode(array("msg" => $this->upload->display_errors()));
-						$this->session->set_flashdata('error', $this->upload->display_errors());
-						// redirect(base_url('main/validationOfDocuments'));exit;
-						redirect($_SERVER['HTTP_REFERER']);
-						exit;
+						++$error_count;
 					}
 				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to be follow") {
 					$req_status = 'pending';
@@ -619,6 +617,7 @@ class Main extends MY_Controller
 						));
 						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
 					} else {
+						++$error_count;
 						// echo json_encode(array("msg" => $this->upload->display_errors()));
 						// $this->session->set_flashdata('error', $this->upload->display_errors());
 						
@@ -674,32 +673,35 @@ class Main extends MY_Controller
 			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
 			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
-			if($upload_count>0){
-				$string = http_build_query($all_uploadeddata);
-				$ch = curl_init("http://localhost:4003/uploadtodrive/");
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			if($error_count==0){
+				$result = $this->gdrive_uploader->index($all_uploadeddata);
+				$decode_result = json_decode($result,true);
+				if (!empty($result)) {
+					if($decode_result['msg']=="success"){
+						$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
+							'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
+							'requirements' => $array_completefiles,
+							'datetime' => date("Y-m-d H:i:s"),
+							'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
+						));
 
-				$result = curl_exec($ch);
-				if ($result != null && $result != "") {
-					$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
-						'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
-						'requirements' => $array_completefiles,
-						'datetime' => date("Y-m-d H:i:s"),
-						'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
-					));
-					$files = glob('express/assets/*'); // get all file names
-					foreach ($files as $file) {
-						if (in_array($file, $array_filestodelete)) {
-							if (is_file($file)) {
-								unlink($file); // delete file
+						$files = glob('express/assets/*'); // get all file names
+						foreach ($files as $file) {
+							if (in_array($file, $array_filestodelete)) {
+								if (is_file($file)) {
+									unlink($file); // delete file
+								}
 							}
 						}
+						$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $decode_result['id']));
+						$this->session->set_userdata('gdrive_folder', $decode_result['id']);
+						$this->session->set_flashdata('success', 'Successfully submitted!!');
+						redirect($_SERVER['HTTP_REFERER']);
 					}
-					$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $result));
-					$this->session->set_flashdata('success', 'Successfully submitted!!');
-					redirect($_SERVER['HTTP_REFERER']);
+					else{
+						$this->session->set_flashdata('error', "Files Upload Error: ".$result);
+						redirect($_SERVER['HTTP_REFERER']);
+					}
 				} else {
 					$files = glob('express/assets/*'); // get all file names
 					foreach ($files as $file) {
@@ -713,10 +715,10 @@ class Main extends MY_Controller
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-				curl_close($ch);
 			}
 			else{
-				$this->session->set_flashdata('success', 'Successfully submitted!!');
+				$this->mainmodel->revertIfErrorInRequirementUpload();
+				$this->session->set_flashdata('error', 'Files Upload Error: '.$error_count.' files failed to upload!!');
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 			// echo json_encode(array("msg" => 'Successfully Uploaded'));
@@ -806,42 +808,59 @@ class Main extends MY_Controller
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
 			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
-
-			$upload_success = false;
-			if (!empty($result)) {
-				$this->session->set_userdata('gdrive_folder', $result);
-				$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $result));
+			$decode_result = json_decode($result,true);
+			$files = glob('express/assets/*'); // get all file names
+			foreach ($files as $file) {
+				if (in_array($file, $array_filestodelete)) {
+					if (is_file($file)) {
+						unlink($file); // delete file
+					}
+				}
 			}
-			if (!empty($checkRequirement)) {
-				$this->mainmodel->updateRequirementLog(array(
-					'requirements_name' => 'proof_of_payment',
-					'requirements_date' => date("Y-m-d H:i:s"),
-					'status' => 'pending',
-					'reference_no' => $ref_no,
-					'file_submitted' => $uploaded_data['orig_name'],
-					'file_type' => $uploaded_data['file_type'],
-					// 'path_id' => empty($getId)?'':$getId
-				), 'proof_of_payment');
-			} else {
-				$req_id = $this->mainmodel->newRequirementLog(array(
-					'requirements_name' => 'proof_of_payment',
-					'requirements_date' => date("Y-m-d H:i:s"),
-					'status' => 'pending',
-					'reference_no' => $ref_no,
-					'file_submitted' => $orig_name,
-					'file_type' => $orig_type,
-					// 'path_id' => empty($getId)?'':$getId
-				));
-				$this->mainmodel->insertProofOfPayments(array(
-					'req_id' => $req_id,
-					'bank_type' => $this->input->post('bank_type'),
-					'payment_type' => $this->input->post('payment_type'),
-					'acc_num' => $this->input->post('account_number'),
-					'acc_holder_name' => $this->input->post('holder_name'),
-					'payment_reference_no' => $this->input->post('reference_number'),
-					'ref_no' => $ref_no,
-					'amount_paid' => $this->input->post('amount_paid')
-				));
+			if (!empty($result)) {
+				if($decode_result['msg']=="success"){
+					$this->session->set_userdata('gdrive_folder', $decode_result['id']);
+					$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $decode_result['id']));
+					if (!empty($checkRequirement)) {
+						$this->mainmodel->updateRequirementLog(array(
+							'requirements_name' => 'proof_of_payment',
+							'requirements_date' => date("Y-m-d H:i:s"),
+							'status' => 'pending',
+							'reference_no' => $ref_no,
+							'file_submitted' => $uploaded_data['orig_name'],
+							'file_type' => $uploaded_data['file_type'],
+							// 'path_id' => empty($getId)?'':$getId
+						), 'proof_of_payment');
+					} else {
+						$req_id = $this->mainmodel->newRequirementLog(array(
+							'requirements_name' => 'proof_of_payment',
+							'requirements_date' => date("Y-m-d H:i:s"),
+							'status' => 'pending',
+							'reference_no' => $ref_no,
+							'file_submitted' => $orig_name,
+							'file_type' => $orig_type,
+							// 'path_id' => empty($getId)?'':$getId
+						));
+						$this->mainmodel->insertProofOfPayments(array(
+							'req_id' => $req_id,
+							'bank_type' => $this->input->post('bank_type'),
+							'payment_type' => $this->input->post('payment_type'),
+							'acc_num' => $this->input->post('account_number'),
+							'acc_holder_name' => $this->input->post('holder_name'),
+							'payment_reference_no' => $this->input->post('reference_number'),
+							'ref_no' => $ref_no,
+							'amount_paid' => $this->input->post('amount_paid')
+						));
+					}
+				}
+				else{
+					$this->session->set_flashdata('error', "Files Upload Error: ".$result);
+					redirect($_SERVER['HTTP_REFERER']);
+				}
+			}
+			else{
+				$this->session->set_flashdata('error', "Files Upload Error: Google drive is OFFLINE");
+				redirect($_SERVER['HTTP_REFERER']);
 			}
 		} else {
 			$this->session->set_flashdata('error', 'Upload Error');
@@ -849,16 +868,6 @@ class Main extends MY_Controller
 			exit;
 		}
 
-		// res.send();
-
-		$files = glob('express/assets/*'); // get all file names
-		foreach ($files as $file) {
-			if (in_array($file, $array_filestodelete)) {
-				if (is_file($file)) {
-					unlink($file); // delete file
-				}
-			}
-		}
 		$this->session->set_flashdata('success', 'Successfully Uploaded');
 		// $this->uploadProofOfPayment();
 		redirect(base_url('main/uploadProofOfPayment'));

@@ -7,10 +7,13 @@ const { google } = require('googleapis'); //googleapis not supported module type
 const express = require("express");
 const otherasync = require("async");
 let router = express.Router();
+const ApiError = require('../error/ApiError');
 // const {getQuery} = require('../query/main.js');
 var id_number;
 const multer = require('multer');
 const { pathToFileURL } = require('url');
+const { exit } = require('process');
+const { ENOTEMPTY } = require('constants');
 
 const storage = multer.diskStorage({
     destination: (req,res,cb) => {
@@ -32,8 +35,15 @@ console.log(main_folder_id);
 // var folder_name = "requirements";
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
   const TOKEN_PATH = 'token.json';
-    function sendBackToPHP(pass_id){
-        res.send(pass_id);
+    function sendBackToPHP(status,data){
+        if(status==400){
+            res.status(400).send(JSON.stringify(ApiError.badRequest(data)));
+            return;
+        }
+        else{
+            res.status(200).send(JSON.stringify({msg:'success',id:data}));
+        }
+        
     }
   // Load client secrets from a local file.
   fs.readFile('credentials.json', (err, content) => {
@@ -62,7 +72,7 @@ const SCOPES = ['https://www.googleapis.com/auth/drive'];
 
       // Check if we have previously stored a token.
       fs.readFile(TOKEN_PATH, (err, token) => {
-          if (err) return getAccessToken(oAuth2Client, callback);
+          if (err) { sendBackToPHP(400,err); return getAccessToken(oAuth2Client, callback)};
           oAuth2Client.setCredentials(JSON.parse(token));
 
           callback(oAuth2Client);//list files and upload file
@@ -171,10 +181,16 @@ const SCOPES = ['https://www.googleapis.com/auth/drive'];
             // add files into folder
             createFolder(auth).then(result => {
                 data_body.forEach(item => {
-                    insertFileInFolder(auth,result,item.name,item.type)
+                    // try{
+                        insertFileInFolder(auth,result,item.name,item.type)
+                    // }
+                    // catch(e){
+                    //     sendBackToPHP(400,e);
+                    // }
                 })
-                sendBackToPHP(result);
-            });
+                sendBackToPHP(200,result);
+            }).catch(error =>{sendBackToPHP(400,error);});
+            console.log('not found')
         }
         else{
             // console.log(found.id)
@@ -182,7 +198,8 @@ const SCOPES = ['https://www.googleapis.com/auth/drive'];
             data_body.forEach(item => {
                 insertFileInFolder(auth,current_id,item.name,item.type)
             })
-            sendBackToPHP(found.id);
+            console.log(`GDRIVE ID: ${found.id}`)
+            sendBackToPHP(200,current_id);
             console.log("folder is existed");
         }
         var list = []
@@ -221,14 +238,14 @@ const SCOPES = ['https://www.googleapis.com/auth/drive'];
             fields: 'id'
         }, function (err, file) {
         if (err) {
-            resolve(err)
+            reject(err)
         } else {
             resolve(file.data.id)
         }
         });
     }).then(function(result){
         return result;
-    })
+    }).catch(error=>{return error});
     return create_folder;
   }
   function insertFileInFolder(auth,folder_id,filename,filetype){
@@ -249,7 +266,10 @@ const SCOPES = ['https://www.googleapis.com/auth/drive'];
     }, function (err, file) {
       if (err) {
         // Handle error
-        console.error(err);
+        // console.error(err);
+        // ApiError.badRequest(error)
+        sendBackToPHP(400,err);
+        return false;
       } else {
         console.log('File Id: ', file.id);
       }
@@ -293,7 +313,7 @@ router.get("/generateToken",(req,res) => {
           callback(oAuth2Client);//list files and upload file
           // createFolder(oAuth2Client);
           //callback(oAuth2Client, '0B79LZPgLDaqESF9HV2V3YzYySkE');//get file
-
+        
       });
   }
 
@@ -391,7 +411,7 @@ router.post("/get_id",(req,res)=>{
       rl.question('Enter the code from that page here: ', (code) => {
           rl.close();
           oAuth2Client.getToken(code, (err, token) => {
-              if (err) return console.error('Error retrieving access token', err);
+              if (err) { sendBackToPHP(400,err);return console.error('Error retrieving access token', err)};
               oAuth2Client.setCredentials(token);
               // Store the token to disk for later program executions
               fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
@@ -447,7 +467,17 @@ router.post("/sample",(req,res)=>{
     // res.send('Welcome to Google Drive Api');
     res.json(JSON.stringify({status:'success',msg:'hello'}))
 })
+// router.post("/getjson",(req,res)=>{
+//     res.send(JSON.stringify({status:'success',msg:'hello'}));
+// })
 router.post("/getjson",(req,res)=>{
-    res.send(JSON.stringify({status:'success',msg:'hello'}));
+    var data = req.body;
+    
+    if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+        res.status(400).send(ApiError.badRequest('msg field first name is not found'));
+        return;
+    }
+    res.status(200).send(data);
+    // throw new Error('BROKEN');
 })
 module.exports = router;

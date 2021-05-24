@@ -107,5 +107,4 @@ class Admin extends MY_Controller
 		$this->session->set_userdata("admin_id");
 		redirect(base_url('admin/'));
 	}
-	// public function loginProc
 }

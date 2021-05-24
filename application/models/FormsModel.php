@@ -49,6 +49,7 @@ class FormsModel extends CI_Model
 			'middle_name' => $array['middle_name'],
 			'last_name' => $array['last_name'],
 			'status' => $array['status'],
+            'gdrive_folder_id' => $array['gdrive_folder_id'],
 		);
         $this->db->insert('id_application', $data);
         $lastid = $this->db->insert_id();

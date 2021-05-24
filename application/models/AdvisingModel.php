@@ -57,7 +57,7 @@ class AdvisingModel extends CI_Model
 
     public function get_sched_info($schedCode)
     {
-        $this->db->select('*, C.id AS sched_display_id, T1.Schedule_Time AS stime, T2.Schedule_Time AS etime, C.Start_Time AS SDstart, C.End_Time AS SDend,SP.Course_Code as sp_pre_req');
+        $this->db->select('*,B.Course_Code as CourseCode, C.id AS sched_display_id, T1.Schedule_Time AS stime, T2.Schedule_Time AS etime, C.Start_Time AS SDstart, C.End_Time AS SDend,SP.Course_Code as sp_pre_req');
         $this->db->from('Sections AS A');
         $this->db->join('Sched AS B', 'A.Section_ID = B.Section_ID', 'inner');
         $this->db->join('Sched_Display AS C', 'B.Sched_Code = C.Sched_Code', 'inner');
@@ -573,6 +573,11 @@ class AdvisingModel extends CI_Model
         $this->db->set('reference_no', 0);
         $this->db->where('reference_no', $data['Reference_Number']);
         $this->db->update('requirements_log');
+
+        $this->db->set('highered_reference_number', 0);
+        $this->db->where('highered_reference_number', $data['Reference_Number']);
+        $this->db->update('senior_high_student_number');
+
         $this->db->reset_query();
     }
     public function check_existing_queue($data)
@@ -652,5 +657,52 @@ class AdvisingModel extends CI_Model
         $this->db->reset_query();
 
         return $query->result_array();
+    }
+    public function count_queue_units($data)
+    {
+
+        $this->db->select('
+        SUM(sub.Course_Lec_Unit + sub.Course_Lab_Unit) as Units
+        ');
+        $this->db->join('Sched AS scd', 'scd.Sched_Code = as.Sched_Code');
+        $this->db->join('Subject AS sub', 'sub.Course_Code = scd.Course_Code');
+        $this->db->where('as.Reference_Number', $data['Reference_Number']);
+        $this->db->where('as.valid', 1);
+        $query = $this->db->get('advising_session AS as');
+        return $query->row_array();
+    }
+    public function get_queued_subject_units($data)
+    {
+        $this->db->select('
+        SUM(sub.Course_Lec_Unit + sub.Course_Lab_Unit) AS Units
+        ');
+        $this->db->join('Subject AS sub', 'sub.Course_Code = scd.Course_Code');
+        $this->db->where('scd.Sched_Code', $data['Sched_Code']);
+        $query = $this->db->get('Sched AS scd');
+        return $query->row_array();
+    }
+    public function check_finished_subject($data)
+    {
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('Sched_Code', $data['Sched_Code']);
+        $this->db->where('Cancelled', 0);
+        $this->db->where('Dropped', 0);
+        $query = $this->db->get('EnrolledStudent_Subjects');
+        return $query->num_rows();
+    }
+    public function check_finished_finished_prerequisite($data, $requirement)
+    {
+        if ($requirement == null) {
+            return 1;
+        }
+        $this->db->where('Enr.Reference_Number', $data['Reference_Number']);
+        $this->db->where('Schd.Course_Code', $requirement);
+        $this->db->where('Enr.Cancelled', 0);
+        $this->db->where('Enr.Dropped', 0);
+        $this->db->join('Sched as Schd', 'Enr.Sched_Code = Schd.Sched_Code');
+        $query = $this->db->get('EnrolledStudent_Subjects as Enr');
+
+        # With results means pre requisite is already taken
+        return $query->num_rows();
     }
 }

@@ -26,11 +26,11 @@ $(document).ready(function () {
 
     });
 
-    $('#advise_button').click(function () {
+    // $('#advise_button').click(function () {
 
-        init_advise();
+    //     init_advise();
 
-    });
+    // });
 
     $('#section').change(function () {
 
@@ -112,10 +112,18 @@ function init_advise() {
     result = ajax_adviseStudent(plan);
     result.success(function (response) {
 
-        // response = JSON.parse(response);
-        init_queuedlist();
-        init_assessmentform();
-        fetch_user_status();
+        response = JSON.parse(response);
+        if (response['success'] == 0) {
+
+            izi_toast('', response['message'], 'green', 'topCenter');
+
+        } else {
+            init_queuedlist();
+            init_assessmentform();
+            fetch_user_status();
+        }
+
+
     })
 
 }
@@ -164,9 +172,25 @@ function init_subjectlists() {
         console.log('tablerun');
         response = JSON.parse(response);
         if (response['data'].length != 0) {
-            subject_tablerenderer($('#subjectTable'), response);
-            $('.add-all-subject').show();
+            test = '32132';
+            fees_status = ajax_check_fees_listing();
+            fees_status.success(function (fees_response) {
+                fees_response = JSON.parse(fees_response);
+                if (fees_response['success'] == 0) {
+                    izi_toast('', fees_response['message'], 'green', 'topCenter');
+                    $('#subjectTable').find('tbody').html('');
+                    $('.add-all-subject').hide();
+                } else {
+                    subject_tablerenderer($('#subjectTable'), response);
+                    $('.add-all-subject').show();
+                }
+            });
+
         } else {
+            if ($('#section').val() != null) {
+                izi_toast('', 'There are currently no encoded subjects for Section', 'green', 'topCenter');
+            }
+            $('#subjectTable').find('tbody').html('');
             $('.add-all-subject').hide();
         }
 
@@ -241,10 +265,16 @@ function init_paymentmethod(value = 'installment') {
     result.success(function (response) {
 
         response = JSON.parse(response);
+        if ($('#section').val() != null) {
+            if (response['status'] == 0) {
+                izi_toast('', response['message'], 'green', 'center');
+            }
+        }
         console.log(response);
         paymentplan_tablerenderer(response);
     })
 }
+
 
 function init_enroll_test() {
 
@@ -274,21 +304,21 @@ function init_remove_all_queue() {
 
 function ajax_enroll_test(paymentplan) {
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/setpaid_test",
+        url: "/Onestop/index.php/ose_api/setpaid_test",
         async: true,
     });
 }
 
 function ajax_reset_progress(paymentplan) {
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/reset_progress",
+        url: "/Onestop/index.php/ose_api/reset_progress",
         async: true,
     });
 }
 
-function ajax_adviseStudent(paymentplan) {
+function ajax_adviseStudent(paymentplan = 'installment') {
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/advise_student",
+        url: "/Onestop/index.php/ose_api/advise_student",
         async: true,
         type: 'GET',
         data: {
@@ -300,7 +330,7 @@ function ajax_adviseStudent(paymentplan) {
 
 function ajax_add_all_subjects(paymentplan) {
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/queue_all_subjects",
+        url: "/Onestop/index.php/ose_api/queue_all_subjects",
         async: true,
         type: 'POST',
         data: {
@@ -311,14 +341,14 @@ function ajax_add_all_subjects(paymentplan) {
 
 function ajax_assessmentform(paymentplan) {
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/temporary_regform_ajax",
+        url: "/Onestop/index.php/ose_api/temporary_regform_ajax",
         async: true,
     });
 }
 
 function ajax_registrationform(paymentplan) {
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/Forms",
+        url: "/Onestop/index.php/ose_api/Forms",
         async: true,
     });
 }
@@ -326,7 +356,7 @@ function ajax_registrationform(paymentplan) {
 function ajax_paymentmethod(paymentplan) {
 
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/payment_plan",
+        url: "/Onestop/index.php/ose_api/payment_plan",
         async: true,
         type: 'GET',
         data: {
@@ -337,10 +367,25 @@ function ajax_paymentmethod(paymentplan) {
 
 }
 
+function ajax_check_fees_listing(paymentplan = 'installment', section = $('#section').val()) {
+
+    return $.ajax({
+        url: "/Onestop/index.php/ose_api/check_encoded_fees",
+        async: true,
+        type: 'GET',
+        data: {
+            plan: paymentplan,
+            section: section,
+        }
+    });
+
+}
+
+
 function ajax_subjectlist() {
 
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/subjects",
+        url: "/Onestop/index.php/ose_api/subjects",
         type: 'GET',
         data: {
             section: $('#section').val(),
@@ -351,7 +396,7 @@ function ajax_subjectlist() {
 function ajax_sectionlist() {
 
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/get_section",
+        url: "/Onestop/index.php/ose_api/get_section",
         async: true,
     });
 }
@@ -359,7 +404,7 @@ function ajax_sectionlist() {
 function ajax_insertqueue(schedcode) {
 
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/queue_subject",
+        url: "/Onestop/index.php/ose_api/queue_subject",
         async: false,
         type: 'POST',
         data: {
@@ -372,7 +417,7 @@ function ajax_insertqueue(schedcode) {
 function ajax_removequeue(sessionID) {
 
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/unqueue_subject",
+        url: "/Onestop/index.php/ose_api/unqueue_subject",
         async: false,
         type: 'POST',
         data: {
@@ -384,7 +429,7 @@ function ajax_removequeue(sessionID) {
 function ajax_removeAllqueue(sessionID) {
 
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/unqueue_all",
+        url: "/Onestop/index.php/ose_api/unqueue_all",
         async: true,
     });
 }
@@ -392,7 +437,7 @@ function ajax_removeAllqueue(sessionID) {
 function ajax_queuedlist() {
 
     return $.ajax({
-        url: "/Onestop/index.php/temp_api/queue_subject_list",
+        url: "/Onestop/index.php/ose_api/queue_subject_list",
         async: true,
         type: 'POST'
     });
@@ -418,7 +463,7 @@ function queue_tablerenderer(element = '', data = []) {
             <td>' + row['Course_Code'] + '</td>\
             <td>' + row['Course_Title'] + '</td>\
             <td>' + row['Section_Name'] + '</td>\
-            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td>' + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])) + '</td>\
             <td><button type="button" class="btn btn-primary" onclick="init_remove_queue(this)" data-sessionid="' + row['session_id'] + '">Remove</btn></td>\
             '));
         } else {
@@ -427,7 +472,7 @@ function queue_tablerenderer(element = '', data = []) {
             <td>' + row['Course_Code'] + '</td>\
             <td>' + row['Course_Title'] + '</td>\
             <td>' + row['Section_Name'] + '</td>\
-            <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+            <td>' + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])) + '</td>\
             <td></td>\
             '));
         }
@@ -475,7 +520,7 @@ function subject_tablerenderer(element = '', data = []) {
                     <td>' + row['Course_Code'] + '</td>\
                     <td>' + row['Course_Title'] + '</td>\
                     <td>' + row['Section_Name'] + '</td>\
-                    <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                    <td>' + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])) + '</td>\
                     <td>' + row['Day'] + '</td>\
                     <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                     <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
@@ -486,7 +531,7 @@ function subject_tablerenderer(element = '', data = []) {
                     <td>' + row['Course_Code'] + '</td>\
                     <td>' + row['Course_Title'] + '</td>\
                     <td>' + row['Section_Name'] + '</td>\
-                    <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                    <td>' + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])) + '</td>\
                     <td>' + row['Day'] + '</td>\
                     <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                     <td></td>\
@@ -503,7 +548,7 @@ function subject_tablerenderer(element = '', data = []) {
                 <td>' + row['Course_Code'] + '</td>\
                 <td>' + row['Course_Title'] + '</td>\
                 <td>' + row['Section_Name'] + '</td>\
-                <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                <td>' + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])) + '</td>\
                 <td>' + row['Day'] + '</td>\
                 <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                 <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
@@ -514,7 +559,7 @@ function subject_tablerenderer(element = '', data = []) {
                 <td>' + row['Course_Code'] + '</td>\
                 <td>' + row['Course_Title'] + '</td>\
                 <td>' + row['Section_Name'] + '</td>\
-                <td>' + (row['Course_Lec_Unit'] + row['Course_Lab_Unit']) + '</td>\
+                <td>' + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])) + '</td>\
                 <td>' + row['Day'] + '</td>\
                 <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                 <td></td>\
@@ -883,6 +928,9 @@ function section_renderer(data) {
 function assessment_exporter(url) {
 
     exportpage = window.open(url, '_blank');
+    // $(exportpage).load(function () {
+    //     open(url, '_blank').close();
+    // });
 }
 
 function get_militarytime() {

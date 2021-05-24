@@ -26,26 +26,26 @@
                     </a>
                 </li> -->
                 <li class="sidebar-item <?php echo $tab_active == 'Self Assessment' ? 'active' : ''; ?>">
-                    <a href="<?php echo base_url('main/selfassesment') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/Main/selfassesment') ?>" class='sidebar-link'>
                         <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Self Assesment</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('main/validationOfDocuments') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/Main/validationOfDocuments') ?>" class='sidebar-link'>
                         <i class="bi bi-card-checklist"></i>
                         <span>Requirements</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('main/uploadProofOfPayment') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/Main/uploadProofOfPayment') ?>" class='sidebar-link'>
                         <i class="bi bi-credit-card-fill"></i>
                         <span>Proof of Payment</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('main/enrollment_breakdown') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/Main/enrollment_breakdown') ?>" class='sidebar-link'>
                         <i class="bi bi-menu-app-fill"></i>
                         <span>Enrollment Breakdown</span>
                     </a>
@@ -72,7 +72,7 @@
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item <?php echo $tab_active == 'Password Reset' ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('main/passwordReset') ?>">Reset Password</a>
+                            <a href="<?php echo base_url('index.php/Main/passwordReset') ?>">Reset Password</a>
                         </li>
                     </ul>
                 </li>

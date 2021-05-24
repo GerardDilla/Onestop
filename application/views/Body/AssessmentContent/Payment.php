@@ -120,7 +120,7 @@
                 <br>
             </li>
             <li><button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br></li>
-            <li><button type="button" class="btn btn-lg btn-primary" onclick="assessment_exporter('<?php echo site_url('temp_api/export_assessmentform') ?>')">Pay at SDCA Cashier</button><br></li>
+            <li><button type="button" class="btn btn-lg btn-primary" onclick="assessment_exporter('<?php echo site_url('ose_api/export_assessmentform') ?>')">Pay at SDCA Cashier</button><br></li>
             <li>
                 <hr>
                 <h4>Already Paid?</h4>

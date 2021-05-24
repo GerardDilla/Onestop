@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class temp_api extends CI_Controller
+class ose_api extends CI_Controller
 {
 	protected $reference_number;
 	protected $student_number;
@@ -43,13 +43,18 @@ class temp_api extends CI_Controller
 		$datestring = "%Y-%m-%d %H:%i:%s";
 		$time = time();
 		$this->date_now = date($datestring, $time);
+
+		#Fixed Units
+		$this->grad_units = 30;
+		$this->nongrad_units = 27;
 	}
 	public function subjects()
 	{
 		$output = array(
 			'status' => '',
 			'data' => '',
-			'type' => ''
+			'type' => '',
+			'encoded_fees' => '',
 		);
 		$params = array(
 			'school_year' => $this->legend_sy,
@@ -62,7 +67,7 @@ class temp_api extends CI_Controller
 
 		#Get Student type if transferee or new
 		$type = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->reference_number);
-		$output['type'] = $type['applied_status'];
+		$output['type'] = empty($type) ? '' : $type['applied_status'];
 
 		// die(json_encode($params));
 		$output['data'] = $this->AdvisingModel->block_schedule($params);
@@ -183,6 +188,7 @@ class temp_api extends CI_Controller
 
 	private function queueing_checkers($data, $sched_data = array())
 	{
+		// echo json_encode($sched_data);
 		#preset
 		$output['status'] = 0;
 		$output['data'] = '';
@@ -191,17 +197,17 @@ class temp_api extends CI_Controller
 		$existing_status = $this->AdvisingModel->check_existing_queue($data);
 		if (!empty($existing_status)) {
 			$output['status'] = 1;
-			$output['data'] = 'Subject is already on Queue';
+			$output['data'] = 'Subject is already on Queue: ' . $sched_data['CourseCode'];
 			return $output;
 		}
 
-		#Check if slot is available : Removed for testing
-		// $slot_status = $this->AdvisingModel->count_subject_enrolled($data);
+		#Check if slot is available
+		$slot_status = $this->AdvisingModel->count_subject_enrolled($data);
 		// $new_slot = $slot_status + 1;
-		// if ($new_slot >= $schedData['Total_Slot']) {
+		// if ($new_slot >= $sched_data['Total_Slot']) {
 
 		// 	$output['status'] = 1;
-		// 	$output['data']= 'The slots for this Subject is Full';
+		// 	$output['data'] = 'The slots for this Subject is Full';
 		// 	return $output;
 		// }
 
@@ -214,6 +220,7 @@ class temp_api extends CI_Controller
 			'school_year' => $this->legend_sy,
 			'semester' => $this->legend_sem,
 		);
+
 		#Parameters: Start time, End time, Days, Reference Number
 		$conflict_check = $this->AdvisingModel->check_advising_conflict($conflict_checker_parameters);
 		if ($conflict_check) {
@@ -225,14 +232,44 @@ class temp_api extends CI_Controller
 		#Check if Transferee 
 		#Get Student type if transferee or new
 		$type = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->reference_number);
-		$student_type = $type['applied_status'] != null ? $type['applied_status'] : '';
+		$student_type = empty($type) ? '' : $type['applied_status'];
 		if ($student_type == 'transferee' && $sched_data['sp_pre_req'] != null) {
 			$output['status'] = 1;
 			$output['data'] = 'Transferees cannot add subjects with Pre-Requisites';
 			return $output;
 		}
 
-		#Check if there is pre requisite and if already taken: TBF
+		# Check if units exceed max amount
+		# Get current units
+		$overall_units = $this->AdvisingModel->count_queue_units($data);
+		$subject_units = $this->AdvisingModel->get_queued_subject_units($data);
+		$maxunits = $this->nongrad_units;
+		# Get Max Units
+		if ($sched_data['Year_Level'] == 4) {
+			$maxunits = $this->grad_units;
+		}
+		if (($overall_units['Units'] + $subject_units['Units']) > $maxunits) {
+			$output['status'] = 1;
+			$output['data'] = 'Units will Exceed Maximun Amount';
+			return $output;
+		}
+
+		#Check if subject has already been taken
+		$finished_status = $this->AdvisingModel->check_finished_subject($data);
+		if ($finished_status != 0) {
+			$output['status'] = 1;
+			$output['data'] = 'Subject was already taken before: ' . $sched_data['CourseCode'];
+			return $output;
+		}
+
+		#Check if pre requisite has not been taken (Check if transferee)
+		$prereq_status = $this->AdvisingModel->check_finished_finished_prerequisite($data, $sched_data['sp_pre_req']);
+		if ($prereq_status == 0) {
+			$output['status'] = 1;
+			$output['data'] = 'Pre Requisite Subject has not been taken yet: ' . $sched_data['CourseCode'];
+			return $output;
+		}
+
 		return $output;
 	}
 
@@ -345,7 +382,6 @@ class temp_api extends CI_Controller
 			die();
 		}
 
-
 		$array_data['program_code'] = $student_info[0]['Course'];
 		$array_data['year_level'] = $year_level[0]['Year_Level'];
 
@@ -381,14 +417,19 @@ class temp_api extends CI_Controller
 		//get fees details
 
 		$array_fees = $this->FeesModel->get_fees($array_data);
-
-
 		//print_r($array_data).'<br>';
-		if ($array_fees == NULL) {
-			# code...
-			$array_output['success'] = 0;
-			$array_output['message'] = "The selected fees was not yet set.";
-			return;
+		if (empty($array_fees)) {
+
+			$array_output = array(
+				'success' => 0,
+				'other_fee' => 0,
+				'misc_fee' => 0,
+				'lab_fee' => 0,
+				'tuition_fee' => 0,
+				'total_fee' => 0
+			);
+			$array_output['message'] = "There Are no Encoded Fees as of Now";
+			return $array_output;
 		}
 		$total_misc = 0;
 		$total_other = 0;
@@ -499,6 +540,11 @@ class temp_api extends CI_Controller
 	public function advise_student()
 	{
 
+		$output = array(
+			'success' => 1,
+			'message' => '',
+		);
+
 		//get student info
 		$student_info = $this->AdvisingModel->get_student_info_by_reference_no($this->reference_number);
 
@@ -521,6 +567,14 @@ class temp_api extends CI_Controller
 			'transaction_type' => "CASH"                //change later
 
 		);
+
+		if (!$this->input->get('section')) {
+
+			$output['success'] = 0;
+			$output['message'] = 'Select Subjects you want to enroll first';
+			echo json_encode($output);
+			die();
+		}
 
 		//check if admitted sy is available
 		if (($student_info[0]['AdmittedSY'] === 'N/A') || ($student_info[0]['AdmittedSY'] === 0)) {
@@ -560,24 +614,43 @@ class temp_api extends CI_Controller
 			$array_data['check_advised'] = 0;
 		}
 
-		$this->AdvisingModel->insert_sched_info($array_data);
-		//insert fees
-		$this->insert_enrollment_fees($array_data);
+		#Checkers
+		$array_computed_fees = $this->display_fee($array_data);
+		if ($array_computed_fees['success'] == 0) {
+			#No Fees
+			$output['success'] = 0;
+			$output['message'] = $array_computed_fees['message'];
+			echo json_encode($output);
+			die();
+		}
 
+		$queuedata = $this->AdvisingModel->get_queued_subjects($array_data['reference_no']);
+		if (empty($queuedata)) {
+			$output['success'] = 0;
+			$output['message'] = 'Select Subjects you want to enroll first';
+			echo json_encode($output);
+			die();
+		}
+
+		#Inserts Subject Queues
+		$this->AdvisingModel->insert_sched_info($array_data);
+
+		#Inserts Fees
+		$this->insert_enrollment_fees($array_data, $array_computed_fees);
+
+		echo json_encode($output);
 		// #Updates student information if new enrollee: REDUNDANT
 		// if ($array_data['student_no'] === 0) {
 
 		// 	$this->AdvisingModel->update_student_curriculum($array_data);
 		// }
-
-		echo 'advising_success';
 	}
 
-	public function insert_enrollment_fees($array_data)
+	public function insert_enrollment_fees($array_data, $array_computed_fees)
 	{
 
 		$installment_interest = 1.05;
-		$array_computed_fees = $this->display_fee($array_data);
+
 
 		if ($array_data['plan'] === 'installment') {
 			//get installment plan formula
@@ -622,6 +695,7 @@ class temp_api extends CI_Controller
 			$array_data['fees_temp_college_id'] = $array_college_fees_data[0]['id'];
 		}
 
+		#Inserts Fees to Fees_Enrolled_College
 		if (($array_data['check_advised'] === 1) && ($array_college_fees_data != NULL)) {
 
 			$this->FeesModel->replace_fees_college_data($array_insert_fee, $array_data);
@@ -875,9 +949,10 @@ class temp_api extends CI_Controller
 		#Check if new student or old: Returns bool
 		$Feesdata = $this->AdvisingModel->getfees_history($this->reference_number);
 
-		#Get section based on whether feesdata is true(old student) or false(new student)
+		#Get section based on whether $Feesdata is true(old student) or false(new student)
 		$output['sections'] = $this->AdvisingModel->get_sections($Course, $Feesdata);
 
+		#Gets Queue
 		$queue = $this->AdvisingModel->get_queued_subjects($this->reference_number);
 		if (!empty($queue)) {
 			$output['section_id'] = $queue[0]['Section_ID'];
@@ -1008,6 +1083,19 @@ class temp_api extends CI_Controller
 			die();
 		}
 		// die($total);
-		redirect("https://stdominiccollege.edu.ph/SDCAPayment/" . $total);
+		redirect("https://stdominiccollege.edu.ph/SDCAPayment?payment=" . $total);
+	}
+	public function check_encoded_fees()
+	{
+
+		$array_data = array(
+			'reference_no' => $this->reference_number,
+			'plan' => $this->input->get('plan'),
+			'school_year' => $this->legend_sy,
+			'semester' => $this->legend_sem,
+			'section' => $this->input->get('section')
+		);
+		$fees_status = $this->display_fee($array_data);
+		echo json_encode($fees_status);
 	}
 }

@@ -18,7 +18,7 @@ class Admin extends MY_Controller
 		//     $this->login_template($this->view_directory->admin_login());
 		//     $this->appkey = 'testkey101';
 		// }else{
-		//     redirect(base_url('main/sdcainquiry'));
+		//     redirect(base_url('index.php/Main/sdcainquiry'));
 		// }
 		$this->login_template($this->view_directory->admin_login());
 		$this->appkey = 'testkey101';

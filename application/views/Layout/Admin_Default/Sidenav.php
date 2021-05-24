@@ -19,7 +19,7 @@
                     <h6>Welcome, <?php echo $this->session->userdata('first_name'); ?>!</h6>
                 </li>
                 <li class="sidebar-item <?php echo $tab_active == 'Self Assessment' ? 'active' : ''; ?>">
-                    <a href="<?php echo base_url('main/sdcaInquiry') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/Main/sdcaInquiry') ?>" class='sidebar-link'>
                         <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Student Inquiry</span>
                     </a>
@@ -37,14 +37,14 @@
                     </a>
                 </li>
                 <!-- <li class="sidebar-item">
-                    <a href="<?php echo base_url('main/validationOfDocuments') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/Main/validationOfDocuments') ?>" class='sidebar-link'>
                         <i class="bi bi-card-checklist"></i>
                         <span>Requirements</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('main/uploadProofOfPayment') ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/Main/uploadProofOfPayment') ?>" class='sidebar-link'>
                         <i class="bi bi-credit-card-fill"></i>
                         <span>Proof of Payment</span>
                     </a>
@@ -57,12 +57,12 @@
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item <?php echo $tab_active == 'Password Reset' ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('main/passwordReset') ?>">Reset Password</a>
+                            <a href="<?php echo base_url('index.php/Main/passwordReset') ?>">Reset Password</a>
                         </li>
                     </ul>
                 </li> -->
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('admin/logout');?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('admin/logout'); ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>
                         <span>Logout</span>
                     </a>

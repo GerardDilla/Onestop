@@ -22,7 +22,7 @@ echo '</script>';
         <div class="card-header">
         </div>
         <div class="card-body">
-            <form id="form_submit" action="<?php echo base_url('main/validationDocumentsProcess'); ?>" method="post" enctype="multipart/form-data">
+            <form id="form_submit" action="<?php echo base_url('index.php/Main/validationDocumentsProcess'); ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" value="0" name="if_married">
                 <!-- <form  id="form_submit" action="http://localhost:4003/uploadtodrive/test_post2" method="post" enctype="multipart/form-data" > -->
                 <div class="col-md-12" align="center">

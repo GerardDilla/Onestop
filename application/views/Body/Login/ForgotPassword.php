@@ -59,7 +59,7 @@ echo '});</script>';
             <div class="form d-flex bg-white" style="background:transparent">
             <div class="content">
                 <form method="post" class="form-validate" action="<?php echo base_url('main/sendEmail');?>" tabindex="1">
-                <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
+                <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png');?>">
                 <span class="white-box"></span>
                 <div class="col-md-12" style="margin-bottom:40px">
                     <h1 class="anim2">Forgot Password</h1>

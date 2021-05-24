@@ -69,7 +69,7 @@ else if($this->session->flashdata('success')!=''){
             <div class="form d-flex">
             <div class="content">
                 <form method="post" class="form-validate" action="<?php echo base_url('admin/loginProcess')?>" tabindex="1">
-                <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
+                <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png');?>">
                 <span class="white-box"></span>
                 <div class="col-md-12" style="margin-bottom:20px;text-align:center;">
                     <h1 class="anim2">SIGN IN</h1>

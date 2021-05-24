@@ -29,7 +29,7 @@
     function digital_update_status(id, id_acc) {
         switch_id = $('#switch' + id + id_acc);
         switch_value = switch_id.val();
-        account_id = switch_id.data(switch_value);
+        digital_id = switch_id.data(switch_value);
         if (switch_id.prop("checked")) {
             status = 'done';
         } else {
@@ -40,7 +40,7 @@
             dataType: 'json',
             method: 'post',
             data: {
-                'account_id': account_id,
+                'digital_id': digital_id,
                 'status': status
             },
             success: function(response) {}

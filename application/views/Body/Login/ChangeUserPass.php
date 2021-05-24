@@ -48,7 +48,7 @@ if($this->session->flashdata('error')!=''){
             <div class="form d-flex bg-white">
             <div class="content">
                 <form method="post" id="form_process" class="form-validate" action="<?php echo base_url('main/changeUserPassProcess');?>">
-                    <image class="dose-logo" src="<?php echo base_url('assets/vendors/login_asset/css/img/DOSE LOGO.png');?>">
+                    <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png');?>">
                     <span class="white-box"></span>
                     <br>
                     <input type="hidden" name="JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=" value="<?php echo $key;?>">

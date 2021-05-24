@@ -42,7 +42,7 @@ app.on('connection', conn => app.channel('stream').join(conn));
 // Publish events to stream
 app.publish(data => app.channel('stream'));
 
-const PORT = 6433
+const PORT = 4003;
 
 // app
 //   .listen(PORT)
@@ -54,5 +54,6 @@ const sslServer = https.createServer({
   key: fs.readFileSync(path.join(__dirname,'cred','key.pem')),
   cert: fs.readFileSync(path.join(__dirname,'cred','cert.pem'))
 },app)
+app.setup(sslServer); 
 sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API Localhost:${PORT}`))
 

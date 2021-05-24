@@ -44,3 +44,9 @@ app
   .on('listening', () =>
     console.log(`Realtime server running on port ${PORT}`)
   );
+  const httpsServer = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'resources', 'privatekey.pem')),
+    cert: fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'resources', 'certificate.pem')),
+    rejectUnauthorized: false,
+    requestCert: false
+  }, app).listen(7889);

@@ -58,7 +58,7 @@
                 </table>
                 <br>
             </div>
-            <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank">
+            <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank"  data-title="" data-intro="You can download your APPLICATION FORM by clicking this button"> 
                 <div class="btn btn-sm btn-primary" for="success-outlined">
                     DOWNLOAD APPLICATION
                 </div>

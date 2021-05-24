@@ -19,6 +19,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
     });</script>";
 }
 ?>
+
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
 <section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
@@ -185,15 +186,17 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js"></script>
 
 <!-- Advising -->
-<script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/advising.js" defer></script>
 <script>
 
 
 </script>
 <script src="<?php echo base_url('assets/js/notify.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/notify.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/walkthrough.js'); ?>"></script>
 <!-- Temporary Loading script -->
 <script>
+   
     $(document).ajaxStart(function() {
         $(".temp_loading").fadeIn();
     });

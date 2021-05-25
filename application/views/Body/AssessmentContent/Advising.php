@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css"> -->
 
 
-<div class="col-md-12">
+<div class="col-md-12" id="choose_subjects">
     <div class="row">
         <div class="col-md-12">
             <h4>1. CHOOSE SUBJECTS</h4>
@@ -13,7 +13,7 @@
     <br>
     <h5>Queued Subjects</h5>
     <a href="#" class="btn btn-sm btn-primary load-disable addsubject-button" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
-    <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
+    <a href="#" class="btn btn-sm btn-info viewsched-button" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
     <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
     <br><br>
     <div class="table-responsive">
@@ -62,7 +62,7 @@
 </div>
 <div class="col-md-12">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 choose_payment_plan">
             <h4>2. SELECT PAYMENT PLAN</h4>
             <br>
             <input type="radio" class="btn-check" name="payment-option" id="installmentchoice" value="installment" autocomplete="off" checked="">
@@ -79,7 +79,7 @@
         </div>
         <div class="col-md-6">
             <br>
-            <table class="table table-striped">
+            <table class="table table-striped fees-table">
                 <tbody>
                     <tr>
                         <td>OTHER FEES:</td>

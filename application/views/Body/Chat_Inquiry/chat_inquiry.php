@@ -102,6 +102,7 @@ else{
     echo ' onclick="timeWarning()"';
 }
 ?>><i class="bi bi-chat-text"></i></span>
+<!-- <span class="chat-logo"  id="chat-logo" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"><i class="bi bi-chat-text"></i></span> -->
 <div class="modal fade text-left w-100" id="chatinquiryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
@@ -146,7 +147,9 @@ else{
 $('time.timeago').timeago();
 var typing_timeout = null;
 var modal_status = 0;
-const socket = io('http://localhost:4003');
+const socket = io('https://localhost:4003'
+//  { rejectUnauthorized: false }
+);
 const app = feathers();
 var array_status = [];
 var status_running = false;

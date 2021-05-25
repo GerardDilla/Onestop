@@ -91,7 +91,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                         <div class="tab-content">
                             <div class="tab-pane container" id="student_information_content">
                                 <?php $this->load->view($this->data['student_information']); ?>
-                                <div class="col-md-12" style="text-align:center">
+                                <div class="col-md-12 student_info_submit_div" style="text-align:center">
                                     <hr>
                                     <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>
@@ -132,7 +132,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                     <hr>
                                     <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
 
-                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success">Print Registration Form</a>
+                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form">Print Registration Form</a>
                                 </div>
                             </div>
                             <!-- <div class="col-md-12" style="text-align:center">
@@ -193,10 +193,10 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 </script>
 <script src="<?php echo base_url('assets/js/notify.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/notify.min.js'); ?>"></script>
-<script src="<?php echo base_url('assets/js/walkthrough.js'); ?>"></script>
 <!-- Temporary Loading script -->
 <script>
-   
+   var ose_guide1 = new OSE_Guide('registration');
+    ose_guide1.play();
     $(document).ajaxStart(function() {
         $(".temp_loading").fadeIn();
     });

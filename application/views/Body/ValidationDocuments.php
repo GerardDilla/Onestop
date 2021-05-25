@@ -58,8 +58,9 @@ echo '</script>';
                                         ++$req_count;
                                     }
                                 }
-
+                                $req = 0;
                                 foreach ($requirements as $list) {
+                                    ++$req;
                                     if ($list['id_name'] != "marriage_certificate") {
                                         array_push($requirements_list, $list['id_name']);
                                         $status = $list['status'];
@@ -72,7 +73,7 @@ echo '</script>';
                                             </td>
                                             <td><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
                                                                                                                     echo $list['status'] == "" ? 'checked="true"' : '';
-                                                                                                                } ?> type="checkbox" class="form-check-input" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></td>
+                                                                                                                } ?> type="checkbox" class="form-check-input <?php echo $req==1?'requirement-1':'';?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></td>
                                             <td style="text-align:center;"><?php echo $list['status']; ?></td>
                                             <td style="text-align:center;"><?php echo $list['date']; ?></td>
 
@@ -80,7 +81,7 @@ echo '</script>';
                                     <?php
                                     } else {
                                     ?>
-                                        <tr>
+                                        <tr class="are_you_married">
                                             <th colspan="5">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes"> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" checked="true"></th>
                                         </tr>
                                         <tr style="display:none;" id="married_certificate_div">
@@ -99,7 +100,7 @@ echo '</script>';
                                 if (isset($this->data['requirementstab'])) {
                                     if ($this->data['interview_status'] == null) {
                                     ?>
-                                        <tr>
+                                        <tr class="interview-status">
                                             <th colspan="5">
                                                 Do you want to be interviewed?
                                                 <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>

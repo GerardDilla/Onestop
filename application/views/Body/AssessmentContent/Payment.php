@@ -3,7 +3,7 @@
     <div class="col-md-8 row">
 
         <!--/Regform Header-->
-        <div class="col-lg-12" style="text-align:center; color:#000">
+        <div class="col-lg-12 assessment-form" style="text-align:center; color:#000">
             <h3>ASSESSMENT FORM</h3>
             <hr>
             <table style="width:100%">
@@ -116,17 +116,17 @@
             </li>
             <li>
                 <!-- <a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a> -->
-                <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#onlinepaymentModal">PAY ONLINE</button>
+                <button type="button" class="btn btn-lg btn-primary online-payment" data-bs-toggle="modal" data-bs-target="#onlinepaymentModal">PAY ONLINE</button>
                 <br>
             </li>
-            <li><button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br></li>
-            <li><button type="button" class="btn btn-lg btn-primary" onclick="assessment_exporter('<?php echo site_url('ose_api/export_assessmentform') ?>')">Pay at SDCA Cashier</button><br></li>
+            <li><button type="button" class="btn btn-lg btn-primary over-the-counter" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br></li>
+            <li><button type="button" class="btn btn-lg btn-primary pay-at-sdca" onclick="assessment_exporter('<?php echo site_url('ose_api/export_assessmentform') ?>')">Pay at SDCA Cashier</button><br></li>
             <li>
                 <hr>
                 <h4>Already Paid?</h4>
             </li>
             <li>
-                <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" target=="_blank" type="button" class="btn btn-lg btn-primary">UPLOAD PROOF OF PAYMENT</a>
+                <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" target="_blank" type="button" class="btn btn-lg btn-primary upload-proof">UPLOAD PROOF OF PAYMENT</a>
             </li>
 
             <li>

@@ -9,9 +9,11 @@ const uploadToGdrive = require("./route/uploadtogdrive");
 const gdriveuploader = require("./route/gdrivelibrary");
 const moment = require("moment")
 const app = express(feathers());
-const https = require("https");
 const path = require("path");
 const fs = require("fs");
+const https = require("https");
+const cors = require("cors");
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -22,7 +24,7 @@ app.configure(express.rest());
 app.get("/",(req,res)=>{
     res.send('Welcome to OSE API Date:'+moment().format('YYYY-MM-DD kk:mm:ss')) 
 });
-const directoryToServe = 'client'
+app.use(cors);
 app.use('/chat-inquiry',new ChatService());
 app.use('/chat-action',new ChatActionService());
 app.use('/notification',new NotificationService());
@@ -36,24 +38,25 @@ app.post("/api/NotifyIfSubmitted",(req,res)=>{
   });
   res.send('success');
 });
-app.use('/',express.static(path.join(__dirname, '..',directoryToServe)))
+// app.use('/',express.static(path.join(__dirname, '..',directoryToServe)))
 app.on('connection', conn => app.channel('stream').join(conn));
 // Publish events to stream
 app.publish(data => app.channel('stream'));
 
-const PORT = process.env.PORT || 4003;
+const PORT = 4003;
 
-app
-  .listen(PORT)
-  .on('listening', () =>
-    console.log(`Realtime server running on port ${PORT}`)
-  );
+// app
+//   .listen(PORT)
+//   .on('listening', () =>
+//     console.log(`Realtime server running on port ${PORT}`)
+//   );
 
-// const httpsOptions = {
-// 	cert: fs.readFileSync(path.join(__dirname,'ssl','server.crt')),
-// 	key: fs.readFileSync(path.join(__dirname,'ssl','server.key')),
-// }
+const sslServer = https.createServer({
+  key: fs.readFileSync(path.join(__dirname,'cred','key.pem')),
+  cert: fs.readFileSync(path.join(__dirname,'cred','cert.pem')),
+  rejectUnauthorized: false,
+  requestCert: false
+},app)
+app.setup(sslServer); 
+sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API Localhost:${PORT}`))
 
-// https.createServer(httpsOptions,app).listen(PORT,function(){
-// 	console.log(`Serving the ${directoryToServe}/ directory at https://localhost:${PORT}`)
-// })

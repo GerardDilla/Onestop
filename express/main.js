@@ -15,14 +15,15 @@ const https = require("https");
 const cors = require("cors");
 
 app.use(express.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors);
 
 app.configure(socketio());
 // Enable REST services
 app.configure(express.rest());
 // Register services
-app.get("/",(req,res)=>{
-    res.send('Welcome to OSE API Date:'+moment().format('YYYY-MM-DD kk:mm:ss')) 
+app.get("/", (req, res) => {
+  res.send('Welcome to OSE API Date:' + moment().format('YYYY-MM-DD kk:mm:ss'))
 });
 app.use(cors);
 app.use('/chat-inquiry',new ChatService());
@@ -33,8 +34,8 @@ app.use("/gdriveuploader",gdriveuploader);
 app.post("/api/NotifyIfSubmitted",(req,res)=>{
   console.log(req.body);
   app.service('notification').create({
-      ref_no:req.body.ref_no,
-      amount:req.body.amount
+    ref_no: req.body.ref_no,
+    amount: req.body.amount
   });
   res.send('success');
 });

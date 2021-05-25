@@ -121,9 +121,10 @@ $db['default'] = array(
 // 	'hostname' => '10.0.0.9',
 // 	'username' => 'schoolsysdb',
 // 	'password' => 'Wpd2$Ya=$dCA<KXM25>',
+// 	// 'database' => 'Schoolsysdb_dev',
 // 	'database' => 'schoolsysdb',
 // 	'dbdriver' => 'mysqli',
-// 	'dbprefix' => '', 
+// 	'dbprefix' => '',
 // 	'pconnect' => TRUE,
 // 	'db_debug' => TRUE,
 // 	'cache_on' => FALSE,
@@ -136,4 +137,4 @@ $db['default'] = array(
 // 	'stricton' => FALSE,
 // 	'failover' => array(),
 // 	'save_queries' => TRUE
-// ); 
+// );

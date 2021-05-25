@@ -93,7 +93,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['student_information']); ?>
                                 <div class="col-md-12 student_info_submit_div" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['advising']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed-advising" id="wizard-button">PROCEED</button>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['requirementstab']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <!-- <?php if ($this->data['interview_status'] == null) { ?>
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed wizard-proceed-requirements" id="wizard-button-requirements">PROCEED</button>
                                 <?php
@@ -123,14 +123,14 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['payment']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                 </div>
                             </div>
                             <div class="tab-pane container" id="registration_content">
                                 <?php $this->load->view($this->data['registration']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
 
                                     <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form">Print Registration Form</a>
                                 </div>

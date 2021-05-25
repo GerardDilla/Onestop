@@ -57,8 +57,10 @@ td.schedule-time{
     z-index:10000;
     
 }
-.chat-logo i{
-    font-size: 4em;
+.chat-logo img{
+    /* font-size: 4em; */
+    width:100px;
+    height:auto;
     transition: transform .2s;
 }
 .chat-logo img:hover{

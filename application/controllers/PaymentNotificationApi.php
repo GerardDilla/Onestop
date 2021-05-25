@@ -5,9 +5,9 @@ class PaymentNotificationApi extends CI_Controller
 {
     
     public function __construct(){
-        // header('Access-Control-Allow-Origin: *');
-        // header('Access-Control-Allow-Methods: GET, POST');
-        // header('Access-Control-Request-Headers: Content-Type');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST');
+        header('Access-Control-Request-Headers: Content-Type');
         parent::__construct();
         $this->load->model('MainModel');
         $this->load->library('email');
@@ -19,7 +19,7 @@ class PaymentNotificationApi extends CI_Controller
         $amount = $this->input->post("amount");
         $email = $this->input->post("email");
         $cashier_id = $this->input->post("cashier_id");
-        // exit;
+        
         $student_info = $this->MainModel->getStudentAccountInfo($ref_no);
 		//  CC to Accounting notification
 		$student_email = "";
@@ -37,8 +37,18 @@ class PaymentNotificationApi extends CI_Controller
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-		// curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-		curl_exec($ch);
+        curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+		// curl_exec($ch);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          $error_msg = curl_error($ch);
+          echo $error_msg .'<br>';
+        }
+        else{
+        echo $result.'<br>';
+        }
 		curl_close($ch);
 		$email_data = array(
 			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],

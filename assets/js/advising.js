@@ -488,7 +488,7 @@ function queue_tablerenderer(element = '', data = []) {
         "ordering": false,
         "bPaginate": false,
         "bLengthChange": false,
-
+        "responsive": true
     });
 
 }

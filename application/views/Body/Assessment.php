@@ -200,10 +200,10 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 // advising
 // payment
 // registration
-   var ose_guide1 = new OSE_Guide('registration');
+   var ose_guide1 = new OSE_Guide('advising');
     ose_guide1.play();
 
-    
+
 
     $(document).ajaxStart(function() {
         $(".temp_loading").fadeIn();

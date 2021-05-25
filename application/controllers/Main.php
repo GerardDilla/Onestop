@@ -298,8 +298,8 @@ class Main extends MY_Controller
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
-		$data['payment'] = 1;
-		$data['advising'] = 1;
+		$data['payment'] = 0;
+		$data['advising'] = 0;
 		$data['requirements'] = 1;
 		$data['student_information'] = 1;
 

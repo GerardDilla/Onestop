@@ -42,7 +42,7 @@ class OSE_Guide{
             },
             {
                 element:document.querySelector(".requirement-1"),
-                intro:'Check this requirements if it is to be follow'
+                intro:'Check this requirements if it is to be follow. <br><strong>NOTE: You can just check all the requirements as to be follow if you still dont have any requirements to submit.</strong.'
             },
             {
                 element:document.querySelector(".are_you_married"),

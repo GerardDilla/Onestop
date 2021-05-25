@@ -59,11 +59,12 @@ td.schedule-time{
 }
 .chat-logo i{
     font-size: 4em;
-    transition: font-size .2s;
+    transition: transform .2s;
 }
-.chat-logo i:hover{
+.chat-logo img:hover{
     color:red;
-    font-size:4.5em;
+    /* font-size:4.5em; */
+    transform:scale(1.2)
 }
 .wizard-container .tab-content{
     margin-top:10% !important;

@@ -195,8 +195,16 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script src="<?php echo base_url('assets/js/notify.min.js'); ?>"></script>
 <!-- Temporary Loading script -->
 <script>
+// student_information
+// requirements
+// advising
+// payment
+// registration
    var ose_guide1 = new OSE_Guide('registration');
     ose_guide1.play();
+
+    
+
     $(document).ajaxStart(function() {
         $(".temp_loading").fadeIn();
     });

@@ -5,15 +5,22 @@ class PaymentNotificationApi extends CI_Controller
 {
     
     public function __construct(){
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST');
-        header('Access-Control-Request-Headers: Content-Type');
-        $this->load->model("MainModel","mainmodel");
+        // header('Access-Control-Allow-Origin: *');
+        // header('Access-Control-Allow-Methods: GET, POST');
+        // header('Access-Control-Request-Headers: Content-Type');
+        parent::__construct();
+        $this->load->model('MainModel');
         $this->load->library('email');
         $this->load->library('sdca_mailer', array('email' => $this->email, 'load' => $this->load));
+        $this->load->database();
     }
-    public function index($ref_no = "", $amount = "", $email = ""){
-        $student_info = $this->mainmodel->getStudentAccountInfo($ref_no);
+    public function index(){
+        $ref_no = $this->input->post("ref_no");
+        $amount = $this->input->post("amount");
+        $email = $this->input->post("email");
+        $cashier_id = $this->input->post("cashier_id");
+        // exit;
+        $student_info = $this->MainModel->getStudentAccountInfo($ref_no);
 		//  CC to Accounting notification
 		$student_email = "";
 		if ($email != "") {
@@ -26,14 +33,13 @@ class PaymentNotificationApi extends CI_Controller
 			'amount' => $amount
 		);
 		$string = http_build_query($all_uploadeddata);
-		$ch = curl_init("http://localhost:4003/api/NotifyIfSubmitted/");
+		$ch = curl_init("https://localhost:4003/api/NotifyIfSubmitted/");
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 		// curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 		curl_exec($ch);
 		curl_close($ch);
-
 		$email_data = array(
 			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
 			'reply_to' => 'jfabregas@sdca.edu.ph',
@@ -43,5 +49,12 @@ class PaymentNotificationApi extends CI_Controller
 			'message' => 'Email/PaymentEvidence'
 		);
 		$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array('student_info' => $student_info, 'total_amount' => $amount));
+        $this->MainModel->insertCashierPaymentLogs(array(
+            'cashier_id' => $cashier_id,
+            'total_amount' => $amount,
+            'email' => $email,
+            'ref_no' => $ref_no,
+            'date_created' => date("Y-m-d H:i:s")
+        ));
     }
 }

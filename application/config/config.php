@@ -24,7 +24,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'https://stdominiccollege.edu.ph/Onestop/';
-$config['base_url'] = 'http://localhost/Onestop/';
+$config['base_url'] = 'http://192.168.0.114/Onestop/';
 /*
 |--------------------------------------------------------------------------
 | Index File

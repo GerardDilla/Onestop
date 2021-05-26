@@ -148,9 +148,13 @@ else{
 $('time.timeago').timeago();
 var typing_timeout = null;
 var modal_status = 0;
-const socket = io('https://localhost:4003'
-//  { rejectUnauthorized: false }
-);
+var connectionOptions =  {
+            "force new connection" : true,
+            "reconnectionAttempts": "Infinity", 
+            "timeout" : 10000,                  
+            "transports" : ["websocket"]
+        };
+const socket = io('https://localhost:4003', {transports: ['websocket','polling', 'flashsocket']});
 const app = feathers();
 var array_status = [];
 var status_running = false;
@@ -402,7 +406,9 @@ someone_typing();
 init();
 
 function notifyIfSubmitted(data){
+    // alert("hello");
     if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+        
         iziToast.show({
             theme: 'light',
             icon: 'bi-emoji-laughing',

@@ -12,20 +12,20 @@ const app = express(feathers());
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
-const cors = require("cors");
+const http = require("http");
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors);
+// app.use(cors);
 
 app.configure(socketio());
 // Enable REST services
 app.configure(express.rest());
 // Register services
+// app.use(cors);
 app.get("/", (req, res) => {
   res.send('Welcome to OSE API Date:' + moment().format('YYYY-MM-DD kk:mm:ss'))
 });
-app.use(cors);
 app.use('/chat-inquiry',new ChatService());
 app.use('/chat-action',new ChatActionService());
 app.use('/notification',new NotificationService());
@@ -51,13 +51,24 @@ const PORT = 4003;
 //   .on('listening', () =>
 //     console.log(`Realtime server running on port ${PORT}`)
 //   );
+// const credentials = {
+//   key: fs.readFileSync('cred/key.pem','utf8'),
+//   cert: fs.readFileSync('cred/cert.pem','utf8')
+// }
+// var httpServer = http.createServer(app);
+// var httpsServer = https.createServer(credentials,app);
 
+// httpServer.listen(4003);
+// httpsServer.listen(4004);
 const sslServer = https.createServer({
   key: fs.readFileSync(path.join(__dirname,'cred','key.pem')),
   cert: fs.readFileSync(path.join(__dirname,'cred','cert.pem')),
   rejectUnauthorized: false,
   requestCert: false
 },app)
-app.setup(sslServer); 
-sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API Localhost:${PORT}`))
+app.setup(sslServer);
+sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://localhost:${PORT}`))
 
+const httpServer = http.createServer(app);
+const httpPort = 4004;
+httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://localhost:${httpPort}`))

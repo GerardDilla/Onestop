@@ -300,7 +300,7 @@ class Main extends MY_Controller
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
 		$data['payment'] = 0;
 		$data['advising'] = 0;
-		$data['requirements'] = 1;
+		$data['requirements'] = 0;
 		$data['student_information'] = 1;
 
 
@@ -807,7 +807,7 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
+			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));	
 			$decode_result = json_decode($result,true);
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {

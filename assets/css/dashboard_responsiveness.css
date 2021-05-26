@@ -40,6 +40,18 @@
     .nav-pills>li>a{
         font-size:10px; 
     }
+    .card .card-body{
+        padding:0px;
+    }
+    .card-body{
+        padding:0px;
+    }
+    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        margin-left:0px;
+        margin-right:0px;
+        padding-left:0px;
+        padding-right:0px;
+    }
 }
 /* .nav-pills>li.active>a{
     font-size:9px;

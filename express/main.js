@@ -60,6 +60,7 @@ const PORT = 4003;
 
 // httpServer.listen(4003);
 // httpsServer.listen(4004);
+const domain_name = 'localhost'
 const sslServer = https.createServer({
   key: fs.readFileSync(path.join(__dirname,'cred','key.pem')),
   cert: fs.readFileSync(path.join(__dirname,'cred','cert.pem')),
@@ -67,8 +68,9 @@ const sslServer = https.createServer({
   requestCert: false
 },app)
 app.setup(sslServer);
-sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://localhost:${PORT}`))
+sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`))
 
 const httpServer = http.createServer(app);
 const httpPort = 4004;
-httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://localhost:${httpPort}`))
+app.setup(httpServer)
+httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))

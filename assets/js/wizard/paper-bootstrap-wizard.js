@@ -185,7 +185,7 @@ function fetch_user_status() {
     $("tab_student_information").removeAttr("class");
     $.ajax({
         type: "POST",
-        url: base_url + "main/wizard_tracker_status",
+        url: base_url + "index.php/Main/wizard_tracker_status",
         async: true,
         dataType: "JSON",
         success: function(response) {

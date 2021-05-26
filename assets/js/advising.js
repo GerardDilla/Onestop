@@ -87,16 +87,16 @@ $(document).ready(function () {
 
     });
 
-    $('.setpaid_test').click(function () {
-        init_enroll_test();
-        fetch_user_status();
-        location.reload();
-    });
+    // $('.setpaid_test').click(function () {
+    //     init_enroll_test();
+    //     fetch_user_status();
+    //     location.reload();
+    // });
 
-    $('.reset_progress_test').click(function () {
-        init_reset_progress();
-        fetch_user_status();
-    });
+    // $('.reset_progress_test').click(function () {
+    //     init_reset_progress();
+    //     fetch_user_status();
+    // });
 
     $('.add-all-subject').click(function () {
         init_addAll();
@@ -488,7 +488,7 @@ function queue_tablerenderer(element = '', data = []) {
         "ordering": false,
         "bPaginate": false,
         "bLengthChange": false,
-
+        "responsive": true
     });
 
 }

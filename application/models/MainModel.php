@@ -159,4 +159,7 @@ class MainModel extends CI_Model
         $result = $this->db->get()->row_array();
         return empty($result['total_unseen']) ? 0 : $result['total_unseen'];
     }
+    public function insertCashierPaymentLogs($data){
+        $this->db->insert('cashier_payment_email_logs', $data);
+    }
 }

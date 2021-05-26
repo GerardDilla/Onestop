@@ -1,4 +1,4 @@
-const {getQuery,getQuery2} = require('../query/main');
+const { getQuery, getQuery2 } = require('../Query/main');
 const moment = require('moment');
 const ChatModel = require('../Model/ChatModel')
 class ChatService {
@@ -15,19 +15,19 @@ class ChatService {
   async get(data) {
     // console.log(data)
     let getdata = getQuery(`SELECT * FROM student_inquiry WHERE ref_no='${data.ref_no}' ORDER BY id ASC`)
-    return getdata.then((result)=>{
+    return getdata.then((result) => {
       return result;
-    }).catch(error=>{ return {error:error}});
+    }).catch(error => { return { error: error } });
   }
-  async update(id,data){
+  async update(id, data) {
     // console.log(data);
     let getdata = getQuery(`UPDATE student_inquiry SET status = 'seen' WHERE ref_no = '${id}' AND user_type <> '${data.type}'`)
-    getdata.then((result)=>{
+    getdata.then((result) => {
       return result
-    }).catch(error=>{ return {error:error}});
+    }).catch(error => { return { error: error } });
     return {
-      ref_no:id,
-      type:data.type
+      ref_no: id,
+      type: data.type
     }
   }
   async create(data) {

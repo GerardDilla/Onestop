@@ -4,7 +4,7 @@ var pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'asdf',
     database: 'schoolsysdb'
 })
 
@@ -25,3 +25,4 @@ pool.getConnection((err, connection) => {
 })
 
 module.exports = pool
+

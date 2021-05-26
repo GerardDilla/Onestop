@@ -58,7 +58,7 @@
                 </table>
                 <br>
             </div>
-            <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank">
+            <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank" class="intro-step-1"> 
                 <div class="btn btn-sm btn-primary" for="success-outlined">
                     DOWNLOAD APPLICATION
                 </div>
@@ -70,9 +70,9 @@
                 // Have course
 
             ?>
-                <div class="col-md-12">
+                <div class="col-md-12" id="choose_your_status">
                     <HR>
-                    <h6>CHOOSE YOUR STATUS</h6>
+                    <h6>CHOOSE YOUR STATUS5</h6>
                     <br>
                     <?php
                     $data_applied_status = empty($this->data['applied_status']) ? 'NULL' : $this->data['applied_status'];
@@ -121,7 +121,7 @@
                 }
 
                 ?>
-                <div class="col-md-12">
+                <div class="col-md-12" id="confirm_your_course">
                     <hr>
                     <h6>CONFIRM YOUR COURSE</h6>
                     <small>Contact MIS Department if you have correction.</small>
@@ -146,7 +146,7 @@
             } else {
                 //No Course
             ?>
-                <div class="col-md-12">
+                <div class="col-md-12" id="choose_your_status">
                     <HR>
                     <h6>CHOOSE YOUR STATUS</h6>
                     <br>
@@ -189,7 +189,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" id="confirm_your_course">
                     <hr>
                     <h6>CONFIRM YOUR COURSE</h6>
                     <small>Choose one of your preferred courses</small>
@@ -234,7 +234,3 @@
 </div>
 
 <!-- Will remove later in development -->
-
-<script>
-
-</script>

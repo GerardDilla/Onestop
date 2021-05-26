@@ -9,6 +9,7 @@
             <p>Below is your Registration Form, you can download this as proof that you are enrolled to <br>St. Dominic College of Asia.</p>
             <img style="width:20%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
             <hr>
+            <div class="col-md-12 enrollment-summary" style="margin:0;padding:0;">
             <table style="width:100%">
                 <tbody>
                     <tr class="success" style="font-size: 12px; text-align:left">
@@ -104,15 +105,16 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
             <br>
         </div>
     </div>
     <div class="col-md-2">
-        <a href="<?php echo base_url('forms/digital_citizenship') ?>" style="color:inherit"><button class="btn btn-primary">Digital Citizenship</button></a>
+        <a href="<?php echo base_url('forms/digital_citizenship') ?>" style="color:inherit"><button class="btn btn-primary digital-citizenship">Digital Citizenship</button></a>
         <br><br>
     </div>
     <div class="col-md-2">
-        <a href="<?php echo base_url('forms/id_application') ?>" style="color:inherit"><button class="btn btn-primary">ID Application</button></a>
+        <a href="<?php echo base_url('forms/id_application') ?>" style="color:inherit"><button class="btn btn-primary id-application">ID Application</button></a>
     </div>
     <div class="col-md-4"></div>
 </div>

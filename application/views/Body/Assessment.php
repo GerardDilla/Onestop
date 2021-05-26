@@ -19,6 +19,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
     });</script>";
 }
 ?>
+
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
 <section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
@@ -90,9 +91,9 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                         <div class="tab-content">
                             <div class="tab-pane container" id="student_information_content">
                                 <?php $this->load->view($this->data['student_information']); ?>
-                                <div class="col-md-12" style="text-align:center">
+                                <div class="col-md-12 student_info_submit_div" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>
                                 </div>
                             </div>
@@ -100,7 +101,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['advising']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed-advising" id="wizard-button">PROCEED</button>
                                 </div>
                             </div>
@@ -110,7 +111,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['requirementstab']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <!-- <?php if ($this->data['interview_status'] == null) { ?>
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed wizard-proceed-requirements" id="wizard-button-requirements">PROCEED</button>
                                 <?php
@@ -122,16 +123,16 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['payment']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                 </div>
                             </div>
                             <div class="tab-pane container" id="registration_content">
                                 <?php $this->load->view($this->data['registration']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
+                                    <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
 
-                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success">Print Registration Form</a>
+                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form">Print Registration Form</a>
                                 </div>
                             </div>
                             <!-- <div class="col-md-12" style="text-align:center">
@@ -185,7 +186,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js"></script>
 
 <!-- Advising -->
-<script src="<?php echo base_url(); ?>assets/js/advising.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/advising.js" defer></script>
 <script>
 
 
@@ -194,6 +195,16 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script src="<?php echo base_url('assets/js/notify.min.js'); ?>"></script>
 <!-- Temporary Loading script -->
 <script>
+// student_information
+// requirements
+// advising
+// payment
+// registration
+   var ose_guide1 = new OSE_Guide('requirements');
+    ose_guide1.play();
+
+    
+
     $(document).ajaxStart(function() {
         $(".temp_loading").fadeIn();
     });

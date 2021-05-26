@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class ose_api extends CI_Controller
+class Ose_api extends CI_Controller
 {
 	protected $reference_number;
 	protected $student_number;
@@ -1007,6 +1007,7 @@ class ose_api extends CI_Controller
 
 			echo 'Not Enrolled';
 			die();
+			
 		} else {
 
 			$this->data['student_data']  = $this->RegFormModel->Get_enrolled($array);

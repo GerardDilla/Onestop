@@ -20,16 +20,16 @@ class gdrive_uploader
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
         curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        // curl_setopt($ch, CURLOPT_FAILONERROR, true);
         $result = curl_exec($ch);
-        // return $result;
-        if (curl_errno($ch)) {
-          $error_msg = curl_error($ch);
-          return $error_msg;
-        }
-        else{
-          return $result;
-        }
+        return $result;
+        // if (curl_errno($ch)) {
+        //   $error_msg = curl_error($ch);
+        //   return $error_msg;
+        // }
+        // else{
+        //   return $result;
+        // }
         curl_close($ch);
   }
   // when calling this function you need to pass two parameters (file_name & folder_id) ex: array("folder_name"=>"","folder_id"=>"")
@@ -46,11 +46,11 @@ class gdrive_uploader
         curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
         curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        // curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
           $error_msg = curl_error($ch);
-          return $error_msg;
+          return '';
         }
         else{
           return $result;

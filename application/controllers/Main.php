@@ -293,11 +293,22 @@ class Main extends MY_Controller
 	// Inside OSE
 	public function wizard_tracker_status()
 	{
-		// $ref_no = $this->input->post('Reference_Number');
 		$ref_no = $this->session->userdata('reference_no');
+		// $ref_no = '25874';
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
+		$test = $this->AssesmentModel->enrolled_student($ref_no);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
+		// $count = 0;
+		foreach ($test as $a) {
+			if ($a['semester'] != $legend['Semester'] && $a['schoolyear'] != $legend['School_Year']) {
+				$data['old_student'] = 1;
+			}
+		}
+		// die('asdasd');
+		// echo $count;
+		// die();
+		// die(json_encode($count));
 		// $data['payment'] = 0;
 		// $data['advising'] = 0;
 		// $data['requirements'] = 0;
@@ -673,11 +684,11 @@ class Main extends MY_Controller
 			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
 			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
-			if($error_count==0){
+			if ($error_count == 0) {
 				$result = $this->gdrive_uploader->index($all_uploadeddata);
-				$decode_result = json_decode($result,true);
+				$decode_result = json_decode($result, true);
 				if (!empty($result)) {
-					if($decode_result['msg']=="success"){
+					if ($decode_result['msg'] == "success") {
 						$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
 							'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
 							'requirements' => $array_completefiles,
@@ -697,9 +708,8 @@ class Main extends MY_Controller
 						$this->session->set_userdata('gdrive_folder', $decode_result['id']);
 						$this->session->set_flashdata('success', 'Successfully submitted!!');
 						redirect($_SERVER['HTTP_REFERER']);
-					}
-					else{
-						$this->session->set_flashdata('error', "Files Upload Error: ".$result);
+					} else {
+						$this->session->set_flashdata('error', "Files Upload Error: " . $result);
 						redirect($_SERVER['HTTP_REFERER']);
 					}
 				} else {
@@ -715,10 +725,9 @@ class Main extends MY_Controller
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			}
-			else{
+			} else {
 				$this->mainmodel->revertIfErrorInRequirementUpload();
-				$this->session->set_flashdata('error', 'Files Upload Error: '.$error_count.' files failed to upload!!');
+				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!!');
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 			// echo json_encode(array("msg" => 'Successfully Uploaded'));
@@ -808,7 +817,7 @@ class Main extends MY_Controller
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
 			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
-			$decode_result = json_decode($result,true);
+			$decode_result = json_decode($result, true);
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {
 				if (in_array($file, $array_filestodelete)) {
@@ -818,7 +827,7 @@ class Main extends MY_Controller
 				}
 			}
 			if (!empty($result)) {
-				if($decode_result['msg']=="success"){
+				if ($decode_result['msg'] == "success") {
 					$this->session->set_userdata('gdrive_folder', $decode_result['id']);
 					$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $decode_result['id']));
 					if (!empty($checkRequirement)) {
@@ -852,13 +861,11 @@ class Main extends MY_Controller
 							'amount_paid' => $this->input->post('amount_paid')
 						));
 					}
-				}
-				else{
-					$this->session->set_flashdata('error', "Files Upload Error: ".$result);
+				} else {
+					$this->session->set_flashdata('error', "Files Upload Error: " . $result);
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			}
-			else{
+			} else {
 				$this->session->set_flashdata('error', "Files Upload Error: Google drive is OFFLINE");
 				redirect($_SERVER['HTTP_REFERER']);
 			}

@@ -20,6 +20,15 @@ class AssesmentModel extends CI_Model
         // die($query->row_array()['Ref_Num_si']);
         return $query->row_array();
     }
+    public function enrolled_student($ref_no)
+    {
+        $this->db->select('*');
+        $this->db->from('Fees_Enrolled_College');
+        $this->db->where('Reference_Number', $ref_no);
+        $this->db->order_by('schoolyear','DESC');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
     public function get_overall_fees($student_number)
     {
         $this->db->select('

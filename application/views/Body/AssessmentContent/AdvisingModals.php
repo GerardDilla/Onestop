@@ -54,7 +54,7 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
                 </button>
-                <button type="button" class="btn btn-primary add-all-subject">
+                <button type="button" class="btn btn-primary add-all-subject" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Add All</span>
                 </button>

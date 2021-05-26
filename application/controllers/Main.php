@@ -300,7 +300,7 @@ class Main extends MY_Controller
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
 		$data['payment'] = 0;
 		$data['advising'] = 0;
-		$data['requirements'] = 0;
+		$data['requirements'] = 1;
 		$data['student_information'] = 1;
 
 

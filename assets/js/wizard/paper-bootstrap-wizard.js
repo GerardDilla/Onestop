@@ -192,17 +192,38 @@ function fetch_user_status() {
             requirements = result.requirements;
             student_information = result.student_information;
             $('.tab-pane .container').removeClass('active');
+            // Walkthrough ids
+            // student_information
+            // requirements
+            // advising
+            // payment
+            // registration
             if (payment == 1) {
-                wizard_registration()
+
+                wizard_registration();
+                var ose_guide1 = new OSE_Guide('registration');
+
             } else if (advising == 1) {
+
                 wizard_payment();
+                var ose_guide1 = new OSE_Guide('payment');
+
             } else if (requirements == 1) {
+
                 wizard_advising();
+                var ose_guide1 = new OSE_Guide('advising');
+
             } else if (student_information == 1) {
                 wizard_requirements();
+                var ose_guide1 = new OSE_Guide('requirements');
+
             } else {
+
                 wizard_student_info();
+                var ose_guide1 = new OSE_Guide('student_information');
+
             }
+            ose_guide1.play();
         },
         error: function (response) { },
     });

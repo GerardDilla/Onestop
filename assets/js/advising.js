@@ -20,6 +20,121 @@ $(document).ready(function () {
         "bLengthChange": false,
     });
 
+    $('#sy_legend').change(function () {
+
+        if ($('#queueTable').data('queueResult') == 0) {
+            ajax_change_sy_legend();
+        } else {
+
+            iziToast.question({
+                timeout: false,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'change_sy_question',
+                zindex: 1500,
+                message: 'Changing this will remove all Queued Subjects. Do you want to proceed?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YES</b></button>', function (instance, toast) {
+
+                        $('#section').val('none');
+
+                        // Remove Queue Code
+                        init_remove_all_queue();
+
+                        // Changes legend
+                        ajax_change_sy_legend();
+
+                        init_subjectlists();
+
+                        init_paymentmethod();
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+
+                        event.preventDefault();
+                        // Sets legend Back
+                        $('#sy_legend').val('none');
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function (instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function (instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+
+        }
+    });
+
+    $('#sem_legend').change(function () {
+
+        if ($('#queueTable').data('queueResult') == 0) {
+            ajax_change_sem_legend();
+        } else {
+
+            iziToast.question({
+                timeout: false,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'change_sy_question',
+                zindex: 1500,
+                message: 'Changing This will remove all Queued Subjects. Do you want to proceed?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YES</b></button>', function (instance, toast) {
+
+                        $('#section').val('none');
+
+                        // Remove Queue Code
+                        init_remove_all_queue();
+
+                        // Changes Legend
+                        ajax_change_sem_legend();
+
+                        init_subjectlists();
+
+                        init_paymentmethod();
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+
+                        event.preventDefault();
+                        // Sets Section Back
+                        $('#sem_legend').val('none');
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function (instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function (instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+
+        }
+
+    });
+
     $('input[type=radio][name=payment-option]').change(function () {
 
         init_paymentmethod(this.value);
@@ -302,6 +417,31 @@ function init_remove_all_queue() {
 
 }
 
+function ajax_change_sy_legend() {
+
+    return $.ajax({
+        url: "/Onestop/index.php/ose_api/change_sy_legend",
+        async: true,
+        type: 'POST',
+        data: {
+            schoolyear: $('#sy_legend').val(),
+        }
+    });
+
+}
+
+function ajax_change_sem_legend() {
+    return $.ajax({
+        url: "/Onestop/index.php/ose_api/change_sem_legend",
+        async: true,
+        type: 'POST',
+        data: {
+            semester: $('#sem_legend').val(),
+        }
+    });
+}
+
+
 function ajax_enroll_test(paymentplan) {
     return $.ajax({
         url: "/Onestop/index.php/ose_api/setpaid_test",
@@ -448,7 +588,6 @@ function queue_tablerenderer(element = '', data = []) {
 
     element.DataTable().clear();
     element.DataTable().destroy();
-
 
     tablebody = element.find('tbody');
     tablebody.html('');

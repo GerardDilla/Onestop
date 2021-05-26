@@ -200,8 +200,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 // advising
 // payment
 // registration
-   var ose_guide1 = new OSE_Guide('requirements');
-    ose_guide1.play();
+
 
     
 

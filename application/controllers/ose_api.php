@@ -34,8 +34,9 @@ class Ose_api extends CI_Controller
 
 		#Temporary Legends : Must be auto generated
 		$legend = $this->AdvisingModel->getlegend();
-		$this->legend_sy = $legend['School_Year'];
-		$this->legend_sem = $legend['Semester'];
+
+		$this->legend_sy = $this->session->userdata('SY_LEGEND') != '' ? $this->session->userdata('SY_LEGEND') : $legend['School_Year'];
+		$this->legend_sem = $this->session->userdata('SEM_LEGEND') != '' ? $this->session->userdata('SEM_LEGEND') : $legend['Semester'];
 
 		$this->curriculum = $this->AdvisingModel->get_student_curriculum($this->reference_number);
 
@@ -202,7 +203,7 @@ class Ose_api extends CI_Controller
 		}
 
 		#Check if slot is available
-		$slot_status = $this->AdvisingModel->count_subject_enrolled($data);
+		// $slot_status = $this->AdvisingModel->count_subject_enrolled($data);
 		// $new_slot = $slot_status + 1;
 		// if ($new_slot >= $sched_data['Total_Slot']) {
 
@@ -220,7 +221,6 @@ class Ose_api extends CI_Controller
 			'school_year' => $this->legend_sy,
 			'semester' => $this->legend_sem,
 		);
-
 		#Parameters: Start time, End time, Days, Reference Number
 		$conflict_check = $this->AdvisingModel->check_advising_conflict($conflict_checker_parameters);
 		if ($conflict_check) {
@@ -255,20 +255,20 @@ class Ose_api extends CI_Controller
 		}
 
 		#Check if subject has already been taken
-		$finished_status = $this->AdvisingModel->check_finished_subject($data);
-		if ($finished_status != 0) {
-			$output['status'] = 1;
-			$output['data'] = 'Subject was already taken before: ' . $sched_data['CourseCode'];
-			return $output;
-		}
+		// $finished_status = $this->AdvisingModel->check_finished_subject($data);
+		// if ($finished_status != 0) {
+		// 	$output['status'] = 1;
+		// 	$output['data'] = 'Subject was already taken before: ' . $sched_data['CourseCode'];
+		// 	return $output;
+		// }
 
 		#Check if pre requisite has not been taken (Check if transferee)
-		$prereq_status = $this->AdvisingModel->check_finished_finished_prerequisite($data, $sched_data['sp_pre_req']);
-		if ($prereq_status == 0) {
-			$output['status'] = 1;
-			$output['data'] = 'Pre Requisite Subject has not been taken yet: ' . $sched_data['CourseCode'];
-			return $output;
-		}
+		// $prereq_status = $this->AdvisingModel->check_finished_finished_prerequisite($data, $sched_data['sp_pre_req']);
+		// if ($prereq_status == 0) {
+		// 	$output['status'] = 1;
+		// 	$output['data'] = 'Pre Requisite Subject has not been taken yet: ' . $sched_data['CourseCode'];
+		// 	return $output;
+		// }
 
 		return $output;
 	}
@@ -607,9 +607,13 @@ class Ose_api extends CI_Controller
 
 			$array_data['check_advised'] = 1;
 			$this->AdvisingModel->remove_sched_info($array_data);
+
+			#Get and remove previous fees with similar sy and sem
 			$array_college_fees_data = $this->FeesModel->get_fees_college_data($array_data);
-			$array_data['fees_temp_college_id'] = $array_college_fees_data[0]['id'];
-			$this->FeesModel->remove_fees_item($array_data['fees_temp_college_id']);
+			if (!empty($array_college_fees_data)) {
+				$array_data['fees_temp_college_id'] = $array_college_fees_data[0]['id'];
+				$this->FeesModel->remove_fees_item($array_data['fees_temp_college_id']);
+			}
 		} else {
 			$array_data['check_advised'] = 0;
 		}
@@ -1007,7 +1011,6 @@ class Ose_api extends CI_Controller
 
 			echo 'Not Enrolled';
 			die();
-			
 		} else {
 
 			$this->data['student_data']  = $this->RegFormModel->Get_enrolled($array);
@@ -1098,5 +1101,22 @@ class Ose_api extends CI_Controller
 		);
 		$fees_status = $this->display_fee($array_data);
 		echo json_encode($fees_status);
+	}
+	public function change_sy_legend()
+	{
+		$this->load->library('session');
+		$this->session->set_userdata('SY_LEGEND', $this->input->post('schoolyear'));
+		echo $this->session->userdata('SY_LEGEND');
+	}
+	public function change_sem_legend()
+	{
+		$this->load->library('session');
+		$this->session->set_userdata('SEM_LEGEND', $this->input->post('semester'));
+		echo $this->session->userdata('SEM_LEGEND');
+	}
+	public function check_legend()
+	{
+		echo $this->legend_sem;
+		echo $this->legend_sy;
 	}
 }

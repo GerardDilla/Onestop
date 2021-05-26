@@ -2,12 +2,80 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css"> -->
+<h1>ADVISING</h1>
 
+<br><br>
+<div class="col-md-12" id="choose_legend">
+    <div class="row">
+        <div class="divider divider-left">
+            <div class="divider-text">
+                <h4>1. CHOOSE SEMESTER</h4>
+            </div>
+        </div>
+        <fieldset class="col-md-4 form-group">
+            <p>CURRENT SCHOOLYEAR: 2021 - 2022</p>
+
+            <?php
+            $legend_sy = explode("-", $this->data['legend']['School_Year']);
+            $options = array(
+
+                'none' => 'SELECT SCHOOL YEAR',
+                $legend_sy[0] . '-' . $legend_sy[1] => $legend_sy[0] . '-' . $legend_sy[1],
+                ($legend_sy[0] - 1) . '-' . ($legend_sy[1] - 1) => ($legend_sy[0] - 1) . '-' . ($legend_sy[1] - 1),
+
+            );
+            $attr = array(
+                'id' => 'sy_legend',
+                'class' => 'form-select',
+                'required' => 'required'
+            );
+
+            echo form_dropdown('sy_legend', $options, $this->data['sy_session'] != '' ? $this->data['sy_session'] : 'none', $attr);
+            ?>
+
+            <!-- <select class="form-select" id="sy_legend" required>
+                <option value="none" disabled selected>SELECT SCHOOL YEAR</option>
+                <option value="2020-2021">2020-2021</option>
+                <option value="2019-2020">2019-2020</option>
+            </select> -->
+        </fieldset>
+        <div class="col-md-12"></div>
+        <fieldset class="col-md-4 form-group">
+            <p>CURRENT SEMESTER: FIRST</p>
+            <?php
+            $options = array(
+
+                'none' => 'SELECT SECTION',
+                'FIRST' => 'FIRST',
+                'SECOND' => 'SECOND',
+                'SUMMER' => 'SUMMER',
+
+            );
+            $attr = array(
+                'id' => 'sem_legend',
+                'class' => 'form-select',
+                'required' => 'required'
+            );
+
+            echo form_dropdown('sem_legend', $options, $this->data['sem_session'] != '' ? $this->data['sem_session'] : 'none', $attr);
+            ?>
+            <!-- <select class="form-select" id="sem_legend" required>
+                <option value="none" disabled selected>SELECT SECTION</option>
+                <option value="FIRST">FIRST</option>
+                <option value="SECOND">SECOND</option>
+                <option value="SUMMER">SUMMER</option>
+            </select> -->
+        </fieldset>
+    </div>
+</div>
 
 <div class="col-md-12" id="choose_subjects">
     <div class="row">
-        <div class="col-md-12">
-            <h4>1. CHOOSE SUBJECTS</h4>
+
+        <div class="divider divider-left">
+            <div class="divider-text">
+                <h4>2. CHOOSE SUBJECTS</h4>
+            </div>
         </div>
     </div>
     <br>
@@ -63,7 +131,11 @@
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-12 choose_payment_plan">
-            <h4>2. SELECT PAYMENT PLAN</h4>
+            <div class="divider divider-left">
+                <div class="divider-text">
+                    <h4>3. SELECT PAYMENT PLAN</h4>
+                </div>
+            </div>
             <br>
             <input type="radio" class="btn-check" name="payment-option" id="installmentchoice" value="installment" autocomplete="off" checked="">
             <label class="btn btn-sm btn-outline-primary" for="installmentchoice">

@@ -35,9 +35,9 @@ class Main extends MY_Controller
 			// date("M. j,Y g:ia",strtotime($checkRequirement['requirements_date']))
 			++$count;
 		}
-		// exit;
 		$this->data['requirements'] = $getRequirementsList;
 
+		#Tab Views
 		$this->data['student_information'] = 'Body/AssessmentContent/StudentInformation';
 		$this->data['requirementstab'] = 'Body/ValidationDocuments';
 		$this->data['advising'] = 'Body/AssessmentContent/Advising';
@@ -45,6 +45,7 @@ class Main extends MY_Controller
 		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
 		$this->data['registration'] = 'Body/AssessmentContent/Registration';
 
+		#Get Preferred Course
 		// echo $this->session->userdata('reference_no');
 		$this->data['student_courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));
 		$array = array();
@@ -54,14 +55,14 @@ class Main extends MY_Controller
 		}
 		$this->data['courses_info'] = $array;
 
-		// All Programs
+		#Get Program Choice
 		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
 
-		#Get from Student_Account Table
+		#Get from Student_Account Table(Admission portal account)
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($this->session->userdata('reference_no'));
 		$this->data['interview_status'] = $student_account['interview_status'];
 
-		#Get from Student_Info Table
+		#Get from Student Information
 		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
 		$this->data['course'] = $student_info_array['Course'];
 
@@ -73,10 +74,23 @@ class Main extends MY_Controller
 		#Get Major
 		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
 		$this->data['major'] = $major['Program_Major'];
-		//
+
+		#Get type (Transferee or Freshmen)
 		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
 		$this->data['shs_student_number'] = empty($shs_bridge) ? '' : $shs_bridge['shs_student_number'];
 		$this->data['applied_status'] = empty($shs_bridge) ? '' : $shs_bridge['applied_status'];
+
+		#Get Legend (Year and Semester Choices)
+		$this->data['legend'] = $this->AdvisingModel->getlegend();
+
+		#Get Advising Session
+		$queue = $this->AdvisingModel->get_queued_subjects($this->session->userdata('reference_no'));
+		$this->data['sy_session'] = empty($queue) ? $this->data['legend']['School_Year'] : $queue[0]['School_Year'];
+		$this->data['sem_session'] = empty($queue) ? $this->data['legend']['Semester'] : $queue[0]['Semester'];
+
+		#Set Advising Session as basis
+		$this->session->set_userdata('SY_LEGEND', $this->data['sy_session'] != '' ? $this->data['sy_session'] : $this->data['legend']['School_Year']);
+		$this->session->set_userdata('SEM_LEGEND', $this->data['sem_session'] != '' ? $this->data['sem_session'] : $this->data['legend']['Semester']);
 
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
@@ -296,25 +310,26 @@ class Main extends MY_Controller
 		// $ref_no = $this->input->post('Reference_Number');
 		$ref_no = $this->session->userdata('reference_no');
 		$legend = $this->AdvisingModel->getlegend();
+		// $status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
-		$data['payment'] = 0;
-		$data['advising'] = 0;
-		$data['requirements'] = 0;
-		$data['student_information'] = 1;
+		// $data['payment'] = 0;
+		// $data['advising'] = 1;
+		// $data['requirements'] = 0;
+		// $data['student_information'] = 0;
 
 
-		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
-		// 	$data['payment'] = 1;
-		// } else if ($status['Ref_Num_ftc'] != null) {
-		// 	$data['advising'] = 1;
-		// } else if ($student_account['interview_status'] != null) {
-		// 	$data['requirements'] = 1;
-		// } else if ($status['Course'] != 'N/A') {
-		// 	$data['student_information'] = 1;
-		// } else {
-		// 	$data['student_information'] = 0;
-		// }
+		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+			$data['payment'] = 1;
+		} else if ($status['Ref_Num_ftc'] != null) {
+			$data['advising'] = 1;
+		} else if ($student_account['interview_status'] != null) {
+			$data['requirements'] = 1;
+		} else if ($status['Course'] != 'N/A') {
+			$data['student_information'] = 1;
+		} else {
+			$data['student_information'] = 0;
+		}
 		echo json_encode($data);
 		// return json_encode($data);
 	}
@@ -673,11 +688,11 @@ class Main extends MY_Controller
 			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
 			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
-			if($error_count==0){
+			if ($error_count == 0) {
 				$result = $this->gdrive_uploader->index($all_uploadeddata);
-				$decode_result = json_decode($result,true);
+				$decode_result = json_decode($result, true);
 				if (!empty($result)) {
-					if($decode_result['msg']=="success"){
+					if ($decode_result['msg'] == "success") {
 						$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
 							'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
 							'requirements' => $array_completefiles,
@@ -697,9 +712,8 @@ class Main extends MY_Controller
 						$this->session->set_userdata('gdrive_folder', $decode_result['id']);
 						$this->session->set_flashdata('success', 'Successfully submitted!!');
 						redirect($_SERVER['HTTP_REFERER']);
-					}
-					else{
-						$this->session->set_flashdata('error', "Files Upload Error: ".$result);
+					} else {
+						$this->session->set_flashdata('error', "Files Upload Error: " . $result);
 						redirect($_SERVER['HTTP_REFERER']);
 					}
 				} else {
@@ -715,10 +729,9 @@ class Main extends MY_Controller
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			}
-			else{
+			} else {
 				$this->mainmodel->revertIfErrorInRequirementUpload();
-				$this->session->set_flashdata('error', 'Files Upload Error: '.$error_count.' files failed to upload!!');
+				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!!');
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 			// echo json_encode(array("msg" => 'Successfully Uploaded'));
@@ -807,8 +820,8 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));	
-			$decode_result = json_decode($result,true);
+			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
+			$decode_result = json_decode($result, true);
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {
 				if (in_array($file, $array_filestodelete)) {
@@ -818,7 +831,7 @@ class Main extends MY_Controller
 				}
 			}
 			if (!empty($result)) {
-				if($decode_result['msg']=="success"){
+				if ($decode_result['msg'] == "success") {
 					$this->session->set_userdata('gdrive_folder', $decode_result['id']);
 					$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $decode_result['id']));
 					if (!empty($checkRequirement)) {
@@ -852,13 +865,11 @@ class Main extends MY_Controller
 							'amount_paid' => $this->input->post('amount_paid')
 						));
 					}
-				}
-				else{
-					$this->session->set_flashdata('error', "Files Upload Error: ".$result);
+				} else {
+					$this->session->set_flashdata('error', "Files Upload Error: " . $result);
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			}
-			else{
+			} else {
 				$this->session->set_flashdata('error', "Files Upload Error: Google drive is OFFLINE");
 				redirect($_SERVER['HTTP_REFERER']);
 			}

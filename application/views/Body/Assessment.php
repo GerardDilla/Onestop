@@ -168,6 +168,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
     </div>
     </div>
     <?php $this->load->view($this->data['advising_modals']); ?>
+    <input type="hidden" name="current_tab_selection" value="">
 
 
 </section>
@@ -179,7 +180,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery.bootstrap.wizard.js" type="text/javascript"></script>
 <!--  Plugin for the Wizard -->
-<script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript"></script>
+<script src="<?php echo base_url() ?>assets/js/wizard/paper-bootstrap-wizard.js" type="text/javascript" defer></script>
 
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script>
@@ -200,10 +201,6 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 // advising
 // payment
 // registration
-   var ose_guide1 = new OSE_Guide('requirements');
-    ose_guide1.play();
-
-    
 
     $(document).ajaxStart(function() {
         $(".temp_loading").fadeIn();

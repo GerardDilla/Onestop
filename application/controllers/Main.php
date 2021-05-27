@@ -299,10 +299,10 @@ class Main extends MY_Controller
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
 		$data['payment'] = 0;
-		$data['advising'] = 0;
+		$data['advising'] = 1;
 		$data['requirements'] = 1;
 		$data['student_information'] = 1;
-
+		
 
 		// if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
 		// 	$data['payment'] = 1;

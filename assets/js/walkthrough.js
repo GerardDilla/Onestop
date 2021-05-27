@@ -167,6 +167,7 @@ class OSE_Guide{
         var current_this = this;
         this.intro.onbeforeexit(function () {
             iziToast.show({
+                class:'izitoast-open-walkthrough',
                 theme: 'dark',
                 icon: 'bi-info-circle-fill',
                 iconColor: 'white',

@@ -154,7 +154,7 @@ var connectionOptions =  {
             "timeout" : 10000,                  
             "transports" : ["websocket"]
         };
-const socket = io('https://localhost:4003', {transports: ['websocket','polling', 'flashsocket']});
+const socket = io('https://localhost:4003', {transports: ['websocket']});
 const app = feathers();
 var array_status = [];
 var status_running = false;

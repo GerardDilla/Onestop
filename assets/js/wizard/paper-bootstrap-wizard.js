@@ -193,16 +193,23 @@ function fetch_user_status() {
             student_information = result.student_information;
             $('.tab-pane .container').removeClass('active');
             if (payment == 1) {
+                $('input[name=current_tab_selection]').val('registration');
                 wizard_registration()
             } else if (advising == 1) {
+                $('input[name=current_tab_selection]').val('payment');
                 wizard_payment();
             } else if (requirements == 1) {
+                $('input[name=current_tab_selection]').val('advisng');
                 wizard_advising();
             } else if (student_information == 1) {
+                $('input[name=current_tab_selection]').val('requirements');
                 wizard_requirements();
             } else {
+                $('input[name=current_tab_selection]').val('student_information');
                 wizard_student_info();
             }
+            var ose_guide1 = new OSE_Guide($('input[name=current_tab_selection]').val());
+            ose_guide1.play();
         },
         error: function (response) { },
     });

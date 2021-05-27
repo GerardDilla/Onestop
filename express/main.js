@@ -72,5 +72,4 @@ sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${d
 
 const httpServer = http.createServer(app);
 const httpPort = 4004;
-app.setup(httpServer)
 httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))

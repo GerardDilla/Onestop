@@ -154,7 +154,8 @@ var connectionOptions =  {
             "timeout" : 10000,                  
             "transports" : ["websocket"]
         };
-const socket = io('https://localhost:4003', {transports: ['websocket','polling', 'flashsocket']});
+const socket = io('http://localhost:8080');
+// , {transports: ['websocket','polling', 'flashsocket']})
 const app = feathers();
 var array_status = [];
 var status_running = false;
@@ -200,7 +201,7 @@ function timeWarning(){
 }
 $('#inquiryForm button').on('click',function(){
     if($('#chat-textarea').html()!=""){
-        app.service('chat-inquiry').create({
+        app.service('ose_api/chat-inquiry').create({
             message:$('#chat-textarea').html(),
             ref_no:'<?php echo $this->session->userdata('reference_no'); ?>',
             type:'student'
@@ -220,7 +221,7 @@ $('#inquiryForm button').on('click',function(){
     }
 })
 $('#chatinquiryModal').mouseover(function(){
-    app.service('chat-inquiry').update("<?php echo $this->session->userdata('reference_no'); ?>",{
+    app.service('ose_api/chat-inquiry').update("<?php echo $this->session->userdata('reference_no'); ?>",{
         type:'student',
     });
     // updateToSeen();
@@ -242,7 +243,7 @@ $('#chat-textarea').on('keydown',function(e){
         e.preventDefault();
         if($('#chat-textarea').html()!=""){
             const uuid = uuidv4();
-            app.service('chat-inquiry').create({
+            app.service('ose_api/chat-inquiry').create({
                 message:$('#chat-textarea').html(),
                 ref_no:'<?php echo $this->session->userdata('reference_no'); ?>',
                 type:'student',
@@ -262,7 +263,7 @@ $('#chat-textarea').on('keydown',function(e){
     }
 })
 $('#chat-textarea').on('keyup',function(){
-    app.service('chat-action').create({
+    app.service('ose_api/chat-action').create({
         ref_no:"<?php echo $this->session->userdata('reference_no');?>",
         type:'student'
     });
@@ -392,14 +393,14 @@ async function typing(data){
     }
 }
 async function someone_typing(){
-    app.service('chat-action').on('created', typing);
+    app.service('ose_api/chat-action').on('created', typing);
 }   
 async function init() {
 // Find ideas
-const ideas = await app.service('chat-inquiry').get({ref_no:"<?php echo $this->session->userdata('reference_no');?>"});
+const ideas = await app.service('ose_api/chat-inquiry').get({ref_no:"<?php echo $this->session->userdata('reference_no');?>"});
     renderIdea(ideas);
-    app.service('chat-inquiry').on('created', receivedMessage);
-    app.service('chat-inquiry').on('updated', updateToSeen);
+    app.service('ose_api/chat-inquiry').on('created', receivedMessage);
+    app.service('ose_api/chat-inquiry').on('updated', updateToSeen);
 
 }
 someone_typing();
@@ -441,5 +442,5 @@ function notifyIfSubmitted(data){
         }); 
     }
 }
-app.service('notification').on('created', notifyIfSubmitted);
+app.service('ose_api/notification').on('created', notifyIfSubmitted);
 </script>

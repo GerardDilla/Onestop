@@ -199,7 +199,7 @@ function fetch_user_status() {
                 $('input[name=current_tab_selection]').val('payment');
                 wizard_payment();
             } else if (requirements == 1) {
-                $('input[name=current_tab_selection]').val('advisng');
+                $('input[name=current_tab_selection]').val('advising');
                 wizard_advising();
             } else if (student_information == 1) {
                 $('input[name=current_tab_selection]').val('requirements');

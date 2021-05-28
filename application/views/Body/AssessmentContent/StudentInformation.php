@@ -2,61 +2,63 @@
     <div class="col-md-12">
         <!-- <div id="base_url" class="base_url" data-baseurl="<?php echo base_url(); ?>"></div> -->
         <div class="row">
-            <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION
-                <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
-            </h6>
-            <div class="col-md-6">
-                <table class="table table-striped table-hover" style="display: block; overflow: auto;">
-                    <tbody>
-                        <tr>
-                            <td>REFERENCE NUMBER:</td>
-                            <td id="stud_info_reference_number"></td>
-                        </tr>
-                        <tr>
-                            <td>FIRST NAME:</td>
-                            <td id="stud_info_first_name"></td>
-                        </tr>
-                        <tr>
-                            <td>MIDDLE NAME:</td>
-                            <td id="stud_info_middle_name"></td>
-                        </tr>
-                        <tr>
-                            <td>LAST NAME:</td>
-                            <td id="stud_info_last_name"></td>
-                        </tr>
-                        <tr>
-                            <td>COURSE:</td>
-                            <td id="stud_info_course"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <table class="table table-striped table-hover" style="display: block; overflow: auto;">
-                    <tbody>
-                        <tr>
-                            <td>ADDRESS:</td>
-                            <td id="stud_info_address"></td>
-                        </tr>
-                        <tr>
-                            <td>CONTACT NUMBER:</td>
-                            <td id="stud_info_contact"></td>
-                        </tr>
-                        <tr>
-                            <td>FIRST CHOICE:</td>
-                            <td id="stud_info_first_choice"></td>
-                        </tr>
-                        <tr>
-                            <td>SECOND CHOICE:</td>
-                            <td id="stud_info_second_name"></td>
-                        </tr>
-                        <tr>
-                            <td>THIRD CHOICE:</td>
-                            <td id="stud_info_third_name"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br>
+            <div class="col-md-12 row your_information" style="margin:0;padding:0;">
+                <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION
+                    <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
+                </h6>
+                <div class="col-md-6">
+                    <table class="table table-striped table-hover" style="display: block; overflow: auto;">
+                        <tbody>
+                            <tr>
+                                <td>REFERENCE NUMBER:</td>
+                                <td id="stud_info_reference_number"></td>
+                            </tr>
+                            <tr>
+                                <td>FIRST NAME:</td>
+                                <td id="stud_info_first_name"></td>
+                            </tr>
+                            <tr>
+                                <td>MIDDLE NAME:</td>
+                                <td id="stud_info_middle_name"></td>
+                            </tr>
+                            <tr>
+                                <td>LAST NAME:</td>
+                                <td id="stud_info_last_name"></td>
+                            </tr>
+                            <tr>
+                                <td>COURSE:</td>
+                                <td id="stud_info_course"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-striped table-hover" style="display: block; overflow: auto;">
+                        <tbody>
+                            <tr>
+                                <td>ADDRESS:</td>
+                                <td id="stud_info_address"></td>
+                            </tr>
+                            <tr>
+                                <td>CONTACT NUMBER:</td>
+                                <td id="stud_info_contact"></td>
+                            </tr>
+                            <tr>
+                                <td>FIRST CHOICE:</td>
+                                <td id="stud_info_first_choice"></td>
+                            </tr>
+                            <tr>
+                                <td>SECOND CHOICE:</td>
+                                <td id="stud_info_second_name"></td>
+                            </tr>
+                            <tr>
+                                <td>THIRD CHOICE:</td>
+                                <td id="stud_info_third_name"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                </div>
             </div>
             <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank" class="intro-step-1"> 
                 <div class="btn btn-sm btn-primary" for="success-outlined">

@@ -18,72 +18,68 @@ if (!empty($this->session->flashdata('error'))) {
 echo '</script>';
 ?>
 <style>
-    .div-th {
-        /* margin:0;
+.div-th{
+    /* margin:0;
     padding:0; */
-        /* border:1px solid black; */
-        color: black;
-        font-weight: bold;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* position:relative; */
-    }
-
-    .min-th {
-        color: black;
-        font-weight: bold;
-        text-align: center;
-        /* display: flex; */
-        justify-content: center;
-        align-items: center;
-        display: none;
-        position: relative;
-    }
-
-    .div-align-center {
-        /* display: flex;
+    /* border:1px solid black; */
+    color:black;
+    font-weight:bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* position:relative; */
+}
+.min-th{
+    color:black;
+    font-weight:bold;
+    text-align: center;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    display:none;
+    position:relative;
+}
+.div-align-center{
+    /* display: flex;
     justify-content: center;
     align-items: center;  */
-        /* text-align */
-        text-align: center;
-    }
-
-    .div-td {
-        /* border:1px solid black; */
-        margin: 0;
-        padding: 10px;
-        /* padding:0; */
-        /* padding:0; */
-        /* border:1px solid black; */
-        color: black;
-        position: relative;
-        /* font-weight:bold; */
-        /* text-align: center; */
-        /* display: flex;
+    /* text-align */
+    text-align:center;
+}
+.div-td{
+    /* border:1px solid black; */
+    margin:0;
+    padding:10px;
+    /* padding:0; */
+    /* padding:0; */
+    /* border:1px solid black; */
+    color:black;
+    position:relative;
+    /* font-weight:bold; */
+    /* text-align: center; */
+    /* display: flex;
     justify-content: center;
     align-items: center; */
-        /* padding:10px; */
-    }
-
-    /* .div-th span{
+    /* padding:10px; */
+}
+/* .div-th span{
     border:1px solid black;
     margin:auto;
 } */
-    /* .div-th span{
+/* .div-th span{
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 } */
-    .responsive-tbl {
-        background: #f8f9fa;
-        color: #000;
-        /* border:1px solid black; */
-        /* border-color: #dfe0e1; */
-        /* --bs-table-bg: #f8f9fa;
+.responsive-tbl{
+    background:#f8f9fa;
+    color: #000;
+    /* border:1px solid black; */
+    /* border-color: #dfe0e1; */
+    /* --bs-table-bg: #f8f9fa;
     --bs-table-striped-bg: #ecedee;
     --bs-table-striped-color: #000;
     --bs-table-active-bg: #dfe0e1;
@@ -92,36 +88,69 @@ echo '</script>';
     --bs-table-hover-color: #000;
     color: #000;
     border-color: #dfe0e1; */
-    }
-
-    .table-header {
-        /* border-bottom: 1px solid #dedede!important;
+}
+.table-header{
+    /* border-bottom: 1px solid #dedede!important;
     padding-right:10px; */
-        position: relative;
+    position:relative;
+}
+.table-header::after{
+    border-bottom: 2px solid #dedede!important;
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    margin: 0 auto;
+}
+.table-body{
+
+}
+
+.table-row{
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+    /* border-bottom: 1px solid #dedede!important; */
+    position:relative;
+}
+.table-row::before{
+    border-bottom: 2px solid #dedede!important;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    margin: 0 auto;
+}
+.column-1{
+    
+}
+.column-2{
+
+}
+.column-3{
+
+}
+.column-4{
+
+}
+.column-5{
+
+}
+@media (max-width:993px){
+    .column-1,.column-2,.column-3,.column-4,.column-5{
+        display:none;
     }
-
-    .table-header::after {
-        border-bottom: 2px solid #dedede !important;
-        content: '';
-        position: absolute;
-        left: 10px;
-        right: 0;
-        width: 100%;
-        bottom: 0;
-        margin: 0 auto;
+    .min-th{
+        display:flex;
     }
-
-    .table-body {}
-
-    .table-row {
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
-        /* border-bottom: 1px solid #dedede!important; */
-        position: relative;
+    .div-align-center{
+        text-align:left;
     }
-
-    .table-row::before {
-        border-bottom: 2px solid #dedede !important;
+    .div-td::before{
+        border-bottom: 2px solid #dedede!important;
         content: '';
         position: absolute;
         left: 0;
@@ -130,65 +159,22 @@ echo '</script>';
         bottom: 0;
         margin: 0 auto;
     }
-
-    .column-1 {}
-
-    .column-2 {}
-
-    .column-3 {}
-
-    .column-4 {}
-
-    .column-5 {}
-
-    @media (max-width:993px) {
-
-        .column-1,
-        .column-2,
-        .column-3,
-        .column-4,
-        .column-5 {
-            display: none;
-        }
-
-        .min-th {
-            display: flex;
-        }
-
-        .div-align-center {
-            text-align: left;
-        }
-
-        .div-td::before {
-            border-bottom: 2px solid #dedede !important;
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            width: 100%;
-            bottom: 0;
-            margin: 0 auto;
-        }
-
-        .header-per-row {
-            background: #d4d4d4;
-        }
+    .header-per-row{
+        background:#d4d4d4;
     }
-
-    @media (max-width:576px) {
-        .div-align-center {
-            text-align: center;
-        }
+}
+@media (max-width:576px){
+    .div-align-center{
+        text-align:center;
     }
-
-    #are_you_married {
-        padding: 10px 10px 10px 20px;
-    }
-
-    .interview-status {
-        /* margin-left:10px; */
-        padding: 10px 10px 10px 20px;
-    }
+}
+#are_you_married{
+    padding:10px 10px 10px 20px;
+}
+.interview-status{
+    /* margin-left:10px; */
+    padding:10px 10px 10px 20px;
+}
 </style>
 <section class="section col-sm-12">
     <div class="card" style="margin:none;">
@@ -208,7 +194,7 @@ echo '</script>';
                             <div class="col-lg-2 div-th column-5"><span>Date</span></div>
                         </div>
                         <div class="table-body">
-                            <?php
+                        <?php
                             $status = "";
                             // $requirements = $this->data['requirements'];
                             // echo json_encode($requirements);
@@ -225,33 +211,13 @@ echo '</script>';
                                 if ($list['id_name'] != "marriage_certificate") {
                                     array_push($requirements_list, $list['id_name']);
                                     $status = $list['status'];
-                            ?>
-                                    <div class="table-row row col-md-12">
-                                        <div class="col-lg-3 row div-td div-align-center header-per-row">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th">Requirements</div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['rq_name']; ?></div>
-                                        </div>
-                                        <div class="col-lg-4 row div-td">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8">
-                                                <input required <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
+                        ?>
+                            <div class="table-row row col-md-12">
+                                <div class="col-lg-3 row div-td div-align-center header-per-row"><div class="col-lg-12 col-md-4 col-sm-4 min-th">Requirements</div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['rq_name']; ?></div></div>
+                                <div class="col-lg-4 row div-td">
+                                    <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></span></div><div class="col-lg-12 col-md-8 col-sm-8">
+                                    <input required <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
                                                 <div class="invalid-feedback feedback-<?php echo $list['id_name']; ?>"><i class="bx bx-radio-circle"></i>This is required.</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 row div-td">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
-                                                                                                                                                        echo $list['status'] == "" ? 'checked="true"' : '';
-                                                                                                                                                    } ?> type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
-                                        </div>
-                                        <div class="col-lg-2 row div-td div-align-center">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8">pending</div>
-                                        </div>
-                                        <div class="col-lg-2 row div-td div-align-center">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8">May. 26,2021 9:59am</div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-1 row div-td"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div><div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
@@ -273,22 +239,6 @@ echo '</script>';
                                     <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></span></div><div class="col-lg-12 col-md-8 col-sm-8">
                                     <input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
                                                 <div class="invalid-feedback feedback-<?php echo $list['id_name']; ?>"><i class="bx bx-radio-circle"></i>This is required.</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 row div-td">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
-                                                                                                                                                        echo $list['status'] == "" ? 'checked="true"' : '';
-                                                                                                                                                    } ?> type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
-                                        </div>
-                                        <div class="col-lg-2 row div-td div-align-center">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8">pending</div>
-                                        </div>
-                                        <div class="col-lg-2 row div-td div-align-center">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8">May. 26,2021 9:59am</div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-1 row div-td"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div><div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
@@ -301,14 +251,14 @@ echo '</script>';
                             }
                             if (isset($this->data['requirementstab'])) {
                                 if ($this->data['interview_status'] == null) {
-                                ?>
-                                    <div class="table-row row col-md-12 interview-status">
-                                        <div class="col-md-12">
-                                            Do you want to be interviewed?
-                                            <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
-                                            <label for="interview_no"> NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
-                                        </div>
-                                    </div>
+                        ?>
+                            <div class="table-row row col-md-12 interview-status">
+                                <div class="col-md-12">
+                                    Do you want to be interviewed?
+                                    <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
+                                    <label for="interview_no"> NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
+                                </div>
+                            </div>
                             <?php
                                 } else {
                                     echo "<div class='table-row row col-md-12 interview-status'>

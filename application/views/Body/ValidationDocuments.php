@@ -223,8 +223,8 @@ echo '</script>';
                                 <div class="col-lg-1 row div-td"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div><div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
                                                                                                                     echo $list['status'] == "" ? 'checked="true"' : '';
                                                                                                                 } ?> type="checkbox" class="form-check-input <?php echo $req==1?'requirement-1':'';?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div></div>
-                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div><div class="col-lg-12 col-md-8 col-sm-8">pending</div></div>
-                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div><div class="col-lg-12 col-md-8 col-sm-8">May. 26,2021 9:59am</div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['status']; ?></div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['date']; ?></div></div>
                             </div>
                         <?php 
                                 }
@@ -244,8 +244,8 @@ echo '</script>';
                                 <div class="col-lg-1 row div-td"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div><div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
                                                                                                                     echo $list['status'] == "" ? 'checked="true"' : '';
                                                                                                                 } ?> type="checkbox" class="form-check-input <?php echo $req==1?'requirement-1':'';?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div></div>
-                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div><div class="col-lg-12 col-md-8 col-sm-8">pending</div></div>
-                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div><div class="col-lg-12 col-md-8 col-sm-8">May. 26,2021 9:59am</div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['status']; ?></div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['date']; ?></div></div>
                             </div>
                         <?php   }
                             }

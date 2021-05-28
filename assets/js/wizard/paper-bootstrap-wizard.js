@@ -215,7 +215,10 @@ function fetch_user_status() {
             }
             if (payment == 1) {
 
+                $('input[name=current_tab_selection]').val('registration');
                 wizard_registration();
+                hasclass_oldstudent();
+                $("#advising_content").removeClass("active");
                 var ose_guide1 = new OSE_Guide('registration');
 
             } else if (advising == 1) {

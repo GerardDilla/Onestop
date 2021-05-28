@@ -670,24 +670,24 @@ function subject_tablerenderer(element = '', data = []) {
     } else {
         $('#transferee_message').hide();
     }
-    
 
     // remove duplication in schedule
     var pass_data = data['data'];
     var filteredArray = data['data'];
-    pass_data.forEach(function (row, index,currentArr) {
-        var check_duplicate = filteredArray.filter((val)=>{return val.Sched_Code==row['Sched_Code']&&val.Start_Time==row['Start_Time']&&val.End_Time==row['End_Time']&&val.Day==row['Day']})
-        if(check_duplicate.length>1){
-            for(var x=0;x<check_duplicate.length;++x){
-                if(x>0){
-                    check_dupli = filteredArray.filter((val)=>val.sched_display_id!=check_duplicate[0]['sched_display_id'])
+    pass_data.forEach(function(row, index, currentArr) {
+        var check_duplicate = filteredArray.filter((val) => { return val.Sched_Code == row['Sched_Code'] && val.Start_Time == row['Start_Time'] && val.End_Time == row['End_Time'] && val.Day == row['Day'] })
+        if (check_duplicate.length > 1) {
+            for (var x = 0; x < check_duplicate.length; ++x) {
+                if (x > 0) {
+                    check_dupli = filteredArray.filter((val) => val.sched_display_id != check_duplicate[0]['sched_display_id'])
                     filteredArray = check_dupli
                 }
             }
         }
     });
     //array sched start loop
-    $.each(filteredArray, function (index, row) {
+    units = 0;
+    $.each(filteredArray, function(index, row) {
         if (data['type'] == 'transferee') {
 
             if (row['sp_pre_req'] == null) {

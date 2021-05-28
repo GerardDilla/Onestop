@@ -11,7 +11,11 @@ class OSE_Guide {
     student_information() {
         return [
             {
-                intro: 'This is the Student Information tab'
+                intro: 'This is the <strong>Student Information</strong> tab'
+            },
+            {
+                element: document.querySelector('.your_information'),
+                intro: 'This is your information'
             },
             {
                 element: document.querySelector('.intro-step-1'),
@@ -19,7 +23,7 @@ class OSE_Guide {
             }
             , {
                 element: document.querySelector('#choose_your_status'),
-                intro: 'Click this button and choose your status, Are you a NEW STUDENT or a TRANSFEREE?'
+                intro: 'Click this button and choose your status, Are you a <strong>NEW STUDENT</strong> or a <strong>TRANSFEREE?</strong>'
             }
             // ,{
             //     element:document.querySelector('#shsverification'),
@@ -27,7 +31,7 @@ class OSE_Guide {
             // }
             , {
                 element: document.querySelector('#confirm_your_course'),
-                intro: 'Choose 1 of your Preferred COURSE and MAJOR'
+                intro: 'Choose 1 of your Preferred <strong>COURSE</strong> and <strong>MAJOR</strong>'
             }
             , {
                 element: document.querySelector('.wizard-proceed-student_info'),
@@ -38,7 +42,7 @@ class OSE_Guide {
     requirements() {
         return [
             {
-                intro: 'This is the Requirements tab where you will upload all needed requirements.'
+                intro: 'This is the <strong>Requirements tab</strong> where you will upload all needed requirements.'
             },
             {
                 element: document.querySelector(".requirement-1"),
@@ -46,11 +50,11 @@ class OSE_Guide {
             },
             {
                 element: document.querySelector(".are_you_married"),
-                intro: "Are you married? if you are married you need to submit a PSA Marriage Certificate"
+                intro: "Are you married? if you are married you need to submit a <strong>PSA Marriage Certificate</strong>"
             },
             {
                 element: document.querySelector(".interview-status"),
-                intro: 'Do you want to be Interviewed? if you want it click Yes and if you dont click No'
+                intro: 'Do you want to be Interviewed? if you want it click <strong>Yes</strong> and if you dont click <strong>No</strong>'
             },
             {
                 element: document.querySelector("#submit_val_doc"),
@@ -61,7 +65,7 @@ class OSE_Guide {
     advising() {
         return [
             {
-                intro: 'Welcome to the Advising Tab!'
+                intro: 'This is the <strong>Advising Tab</strong>.'
             },
             {
                 element: document.querySelector('#choose_legend'),
@@ -69,23 +73,23 @@ class OSE_Guide {
             },
             {
                 element: document.querySelector('#choose_subjects'),
-                intro: 'Here is where you can see your Queued Subjects',
+                intro: 'Here is the <strong>SUBJECT SECTION!</strong>',
             },
             {
                 element: document.querySelector('.addsubject-button'),
-                intro: 'Click this to choose the subject you want to take.'
+                intro: 'Click this to choose the subject you want to take. <strong>NOTE: Only Old students are allowed to choose subject\'s that they want to take.</strong>'
             },
             {
                 element: document.querySelector('.viewsched-button'),
-                intro: 'Once you made a Queue, you can view their schedules here'
+                intro: 'Click this to view the <strong>Summary</strong> of your <strong>schedule</strong>.'
             },
             {
                 element: document.querySelector('.choose_payment_plan'),
-                intro: 'Choose a payment plan, Is it INSTALLMENT or FULL PAYMENT?'
+                intro: 'Choose a payment plan, Is it <strong>INSTALLMENT</strong> or <strong>FULL PAYMENT?</strong>'
             },
             {
                 element: document.querySelector('.fees-table'),
-                intro: 'It will show your payment information. NOTE: The fees will show if the accounting already processed your enrollment request.'
+                intro: 'It will show your payment information. <strong>NOTE: The fees will show if the accounting already processed your enrollment request.</strong>'
             },
             {
                 element: document.querySelector('.wizard-proceed-advising'),
@@ -97,31 +101,31 @@ class OSE_Guide {
     payment() {
         return [
             {
-                intro: "Here is the Assesment Form tab!"
+                intro: "Here is the <strong>Assesment Form tab</strong>!"
             },
             {
                 element: document.querySelector(".assessment-form"),
-                intro: "Here is the OVER ALL Summary of your Assessment"
+                intro: "Here is the OVER ALL <strong>Summary of your Assessment</strong>"
             },
             {
                 element: document.querySelector(".paymentbullet"),
-                intro: "Here is your Payment Options"
+                intro: "Here is your <strong>Payment Options</strong>"
             },
             {
                 element: document.querySelector(".online-payment"),
-                intro: "You can pay via Online"
+                intro: "You can <strong>pay via Online</strong>"
             },
             {
                 element: document.querySelector(".over-the-counter"),
-                intro: "Or pay over the counter"
+                intro: "Or <strong>pay over the counter</strong>"
             },
             {
                 element: document.querySelector(".pay-at-sdca"),
-                intro: "or else pay On our SDCA cashier"
+                intro: "or else <strong>pay On our SDCA cashier</strong>"
             },
             {
                 element: document.querySelector(".upload-proof"),
-                intro: "You need to upload your proof of payment if you are already paid"
+                intro: "You need to upload your <strong>proof of payment</strong> if you are already paid"
             }
         ]
     }
@@ -132,19 +136,19 @@ class OSE_Guide {
             },
             {
                 element: document.querySelector(".enrollment-summary"),
-                intro: "Here is the summary of your enrollment, It shows your schedule and fees for this semester."
+                intro: "Here is the <strong>Summary of your enrollment</strong>, It shows your <strong>schedule</strong> and <strong>fees</strong> for this semester."
             }
             , {
                 element: document.querySelector(".digital-citizenship"),
-                intro: "You need to request for accounts like"
+                intro: ""
             }
             , {
                 element: document.querySelector(".id-application"),
-                intro: "Click this to request for your ID Application"
+                intro: "Click this to request for your <strong>ID Application</strong>"
             }
             , {
                 element: document.querySelector(".print-registration-form"),
-                intro: "Click this to print a registration form."
+                intro: "Click this to print a <strong>registration form.</strong>"
             }
         ]
     }
@@ -171,6 +175,7 @@ class OSE_Guide {
         var current_this = this;
         this.intro.onbeforeexit(function () {
             iziToast.show({
+                class: 'izitoast-open-walkthrough',
                 theme: 'dark',
                 icon: 'bi-info-circle-fill',
                 iconColor: 'white',

@@ -211,16 +211,15 @@ function fetch_user_status() {
                 var ose_guide1 = new OSE_Guide('payment');
 
             } else if (requirements == 1) {
-
                 wizard_advising();
                 var ose_guide1 = new OSE_Guide('advising');
 
             } else if (student_information == 1) {
+                $('input[name=current_tab_selection]').val('requirements');
                 wizard_requirements();
                 var ose_guide1 = new OSE_Guide('requirements');
 
             } else {
-
                 wizard_student_info();
                 var ose_guide1 = new OSE_Guide('student_information');
 

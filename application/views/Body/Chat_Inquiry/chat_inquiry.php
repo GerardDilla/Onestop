@@ -101,8 +101,9 @@ if(strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(da
 else{
     echo ' onclick="timeWarning()"';
 }
-?>><img src="<?php echo base_url('assets/images/inquiry-icon.png');?>"></span>
-
+?>>
+<!-- <img src="<?php echo base_url('assets/images/inquiry-icon.png');?>"></span> -->
+<i class="bi bi-chat-text"></i></span>
 <!-- <span class="chat-logo"  id="chat-logo" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"><i class="bi bi-chat-text"></i></span> -->
 <div class="modal fade text-left w-100" id="chatinquiryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
@@ -148,13 +149,10 @@ else{
 $('time.timeago').timeago();
 var typing_timeout = null;
 var modal_status = 0;
-var connectionOptions =  {
-            "force new connection" : true,
-            "reconnectionAttempts": "Infinity", 
-            "timeout" : 10000,                  
+var connectionOptions =  {          
             "transports" : ["websocket"]
         };
-const socket = io('https://localhost:4003', {transports: ['websocket','polling', 'flashsocket']});
+const socket = io('https://localhost:4003',connectionOptions);
 const app = feathers();
 var array_status = [];
 var status_running = false;

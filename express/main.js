@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
@@ -13,6 +14,9 @@ const path = require("path");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
+
+// const proxy = require('redbird')({port: 80});
+// proxy.register("localhost/api_ose", "http://10.0.0.81:4003");
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,6 +35,9 @@ app.use('/chat-action',new ChatActionService());
 app.use('/notification',new NotificationService());
 app.use("/uploadtodrive",uploadToGdrive);
 app.use("/gdriveuploader",gdriveuploader);
+// const cors = require("cors");
+// app.use(cors)
+
 app.post("/api/NotifyIfSubmitted",(req,res)=>{
   console.log(req.body);
   app.service('notification').create({
@@ -44,6 +51,8 @@ app.on('connection', conn => app.channel('stream').join(conn));
 // Publish events to stream
 app.publish(data => app.channel('stream'));
 
+
+
 const PORT = 4003;
 
 // app
@@ -56,10 +65,11 @@ const PORT = 4003;
 //   cert: fs.readFileSync('cred/cert.pem','utf8')
 // }
 // var httpServer = http.createServer(app);
-// var httpsServer = https.createServer(credentials,app);
+// var httpsServer = https.createServer(app);
 
 // httpServer.listen(4003);
-// httpsServer.listen(4004);
+// httpsServer.listen(4003);
+const domain_name = 'localhost'
 const sslServer = https.createServer({
   key: fs.readFileSync(path.join(__dirname,'cred','key.pem')),
   cert: fs.readFileSync(path.join(__dirname,'cred','cert.pem')),
@@ -67,8 +77,8 @@ const sslServer = https.createServer({
   requestCert: false
 },app)
 app.setup(sslServer);
-sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://localhost:${PORT}`))
+sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`))
 
 const httpServer = http.createServer(app);
 const httpPort = 4004;
-httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://localhost:${httpPort}`))
+httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))

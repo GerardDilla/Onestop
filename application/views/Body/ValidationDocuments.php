@@ -17,6 +17,165 @@ if (!empty($this->session->flashdata('error'))) {
 }
 echo '</script>';
 ?>
+<style>
+.div-th{
+    /* margin:0;
+    padding:0; */
+    /* border:1px solid black; */
+    color:black;
+    font-weight:bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* position:relative; */
+}
+.min-th{
+    color:black;
+    font-weight:bold;
+    text-align: center;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    display:none;
+    position:relative;
+}
+.div-align-center{
+    /* display: flex;
+    justify-content: center;
+    align-items: center;  */
+    /* text-align */
+    text-align:center;
+}
+.div-td{
+    /* border:1px solid black; */
+    margin:0;
+    padding:10px;
+    /* padding:0; */
+    /* padding:0; */
+    /* border:1px solid black; */
+    color:black;
+    position:relative;
+    /* font-weight:bold; */
+    /* text-align: center; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    /* padding:10px; */
+}
+/* .div-th span{
+    border:1px solid black;
+    margin:auto;
+} */
+/* .div-th span{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+.responsive-tbl{
+    background:#f8f9fa;
+    color: #000;
+    /* border:1px solid black; */
+    /* border-color: #dfe0e1; */
+    /* --bs-table-bg: #f8f9fa;
+    --bs-table-striped-bg: #ecedee;
+    --bs-table-striped-color: #000;
+    --bs-table-active-bg: #dfe0e1;
+    --bs-table-active-color: #000;
+    --bs-table-hover-bg: #e5e6e7;
+    --bs-table-hover-color: #000;
+    color: #000;
+    border-color: #dfe0e1; */
+}
+.table-header{
+    /* border-bottom: 1px solid #dedede!important;
+    padding-right:10px; */
+    position:relative;
+}
+.table-header::after{
+    border-bottom: 2px solid #dedede!important;
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    margin: 0 auto;
+}
+.table-body{
+
+}
+
+.table-row{
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+    /* border-bottom: 1px solid #dedede!important; */
+    position:relative;
+}
+.table-row::before{
+    border-bottom: 2px solid #dedede!important;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    margin: 0 auto;
+}
+.column-1{
+    
+}
+.column-2{
+
+}
+.column-3{
+
+}
+.column-4{
+
+}
+.column-5{
+
+}
+@media (max-width:993px){
+    .column-1,.column-2,.column-3,.column-4,.column-5{
+        display:none;
+    }
+    .min-th{
+        display:flex;
+    }
+    .div-align-center{
+        text-align:left;
+    }
+    .div-td::before{
+        border-bottom: 2px solid #dedede!important;
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        bottom: 0;
+        margin: 0 auto;
+    }
+    .header-per-row{
+        background:#d4d4d4;
+    }
+}
+@media (max-width:576px){
+    .div-align-center{
+        text-align:center;
+    }
+}
+#are_you_married{
+    padding:10px 10px 10px 20px;
+}
+.interview-status{
+    /* margin-left:10px; */
+    padding:10px 10px 10px 20px;
+}
+</style>
 <section class="section col-sm-12">
     <div class="card" style="margin:none;">
         <div class="card-header">
@@ -25,105 +184,105 @@ echo '</script>';
             <form id="form_submit" action="<?php echo base_url('index.php/Main/validationDocumentsProcess'); ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" value="0" name="if_married">
                 <!-- <form  id="form_submit" action="http://localhost:4003/uploadtodrive/test_post2" method="post" enctype="multipart/form-data" > -->
-                <div class="col-md-12" align="center">
-                    <div class="table-responsive col-lg-12">
-                        <table id="validationDocumentsTable" class="table table-light mb-0" style="min-width:900px;">
-                            <thead>
-                                <tr>
-                                    <th>Requirements</th>
-                                    <th max-width="20%">Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font>
-                                    </th>
-                                    <th style="text-align:center;">To be Follow</th>
-                                    <th style="text-align:center;" width="15%">Status</th>
-                                    <th style="text-align:center;" width="15%">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- <tr>
-                                    <td>Documents</td>
-                                    <td>
-                                        <input required class="form-control form-control-sm" name="document" id="document" type="file"><div class="invalid-feedback feedback-3"><i class="bx bx-radio-circle"></i>This is required.</div>
-                                    </td>
-                                    <td style="text-align:center;">Active</td>
-                                    <td style="text-align:center;"><?php echo date("Y-m-d H:i:s") ?></td>
-                                </tr> -->
-                                <?php
-                                $status = "";
-                                // $requirements = $this->data['requirements'];
-                                // echo json_encode($requirements);
-                                $requirements_list = [];
-                                $req_count = 0;
-                                foreach ($requirements as $list) {
-                                    if ($list['status'] != "") {
-                                        ++$req_count;
-                                    }
+                <div class="col-md-12">
+                    <div class="col-md-12 responsive-tbl" style="margin-top:10px">
+                        <div class="table-header col-md-12 row">
+                            <div class="col-lg-3 div-th column-1"><span>Requirements</span></div>
+                            <div class="col-lg-4 div-th column-2"><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></div>
+                            <div class="col-lg-1 div-th column-3"><span>To be Follow</span></div>
+                            <div class="col-lg-2 div-th column-4"><span>Status</span></div>
+                            <div class="col-lg-2 div-th column-5"><span>Date</span></div>
+                        </div>
+                        <div class="table-body">
+                        <?php
+                            $status = "";
+                            // $requirements = $this->data['requirements'];
+                            // echo json_encode($requirements);
+                            $requirements_list = [];
+                            $req_count = 0;
+                            foreach ($requirements as $list) {
+                                if ($list['status'] != "") {
+                                    ++$req_count;
                                 }
-                                $req = 0;
-                                foreach ($requirements as $list) {
-                                    ++$req;
-                                    if ($list['id_name'] != "marriage_certificate") {
-                                        array_push($requirements_list, $list['id_name']);
-                                        $status = $list['status'];
-                                ?>
-                                        <tr>
-                                            <td><?php echo $list['rq_name']; ?></td>
-                                            <td>
-                                                <input required <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
+                            }
+                            $req = 0;
+                            foreach ($requirements as $list) {
+                                ++$req;
+                                if ($list['id_name'] != "marriage_certificate") {
+                                    array_push($requirements_list, $list['id_name']);
+                                    $status = $list['status'];
+                        ?>
+                            <div class="table-row row col-md-12">
+                                <div class="col-lg-3 row div-td div-align-center header-per-row"><div class="col-lg-12 col-md-4 col-sm-4 min-th">Requirements</div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['rq_name']; ?></div></div>
+                                <div class="col-lg-4 row div-td">
+                                    <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></span></div><div class="col-lg-12 col-md-8 col-sm-8">
+                                    <input required <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
                                                 <div class="invalid-feedback feedback-<?php echo $list['id_name']; ?>"><i class="bx bx-radio-circle"></i>This is required.</div>
-                                            </td>
-                                            <td><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 row div-td"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div><div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
                                                                                                                     echo $list['status'] == "" ? 'checked="true"' : '';
-                                                                                                                } ?> type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></td>
-                                            <td style="text-align:center;"><?php echo $list['status']; ?></td>
-                                            <td style="text-align:center;"><?php echo $list['date']; ?></td>
-
-                                        </tr>
-                                    <?php
-                                    } else {
-                                    ?>
-                                        <tr class="are_you_married">
-                                            <th colspan="5">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes"> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" checked="true"></th>
-                                        </tr>
-                                        <tr style="display:none;" id="married_certificate_div">
-                                            <td><?php echo $list['rq_name']; ?></td>
-                                            <td>
-                                                <input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
+                                                                                                                } ?> type="checkbox" class="form-check-input <?php echo $req==1?'requirement-1':'';?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['status']; ?></div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['date']; ?></div></div>
+                            </div>
+                        <?php 
+                                }
+                                else{
+                            ?>
+                            <div class="table-row row col-md-12 are_you_married" id="are_you_married">
+                                <div class="col-md-12">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes"> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" checked="true"></div>
+                            </div>
+                            <div class="table-row row col-md-12" style="display:none;" id="married_certificate_div">
+                                <div class="col-lg-3 row div-td div-align-center header-per-row"><div class="col-lg-12 col-md-4 col-sm-4 min-th">Requirements</div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['rq_name']; ?></div></div>
+                                <div class="col-lg-4 row div-td">
+                                    <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></span></div><div class="col-lg-12 col-md-8 col-sm-8">
+                                    <input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
                                                 <div class="invalid-feedback feedback-<?php echo $list['id_name']; ?>"><i class="bx bx-radio-circle"></i>This is required.</div>
-                                            </td>
-                                            <td><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> checked="checked" type="checkbox" class="form-check-input" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></td>
-                                            <td style="text-align:center;"><?php echo $list['status']; ?></td>
-                                            <td style="text-align:center;"><?php echo $list['date']; ?></td>
-                                        </tr>
-                                        <?php
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 row div-td"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div><div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
+                                                                                                                    echo $list['status'] == "" ? 'checked="true"' : '';
+                                                                                                                } ?> type="checkbox" class="form-check-input <?php echo $req==1?'requirement-1':'';?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['status']; ?></div></div>
+                                <div class="col-lg-2 row div-td div-align-center"><div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Date</span></div><div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['date']; ?></div></div>
+                            </div>
+                        <?php   }
+                            }
+                            if (isset($this->data['requirementstab'])) {
+                                if ($this->data['interview_status'] == null) {
+                        ?>
+                            <div class="table-row row col-md-12 interview-status">
+                                <div class="col-md-12">
+                                    Do you want to be interviewed?
+                                    <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
+                                    <label for="interview_no"> NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
+                                </div>
+                            </div>
+                            <?php
+                                } else {
+                                    echo "<div class='table-row row col-md-12 interview-status'>
+                                    <div class='col-md-12'>Do you want to be interviewed?<br><u>";
+                                    if ($this->data['interview_status'] == 'YES') {
+                                        echo "<span style='color:green'><b>YES</b></span>! I want to be Interviewed.";
+                                    } else if ($this->data['interview_status'] == 'NO') {
+                                        echo "<span style='color:red'><b>NO</b></span>! I don't want to be Interviewed.";
                                     }
+                                    echo "</u></div></div>";
                                 }
-                                if (isset($this->data['requirementstab'])) {
-                                    $old_student = empty($this->data['old_student']) ? false : $this->data['old_student'];
-                                    if ($old_student === false) {
-                                        if ($this->data['interview_status'] == null) {
-                                        ?>
-                                            <tr class="interview-status">
-                                                <th colspan="5">
-                                                    Do you want to be interviewed?
-                                                    <label for="interview_yes">YES <input type="radio" checked class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
-                                                    <label for="interview_no"> NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
-                                                </th>
-                                            </tr>
-                                <?php
-                                        } else {
-                                            echo "<tr><th colspan='2'>Do you want to be interviewed?<br><u>";
-                                            if ($this->data['interview_status'] == 'YES') {
-                                                echo "<span style='color:green'><b>YES</b></span>! I want to be Interviewed.";
-                                            } else if ($this->data['interview_status'] == 'NO') {
-                                                echo "<span style='color:red'><b>NO</b></span>! I don't want to be Interviewed.";
-                                            }
-                                            echo "</u></th></tr>";
-                                        }
-                                    }
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                            }
+                            ?>
+                            <!-- <div class="table-row row col-md-12">
+                                <div class="col-lg-3 div-td div-align-center">Birt Certificate</div>
+                                <div class="col-lg-4 div-td">
+                                    <input required class="form-control form-control-sm" name="" id="" type="file">
+                                    <div class="invalid-feedback feedback-"><i class="bx bx-radio-circle"></i>This is required.</div>
+                                </div>
+                                <div class="col-lg-2 div-td"><input type="checkbox" class="form-check-input"></div>
+                                <div class="col-lg-1 div-td div-align-center">pending</div>
+                                <div class="col-lg-2 div-td div-align-center">May. 26,2021 9:59am</div>
+                            </div> -->
+                        </div>
                     </div>
                     <div class="col-md-12 col-sm-12" align="right" style="margin-top:10px">
                         <?php

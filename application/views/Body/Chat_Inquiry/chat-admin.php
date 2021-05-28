@@ -260,7 +260,7 @@ function timeSince(date) {
   return duration.interval + ' ' + duration.epoch + suffix;
 };
 var choose_ref = "";
-const socket = io('https://localhost:4003');
+const socket = io('https://localhost:4003', {transports: ['websocket']});
 const app = feathers();
 app.configure(feathers.socketio(socket));
 var array_status = [];

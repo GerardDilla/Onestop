@@ -206,26 +206,33 @@ function fetch_user_status() {
                 // hasclass_oldstudent()
             }
             if (payment == 1) {
+                $('input[name=current_tab_selection]').val('registration');
                 wizard_registration();
                 hasclass_oldstudent();
                 $("#advising_content").removeClass("active");
             } else if (advising == 1) {
+                $('input[name=current_tab_selection]').val('payment');
                 wizard_payment();
                 hasclass_oldstudent();
                 $("#advising_content").removeClass("active");
             } else if (requirements == 1) {
+                $('input[name=current_tab_selection]').val('advising');
                 wizard_advising();
                 hasclass_oldstudent();
             } else if (student_information == 1) {
+                $('input[name=current_tab_selection]').val('requirements');
                 wizard_requirements();
                 hasclass_oldstudent();
                 if ($('.wizard-proceed-advising').hasClass('old-student')) {
                     $("#progress_bar").css("width", "50%");
                 }
             } else {
+                $('input[name=current_tab_selection]').val('student_information');
                 wizard_student_info();
                 hasclass_oldstudent();
             }
+            var ose_guide1 = new OSE_Guide($('input[name=current_tab_selection]').val());
+            ose_guide1.play();
         },
         error: function(response) {},
     });

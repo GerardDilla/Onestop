@@ -134,6 +134,11 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 
                                     <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form">Print Registration Form</a>
                                 </div>
+                                <hr>
+                                <!-- <div class="col-md-12" style="text-align:center">
+                                    <button type="button" class="btn btn-lg btn-primary" id="re_enroll_button">ENROLL FOR NEW SEMESTER</button>
+                                </div> -->
+
                             </div>
                             <!-- <div class="col-md-12" style="text-align:center">
                             <hr>
@@ -195,14 +200,14 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script src="<?php echo base_url('assets/js/notify.min.js'); ?>"></script>
 <!-- Temporary Loading script -->
 <script>
-// student_information
-// requirements
-// advising
-// payment
-// registration
+    // student_information
+    // requirements
+    // advising
+    // payment
+    // registration
 
 
-    
+
 
     $(document).ajaxStart(function() {
         $(".temp_loading").fadeIn();

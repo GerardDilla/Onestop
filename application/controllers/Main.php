@@ -88,9 +88,22 @@ class Main extends MY_Controller
 		$this->data['sy_session'] = empty($queue) ? $this->data['legend']['School_Year'] : $queue[0]['School_Year'];
 		$this->data['sem_session'] = empty($queue) ? $this->data['legend']['Semester'] : $queue[0]['Semester'];
 
+		#Get Current Advising History and Remove if legend did not match 
+		// $advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $this->session->userdata('reference_no')));
+		// if (!empty($advising_history)) {
+		// 	if ($advising_history['Legend_SY'] != $this->data['sy_session'] || $advising_history['Legend_Sem'] != $this->data['sem_session']) {
+		// 		$this->AdvisingModel->remove_advising_session($this->session->userdata('reference_no'));
+		// 	}
+		// 	// echo json_encode($queue);
+		// }
+
 		#Set Advising Session as basis
 		$this->session->set_userdata('SY_LEGEND', $this->data['sy_session'] != '' ? $this->data['sy_session'] : $this->data['legend']['School_Year']);
 		$this->session->set_userdata('SEM_LEGEND', $this->data['sem_session'] != '' ? $this->data['sem_session'] : $this->data['legend']['Semester']);
+
+
+
+
 
 		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
@@ -307,18 +320,42 @@ class Main extends MY_Controller
 	// Inside OSE
 	public function wizard_tracker_status()
 	{
-		// $ref_no = $this->input->post('Reference_Number');
+		#Sets Reference Number
 		$ref_no = $this->session->userdata('reference_no');
+
+		#Gets Legend
 		$legend = $this->AdvisingModel->getlegend();
-		// $status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
-		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
+
+		#Compares legend to recent advising transaction (if any)
+		$data = array(
+			'reference_no' => $ref_no
+		);
+
+		#Defaults progress search to current legend if new student or new schoolyear
+		$advising_history = $this->AdvisingModel->get_advising_history($data);
+		$Schoolyear = $legend['School_Year'];
+		$Semester = $legend['Semester'];
+		if (!empty($advising_history)) {
+			// if ($legend['School_Year'] == $advising_history['Legend_SY']) {
+
+			// 	$Schoolyear = $advising_history['Taken_SY'];
+			// }
+			// if ($legend['Semester'] == $advising_history['Legend_Sem']) {
+			// 	$Semester = $advising_history['Taken_Sem'];
+			// }
+			$Schoolyear = $advising_history['Taken_SY'];
+			$Semester = $advising_history['Taken_Sem'];
+		}
+		// echo $Schoolyear . ':' . $Semester;
+		#Checks progress
+		$status = $this->AssesmentModel->tracker_status($ref_no, $Schoolyear, $Semester);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
 		// $data['payment'] = 0;
 		// $data['advising'] = 1;
 		// $data['requirements'] = 0;
 		// $data['student_information'] = 0;
 
-
+		#Sets return value of progress
 		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
 			$data['payment'] = 1;
 		} else if ($status['Ref_Num_ftc'] != null) {

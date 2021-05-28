@@ -1,6 +1,8 @@
 searchVisible = 0;
 transparent = true;
 $(document).ready(function () {
+
+
     // $('#submit_val_doc').click(function(e) {
     //     baseurl = $('#assessment_section').data('baseurl');
     //     var interview_value = $("input[name='interview']:checked").val();

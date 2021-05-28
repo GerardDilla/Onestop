@@ -517,7 +517,7 @@ class RegFormModel extends CI_Model
   public function Get_MISC_FEE($array)
   {
 
-    $this->db->select_sum('B.Fees_Amount');
+    $this->db->select('IFNULL(SUM(`B`.`Fees_Amount`),0.00) AS `Fees_Amount`');
     $this->db->from('Fees_Enrolled_College AS A');
     $this->db->join('Fees_Enrolled_College_Item AS B', 'A.id = B.Fees_Enrolled_College_Id', 'INNER');
     $this->db->where('A.course             = ', $array['course']);
@@ -535,7 +535,7 @@ class RegFormModel extends CI_Model
   public function Get_MISC_FEE_TRF($ref_num, $course, $sem, $sy, $yl)
   {
 
-    $this->db->select_sum('B.Fees_Amount');
+    $this->db->select('IFNULL(SUM(`B`.`Fees_Amount`),0.00) AS `Fees_Amount`');
     $this->db->from('Fees_Temp_College AS A');
     $this->db->join('Fees_Temp_College_Item AS B', 'A.id = B.Fees_Temp_College_Id', 'INNER');
     $this->db->where('A.course             = ', $course);
@@ -558,7 +558,7 @@ class RegFormModel extends CI_Model
   public function Get_OTHER_FEE($array)
   {
 
-    $this->db->select_sum('B.Fees_Amount');
+    $this->db->select('IFNULL(SUM(`B`.`Fees_Amount`),0.00) AS `Fees_Amount`');
     $this->db->from('Fees_Enrolled_College AS A');
     $this->db->join('Fees_Enrolled_College_Item AS B', 'A.id = B.Fees_Enrolled_College_Id', 'INNER');
     $this->db->where('A.course              = ', $array['course']);

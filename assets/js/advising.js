@@ -20,10 +20,15 @@ $(document).ready(function () {
         "bLengthChange": false,
     });
 
+
+
     $('#sy_legend').change(function () {
 
         if ($('#queueTable').data('queueResult') == 0) {
             ajax_change_sy_legend();
+            init_sectionlist()
+            init_subjectlists();
+            init_paymentmethod();
         } else {
 
             iziToast.question({
@@ -45,6 +50,8 @@ $(document).ready(function () {
 
                         // Changes legend
                         ajax_change_sy_legend();
+
+                        init_sectionlist()
 
                         init_subjectlists();
 
@@ -81,6 +88,9 @@ $(document).ready(function () {
 
         if ($('#queueTable').data('queueResult') == 0) {
             ajax_change_sem_legend();
+            init_sectionlist()
+            init_subjectlists();
+            init_paymentmethod();
         } else {
 
             iziToast.question({
@@ -102,6 +112,8 @@ $(document).ready(function () {
 
                         // Changes Legend
                         ajax_change_sem_legend();
+
+                        init_sectionlist()
 
                         init_subjectlists();
 
@@ -275,6 +287,7 @@ function init_sectionlist() {
         response = JSON.parse(response);
         section_id = section_renderer(response);
         $('#section').val(section_id);
+        init_paymentmethod();
         init_subjectlists();
     })
 

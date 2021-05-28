@@ -318,15 +318,19 @@ class AdvisingModel extends CI_Model
             return false;
         }
     }
-    public function get_sections($program_id, $status)
+    public function get_sections($program_id, $status, $sy, $sem)
     {
-
-        $this->db->where('Program_ID', $program_id);
+        $this->db->join('Sched', 'Sched.Section_ID = Sections.Section_ID');
+        $this->db->where('Sections.Program_ID', $program_id);
+        $this->db->where('Sched.SchoolYear', $sy);
+        $this->db->where('Sched.Semester', $sem);
         if ($status == false) {
             $this->db->where('Year_Level', 1);
         }
-        $this->db->where('Active', 1);
-        $this->db->order_by('Year_Level', 'ASC');
+        $this->db->where('Sections.Active', 1);
+        $this->db->where('Sched.Valid', 1);
+        $this->db->group_by('Sections.Section_Name');
+        $this->db->order_by('Sections.Year_Level', 'ASC');
         $query = $this->db->get('Sections');
         return $query->result_array();
     }
@@ -704,5 +708,44 @@ class AdvisingModel extends CI_Model
 
         # With results means pre requisite is already taken
         return $query->num_rows();
+    }
+
+    public function get_advising_history($data)
+    {
+        $this->db->where('valid', 1);
+        $this->db->where('Reference_Number', $data['reference_no']);
+        $query = $this->db->get('advising_checker');
+        return $query->row_array();
+    }
+    public function update_advising_history($data, $legend)
+    {
+        $this->db->set('Taken_SY', $data['school_year']);
+        $this->db->set('Taken_SEM', $data['semester']);
+        $this->db->set('Legend_SY', $legend['School_Year']);
+        $this->db->set('Legend_SEM', $legend['Semester']);
+        $this->db->where('valid', 1);
+        $this->db->where('Reference_Number', $data['reference_no']);
+        $this->db->update('advising_checker');
+    }
+    public function insert_advising_history($data, $legend)
+    {
+        $insert_array = array(
+            'Reference_Number' => $data['reference_no'],
+            'Taken_SY' => $data['school_year'],
+            'Taken_SEM' => $data['semester'],
+            'Legend_SY' => $legend['School_Year'],
+            'Legend_SEM' => $legend['Semester'],
+        );
+        $this->db->insert('advising_checker', $insert_array);
+        return $this->db->insert_id();
+    }
+    public function check_enrolled($data)
+    {
+        $this->db->select('Reference_Number');
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->where('schoolyear', $data['School_Year']);
+        $this->db->where('semester', $data['Semester']);
+        $query = $this->db->get('Fees_Enrolled_College');
+        return $query->row_array();
     }
 }

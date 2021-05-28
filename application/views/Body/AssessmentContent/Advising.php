@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css"> -->
-<h1>ADVISING</h1>
+<!-- <h1>ADVISING</h1> -->
 
 <br><br>
 <div class="col-md-12" id="choose_legend">
@@ -121,8 +121,6 @@
                     <td></td>
                     <td></td>
                 </tr>
-
-
             </tbody>
         </table>
     </div>

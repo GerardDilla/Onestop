@@ -35,8 +35,22 @@ class Ose_api extends CI_Controller
 		#Temporary Legends : Must be auto generated
 		$legend = $this->AdvisingModel->getlegend();
 
-		$this->legend_sy = $this->session->userdata('SY_LEGEND') != '' ? $this->session->userdata('SY_LEGEND') : $legend['School_Year'];
-		$this->legend_sem = $this->session->userdata('SEM_LEGEND') != '' ? $this->session->userdata('SEM_LEGEND') : $legend['Semester'];
+		$advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $this->reference_number));
+		if (!empty($advising_history)) {
+
+			$this->legend_sy = $advising_history['Taken_SY'];
+			$this->legend_sem = $advising_history['Taken_Sem'];
+		} else {
+
+			$this->legend_sy = $legend['School_Year'];
+			$this->legend_sem = $legend['Semester'];
+
+			// $this->legend_sy = $this->session->userdata('SY_LEGEND') != '' ? $this->session->userdata('SY_LEGEND') : $legend['School_Year'];
+			// $this->legend_sem = $this->session->userdata('SEM_LEGEND') != '' ? $this->session->userdata('SEM_LEGEND') : $legend['Semester'];
+		}
+
+		$this->queue_sy = $this->session->userdata('SY_LEGEND') != '' ? $this->session->userdata('SY_LEGEND') : $legend['School_Year'];
+		$this->queue_sem = $this->session->userdata('SEM_LEGEND') != '' ? $this->session->userdata('SEM_LEGEND') : $legend['Semester'];
 
 		$this->curriculum = $this->AdvisingModel->get_student_curriculum($this->reference_number);
 
@@ -58,8 +72,8 @@ class Ose_api extends CI_Controller
 			'encoded_fees' => '',
 		);
 		$params = array(
-			'school_year' => $this->legend_sy,
-			'semester' => $this->legend_sem,
+			'school_year' => $this->queue_sy,
+			'semester' => $this->queue_sem,
 			'section' => $this->input->get('section')
 		);
 
@@ -149,8 +163,8 @@ class Ose_api extends CI_Controller
 	{
 
 		$params = array(
-			'school_year' => $this->legend_sy,
-			'semester' => $this->legend_sem,
+			'school_year' => $this->queue_sy,
+			'semester' => $this->queue_sem,
 			'section' => $this->input->post('section')
 		);
 		// die(json_encode($params));
@@ -164,8 +178,8 @@ class Ose_api extends CI_Controller
 				'Student_Number' => $this->student_number,
 				'Sched_Code' => $schedData['Sched_Code'],
 				'Sched_Display_ID' => $schedData['sched_display_id'],
-				'Semester' => $this->legend_sem,
-				'School_Year' => $this->legend_sy,
+				'Semester' => $this->queue_sem,
+				'School_Year' => $this->queue_sy,
 				'Scheduler' => 'SELF',
 				'Status' => '1',
 				'Program' => '1',
@@ -218,8 +232,8 @@ class Ose_api extends CI_Controller
 			'start_time' => $sched_data['SDstart'],
 			'end_time' => $sched_data['SDend'],
 			'day_array' => $sched_data['Day'],
-			'school_year' => $this->legend_sy,
-			'semester' => $this->legend_sem,
+			'school_year' => $this->queue_sy,
+			'semester' => $this->queue_sem,
 		);
 		#Parameters: Start time, End time, Days, Reference Number
 		$conflict_check = $this->AdvisingModel->check_advising_conflict($conflict_checker_parameters);
@@ -295,8 +309,8 @@ class Ose_api extends CI_Controller
 		$array_data = array(
 			'reference_no' => $this->reference_number,
 			'plan' => $this->input->get('plan'),
-			'school_year' => $this->legend_sy,
-			'semester' => $this->legend_sem,
+			'school_year' => $this->queue_sy,
+			'semester' => $this->queue_sem,
 			'section' => $this->input->get('section')
 		);
 		$array_fees = $this->display_fee($array_data);
@@ -556,8 +570,8 @@ class Ose_api extends CI_Controller
 			'reference_no' => $this->reference_number,
 			'student_no' => $this->student_number,
 			'date' => $this->date_now,
-			'semester' => $this->legend_sem,
-			'school_year' => $this->legend_sy,
+			'semester' => $this->queue_sem,
+			'school_year' => $this->queue_sy,
 			'plan' => $this->input->get('plan'),
 			'section' => $this->input->get('section'),
 			// 'payment' => $this->input->post('payment'), #??
@@ -568,6 +582,7 @@ class Ose_api extends CI_Controller
 
 		);
 
+		#Check for section
 		if (!$this->input->get('section')) {
 
 			$output['success'] = 0;
@@ -575,6 +590,22 @@ class Ose_api extends CI_Controller
 			echo json_encode($output);
 			die();
 		}
+
+		#Check if already enrolled
+		$checkerparam = array(
+			'Reference_Number' => $array_data['reference_no'],
+			'Semester' => $array_data['semester'],
+			'School_Year' => $array_data['school_year'],
+		);
+		$enrollment_status = $this->AdvisingModel->check_enrolled($checkerparam);
+		if (!empty($enrollment_status)) {
+
+			$output['success'] = 0;
+			$output['message'] = 'You are already enrolled for this chosen semester';
+			echo json_encode($output);
+			die();
+		}
+
 
 		//check if admitted sy is available
 		if (($student_info[0]['AdmittedSY'] === 'N/A') || ($student_info[0]['AdmittedSY'] === 0)) {
@@ -641,6 +672,18 @@ class Ose_api extends CI_Controller
 
 		#Inserts Fees
 		$this->insert_enrollment_fees($array_data, $array_computed_fees);
+
+		#Inserts Advising History
+		$legend = $this->AdvisingModel->getlegend();
+		$advising_history = $this->AdvisingModel->get_advising_history($array_data);
+		if (!empty($advising_history)) {
+			#update
+			$this->AdvisingModel->update_advising_history($array_data, $legend);
+		} else {
+			#insert
+			$this->AdvisingModel->insert_advising_history($array_data, $legend);
+		}
+
 
 		echo json_encode($output);
 		// #Updates student information if new enrollee: REDUNDANT
@@ -818,7 +861,7 @@ class Ose_api extends CI_Controller
 		if ($reference_number != '') {
 
 			$searcharray['Reference_Number'] = $reference_number;
-			$AdvisedCheck = $this->AdvisingModel->check_advised($searcharray);
+			// $advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $reference_number));
 			$array = array(
 				'sy' => $this->legend_sy,
 				'sem' => $this->legend_sem,
@@ -858,6 +901,8 @@ class Ose_api extends CI_Controller
 
 			$searcharray['Reference_Number'] = $reference_number;
 			$AdvisedCheck = $this->AdvisingModel->check_advised($searcharray);
+
+			// $advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $this->reference_number));
 			$array = array(
 				'sy' => $this->legend_sy,
 				'sem' => $this->legend_sem,
@@ -893,6 +938,7 @@ class Ose_api extends CI_Controller
 	}
 	public function export_registrationform()
 	{
+		// $advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $this->reference_number));
 		$array = array(
 			'sy' => $this->legend_sy,
 			'sem' => $this->legend_sem,
@@ -954,8 +1000,8 @@ class Ose_api extends CI_Controller
 		$Feesdata = $this->AdvisingModel->getfees_history($this->reference_number);
 
 		#Get section based on whether $Feesdata is true(old student) or false(new student)
-		$output['sections'] = $this->AdvisingModel->get_sections($Course, $Feesdata);
-
+		$output['sections'] = $this->AdvisingModel->get_sections($Course, $Feesdata, $this->queue_sy, $this->queue_sem);
+		
 		#Gets Queue
 		$queue = $this->AdvisingModel->get_queued_subjects($this->reference_number);
 		if (!empty($queue)) {
@@ -968,10 +1014,11 @@ class Ose_api extends CI_Controller
 	public function setpaid_test()
 	{
 		# Will Remove: for development only
+		$advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $this->reference_number));
 		$array = array(
-			'Reference_Number' => $this->reference_number,
 			'School_Year' => $this->legend_sy,
 			'Semester' => $this->legend_sem,
+			'Reference_Number' => $this->reference_number
 		);
 		$this->AdvisingModel->insert_enrolled_subject_test($array);
 		$fees_id = $this->AdvisingModel->insert_fees_test($array);
@@ -982,9 +1029,9 @@ class Ose_api extends CI_Controller
 	{
 		# Will Remove: for development only
 		$array = array(
-			'Reference_Number' => $this->reference_number,
 			'School_Year' => $this->legend_sy,
 			'Semester' => $this->legend_sem,
+			'Reference_Number' => $this->reference_number
 		);
 		$this->AdvisingModel->reset_progress($array);
 	}
@@ -996,6 +1043,7 @@ class Ose_api extends CI_Controller
 			'sem' => $this->legend_sem,
 			'refnum' => $this->reference_number
 		);
+
 
 		# Stops if it doesnt receive reference number
 		if (!$array['refnum']) {
@@ -1095,8 +1143,8 @@ class Ose_api extends CI_Controller
 		$array_data = array(
 			'reference_no' => $this->reference_number,
 			'plan' => $this->input->get('plan'),
-			'school_year' => $this->legend_sy,
-			'semester' => $this->legend_sem,
+			'school_year' => $this->queue_sy,
+			'semester' => $this->queue_sem,
 			'section' => $this->input->get('section')
 		);
 		$fees_status = $this->display_fee($array_data);
@@ -1116,7 +1164,7 @@ class Ose_api extends CI_Controller
 	}
 	public function check_legend()
 	{
-		echo $this->legend_sem;
-		echo $this->legend_sy;
+		echo $this->queue_sem;
+		echo $this->queue_sy;
 	}
 }

@@ -24,6 +24,16 @@ class Main extends MY_Controller
 
 	public function selfassesment()
 	{
+		$ref_no = $this->session->userdata('reference_no');
+		$legend = $this->AdvisingModel->getlegend();
+
+		// Get Enrolled Students
+		$enrolled_students = $this->AssesmentModel->enrolled_student($ref_no);
+		foreach ($enrolled_students as $enrolled_student) {
+			if ($enrolled_student['semester'] != $legend['Semester'] && $enrolled_student['schoolyear'] != $legend['School_Year']) {
+				$this->data['old_student'] = true;
+			}
+		}
 
 		#Validation of Documents 
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
@@ -45,25 +55,28 @@ class Main extends MY_Controller
 		$this->data['advising_modals'] = 'Body/AssessmentContent/AdvisingModals';
 		$this->data['registration'] = 'Body/AssessmentContent/Registration';
 
-		// echo $this->session->userdata('reference_no');
-		$this->data['student_courses'] = $this->get_student_course_choices($this->session->userdata('reference_no'));
-		$array = array();
-		foreach ($this->data['student_courses'] as $student_course) {
-			$course_info = $this->get_student_course_info($student_course);
-			$array[] = $course_info;
-		}
-		$this->data['courses_info'] = $array;
+		// Get the courses student apllied
+		// $this->data['student_courses'] = $this->get_student_course_choices($ref_no);
+		// $array = array();
+		// foreach ($this->data['student_courses'] as $student_course) {
+		// 	$course_info = $this->get_student_course_info($student_course);
+		// 	$array[] = $course_info;
+		// }
+		// $this->data['courses_info'] = $array;
 
 		// All Programs
 		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
 
 		#Get from Student_Account Table
-		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($this->session->userdata('reference_no'));
+		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
 		$this->data['interview_status'] = $student_account['interview_status'];
 
 		#Get from Student_Info Table
-		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
+		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($ref_no);
 		$this->data['course'] = $student_info_array['Course'];
+		// $course_info = $this->get_student_course_info($this->data['course']);
+		// $this->data['courses_info'] = $course_info;
+		// die(json_encode($this->data['courses_info']));
 
 		#Get Course Info
 		$picked_course = $this->get_student_course_info($student_info_array['Course']);
@@ -73,12 +86,12 @@ class Main extends MY_Controller
 		#Get Major
 		$major = $this->AssesmentModel->get_major_by_id($student_info_array['Major']);
 		$this->data['major'] = $major['Program_Major'];
-		//
-		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
+
+		// SHS balance checker
+		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($ref_no);
 		$this->data['shs_student_number'] = empty($shs_bridge) ? '' : $shs_bridge['shs_student_number'];
 		$this->data['applied_status'] = empty($shs_bridge) ? '' : $shs_bridge['applied_status'];
 
-		// die(json_encode($major));
 		$this->default_template($this->view_directory->assessment());
 	}
 
@@ -297,11 +310,11 @@ class Main extends MY_Controller
 		// $ref_no = '25874';
 		$legend = $this->AdvisingModel->getlegend();
 		$status = $this->AssesmentModel->tracker_status($ref_no, $legend['School_Year'], $legend['Semester']);
-		$test = $this->AssesmentModel->enrolled_student($ref_no);
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
 		// $count = 0;
-		foreach ($test as $a) {
-			if ($a['semester'] != $legend['Semester'] && $a['schoolyear'] != $legend['School_Year']) {
+		$enrolled_students = $this->AssesmentModel->enrolled_student($ref_no);
+		foreach ($enrolled_students as $enrolled_student) {
+			if ($enrolled_student['semester'] != $legend['Semester'] && $enrolled_student['schoolyear'] != $legend['School_Year']) {
 				$data['old_student'] = 1;
 			}
 		}
@@ -395,6 +408,17 @@ class Main extends MY_Controller
 		// echo json_encode($course_info);
 		return $course_info;
 	}
+	// Get Program by Program Code
+	// Used For Ajax
+	public function echo_get_student_course_info()
+	{
+		$program_code = $this->input->post('program_code');
+		$program_major = $this->input->post('program_major');
+		$course_info = $this->get_student_course_info($program_code);
+		$major = $this->AssesmentModel->get_major_by_id($program_major);
+		$course_info['Program_Major'] = $major['Program_Major'];
+		echo json_encode($course_info);
+	}
 	// Get Program Major by Program Code
 	// Used For Ajax
 	public function get_student_course_major($program_code)
@@ -405,61 +429,76 @@ class Main extends MY_Controller
 	}
 	public function update_course_by_reference_number()
 	{
-		$check_course = $this->check_course_by_reference_number($this->session->userdata('reference_no'));
-		if ($check_course == 'none') {
-			$shs_status = $this->shs_balance_checker($this->input->post('student_number'), $this->input->post('status'));
-			// die(json_encode($shs_status));
-			if ($shs_status == 'no_student_number') {
-			}
-			if ($shs_status['status'] == 'empty') {
-				echo json_encode(array(
-					'title' => 'No Data Found in Database!',
-					'body' => '',
-					'status' => 'failed'
-				));
-				return;
-			} else if ($shs_status['status'] == 'dept') {
-				echo json_encode(array(
-					'title' => 'You still have BALANCE!',
-					'body' => '',
-					'status' => 'failed'
-				));
-				return;
-			} else {
-				// die('asdasds');
-				$array_update = array(
-					'reference_number' => $this->session->userdata('reference_no'),
-					'course' => $this->input->post('course'),
-					'major' => $this->input->post('major'),
-				);
-				$update = $this->AssesmentModel->update_course_by_reference_number($array_update);
-				//
-				$today = date("Y-m-d H:i:s");
-				$array_insert_shs = array(
-					'highered_reference_number' => $this->session->userdata('reference_no'),
-					'shs_student_number' => $this->input->post('student_number'),
-					'applied_status' => $this->input->post('status'),
-					'created_at' => $today,
-				);
-				$this->AssesmentModel->insert_shs_student_number($array_insert_shs);
-				if ($update) {
-					echo json_encode(array(
-						'title' => 'Success',
-						'body' => 'Course successfully updated.',
-						'status' => 'success'
-					));
-				}
-				return;
-			}
-			return;
-		} else {
+		$reference_number = $this->session->userdata('reference_no');
+		$student_number = $this->input->post('student_number');
+		$status = $this->input->post('status');
+		// $student_number = '2';
+		// $status = 'freshmen';
+		// $check_course = $this->check_course_by_reference_number($this->session->userdata('reference_no'));
+		// if ($check_course == 'none') {
+		$shs_status = $this->shs_balance_checker($student_number, $status);
+		// die(json_encode($shs_status));
+		if ($shs_status['status'] == 'empty') {
 			echo json_encode(array(
-				'title' => 'You Alredy Have Course!',
-				'body' => 'Contact MIS department for this issue.',
+				'title' => 'No Data Found in Database!',
+				'body' => '',
 				'status' => 'failed'
 			));
 			return;
+		} else if ($shs_status['status'] == 'dept') {
+			echo json_encode(array(
+				'title' => 'You still have BALANCE!',
+				'body' => '',
+				'status' => 'failed'
+			));
+			return;
+		} else {
+			$today = date("Y-m-d H:i:s");
+			$array_update = array(
+				'reference_number' => $reference_number,
+				'course' => $this->input->post('course'),
+				'major' => $this->input->post('major'),
+			);
+			$update = $this->AssesmentModel->update_course_by_reference_number($array_update);
+			//
+			$shs_info = $this->AssesmentModel->get_shs_student_number_by_reference_number($reference_number);
+			if (empty($shs_info)) {
+				
+				$array_insert_shs = array(
+					'highered_reference_number' => $reference_number,
+					'shs_student_number' => $student_number,
+					'applied_status' => $status,
+					'created_at' => $today,
+				);
+				$this->AssesmentModel->insert_shs_student_number($array_insert_shs);
+			} else {
+				$array_update_shs = array(
+					'highered_reference_number' => $reference_number,
+					'shs_student_number' => $student_number,
+					'applied_status' => $status,
+					'updated_at' => $today,
+				);
+				$this->AssesmentModel->update_shs_student_number($array_update_shs);
+			}
+
+			if ($update) {
+				echo json_encode(array(
+					'title' => 'Success',
+					'body' => 'Course successfully updated.',
+					'status' => 'success'
+				));
+			}
+			return;
 		}
+		return;
+		// } else {
+		// 	echo json_encode(array(
+		// 		'title' => 'You Already Have Course!',
+		// 		'body' => 'Contact MIS department for this issue.',
+		// 		'status' => 'failed'
+		// 	));
+		// 	return;
+		// }
 	}
 
 	public function check_course_by_reference_number($reference_number)

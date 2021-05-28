@@ -25,7 +25,7 @@ class AssesmentModel extends CI_Model
         $this->db->select('*');
         $this->db->from('Fees_Enrolled_College');
         $this->db->where('Reference_Number', $ref_no);
-        $this->db->order_by('schoolyear','DESC');
+        // $this->db->order_by('schoolyear','DESC');
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -127,6 +127,16 @@ class AssesmentModel extends CI_Model
             'created_at' => $array_insert['created_at'],
         );
         $this->db->insert('senior_high_student_number', $data);
+    }
+    public function update_shs_student_number($array_update)
+    {
+        $data = array(
+            'shs_student_number' => $array_update['shs_student_number'],
+            'applied_status' => $array_update['applied_status'],
+            'updated_at' => $array_update['updated_at'],
+        );
+        $this->db->where('highered_reference_number', $array_update['highered_reference_number']);
+        $this->db->update('senior_high_student_number', $data);
     }
 
     public function get_shs_student_number_by_reference_number($reference_number)

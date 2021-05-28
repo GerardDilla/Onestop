@@ -237,9 +237,8 @@ function hasclass_oldstudent() {
     if ($('.wizard-proceed-advising').hasClass('old-student')) {
         // console.log('has class');
         // $("#tab_advising").removeAttr("data-toggle");
-        $("#tab_requirements").removeAttr("data-toggle");
-        $("#tab_student_information").removeAttr("data-toggle");
-
+        // $("#tab_requirements").removeAttr("data-t?" "
+        $("#li_requirements").removeClass("active");
         $("#student_information_content").removeClass("active");
         $("#requirements_content").removeClass("active");
         // $("#advising_content").removeClass("active");
@@ -252,7 +251,7 @@ function wizard_old_student() {
     tab_requirements();
     tab_advising();
 
-    $("#tab_advising").removeAttr("data-toggle");
+    // $("#tab_advising").removeAttr("data-toggle");
     $("#tab_requirements").removeAttr("data-toggle");
     $("#tab_student_information").removeAttr("data-toggle");
 

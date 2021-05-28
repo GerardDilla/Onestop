@@ -73,7 +73,7 @@ echo '</script>';
                                             </td>
                                             <td><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
                                                                                                                     echo $list['status'] == "" ? 'checked="true"' : '';
-                                                                                                                } ?> type="checkbox" class="form-check-input <?php echo $req==1?'requirement-1':'';?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></td>
+                                                                                                                } ?> type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></td>
                                             <td style="text-align:center;"><?php echo $list['status']; ?></td>
                                             <td style="text-align:center;"><?php echo $list['date']; ?></td>
 
@@ -94,28 +94,31 @@ echo '</script>';
                                             <td style="text-align:center;"><?php echo $list['status']; ?></td>
                                             <td style="text-align:center;"><?php echo $list['date']; ?></td>
                                         </tr>
-                                    <?php
+                                        <?php
                                     }
                                 }
                                 if (isset($this->data['requirementstab'])) {
-                                    if ($this->data['interview_status'] == null) {
-                                    ?>
-                                        <tr class="interview-status">
-                                            <th colspan="5">
-                                                Do you want to be interviewed?
-                                                <label for="interview_yes">YES <input type="radio" class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
-                                                <label for="interview_no"> NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
-                                            </th>
-                                        </tr>
+                                    $old_student = empty($this->data['old_student']) ? false : $this->data['old_student'];
+                                    if ($old_student === false) {
+                                        if ($this->data['interview_status'] == null) {
+                                        ?>
+                                            <tr class="interview-status">
+                                                <th colspan="5">
+                                                    Do you want to be interviewed?
+                                                    <label for="interview_yes">YES <input type="radio" checked class="form-check-input" name="interview" value="YES" id="interview_yes" required></label>
+                                                    <label for="interview_no"> NO <input type="radio" class="form-check-input" name="interview" value="NO" id="interview_no"></label>
+                                                </th>
+                                            </tr>
                                 <?php
-                                    } else {
-                                        echo "<tr><th colspan='2'>Do you want to be interviewed?<br><u>";
-                                        if ($this->data['interview_status'] == 'YES') {
-                                            echo "<span style='color:green'><b>YES</b></span>! I want to be Interviewed.";
-                                        } else if ($this->data['interview_status'] == 'NO') {
-                                            echo "<span style='color:red'><b>NO</b></span>! I don't want to be Interviewed.";
+                                        } else {
+                                            echo "<tr><th colspan='2'>Do you want to be interviewed?<br><u>";
+                                            if ($this->data['interview_status'] == 'YES') {
+                                                echo "<span style='color:green'><b>YES</b></span>! I want to be Interviewed.";
+                                            } else if ($this->data['interview_status'] == 'NO') {
+                                                echo "<span style='color:red'><b>NO</b></span>! I don't want to be Interviewed.";
+                                            }
+                                            echo "</u></th></tr>";
                                         }
-                                        echo "</u></th></tr>";
                                     }
                                 }
                                 ?>

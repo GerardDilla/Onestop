@@ -34,6 +34,10 @@ $(document).ready(function () {
     });
 
     $('.wizard-proceed-advising').click(function (e) {
+        // if ($(this).hasClass('old-student')) {
+        //     console.log('has class');
+        // }
+        // console.log($(this).hasClass('old-student'));
         // Event handler when proceeding to next step
         // if ($('#advising_content').hasClass('active')) {
 
@@ -52,7 +56,6 @@ $(document).ready(function () {
             position: 'center',
             buttons: [
                 ['<button><b>YES</b></button>', function (instance, toast) {
-
                     console.log('ready to advise');
                     // Came from advising.js
 
@@ -186,13 +189,15 @@ function fetch_user_status() {
         type: "POST",
         url: base_url + "index.php/Main/wizard_tracker_status",
         async: true,
+        dataType: "JSON",
         success: function (response) {
             // alert(response);
-            result = JSON.parse(response);
-            payment = result.payment;
-            advising = result.advising;
-            requirements = result.requirements;
-            student_information = result.student_information;
+            // result = JSON.parse(response);
+            payment = response.payment;
+            advising = response.advising;
+            old_student = response.old_student;
+            requirements = response.requirements;
+            student_information = response.student_information;
             $('.tab-pane .container').removeClass('active');
             // Walkthrough ids
             // student_information
@@ -200,6 +205,14 @@ function fetch_user_status() {
             // advising
             // payment
             // registration
+            if (old_student == 1) {
+                // wizard_payment();
+                // wizard_advising();
+                $('.wizard-proceed-advising').addClass('old-student');
+
+                wizard_old_student();
+                // hasclass_oldstudent()
+            }
             if (payment == 1) {
 
                 wizard_registration();
@@ -213,14 +226,19 @@ function fetch_user_status() {
             } else if (requirements == 1) {
                 wizard_advising();
                 var ose_guide1 = new OSE_Guide('advising');
+                hasclass_oldstudent();
 
             } else if (student_information == 1) {
                 $('input[name=current_tab_selection]').val('requirements');
                 wizard_requirements();
+                if ($('.wizard-proceed-advising').hasClass('old-student')) {
+                    $("#progress_bar").css("width", "50%");
+                }
                 var ose_guide1 = new OSE_Guide('requirements');
 
             } else {
                 wizard_student_info();
+                hasclass_oldstudent();
                 var ose_guide1 = new OSE_Guide('student_information');
 
             }
@@ -230,6 +248,39 @@ function fetch_user_status() {
     });
 
 
+}
+
+function hasclass_oldstudent() {
+    if ($('.wizard-proceed-advising').hasClass('old-student')) {
+        // console.log('has class');
+        // $("#tab_advising").removeAttr("data-toggle");
+        // $("#tab_requirements").removeAttr("data-t?" "
+        $("#li_requirements").removeClass("active");
+        $("#student_information_content").removeClass("active");
+        $("#requirements_content").removeClass("active");
+        // $("#advising_content").removeClass("active");
+        // $("#progress_bar").css("width", "50%");
+    }
+}
+
+function wizard_old_student() {
+    tab_student_information();
+    tab_requirements();
+    tab_advising();
+
+    // $("#tab_advising").removeAttr("data-toggle");
+    $("#tab_requirements").removeAttr("data-toggle");
+    $("#tab_student_information").removeAttr("data-toggle");
+
+    $("#progress_bar").css("width", "50%");
+
+    $("#advising_content").addClass("active");
+    $("#student_information_content").removeClass("active");
+    $("#requirements_content").removeClass("active");
+
+    $("#tab_requirements").addClass("wizard_li");
+    $(".bi-card-checklist").addClass("wizard_li");
+    $("#tab_requirements-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
 }
 
 function wizard_registration() {
@@ -294,8 +345,11 @@ function tab_registration() {
 
     $("#tab_registration").attr("data-toggle", "tab");
     $("#tab_payment").removeAttr("data-toggle");
+    $("#tab_advising").removeAttr("data-toggle");
+    $("#tab_student_information").removeAttr("data-toggle");
 
     $("#li_registration").attr("class", "active");
+    $("#li_payment").removeClass("active");
 
     $("#tab_payment").attr("class", "wizard_li");
     $(".bi-cash-stack").addClass("wizard_li");
@@ -309,9 +363,12 @@ function tab_payment() {
     // $("#tab_registration-circle").append("<div class='success_check'><i class='bi bi-check'></i></div>");
 
     $("#tab_payment").attr("data-toggle", "tab");
-    $("#tab_advising").removeAttr("data-toggle");
+    // $("#tab_advising").removeAttr("data-toggle");
 
+    // $("#li_payment").attr("class", "active");
     $("#li_payment").attr("class", "active");
+    $("#li_advising").removeClass("active");
+
 
     $("#tab_advising").attr("class", "wizard_li");
     $(".bi-clipboard-plus").addClass("wizard_li");
@@ -329,6 +386,8 @@ function tab_advising() {
     $("#tab_advising").attr("data-toggle", "tab");
 
     $("#li_advising").attr("class", "active");
+    $("#li_requirements").removeClass("active");
+    // $("#li_advising").attr("class", "active");
 
 }
 
@@ -343,7 +402,9 @@ function tab_requirements() {
 
     $("#tab_requirements").attr("data-toggle", "tab");
 
-    // $("#li_requirements").attr("class", "active");
+    $("#li_requirements").attr("class", "active");
+    $("#li_student_information").removeClass("active");
+
     $("#tab_student_information").attr("class", "wizard_li");
     $(".bi-person-lines-fill").addClass("wizard_li");
 }
@@ -351,6 +412,7 @@ function tab_requirements() {
 function tab_student_information() {
     // $("#tab_student_information").attr("class", "wizard_li");
     $("#tab_student_information-circle").addClass("checked");
-
     $("#li_student_information").attr("class", "active");
+
+    $("#tab_student_information").attr("data-toggle", "tab");
 }

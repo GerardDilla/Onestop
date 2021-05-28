@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     init_sectionlist();
 
@@ -159,7 +159,7 @@ $(document).ready(function () {
 
     // });
 
-    $('#section').change(function () {
+    $('#section').change(function() {
 
         if ($('#queueTable').data('queueResult') == 0) {
             init_subjectlists();
@@ -175,7 +175,7 @@ $(document).ready(function () {
                 message: 'Changing Section will remove all Queued Subjects. Do you want to proceed?',
                 position: 'center',
                 buttons: [
-                    ['<button><b>YES</b></button>', function (instance, toast) {
+                    ['<button><b>YES</b></button>', function(instance, toast) {
 
                         // Remove Queue Code
                         init_remove_all_queue();
@@ -190,7 +190,7 @@ $(document).ready(function () {
                         }, toast, 'button');
 
                     }, true],
-                    ['<button>NO</button>', function (instance, toast) {
+                    ['<button>NO</button>', function(instance, toast) {
 
                         event.preventDefault();
                         $('#section').val('none');
@@ -200,10 +200,10 @@ $(document).ready(function () {
 
                     }],
                 ],
-                onClosing: function (instance, toast, closedBy) {
+                onClosing: function(instance, toast, closedBy) {
                     console.info('Closing | closedBy: ' + closedBy);
                 },
-                onClosed: function (instance, toast, closedBy) {
+                onClosed: function(instance, toast, closedBy) {
                     console.info('Closed | closedBy: ' + closedBy);
                 }
             });
@@ -225,7 +225,7 @@ $(document).ready(function () {
     //     fetch_user_status();
     // });
 
-    $('.add-all-subject').click(function () {
+    $('.add-all-subject').click(function() {
         init_addAll();
     });
 
@@ -237,7 +237,7 @@ function init_advise() {
 
     plan = $('input[type=radio][name=payment-option]:checked').val();
     result = ajax_adviseStudent(plan);
-    result.success(function (response) {
+    result.success(function(response) {
 
         response = JSON.parse(response);
         if (response['success'] == 0) {
@@ -258,7 +258,7 @@ function init_advise() {
 function init_assessmentform() {
 
     result = ajax_assessmentform();
-    result.success(function (response) {
+    result.success(function(response) {
 
         if (response != false) {
             response = JSON.parse(response);
@@ -273,7 +273,7 @@ function init_assessmentform() {
 function init_registrationform() {
 
     result = ajax_registrationform();
-    result.success(function (response) {
+    result.success(function(response) {
         response = JSON.parse(response);
         registrationform_renderer(response);
     })
@@ -283,7 +283,7 @@ function init_registrationform() {
 function init_sectionlist() {
 
     subjects = ajax_sectionlist();
-    subjects.success(function (response) {
+    subjects.success(function(response) {
         response = JSON.parse(response);
         section_id = section_renderer(response);
         $('#section').val(section_id);
@@ -296,14 +296,14 @@ function init_sectionlist() {
 function init_subjectlists() {
 
     subjects = ajax_subjectlist();
-    subjects.success(function (response) {
+    subjects.success(function(response) {
         console.log('tablerun');
         response = JSON.parse(response);
         // console.log(response)
         if (response['data'].length != 0) {
             test = '32132';
             fees_status = ajax_check_fees_listing();
-            fees_status.success(function (fees_response) {
+            fees_status.success(function(fees_response) {
                 fees_response = JSON.parse(fees_response);
                 if (fees_response['success'] == 0) {
                     izi_toast('', fees_response['message'], 'green', 'topCenter');
@@ -329,7 +329,7 @@ function init_subjectlists() {
 function init_addAll() {
 
     result = ajax_add_all_subjects();
-    result.success(function (response) {
+    result.success(function(response) {
 
         init_queuedlist();
         izi_toast('', 'Subjects Added to Queue', 'green', 'bottomRight');
@@ -341,7 +341,7 @@ function init_add_queue(row) {
 
     schedcode = $(row).data('schedcode');
     queue_status = ajax_insertqueue(schedcode);
-    queue_status.success(function (response) {
+    queue_status.success(function(response) {
         response = JSON.parse(response);
         if (response['status'] == 0) {
             izi_toast('', response['data'], 'red', 'bottomRight');
@@ -360,7 +360,7 @@ function init_remove_queue(row) {
 
     sessionid = $(row).data('sessionid');
     queue_status = ajax_removequeue(sessionid);
-    queue_status.success(function (response) {
+    queue_status.success(function(response) {
         izi_toast('', `Removed from Queue: ${response}`, 'green', 'bottomRight');
         init_paymentmethod($('input[type=radio][name=payment-option]').value);
         init_queuedlist();
@@ -373,7 +373,7 @@ function init_remove_queue(row) {
 function init_queuedlist() {
 
     queue = ajax_queuedlist();
-    queue.success(function (response) {
+    queue.success(function(response) {
 
         response = JSON.parse(response);
         if (response['data'].length != 0) {
@@ -391,7 +391,7 @@ function init_queuedlist() {
 function init_paymentmethod(value = 'installment') {
 
     result = ajax_paymentmethod(value);
-    result.success(function (response) {
+    result.success(function(response) {
 
         response = JSON.parse(response);
         if ($('#section').val() != null) {
@@ -415,7 +415,7 @@ function init_enroll_test() {
 function init_reset_progress() {
 
     reset_status = ajax_reset_progress();
-    reset_status.success(function (result) {
+    reset_status.success(function(result) {
         location.reload();
     });
 
@@ -424,7 +424,7 @@ function init_reset_progress() {
 function init_remove_all_queue() {
 
     removal_status = ajax_removeAllqueue();
-    removal_status.success(function (result) {
+    removal_status.success(function(result) {
         init_queuedlist();
         init_paymentmethod();
     })
@@ -607,8 +607,9 @@ function queue_tablerenderer(element = '', data = []) {
     tablebody.html('');
     count = 0;
     units = 0;
+    // sum_units = 0;
     //array sched start loop
-    $.each(data['data'], function (index, row) {
+    $.each(data['data'], function(index, row) {
         computeSched(row['Start_Time'], row['End_Time'], row['Day'], row['Course_Code'], row['Course_Title'], row['from_time'], row['to_time'])
         if (data['status'] == true) {
             tablebody.append($('<tr/>').append('\
@@ -631,10 +632,20 @@ function queue_tablerenderer(element = '', data = []) {
         }
         count++;
         units = units + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit']));
+        // sum_units += units;
         console.log(units);
     });
+    tablebody.append($('<tr/>').append('\
+            <td> </td>\
+            <td> </td>\
+            <td> </td>\
+            <td>Total Units</td>\
+            <td>' + units + '</td>\
+            <td></td>\
+            '));
     $('#queueTable').data('queueResult', count);
-    $('#queueTable').data('units', units);
+    // $('#queueTable').data('units', units);
+
     // alert($('#queueTable').data('units'));
 
     element.DataTable({
@@ -692,6 +703,7 @@ function subject_tablerenderer(element = '', data = []) {
                     <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                     <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
                     '));
+                    units += parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])
                 } else {
                     tablebody.append($('<tr/>').append('\
                     <td>' + row['Sched_Code'] + '</td>\
@@ -703,6 +715,7 @@ function subject_tablerenderer(element = '', data = []) {
                     <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                     <td></td>\
                     '));
+                    units += parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])
                 }
 
             }
@@ -720,6 +733,7 @@ function subject_tablerenderer(element = '', data = []) {
                 <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                 <td> <button class="btn btn-info" onclick="init_add_queue(this)" data-schedcode="' + row['Sched_Code'] + '">Add</btn></td>\
                 '));
+                units += parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])
             } else {
                 tablebody.append($('<tr/>').append('\
                 <td>' + row['Sched_Code'] + '</td>\
@@ -731,6 +745,7 @@ function subject_tablerenderer(element = '', data = []) {
                 <td>' + row['Start_Time'] + ' - ' + row['End_Time'] + '</td>\
                 <td></td>\
                 '));
+                units += parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])
             }
         }
 
@@ -738,6 +753,16 @@ function subject_tablerenderer(element = '', data = []) {
         console.log('type: ' + data['type'] + ':' + row['sp_pre_req']);
 
     });
+    tablebody.append($('<tr/>').append('\
+                <td></td>\
+                <td></td>\
+                <td></td>\
+                <td>Total Units</td>\
+                <td>' + units + '</td>\
+                <td></td>\
+                <td></td>\
+                <td></td>\
+                '));
 
     element.DataTable({
         "ordering": false,
@@ -805,7 +830,7 @@ function schedule_tablerenderer(element, time = []) {
     tablehead.html('');
     tablehead.append('<tr>');
     tablehead.append('<th></th>');
-    $.each(days, function (index, day) {
+    $.each(days, function(index, day) {
 
         tablehead.append('<th>' + day + '</th>');
 
@@ -814,7 +839,7 @@ function schedule_tablerenderer(element, time = []) {
 
 }
 
-$('#online_payment_form').submit(function (e) {
+$('#online_payment_form').submit(function(e) {
     if (!$('.downpayment:checkbox').prop("checked")) {
         if ($('.payment_check:checkbox:checked').length <= 0) {
             iziToast.error({
@@ -844,13 +869,13 @@ $('#online_payment_form').submit(function (e) {
 // })
 function downpayment_checked() {
     if ($('.downpayment:checkbox').prop("checked")) {
-        $('.payment_check:checkbox').each(function (i) {
+        $('.payment_check:checkbox').each(function(i) {
             $(this).prop("disabled", true);
             $(this).prop("checked", false);
             $('#payment_total_value').html('5000.00');
         });
     } else {
-        $('.payment_check:checkbox').each(function (i) {
+        $('.payment_check:checkbox').each(function(i) {
             $(this).removeAttr('disabled');
         });
         $('#payment_total_value').html('0');
@@ -859,7 +884,7 @@ function downpayment_checked() {
 
 function get_total_value() {
     var total = 0;
-    $('.payment_check:checkbox:checked').each(function (i) {
+    $('.payment_check:checkbox:checked').each(function(i) {
         total += parseFloat($(this).data('paymentvalue'));
     });
     $('#payment_total_value').html(total);
@@ -953,7 +978,7 @@ function assessmentform_renderer(resultdata = []) {
     sched_checking = '';
     units = 0;
     subjectcount = 0;
-    $.each(resultdata['get_Advise'], function (index, result) {
+    $.each(resultdata['get_Advise'], function(index, result) {
         row = $("<tr/>");
         if (sched_checking != result['Sched_Code']) {
 
@@ -1047,7 +1072,7 @@ function registrationform_renderer(resultdata = []) {
     sched_checking = '';
     units = 0;
     subjectcount = 0;
-    $.each(resultdata['student_data'], function (index, result) {
+    $.each(resultdata['student_data'], function(index, result) {
         row = $("<tr/>");
         if (sched_checking != result['Sched_Code']) {
 
@@ -1085,7 +1110,7 @@ function registrationform_renderer(resultdata = []) {
 function section_renderer(data) {
 
     $('#section').html('<option value="none" disabled selected>SELECT SECTION</option>');
-    $.each(data['sections'], function (index, result) {
+    $.each(data['sections'], function(index, result) {
         $('#section').append('<option value="' + result['Section_ID'] + '">' + result['Section_Name'] + '</option>');
     });
     return data['section_id'];
@@ -1129,26 +1154,26 @@ function computeSched(start, end, this_day, subject, title, from, to) {
     var filtered = schedule_array.filter((time) => { return time >= start_time && time <= end_time });
     console.log(filtered);
     console.log(day);
-    $.each(filtered, function (index, val) {
+    $.each(filtered, function(index, val) {
 
-        if (day == "M") {
-            var bg_color = "EA49E5"
-        } else if (day == "T") {
-            var bg_color = "18EAC8"
-        } else if (day == "W") {
-            var bg_color = "EA5E18"
-        } else if (day == "H") {
-            var bg_color = "EAD618"
-        } else if (day == "F") {
-            var bg_color = "B1EA18"
-        } else if (day == "SA") {
-            var bg_color = "1860EA"
-        } else {
-            var bg_color = "18EA4A"
-        }
+            if (day == "M") {
+                var bg_color = "EA49E5"
+            } else if (day == "T") {
+                var bg_color = "18EAC8"
+            } else if (day == "W") {
+                var bg_color = "EA5E18"
+            } else if (day == "H") {
+                var bg_color = "EAD618"
+            } else if (day == "F") {
+                var bg_color = "B1EA18"
+            } else if (day == "SA") {
+                var bg_color = "1860EA"
+            } else {
+                var bg_color = "18EA4A"
+            }
 
-        $(`#${val + '_' + day}`).css('background', `#${bg_color}`);
-    })
-    // $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${from + ' to ' + to}</strong><br>${subject}</div>`);
+            $(`#${val + '_' + day}`).css('background', `#${bg_color}`);
+        })
+        // $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${from + ' to ' + to}</strong><br>${subject}</div>`);
     $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${title}</strong><br>${subject}</div>`);
 }

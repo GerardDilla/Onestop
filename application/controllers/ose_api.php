@@ -582,6 +582,8 @@ class Ose_api extends CI_Controller
 
 		);
 
+
+
 		#Check for section
 		if (!$this->input->get('section')) {
 
@@ -634,11 +636,11 @@ class Ose_api extends CI_Controller
 
 		//check if the student is already advised 
 		$check_advised = $this->AdvisingModel->get_sched_advised($array_data);
-		if ($check_advised != NULL) {
+
+		if (!empty($check_advised)) {
 
 			$array_data['check_advised'] = 1;
 			$this->AdvisingModel->remove_sched_info($array_data);
-
 			#Get and remove previous fees with similar sy and sem
 			$array_college_fees_data = $this->FeesModel->get_fees_college_data($array_data);
 			if (!empty($array_college_fees_data)) {
@@ -1001,7 +1003,7 @@ class Ose_api extends CI_Controller
 
 		#Get section based on whether $Feesdata is true(old student) or false(new student)
 		$output['sections'] = $this->AdvisingModel->get_sections($Course, $Feesdata, $this->queue_sy, $this->queue_sem);
-		
+
 		#Gets Queue
 		$queue = $this->AdvisingModel->get_queued_subjects($this->reference_number);
 		if (!empty($queue)) {
@@ -1043,6 +1045,7 @@ class Ose_api extends CI_Controller
 			'sem' => $this->legend_sem,
 			'refnum' => $this->reference_number
 		);
+		die(json_encode($array));
 
 
 		# Stops if it doesnt receive reference number
@@ -1166,5 +1169,36 @@ class Ose_api extends CI_Controller
 	{
 		echo $this->queue_sem;
 		echo $this->queue_sy;
+	}
+	public function compare_history()
+	{
+
+		$advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $this->reference_number));
+		$legend = $this->AdvisingModel->getlegend();
+		if ($legend['School_Year'] != $advising_history['Legend_SY'] || $legend['Semester'] != $advising_history['Legend_Sem']) {
+			# true means eligible for enrollment again
+			$output = array(
+				'status' => true,
+				'School_Year' => $legend['School_Year'],
+				'Semester' => $legend['Semester'],
+			);
+		} else {
+
+			if ($advising_history['Taken_Sem'] == 'SUMMER') {
+
+				$output = array(
+					'status' => true,
+					'School_Year' => $legend['School_Year'],
+					'Semester' => $legend['Semester'],
+				);
+			} else {
+				$output = array(
+					'status' => false,
+					'School_Year' => '',
+					'Semester' => '',
+				);
+			}
+		}
+		echo json_encode($output);
 	}
 }

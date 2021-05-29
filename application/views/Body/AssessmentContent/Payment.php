@@ -1,6 +1,6 @@
 <div class="row">
     <!-- Assessment Form Content -->
-    <div class="col-md-8 row">
+    <div class="col-md-9 row">
 
         <!--/Regform Header-->
         <div class="col-lg-12 assessment-form" style="text-align:center; color:#000">
@@ -108,7 +108,7 @@
         </div>
     </div>
     <!-- Payment Options -->
-    <div class="col-md-4 row">
+    <div class="col-md-3 row">
 
         <ul class="paymentbullet">
             <li>
@@ -128,12 +128,18 @@
             <li>
                 <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" target="_blank" type="button" class="btn btn-lg btn-primary upload-proof">UPLOAD PROOF OF PAYMENT</a>
             </li>
-
             <li>
                 <!-- <button type="button" class="btn btn-lg btn-success setpaid_test">Set As Paid (FOR TESTING)</button> -->
             </li>
 
             <li style="text-align:center"><img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>
+        </ul>
+        <ul class="readvise_tab">
+            <li>
+                <h4>Change your Mind?</h4>
+                <button type="button" class="btn btn-lg btn-primary" id="readvise_button">CHOOSE AGAIN</button>
+            </li>
+
         </ul>
 
     </div>

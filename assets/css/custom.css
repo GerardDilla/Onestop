@@ -35,6 +35,13 @@ div#main{
 .paymentbullet li a{
     width:100% !important;
 }
+.readvise_tab li{
+    list-style-type:none;
+    margin:10px;
+}
+.readvise_tab li button{
+    width:100% !important;
+}
 .sched-subject{
     background:white;
     padding:10px;

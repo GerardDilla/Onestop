@@ -212,13 +212,17 @@ class AdvisingModel extends CI_Model
     {
         #Copies Advising_Session data to Advising Table
         $reference_no = $array_data['reference_no'];
+        $sy = $array_data['school_year'];
+        $sem = $array_data['semester'];
         $query = $this->db->query("
             INSERT INTO Advising (Reference_Number, Student_Number, Sched_Code, Sched_Display_ID, Semester, School_Year, `Status`, Program, Major, Year_Level, Section)
             SELECT Adv.`Reference_Number`, Adv.`Student_Number`, Adv.`Sched_Code`, Adv.`Sched_Display_ID`, Adv.`Semester`, Adv.School_Year, Adv.`Status`, 
             Adv.Program, Adv.Major, Adv.Year_Level, Sec.Section_Name 
             FROM `advising_session` AS Adv
             INNER JOIN Sections AS Sec ON Adv.Section = Sec.Section_ID
-            WHERE Adv.`Reference_Number` = $reference_no
+            WHERE Adv.`Reference_Number` = '$reference_no'
+            AND Adv.`School_Year` = '$sy'
+            AND Adv.`Semester` = '$sem'
             AND Adv.`valid` = '1'
         ");
         $query_log = $this->db->last_query();

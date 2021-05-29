@@ -126,7 +126,12 @@ class OSE_Guide {
             {
                 element: document.querySelector(".upload-proof"),
                 intro: "You need to upload your <strong>proof of payment</strong> if you are already paid"
+            },
+            {
+                element: document.querySelector(".readvise_tab"),
+                intro: "You can choose subjects again by clicking the <strong>CHOOSE AGAIN</strong> button"
             }
+
         ]
     }
     registration() {

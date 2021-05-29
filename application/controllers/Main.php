@@ -378,7 +378,6 @@ class Main extends MY_Controller
 		// $data['requirements'] = 0;
 		// $data['student_information'] = 0;
 
-
 		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
 			$data['payment'] = 1;
 		} else if ($status['Ref_Num_ftc'] != null) {

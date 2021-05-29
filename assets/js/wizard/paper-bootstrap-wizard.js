@@ -3,6 +3,13 @@ transparent = true;
 $(document).ready(function () {
 
 
+    $('#readvise_button').click(function () {
+        wizard_advising();
+        hasclass_oldstudent();
+        $("#payment_content").removeClass("active");
+        var ose_guide1 = new OSE_Guide('advising');
+        ose_guide1.play();
+    });
     // $('#submit_val_doc').click(function(e) {
     //     baseurl = $('#assessment_section').data('baseurl');
     //     var interview_value = $("input[name='interview']:checked").val();
@@ -220,6 +227,7 @@ function fetch_user_status() {
                 hasclass_oldstudent();
                 $("#advising_content").removeClass("active");
                 var ose_guide1 = new OSE_Guide('registration');
+                check_next_enrollment();
 
             } else if (advising == 1) {
 

@@ -6,6 +6,7 @@ $(document).ready(function () {
     $('#readvise_button').click(function () {
         wizard_advising();
         hasclass_oldstudent();
+        init_paymentmethod();
         $("#payment_content").removeClass("active");
         var ose_guide1 = new OSE_Guide('advising');
         ose_guide1.play();

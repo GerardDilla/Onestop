@@ -156,7 +156,7 @@
                     </tr>
                     <tr>
                         <td><strong>Total Fees:</strong></td>
-                        <td class="feesbox"><?php echo $get_Advise[0]->tuition_Fee + $get_miscfees[0]->Fees_Amount + $get_otherfees[0]->Fees_Amount; ?></td>
+                        <td class="feesbox"><?php echo $get_Advise[0]->tuition_Fee + $get_miscfees[0]->Fees_Amount + $get_otherfees[0]->Fees_Amount + $get_labfees[0]->Fees_Amount; ?></td>
 
                         <td><strong>Fourth:</strong></td>
                         <td class="feesbox"><?php echo $get_Advise[0]->Fourth_Pay; ?></td>

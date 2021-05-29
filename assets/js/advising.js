@@ -1193,9 +1193,9 @@ function check_next_enrollment() {
                     icon: 'bi-info-circle-fill',
                     iconColor: 'green',
                     title: 'Notice:',
-                    titleSize: "20",
+                    titleSize: "18",
                     message: 'Enrollment For: <b>' + response['School_Year'] + ' ' + response['Semester'] + ' Semester</B> is now available',
-                    messageSize: '20',
+                    messageSize: '18',
                     // messageLineHeight: '30',
                     position: 'topCenter', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
                     progressBarColor: '#cc0000',
@@ -1211,6 +1211,18 @@ function check_next_enrollment() {
                         //     alert("Hello world!");
                         // }, true],
                         ['<button>ENROLL</button>', function (instance, toast) {
+
+                            // Reset Advising_history
+                            $.ajax({
+                                url: "/Onestop/index.php/ose_api/update_advising_track",
+                                async: true,
+                                success: function () {
+                                    fetch_user_status();
+                                    $("#registration_content").removeClass("active");
+
+                                }
+                            });
+
                             current_this.play();
                             instance.hide({
                                 transitionOut: 'fadeOutUp',

@@ -1045,7 +1045,6 @@ class Ose_api extends CI_Controller
 			'sem' => $this->legend_sem,
 			'refnum' => $this->reference_number
 		);
-		die(json_encode($array));
 
 
 		# Stops if it doesnt receive reference number
@@ -1200,5 +1199,16 @@ class Ose_api extends CI_Controller
 			}
 		}
 		echo json_encode($output);
+	}
+
+	public function update_advising_track()
+	{
+		$legend = $this->AdvisingModel->getlegend();
+		$update = array(
+			'reference_no' => $this->reference_number,
+			'school_year' => $legend['School_Year'],
+			'semester' => $legend['Semester'],
+		);
+		$this->AdvisingModel->update_advising_history($update, $legend);
 	}
 }

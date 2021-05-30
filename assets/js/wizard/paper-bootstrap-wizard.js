@@ -1,5 +1,17 @@
 searchVisible = 0;
 transparent = true;
+
+// $('.nav-pills li').each(function(){
+//     if($(this).hasClass('active')){
+//         console.log()
+//     }
+// })
+
+// student_information
+// requirements
+// advising
+// payment
+// registration
 $(document).ready(function () {
 
 
@@ -13,6 +25,113 @@ $(document).ready(function () {
     });
 
     ref__ = $('#assessment_section').data('ref');
+
+    function hideIziToastGuide() {
+        var izitoastWalkthrough = document.querySelector('.izitoast-open-walkthrough');
+        iziToast.hide({
+            transitionOut: 'fadeOutUp'
+        }, izitoastWalkthrough);
+    }
+    function showIziToastGuide() {
+        iziToast.show({
+            class: 'izitoast-open-walkthrough',
+            theme: 'dark',
+            icon: 'bi-info-circle-fill',
+            iconColor: 'white',
+            title: 'Guide:',
+            titleSize: "18",
+            message: '',
+            messageSize: '18',
+            // messageLineHeight: '30',
+            position: 'bottomLeft', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+            progressBarColor: '#cc0000',
+            overlay: false,
+            timeout: false,
+            overlayClose: false,
+            drag: false,
+            close: false,
+            closeOnEscape: false,
+            closeOnClick: false,
+            buttons: [
+                // ['<button>Ok</button>', function (instance, toast) {
+                //     alert("Hello world!");
+                // }, true],
+                ['<button>Open Guide</button>', function (instance, toast) {
+                    // current_this.play();
+                    var ose_guide1 = new OSE_Guide($('input[name=current_tab_selection]').val());
+                    ose_guide1.play();
+                    instance.hide({
+                        transitionOut: 'fadeOutUp',
+                        onClosing: function (instance, toast, closedBy) {
+                            // console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+
+                        }
+                    }, toast, 'buttonName');
+                }]
+            ],
+            onClosing: function (instance, toast, closedBy) {
+                console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
+            }
+        });
+    }
+    $('#tab_student_information').click(function () {
+        setTimeout(() => {
+            if ($('#li_student_information').hasClass('active')) {
+                $('input[name=current_tab_selection]').val('student_information');
+                hideIziToastGuide();
+                // showIziToastGuide();
+                var ose_guide1 = new OSE_Guide('student_information');
+                ose_guide1.play();
+            }
+        }, 500)
+    })
+    $('#tab_requirements').click(function () {
+        setTimeout(() => {
+            if ($('#li_requirements').hasClass('active')) {
+                $('input[name=current_tab_selection]').val('requirements');
+                hideIziToastGuide();
+                // showIziToastGuide();
+                var ose_guide1 = new OSE_Guide('requirements');
+                ose_guide1.play();
+            }
+        }, 500)
+    })
+    $('#tab_advising').click(function () {
+        setTimeout(() => {
+            if ($('#li_advising').hasClass('active')) {
+                $('input[name=current_tab_selection]').val('advising');
+                hideIziToastGuide();
+                // showIziToastGuide();
+                var ose_guide1 = new OSE_Guide('advising');
+                ose_guide1.play();
+            }
+        }, 500)
+    })
+    $('#tab_payment').click(function () {
+        setTimeout(() => {
+            if ($('#li_payment').hasClass('active')) {
+                $('input[name=current_tab_selection]').val('payment');
+                hideIziToastGuide();
+                // showIziToastGuide();
+                var ose_guide1 = new OSE_Guide('payment');
+                ose_guide1.play();
+            }
+        }, 500)
+    })
+
+    $('#tab_registration').click(function () {
+        setTimeout(() => {
+            if ($('#li_registration').hasClass('active')) {
+                $('input[name=current_tab_selection]').val('registration');
+                hideIziToastGuide();
+                // showIziToastGuide();
+                var ose_guide1 = new OSE_Guide('registration');
+                ose_guide1.play();
+            }
+        }, 500)
+    })
+
+
 
 
     // $('#submit_val_doc').click(function(e) {

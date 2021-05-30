@@ -220,9 +220,9 @@ class Main extends MY_Controller
 
 				$encrypt_code = $this->encryption->encrypt($generate_code);
 
-				// $encrypt_code = $generate_code;
-				// $this->sendemail->test();exit;
-				// echo $data['First_Name'].' '.$data['Last_Name'];exit;
+				// for live stdominiccollege.edu.ph
+				// $this->sdca_mailer->sendEmail($data['First_Name'] . ' ' . $data['Last_Name'], 'jfabregas@sdca.edu.ph', 'St. Dominic College of Asia', $this->input->post('email'), 'Forgot Password', 'Click this link to reset your password. {unwrap}https://stdominiccollege.edu.ph/Onestop/index.php/main/changePassword/' . $encrypt_code . '{/unwrap}');
+				
 				$this->sdca_mailer->sendEmail($data['First_Name'] . ' ' . $data['Last_Name'], 'jfabregas@sdca.edu.ph', 'St. Dominic College of Asia', $this->input->post('email'), 'Forgot Password', 'Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/' . $encrypt_code . '{/unwrap}');
 				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
 				$this->session->set_flashdata('success', "We've sent a confirmation link on your email. Click the link to reset your password.");

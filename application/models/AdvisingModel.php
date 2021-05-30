@@ -536,10 +536,10 @@ class AdvisingModel extends CI_Model
     {
 
         #Remove Course
-        $this->db->set('Course', 'N/A');
-        $this->db->where('Reference_Number', $data['Reference_Number']);
-        $this->db->update('Student_Info');
-        $this->db->reset_query();
+        // $this->db->set('Course', 'N/A');
+        // $this->db->where('Reference_Number', $data['Reference_Number']);
+        // $this->db->update('Student_Info');
+        // $this->db->reset_query();
 
         #Remove Advising
         $this->db->set('valid', 0);
@@ -573,18 +573,18 @@ class AdvisingModel extends CI_Model
         $this->db->update('EnrolledStudent_Subjects');
         $this->db->reset_query();
 
-        $this->db->set('interview_status', null);
-        $this->db->where('reference_no', $data['Reference_Number']);
-        $this->db->update('student_account');
-        $this->db->reset_query();
+        // $this->db->set('interview_status', null);
+        // $this->db->where('reference_no', $data['Reference_Number']);
+        // $this->db->update('student_account');
+        // $this->db->reset_query();
 
-        $this->db->set('reference_no', 0);
-        $this->db->where('reference_no', $data['Reference_Number']);
-        $this->db->update('requirements_log');
+        // $this->db->set('reference_no', 0);
+        // $this->db->where('reference_no', $data['Reference_Number']);
+        // $this->db->update('requirements_log');
 
-        $this->db->set('highered_reference_number', 0);
-        $this->db->where('highered_reference_number', $data['Reference_Number']);
-        $this->db->update('senior_high_student_number');
+        // $this->db->set('highered_reference_number', 0);
+        // $this->db->where('highered_reference_number', $data['Reference_Number']);
+        // $this->db->update('senior_high_student_number');
 
         $this->db->reset_query();
     }
@@ -750,6 +750,13 @@ class AdvisingModel extends CI_Model
         $this->db->where('schoolyear', $data['School_Year']);
         $this->db->where('semester', $data['Semester']);
         $query = $this->db->get('Fees_Enrolled_College');
+        return $query->row_array();
+    }
+    public function get_program_code($id)
+    {
+        $this->db->select('Program_Code');
+        $this->db->where('Program_ID', $id);
+        $query = $this->db->get('Programs');
         return $query->row_array();
     }
 }

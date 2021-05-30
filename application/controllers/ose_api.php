@@ -126,6 +126,7 @@ class Ose_api extends CI_Controller
 			'SchedCode' => $this->input->post('schedcode'),
 		);
 		$schedData = $this->AdvisingModel->get_sched_info($inputs['SchedCode'])[0];
+		$programdata = $this->AdvisingModel->get_program_code($schedData['Program_ID']);
 		$array_insert = array(
 			'Reference_Number' => $this->reference_number,
 			'Student_Number' => $this->student_number,
@@ -134,12 +135,12 @@ class Ose_api extends CI_Controller
 			'Semester' => $this->legend_sem,
 			'School_Year' => $this->legend_sy,
 			'Scheduler' => 'SELF',
-			'Status' => '1',
-			'Program' => '1',
+			'Status' => 'REGULAR',
+			'Program' => $programdata['Program_Code'],
 			'Major' => '0',
-			'Year_Level' => '1',
+			'Year_Level' => $schedData['Year_Level'],
 			'Section' =>  $this->input->post('section'),
-			'Graduating' =>  'NEEDS OTHER DATA',
+			'Graduating' =>  '0',
 			'valid' => 1
 		);
 
@@ -173,6 +174,7 @@ class Ose_api extends CI_Controller
 		foreach ($section_subjects as $subject) {
 
 			$schedData = $this->AdvisingModel->get_sched_info($subject['Sched_Code'])[0];
+			$programdata = $this->AdvisingModel->get_program_code($schedData['Program_ID']);
 			$array_insert = array(
 				'Reference_Number' => $this->reference_number,
 				'Student_Number' => $this->student_number,
@@ -181,12 +183,12 @@ class Ose_api extends CI_Controller
 				'Semester' => $this->queue_sem,
 				'School_Year' => $this->queue_sy,
 				'Scheduler' => 'SELF',
-				'Status' => '1',
-				'Program' => '1',
+				'Status' => 'REGULAR',
+				'Program' => $programdata['Program_Code'],
 				'Major' => '0',
-				'Year_Level' => '1',
+				'Year_Level' => $schedData['Year_Level'],
 				'Section' =>  $this->input->post('section'),
-				'Graduating' =>  'NEEDS OTHER DATA',
+				'Graduating' =>  '0',
 				'valid' => 1
 			);
 			$status = $this->queueing_checkers($array_insert, $schedData);
@@ -195,7 +197,8 @@ class Ose_api extends CI_Controller
 				$insert_status[$subject['Sched_Code']] = $status['data'];
 			} else {
 				#No Conflicts found
-				$insert_status[$subject['Sched_Code']] = $this->AdvisingModel->insert_sched_session($array_insert);
+				$this->AdvisingModel->insert_sched_session($array_insert);
+				$insert_status[$subject['Sched_Code']] = true;
 			}
 		}
 		echo json_encode($insert_status);
@@ -1025,6 +1028,8 @@ class Ose_api extends CI_Controller
 		$this->AdvisingModel->insert_enrolled_subject_test($array);
 		$fees_id = $this->AdvisingModel->insert_fees_test($array);
 		$this->AdvisingModel->insert_fees_items_test($fees_id, $array);
+
+		echo 'SET AS ENROLLED! Please close page';
 		// insert_fees_test
 	}
 	public function reset_progress()
@@ -1036,6 +1041,8 @@ class Ose_api extends CI_Controller
 			'Reference_Number' => $this->reference_number
 		);
 		$this->AdvisingModel->reset_progress($array);
+
+		echo 'PROGRESS REMOVED! Please close page';
 	}
 	public function Forms()
 	{

@@ -1090,4 +1090,7 @@ class Main extends MY_Controller
 		}
 		echo json_encode($getRequirementsLogPerRefNo);
 	}
+	public function account_creation_old()
+	{
+	}
 }

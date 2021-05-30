@@ -76,8 +76,25 @@
                         </li>
                     </ul>
                 </li>
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-gear-fill"></i>
+                        <span>DevTools</span>
+                    </a>
+                    <ul class="submenu">
+                        <li class="submenu-item">
+                            <a href="<?php echo base_url(); ?>index.php/ose_api/reset_progress" target="_blank">Reset Assessment and Enrollment</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Set As Enrolled</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Old Student Account Creation</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('main/logout');?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('main/logout'); ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>
                         <span>Logout</span>
                     </a>

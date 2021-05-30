@@ -331,8 +331,15 @@ function init_addAll() {
     result = ajax_add_all_subjects();
     result.success(function (response) {
 
+        response = JSON.parse(response);
+        $.each(response, function (index, row) {
+            // console.log(index + ':' + row);
+            if (row != true) {
+                izi_toast('', row, 'green', 'bottomRight');
+            }
+        });
         init_queuedlist();
-        izi_toast('', 'Subjects Added to Queue', 'green', 'bottomRight');
+
     })
 
 }
@@ -618,7 +625,7 @@ function queue_tablerenderer(element = '', data = []) {
             <td>' + row['Course_Title'] + '</td>\
             <td>' + row['Section_Name'] + '</td>\
             <td>' + (parseInt(row['Course_Lec_Unit']) + parseInt(row['Course_Lab_Unit'])) + '</td>\
-            <td><button type="button" class="btn btn-primary" onclick="init_remove_queue(this)" data-sessionid="' + row['session_id'] + '">Remove</btn></td>\
+            <td><button type="button" class="btn btn-primary" onclick="init_remove_queue(this)" data-sessionid="' + row['session_id'] + '">Remove</button></td>\
             '));
         } else {
             tablebody.append($('<tr/>').append('\
@@ -635,14 +642,17 @@ function queue_tablerenderer(element = '', data = []) {
         // sum_units += units;
         console.log(units);
     });
-    tablebody.append($('<tr/>').append('\
-            <td> </td>\
-            <td> </td>\
-            <td> </td>\
-            <td>Total Units</td>\
-            <td>' + units + '</td>\
-            <td></td>\
-            '));
+    if (units != 0) {
+        tablebody.append($('<tr/>').append('\
+        <td> </td>\
+        <td> </td>\
+        <td> </td>\
+        <td>Total Units</td>\
+        <td>' + units + '</td>\
+        <td><button type="button" class="btn btn-info" onclick="init_remove_all_queue()">Remove All</button></td>\
+        '));
+    }
+
     $('#queueTable').data('queueResult', count);
     // $('#queueTable').data('units', units);
 

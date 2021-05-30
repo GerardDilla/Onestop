@@ -13,7 +13,7 @@
             </div>
         </div>
         <fieldset class="col-md-4 form-group">
-            <p>CURRENT SCHOOLYEAR: 2021 - 2022</p>
+            <p>CURRENT SCHOOLYEAR: <?php echo $this->data['legend']['School_Year']; ?></p>
 
             <?php
             $legend_sy = explode("-", $this->data['legend']['School_Year']);
@@ -41,7 +41,7 @@
         </fieldset>
         <div class="col-md-12"></div>
         <fieldset class="col-md-4 form-group">
-            <p>CURRENT SEMESTER: FIRST</p>
+            <p>CURRENT SEMESTER: <?php echo $this->data['legend']['Semester']; ?></p>
             <?php
             $options = array(
 

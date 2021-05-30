@@ -1240,14 +1240,22 @@ class Ose_api extends CI_Controller
 
 	public function create_old_student_account()
 	{
-		$reference_number = '5';
+		// $reference_number = '5';
+		$reference_number = $this->input->post('ref_no');
+		
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($reference_number);
 		$student_info = $this->AssesmentModel->get_student_by_reference_number($reference_number);
 		$code = $this->generate_random_code();
+		// die(json_encode($student_account));
 		if (!empty($student_account)) {
 			$code = $student_account['automated_code'];
-			if($student_account['username'] != '' && $student_account['password'] != ''){
-				echo 'Already have account';
+			if($student_account['automated_code'] == ''){
+				$output = array(
+					'status' => 'failed',
+					'title' => 'Already have account.',
+					'message' => 'Please check your email '.$student_info['Email'].'.',
+				);
+				echo json_encode($output);
 				return;
 			}
 		} else {
@@ -1280,6 +1288,11 @@ class Ose_api extends CI_Controller
 				'code' => $code
 			)
 		);
-		echo 'success';
+		$output = array(
+			'status' => 'success',
+			'title' => 'Account Created.',
+			'message' => 'Please check your email '.$student_info['Email'].'.',
+		);
+		echo json_encode($output);
 	}
 }

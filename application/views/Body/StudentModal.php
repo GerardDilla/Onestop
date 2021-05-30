@@ -1,5 +1,5 @@
 <style>
-    #oldStudentAccountModal .modal-dialog{
+    #oldStudentAccountModal .modal-dialog {
         max-width: 650px;
     }
 </style>
@@ -44,56 +44,101 @@
     </div>
 </div>
 <script>
-$('#oldStudentAccountTable').DataTable({
-    "responsive":true
-});
-$('#oldStudentAccountModal').on('shown.bs.modal', function () {
-    
-    // url: "<?php echo base_url(); ?>index.php/main/getOldAccountTable",
-    $('#oldStudentAccountModal').waitMe({
-        effect: 'bounce',
-        text: '',
-        bg: 'rgba(255,255,255,0.7)',
-        color: '#000',
-        maxSize: '',
-        waitTime: -1,
-        textPos: 'vertical',
-        fontSize: '',
-        source: '',
-        onClose: function() {}
+    $('#oldStudentAccountTable').DataTable({
+        "responsive": true
     });
-    $.ajax({
-        url: "<?php echo base_url(); ?>main/getOldAccountTable",
-        method: 'get',
-        dataType: 'json',
-        success: function(response) {
-            // storagedata
-            $('#oldStudentAccountTable').DataTable().destroy();
-            $('#oldStudentAccountTable tbody').empty();
-            var html = '';
-            $.each(response,function(index,value){
-                console.log(value.Reference_Number)
-                html += `<tr>
+    $('#oldStudentAccountModal').on('shown.bs.modal', function() {
+
+        // url: "<?php echo base_url(); ?>index.php/main/getOldAccountTable",
+        $('#oldStudentAccountModal').waitMe({
+            effect: 'bounce',
+            text: '',
+            bg: 'rgba(255,255,255,0.7)',
+            color: '#000',
+            maxSize: '',
+            waitTime: -1,
+            textPos: 'vertical',
+            fontSize: '',
+            source: '',
+            onClose: function() {}
+        });
+        $.ajax({
+            url: "<?php echo base_url(); ?>main/getOldAccountTable",
+            method: 'get',
+            dataType: 'json',
+            success: function(response) {
+                // storagedata
+                $('#oldStudentAccountTable').DataTable().destroy();
+                $('#oldStudentAccountTable tbody').empty();
+                var html = '';
+                $.each(response, function(index, value) {
+                    // console.log(value.Reference_Number)
+                    html += `<tr>
                 <td>${value.First_Name+' '+value.Middle_Name+' '+value.Last_Name}</td>
                 <td>${value.Course}</td>
                 <td>${value.Major}</td>
                 <td>${value.YearLevel}</td>
-                <td><button class="btn btn-sm btn-info" data-ref_no="${value.Reference_Number}">Gen. Code</button></td>
+                <td><button class="btn btn-sm btn-info" onClick="old_student_account(this)" data-ref_no="${value.Reference_Number}">Gen. Code</button></td>
                 </tr>`
-            })
-            $('#oldStudentAccountTable tbody').append(html);
-            $('#oldStudentAccountTable').DataTable({
-                "ordering": true,
-                "bPaginate": true,
-                "bLengthChange": false,
-                "responsive": true
-            });
-            $('#oldStudentAccountModal').waitMe('hide');
-        },
-        error: function(response) {
-            $('#oldStudentAccountModal').waitMe('hide');
-        }
+                })
+                $('#oldStudentAccountTable tbody').append(html);
+                $('#oldStudentAccountTable').DataTable({
+                    "ordering": true,
+                    "bPaginate": true,
+                    "bLengthChange": false,
+                    "responsive": true
+                });
+                $('#oldStudentAccountModal').waitMe('hide');
+            },
+            error: function(response) {
+                $('#oldStudentAccountModal').waitMe('hide');
+            }
+        });
     });
-});
+
+    function old_student_account(input) {
+        // console.log($(input).data('ref_no'));
+        ref_no = $(input).data('ref_no')
+        $('#oldStudentAccountModal').waitMe({
+            effect: 'bounce',
+            text: '',
+            bg: 'rgba(255,255,255,0.7)',
+            color: '#000',
+            maxSize: '',
+            waitTime: -1,
+            textPos: 'vertical',
+            fontSize: '',
+            source: '',
+            onClose: function() {}
+        });
+        $.ajax({
+            url: '/Onestop/index.php/ose_api/create_old_student_account',
+            method: 'post',
+            dataType: 'JSON',
+            data: {
+                'ref_no': ref_no
+            },
+            // async: false,
+            success: function(response) {
+                $('#oldStudentAccountModal').waitMe('hide');
+                if (response.status == 'success') {
+                    iziToast.success({
+                        title: response.title,
+                        message: response.message,
+                        position: 'topCenter',
+                    });
+                } else {
+                    iziToast.error({
+                        title: response.title,
+                        message: response.message,
+                        position: 'topCenter',
+                    });
+                }
+            },
+            error: function(response) {
+                $('#oldStudentAccountModal').waitMe('hide');
+            }
+        })
+    }
 </script>
-<script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
+<script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js'); ?>"></script>

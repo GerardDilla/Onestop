@@ -60,7 +60,7 @@ class sdca_mailer
 		$this->library['email']->message($this->library['load']->view($message,$add_data,true));
 		if($this->library['email']->send()){
 				// echo  'Email has been sent to '.$cp;
-				echo json_encode(array('success'=>'Email has been sent to '.$cp));
+				// echo json_encode(array('success'=>'Email has been sent to '.$cp));
 		}else{
 			echo json_encode(array('error'=>'There was a problem sending an email'));
 				// echo  "<h4>There was a problem with sending an email.</h4>";

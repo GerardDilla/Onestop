@@ -134,16 +134,18 @@
         <div class="col-md-3">
             <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" style="width: 100%;" target="_blank" type="button" class="btn btn-lg btn-primary upload-proof">UPLOAD PROOF OF PAYMENT</a>
         </div>
+        <div class="col-md-12">
 
+        </div>
+    </div>
+    <div class="col-md-12 row">
+        <hr>
         <div class="col-md-3">
             <h4>Change your Mind?</h4>
             <button type="button" class="btn btn-lg btn-primary" id="readvise_button">CHOOSE AGAIN</button>
         </div>
-
         <div class="col-md-3" style="text-align:center">
             <img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>
-        </div>
-        <div class="col-md-3">
         </div>
     </div>
 </div>

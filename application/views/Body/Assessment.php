@@ -22,7 +22,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
-<section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
+<section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>" data-ref="<?php echo $this->data['md5_ref_no']; ?>">
 
     <div class="card">
         <!-- <div class="card-header">

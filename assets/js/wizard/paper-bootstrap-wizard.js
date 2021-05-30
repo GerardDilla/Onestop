@@ -11,6 +11,10 @@ $(document).ready(function () {
         var ose_guide1 = new OSE_Guide('advising');
         ose_guide1.play();
     });
+
+    ref__ = $('#assessment_section').data('ref');
+
+
     // $('#submit_val_doc').click(function(e) {
     //     baseurl = $('#assessment_section').data('baseurl');
     //     var interview_value = $("input[name='interview']:checked").val();
@@ -37,61 +41,76 @@ $(document).ready(function () {
     //         e.stopPropagation();
     //     }
     // });
-    $('.wizard-proceed-requirements').click(function () {
-
-    });
 
     $('.wizard-proceed-advising').click(function (e) {
-        // if ($(this).hasClass('old-student')) {
-        //     console.log('has class');
-        // }
-        // console.log($(this).hasClass('old-student'));
-        // Event handler when proceeding to next step
-        // if ($('#advising_content').hasClass('active')) {
+        $.ajax({
+            url: 'https://stdominiccollege.edu.ph/SDCALMSv2/index.php/API/BalanceAPI?Reference_Number=' + ref__,
+            dataType: 'JSON',
+            success: function (response) {
+                // console.log(response['Output']['Outstanding_Balance']);
+                balance = response['Output']['Outstanding_Balance'];
+                if (balance >= 1) {
+                    iziToast.show({
+                        title: 'You still have Balance.',
+                        message: 'You cannot proceed to the next step.',
+                        position: 'topCenter',
+                        color: 'red',
+                    });
+                } else {
+                    // if ($(this).hasClass('old-student')) {
+                    //     console.log('has class');
+                    // }
+                    // console.log($(this).hasClass('old-student'));
+                    // Event handler when proceeding to next step
+                    // if ($('#advising_content').hasClass('active')) {
 
 
-        // init_advise();
+                    // init_advise();
 
-        // console.log('ready to advise');
-        iziToast.question({
-            timeout: false,
-            close: false,
-            overlay: true,
-            displayMode: 'once',
-            id: 'advise_question',
-            zindex: 1500,
-            message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
-            position: 'center',
-            buttons: [
-                ['<button><b>YES</b></button>', function (instance, toast) {
-                    console.log('ready to advise');
-                    // Came from advising.js
+                    // console.log('ready to advise');
+                    iziToast.question({
+                        timeout: false,
+                        close: false,
+                        overlay: true,
+                        displayMode: 'once',
+                        id: 'advise_question',
+                        zindex: 1500,
+                        message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
+                        position: 'center',
+                        buttons: [
+                            ['<button><b>YES</b></button>', function (instance, toast) {
+                                console.log('ready to advise');
+                                // Came from advising.js
 
-                    // wizard_payment();
-                    init_advise();
-                    // location.reload();
+                                // wizard_payment();
+                                init_advise();
+                                // location.reload();
 
-                    instance.hide({
-                        transitionOut: 'fadeOut'
-                    }, toast, 'button');
+                                instance.hide({
+                                    transitionOut: 'fadeOut'
+                                }, toast, 'button');
 
-                }, true],
-                ['<button>NO</button>', function (instance, toast) {
+                            }, true],
+                            ['<button>NO</button>', function (instance, toast) {
 
-                    e.preventDefault();
-                    instance.hide({
-                        transitionOut: 'fadeOut'
-                    }, toast, 'button');
+                                e.preventDefault();
+                                instance.hide({
+                                    transitionOut: 'fadeOut'
+                                }, toast, 'button');
 
-                }, true],
-            ],
-            onClosing: function (instance, toast, closedBy) {
-                console.info('Closing | closedBy: ' + closedBy);
-            },
-            onClosed: function (instance, toast, closedBy) {
-                console.info('Closed | closedBy: ' + closedBy);
+                            }, true],
+                        ],
+                        onClosing: function (instance, toast, closedBy) {
+                            console.info('Closing | closedBy: ' + closedBy);
+                        },
+                        onClosed: function (instance, toast, closedBy) {
+                            console.info('Closed | closedBy: ' + closedBy);
+                        }
+                    });
+                }
             }
-        });
+        })
+
     });
 
     $('.wizard-proceed-student_info').click(function () {
@@ -166,26 +185,26 @@ $(document).ready(function () {
         readURL(this);
     });
 
-    $('[data-toggle="wizard-radio"]').click(function () {
-        wizard = $(this).closest(".wizard-card");
-        wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
-        $(this).addClass("active");
-        $(wizard).find('[type="radio"]').removeAttr("checked");
-        $(this).find('[type="radio"]').attr("checked", "true");
-    });
-
-    $('[data-toggle="wizard-checkbox"]').click(function () {
-        if ($(this).hasClass("active")) {
-            $(this).removeClass("active");
-            $(this).find('[type="checkbox"]').removeAttr("checked");
-        } else {
-            $(this).addClass("active");
-            $(this).find('[type="checkbox"]').attr("checked", "true");
-        }
-    });
-
-    $(".set-full-height").css("height", "auto");
+$('[data-toggle="wizard-radio"]').click(function() {
+    wizard = $(this).closest(".wizard-card");
+    wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
+    $(this).addClass("active");
+    $(wizard).find('[type="radio"]').removeAttr("checked");
+    $(this).find('[type="radio"]').attr("checked", "true");
 });
+
+$('[data-toggle="wizard-checkbox"]').click(function() {
+    if ($(this).hasClass("active")) {
+        $(this).removeClass("active");
+        $(this).find('[type="checkbox"]').removeAttr("checked");
+    } else {
+        $(this).addClass("active");
+        $(this).find('[type="checkbox"]').attr("checked", "true");
+    }
+});
+
+$(".set-full-height").css("height", "auto");
+// });
 
 function fetch_user_status() {
     base_url = $("#assessment_section").data("baseurl");

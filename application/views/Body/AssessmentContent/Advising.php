@@ -80,8 +80,8 @@
     </div>
     <br>
     <h5>Queued Subjects</h5>
-    <a href="#" class="btn btn-sm btn-primary load-disable addsubject-button" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
-    <a href="#" class="btn btn-sm btn-info viewsched-button" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
+    <a href="#" class="btn btn-primary load-disable addsubject-button" data-bs-toggle="modal" data-bs-target="#subjectModal">Add Subjects</a>
+    <a href="#" class="btn btn-success viewsched-button" data-bs-toggle="modal" data-bs-target="#scheduleModal">View Schedule Plot</a>
     <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
     <br><br>
     <div class="table-responsive">
@@ -136,12 +136,12 @@
             </div>
             <br>
             <input type="radio" class="btn-check" name="payment-option" id="installmentchoice" value="installment" autocomplete="off" checked="">
-            <label class="btn btn-sm btn-outline-primary" for="installmentchoice">
+            <label class="btn btn-outline-primary" for="installmentchoice">
                 INSTALLMENT
             </label>
 
             <input type="radio" class="btn-check" name="payment-option" id="fullpaymentchoice" value="full" autocomplete="off">
-            <label class="btn btn-sm btn-outline-primary" for="fullpaymentchoice">
+            <label class="btn btn-outline-primary" for="fullpaymentchoice">
                 FULL PAYMENT
             </label>
 

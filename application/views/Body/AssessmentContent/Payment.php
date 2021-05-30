@@ -1,6 +1,6 @@
 <div class="row">
     <!-- Assessment Form Content -->
-    <div class="col-md-9 row">
+    <div class="col-md-12 row">
 
         <!--/Regform Header-->
         <div class="col-lg-12 assessment-form" style="text-align:center; color:#000">
@@ -108,39 +108,42 @@
         </div>
     </div>
     <!-- Payment Options -->
-    <div class="col-md-3 row">
+    <div class="col-md-12 row">
+        <div class="col-md-12">
+            <h3>Payment Options</h3>
+        </div>
+        <div class="col-md-3" style="padding: 10px;">
+            <!-- <a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a> -->
+            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary online-payment" data-bs-toggle="modal" data-bs-target="#onlinepaymentModal">PAY ONLINE</button>
+        </div>
+        <div class="col-md-3" style="padding: 10px;">
+            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary over-the-counter" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br>
+        </div>
+        <div class="col-md-3" style="padding: 10px;">
+            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary pay-at-sdca" data-bs-toggle="modal" data-bs-target="#cashierPayment">Pay at SDCA Cashier</button><br>
+        </div>
+        <div class="col-md-3" style="padding: 10px;">
+        </div>
+    </div>
+    <br>
+    <hr>
+    <div class="col-md-12 row">
+        <div class="col-md-12">
+            <h4>Already Paid?</h4>
+        </div>
+        <div class="col-md-3">
+            <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" style="width: 100%;" target="_blank" type="button" class="btn btn-lg btn-primary upload-proof">UPLOAD PROOF OF PAYMENT</a>
+        </div>
 
-        <ul class="paymentbullet">
-            <li>
-                <h3>Payment Options</h3>
-            </li>
-            <li>
-                <!-- <a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a> -->
-                <button type="button" class="btn btn-lg btn-primary online-payment" data-bs-toggle="modal" data-bs-target="#onlinepaymentModal">PAY ONLINE</button>
-                <br>
-            </li>
-            <li><button type="button" class="btn btn-lg btn-primary over-the-counter" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br></li>
-            <li><button type="button" class="btn btn-lg btn-primary pay-at-sdca" data-bs-toggle="modal" data-bs-target="#cashierPayment">Pay at SDCA Cashier</button><br></li>
-            <li>
-                <hr>
-                <h4>Already Paid?</h4>
-            </li>
-            <li>
-                <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" target="_blank" type="button" class="btn btn-lg btn-primary upload-proof">UPLOAD PROOF OF PAYMENT</a>
-            </li>
-            <li>
-                <!-- <button type="button" class="btn btn-lg btn-success setpaid_test">Set As Paid (FOR TESTING)</button> -->
-            </li>
+        <div class="col-md-3">
+            <h4>Change your Mind?</h4>
+            <button type="button" class="btn btn-lg btn-primary" id="readvise_button">CHOOSE AGAIN</button>
+        </div>
 
-            <li style="text-align:center"><img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>
-        </ul>
-        <ul class="readvise_tab">
-            <li>
-                <h4>Change your Mind?</h4>
-                <button type="button" class="btn btn-lg btn-primary" id="readvise_button">CHOOSE AGAIN</button>
-            </li>
-
-        </ul>
-
+        <div class="col-md-3" style="text-align:center">
+            <img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>
+        </div>
+        <div class="col-md-3">
+        </div>
     </div>
 </div>

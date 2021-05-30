@@ -13,6 +13,7 @@
 <script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
 <?php
     echo "<script>iziToast.show({
+        class:'izitoast-welcome-user',
         theme: 'dark',
         icon: 'icon-person',
         title: 'Welcome',

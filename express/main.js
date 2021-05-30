@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
@@ -13,7 +14,24 @@ const path = require("path");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
-const httpProxy = require('http-proxy');
+// const NodeRSA = require("node-rsa");
+// const pfxLoad = require("pfx-load");
+// const openssl = require("openssl")
+// const loadPfx = new pfxLoad();
+
+// const cert = loadPfx("cred/server.pfx");
+// const obj = pfxLoad('cred/server.pfx')
+// const proxy = require('redbird')({port: 80});
+// proxy.register("localhost/api_ose", "http://10.0.0.81:4003");
+// const pem = require("pem");
+// const options = {
+//   pfx: fs.readFileSync('./cred/server.pfx'),
+//   passphrase: 'sdca'
+// };
+// const pfx = fs.readFileSync(__dirname + "/cred/server.pfx");
+// pem.readPkcs12(pfx, { p12Password: "sdca" }, (err, cert) => {
+//     console.log(cert);
+// });
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,15 +44,32 @@ app.configure(express.rest());
 // app.use(cors);
 app.get("/", (req, res) => {
   res.send('Welcome to OSE API Date:' + moment().format('YYYY-MM-DD kk:mm:ss'))
+
+  var crypto = require('crypto');
+
+  var pem = fs.readFileSync('./live/privkey.pem');
+  var key = pem.toString('ascii');
+
+  var sign = crypto.createSign('RSA-SHA256');
+  // sign.update('abcdef');  // data from your file would go here
+  var sig = sign.sign(key, 'hex');
+  console.log(sig)
+
+  res.send(sig)
+  // fs.readFile("./live/privkey.pem", "sha256", function (pemContents) {
+  //   // do whatever you want here
+  //   console.log(pemContents)
+  // });
 });
-app.get("ose-api", (req, res) => {
-  res.send('Welcome to OSE API Date:' + moment().format('YYYY-MM-DD kk:mm:ss'))
-});
-app.use('ose_api/chat-inquiry',new ChatService());
-app.use('ose_api/chat-action',new ChatActionService());
-app.use('ose_api/notification',new NotificationService());
-app.use("ose_api/uploadtodrive",uploadToGdrive);
-app.use("ose_api/gdriveuploader",gdriveuploader);
+app.use('/chat-inquiry',new ChatService());
+app.use('/chat-action',new ChatActionService());
+app.use('/notification',new NotificationService());
+app.use("/uploadtodrive",uploadToGdrive);
+app.use("/gdriveuploader",gdriveuploader);
+
+// const cors = require("cors");
+// app.use(cors)
+
 app.post("/api/NotifyIfSubmitted",(req,res)=>{
   console.log(req.body);
   app.service('notification').create({
@@ -43,14 +78,15 @@ app.post("/api/NotifyIfSubmitted",(req,res)=>{
   });
   res.send('success');
 });
+
 // app.use('/',express.static(path.join(__dirname, '..',directoryToServe)))
 app.on('connection', conn => app.channel('stream').join(conn));
 // Publish events to stream
 app.publish(data => app.channel('stream'));
 
-const PORT = 9000;
 
-httpProxy.createProxyServer({target:'http://localhost:9000'}).listen(80);
+
+const PORT = 4003;
 
 app
   .listen(PORT)
@@ -62,21 +98,54 @@ app
 //   cert: fs.readFileSync('cred/cert.pem','utf8')
 // }
 // var httpServer = http.createServer(app);
-// var httpsServer = https.createServer(credentials,app);
+// var httpsServer = https.createServer(app);
 
 // httpServer.listen(4003);
-// httpsServer.listen(4004);
-// const domain_name = 'localhost'
+// httpsServer.listen(4003);
+const domain_name = 'localhost'
+// https.createServer(options, (req, res) => {
+//   res.writeHead(200);
+//   res.end(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`);
+// }).listen(PORT);
+// const RSAKey = cert.key;
+// const key = new NodeRSA(RSAKey);
+// const privateKey = key.exportKey("pkcs8");
+
 // const sslServer = https.createServer({
-//   key: fs.readFileSync(path.join(__dirname,'cred','key.pem')),
-//   cert: fs.readFileSync(path.join(__dirname,'cred','cert.pem')),
+//   pfx: fs.readFileSync('./cred/server.pfx'),
+//   passphrase: 'sdca',
+//   key: privateKey,
+// },app)
+// const sslServer = https.createServer({
+//   key: fs.readFileSync(path.join(__dirname,'live','privkey.pem')),
+//   cert: fs.readFileSync(path.join(__dirname,'live','cert.pem')),
 //   rejectUnauthorized: false,
 //   requestCert: false
 // },app)
+// pem.createCertificate({ days: 500, selfSigned: true }, function (err, keys) {
+ 
+//   if (err) {
+//     console.log(err)
+//   }
+//   // var app = express()
+ 
+//   app.get('/', function (req, res) {
+//     res.send('o hai!')
+//   })
+ 
+//   https.createServer({ key: keys.serviceKey, cert: keys.certificate }, app).listen(4003)
+// })
 // app.setup(sslServer);
 // sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`))
 
 // const httpServer = http.createServer(app);
 // const httpPort = 4004;
-// app.setup(httpServer)
 // httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))
+
+
+// const sslServer = https.createServer({
+//   key: fs.readFileSync(path.join(__dirname,'cred','server.key')),
+//   cert: fs.readFileSync(path.join(__dirname,'cred','server.crt')),
+//   rejectUnauthorized: false,
+//   requestCert: false
+// },app)

@@ -159,7 +159,22 @@ class MainModel extends CI_Model
         $result = $this->db->get()->row_array();
         return empty($result['total_unseen']) ? 0 : $result['total_unseen'];
     }
-    public function insertCashierPaymentLogs($data){
+    public function insertCashierPaymentLogs($data)
+    {
         $this->db->insert('cashier_payment_email_logs', $data);
+    }
+
+    public function check_automated_code($automated_code)
+    {
+        $this->db->select('count(automated_code)');
+        $this->db->from('student_account');
+        $this->db->where('automated_code', $automated_code);
+        return $this->db->count_all_results();
+    }
+
+    public function insert_student_account($array_insert)
+    {
+        $this->db->insert('student_account', $array_insert);
+        return $this->db->insert_id();
     }
 }

@@ -22,6 +22,14 @@ class Ose_api extends CI_Controller
 		$this->load->model('FeesModel');
 		$this->load->model('RegFormModel');
 		$this->load->model('AssesmentModel');
+
+		// For testing
+		$this->load->model('MainModel');
+		// $this->load->library('sdca_mailer');
+		$this->load->library('email');
+		$this->load->library('sdca_mailer', array('email' => $this->email, 'load' => $this->load));
+		// /Fortesting
+
 		$this->load->library('session');
 
 		#Temporary Keys
@@ -1217,5 +1225,61 @@ class Ose_api extends CI_Controller
 			'semester' => $legend['Semester'],
 		);
 		$this->AdvisingModel->update_advising_history($update, $legend);
+	}
+
+	public function generate_random_code()
+	{
+		$this->load->helper('string');
+		$code = random_string('alnum', 20);
+		$check_code = $this->MainModel->check_automated_code($code);
+		if ($check_code >= 1) {
+			$code = random_string('alnum', 20);
+		}
+		return $code;
+	}
+
+	public function create_old_student_account()
+	{
+		$reference_number = '5';
+		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($reference_number);
+		$student_info = $this->AssesmentModel->get_student_by_reference_number($reference_number);
+		$code = $this->generate_random_code();
+		if (!empty($student_account)) {
+			$code = $student_account['automated_code'];
+			if($student_account['username'] != '' && $student_account['password'] != ''){
+				echo 'Already have account';
+				return;
+			}
+		} else {
+			$array_insert = array(
+				'automated_code' => $code,
+				'email' => $student_info['Email'],
+				'reference_no' => $reference_number,
+			);
+			$this->MainModel->insert_student_account($array_insert);
+		}
+		
+		$email_data = array(
+			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
+			'reply_to' => 'webmailer@sdca.edu.ph',
+			'sender_name' => 'St. Dominic College of Asia',
+			'send_to_email' => $student_info['Email'],
+			'subject' => 'Old Student Account for Onestop Enrollment',
+			'message' => 'Email/SendAccountCode'
+		);
+
+		$this->sdca_mailer->sendHtmlEmail(
+			$email_data['send_to'],
+			$email_data['reply_to'],
+			$email_data['sender_name'],
+			$email_data['send_to_email'],
+			$email_data['subject'],
+			$email_data['message'],
+			array(
+				'student_info' => $student_info,
+				'code' => $code
+			)
+		);
+		echo 'success';
 	}
 }

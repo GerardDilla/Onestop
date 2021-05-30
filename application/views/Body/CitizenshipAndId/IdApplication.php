@@ -86,29 +86,33 @@
                                         <input type="text" readonly class="form-control" id="id_course" placeholder="Course">
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <p>
-                                        <span class="title_color">ID Picture</span>
-                                        <span class="required_field"> *</span>
-                                        <small><br>
-                                            <span class="text_note">Photo Requirements</span>: Half Body Photo only, wearing School Uniform with White Background.
-                                            <br>
-                                            <span class="text_note">NOTE</span>: USE YOUR STUDENT NUMBER TO NAME YOUR PHOTO ONLY.
-                                        </small>
-                                    </p>
-                                    <input type="file" class="form-control" name="id_picture" id="inputGroupFile01">
-                                </div>
-                                <div class="col-md-12">
-                                    <p>
-                                        <span class="title_color">Signature</span>
-                                        <span class="required_field"> *</span>
-                                        <small>
-                                            <span class="text_note">NOTE</span>: USE YOUR SETUDENT NUMBER TO NAMe YOUR SIGANTURE ONLY
-                                        </small>
-                                    </p>
-                                    <input type="file" class="form-control" name="signature" id="inputGroupFile01">
-                                    <br>
-                                </div>
+                                <?php
+                                if ($this->data['id_app'] === true) {
+                                ?>
+                                    <div class="col-md-12">
+                                        <p>
+                                            <span class="title_color">ID Picture</span>
+                                            <span class="required_field"> *</span>
+                                            <small><br>
+                                                <span class="text_note">Photo Requirements</span>: Half Body Photo only, wearing School Uniform with White Background.
+                                                <br>
+                                                <span class="text_note">NOTE</span>: USE YOUR STUDENT NUMBER TO NAME YOUR PHOTO ONLY.
+                                            </small>
+                                        </p>
+                                        <input type="file" class="form-control" name="id_picture" id="inputGroupFile01">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p>
+                                            <span class="title_color">Signature</span>
+                                            <span class="required_field"> *</span>
+                                            <small>
+                                                <span class="text_note">NOTE</span>: USE YOUR SETUDENT NUMBER TO NAMe YOUR SIGANTURE ONLY
+                                            </small>
+                                        </p>
+                                        <input type="file" class="form-control" name="signature" id="inputGroupFile01">
+                                        <br>
+                                    </div>
+                                <?php } ?>
                                 <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Guardian Name</span>
@@ -144,9 +148,9 @@
                                 <?php
                                 if ($this->data['id_app'] === true) {
                                 ?>
-                                    <div class="col-md-8"></div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-primary" style="float: right;">Submit</button>
+                                    <!-- <div class="col-md-8"></div> -->
+                                    <div class="col-md-12" style="text-align:center">
+                                        <button class="btn btn-lg btn-primary">PROCEED</button>
                                     </div>
                                 <?php } ?>
                             </div>

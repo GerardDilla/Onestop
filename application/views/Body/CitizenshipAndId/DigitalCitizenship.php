@@ -131,9 +131,9 @@
                                 <?php
                                 if ($this->data['digital'] === true) {
                                 ?>
-                                    <div class="col-md-8"></div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-primary" style="float: right;">Submit</button>
+                                    <!-- <div class="col-md-8"></div> -->
+                                    <div class="col-md-12" style="text-align:center">
+                                        <button class="btn btn-lg btn-primary">PROCEED</button>
                                     </div>
                                 <?php } ?>
 

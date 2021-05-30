@@ -2,6 +2,12 @@
 
 base_url = $('#assessment_section').data('baseurl');
 // alert(base_url);
+function hideIziToastGuide() {
+    var izitoastWalkthrough = document.querySelector('.izitoast-open-walkthrough');
+    iziToast.hide({
+        transitionOut: 'fadeOutUp'
+    }, izitoastWalkthrough);
+}
 $('input[type=radio][name=eductype]').change(function() {
 
     type = $(this).data('etype');
@@ -268,6 +274,9 @@ function submit_course() {
                                     init_student_info();
                                     // init_have_course();
                                     $("#student_information_content").removeClass("active");
+                                    hideIziToastGuide();
+                                    var ose_guide1 = new OSE_Guide('requirements');
+                                    ose_guide1.play();
                                 } else {
                                     izi_toast(response['title'], response['body'], 'red');
                                 }

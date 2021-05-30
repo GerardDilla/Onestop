@@ -1,181 +1,201 @@
 searchVisible = 0;
 transparent = true;
-$(document).ready(function() {
-    // $('#submit_val_doc').click(function(e) {
-    //     baseurl = $('#assessment_section').data('baseurl');
-    //     var interview_value = $("input[name='interview']:checked").val();
-    //     if (interview_value == 'YES' || interview_value == 'NO') {
-    //         $('.tab-content .tab-pane').removeClass('active');
-    //         $.ajax({
-    //                 url: baseurl + 'main/interview_status',
-    //                 type: 'POST',
-    //                 data: {
-    //                     'interview': interview_value,
-    //                 },
-    //                 success: function() {},
-    //             })
-    //             // fetch_user_status();
-    //     } else {
-    //         iziToast.show({
-    //             title: 'Do you want to be interviewed? is REQUIRED',
-    //             message: 'Must select one to proceed',
-    //             position: 'center',
-    //             color: 'red',
+// $(document).ready(function() {
+// $('#submit_val_doc').click(function(e) {
+//     baseurl = $('#assessment_section').data('baseurl');
+//     var interview_value = $("input[name='interview']:checked").val();
+//     if (interview_value == 'YES' || interview_value == 'NO') {
+//         $('.tab-content .tab-pane').removeClass('active');
+//         $.ajax({
+//                 url: baseurl + 'main/interview_status',
+//                 type: 'POST',
+//                 data: {
+//                     'interview': interview_value,
+//                 },
+//                 success: function() {},
+//             })
+//             // fetch_user_status();
+//     } else {
+//         iziToast.show({
+//             title: 'Do you want to be interviewed? is REQUIRED',
+//             message: 'Must select one to proceed',
+//             position: 'center',
+//             color: 'red',
 
-    //         });
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //     }
-    // });
-    $('.wizard-proceed-requirements').click(function() {
+//         });
+//         e.preventDefault();
+//         e.stopPropagation();
+//     }
+// });
+ref__ = $('#assessment_section').data('ref');
 
-    });
+$('.wizard-proceed-requirements').click(function() {
 
-    $('.wizard-proceed-advising').click(function(e) {
-        // if ($(this).hasClass('old-student')) {
-        //     console.log('has class');
-        // }
-        // console.log($(this).hasClass('old-student'));
-        // Event handler when proceeding to next step
-        // if ($('#advising_content').hasClass('active')) {
-
-
-        // init_advise();
-
-        // console.log('ready to advise');
-        iziToast.question({
-            timeout: false,
-            close: false,
-            overlay: true,
-            displayMode: 'once',
-            id: 'advise_question',
-            zindex: 1500,
-            message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
-            position: 'center',
-            buttons: [
-                ['<button><b>YES</b></button>', function(instance, toast) {
-                    console.log('ready to advise');
-                    // Came from advising.js
-
-                    // wizard_payment();
-                    init_advise();
-                    // location.reload();
-
-                    instance.hide({
-                        transitionOut: 'fadeOut'
-                    }, toast, 'button');
-
-                }, true],
-                ['<button>NO</button>', function(instance, toast) {
-
-                    e.preventDefault();
-                    instance.hide({
-                        transitionOut: 'fadeOut'
-                    }, toast, 'button');
-
-                }, true],
-            ],
-            onClosing: function(instance, toast, closedBy) {
-                console.info('Closing | closedBy: ' + closedBy);
-            },
-            onClosed: function(instance, toast, closedBy) {
-                console.info('Closed | closedBy: ' + closedBy);
-            }
-        });
-    });
-
-    $('.wizard-proceed-student_info').click(function() {
-
-    });
-
-    fetch_user_status();
-
-
-    // Wizard Initialization
-    $(".wizard-card").bootstrapWizard({
-        tabClass: "nav nav-pills",
-        nextSelector: ".btn-next",
-        previousSelector: ".btn-previous",
-
-        // onNext: function (tab, navigation, index) {
-        //     var $valid = $('.wizard-card form').valid();
-        //     if (!$valid) {
-        //         $validator.focusInvalid();
-        //         return false;
-        //     }
-        // },
-
-        onInit: function(tab, navigation, index) {
-            //check number of tabs and fill the entire row
-            var $total = navigation.find("li").length;
-            $width = 100 / $total;
-
-            navigation.find("li").css("width", $width + "%");
-        },
-
-        onTabClick: function(tab, navigation, index) {
-            alert(index);
-            // var $valid = $('.wizard-card form').valid();
-            // if (!$valid) {
-            //     return false;
-            // } else {
-            //     return true;
-            // }
-        },
-
-        onTabShow: function(tab, navigation, index) {
-            var $total = navigation.find("li").length;
-            var $current = index + 1;
-
-            var $wizard = navigation.closest(".wizard-card");
-
-            // If it's the last tab then hide the last button and show the finish instead
-            // if ($current >= $total) {
-            //     $($wizard).find('.btn-next').hide();
-            //     $($wizard).find('.btn-finish').show();
-            // } else {
-            //     $($wizard).find('.btn-next').show();
-            //     $($wizard).find('.btn-finish').hide();
-            // }
-
-            //update progress
-            var move_distance = 100 / $total;
-            move_distance = move_distance * index + move_distance / 2;
-
-            $wizard.find($(".progress-bar")).css({ width: move_distance + "%" });
-            //e.relatedTarget // previous tab
-
-            $wizard
-                .find($(".wizard-card .nav-pills li.active a .icon-circle"))
-                .addClass("checked");
-        },
-    });
-
-    // Prepare the preview for profile picture
-    $("#wizard-picture").change(function() {
-        readURL(this);
-    });
-
-    $('[data-toggle="wizard-radio"]').click(function() {
-        wizard = $(this).closest(".wizard-card");
-        wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
-        $(this).addClass("active");
-        $(wizard).find('[type="radio"]').removeAttr("checked");
-        $(this).find('[type="radio"]').attr("checked", "true");
-    });
-
-    $('[data-toggle="wizard-checkbox"]').click(function() {
-        if ($(this).hasClass("active")) {
-            $(this).removeClass("active");
-            $(this).find('[type="checkbox"]').removeAttr("checked");
-        } else {
-            $(this).addClass("active");
-            $(this).find('[type="checkbox"]').attr("checked", "true");
-        }
-    });
-
-    $(".set-full-height").css("height", "auto");
 });
+
+$('.wizard-proceed-advising').click(function(e) {
+    $.ajax({
+        url: 'https://stdominiccollege.edu.ph/SDCALMSv2/index.php/API/BalanceAPI?Reference_Number=' + ref__,
+        dataType: 'JSON',
+        success: function(response) {
+            // console.log(response['Output']['Outstanding_Balance']);
+            balance = response['Output']['Outstanding_Balance'];
+            if (balance >= 0) {
+                iziToast.show({
+                    title: 'You still have Balance.',
+                    message: 'You cannot proceed to the next step.',
+                    position: 'topCenter',
+                    color: 'red',
+                });
+            } else {
+                // if ($(this).hasClass('old-student')) {
+                //     console.log('has class');
+                // }
+                // console.log($(this).hasClass('old-student'));
+                // Event handler when proceeding to next step
+                // if ($('#advising_content').hasClass('active')) {
+
+
+                // init_advise();
+
+                // console.log('ready to advise');
+                iziToast.question({
+                    timeout: false,
+                    close: false,
+                    overlay: true,
+                    displayMode: 'once',
+                    id: 'advise_question',
+                    zindex: 1500,
+                    message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
+                    position: 'center',
+                    buttons: [
+                        ['<button><b>YES</b></button>', function(instance, toast) {
+                            console.log('ready to advise');
+                            // Came from advising.js
+
+                            // wizard_payment();
+                            init_advise();
+                            // location.reload();
+
+                            instance.hide({
+                                transitionOut: 'fadeOut'
+                            }, toast, 'button');
+
+                        }, true],
+                        ['<button>NO</button>', function(instance, toast) {
+
+                            e.preventDefault();
+                            instance.hide({
+                                transitionOut: 'fadeOut'
+                            }, toast, 'button');
+
+                        }, true],
+                    ],
+                    onClosing: function(instance, toast, closedBy) {
+                        console.info('Closing | closedBy: ' + closedBy);
+                    },
+                    onClosed: function(instance, toast, closedBy) {
+                        console.info('Closed | closedBy: ' + closedBy);
+                    }
+                });
+            }
+        }
+    })
+
+});
+
+$('.wizard-proceed-student_info').click(function() {
+
+});
+
+fetch_user_status();
+
+
+// Wizard Initialization
+$(".wizard-card").bootstrapWizard({
+    tabClass: "nav nav-pills",
+    nextSelector: ".btn-next",
+    previousSelector: ".btn-previous",
+
+    // onNext: function (tab, navigation, index) {
+    //     var $valid = $('.wizard-card form').valid();
+    //     if (!$valid) {
+    //         $validator.focusInvalid();
+    //         return false;
+    //     }
+    // },
+
+    onInit: function(tab, navigation, index) {
+        //check number of tabs and fill the entire row
+        var $total = navigation.find("li").length;
+        $width = 100 / $total;
+
+        navigation.find("li").css("width", $width + "%");
+    },
+
+    onTabClick: function(tab, navigation, index) {
+        alert(index);
+        // var $valid = $('.wizard-card form').valid();
+        // if (!$valid) {
+        //     return false;
+        // } else {
+        //     return true;
+        // }
+    },
+
+    onTabShow: function(tab, navigation, index) {
+        var $total = navigation.find("li").length;
+        var $current = index + 1;
+
+        var $wizard = navigation.closest(".wizard-card");
+
+        // If it's the last tab then hide the last button and show the finish instead
+        // if ($current >= $total) {
+        //     $($wizard).find('.btn-next').hide();
+        //     $($wizard).find('.btn-finish').show();
+        // } else {
+        //     $($wizard).find('.btn-next').show();
+        //     $($wizard).find('.btn-finish').hide();
+        // }
+
+        //update progress
+        var move_distance = 100 / $total;
+        move_distance = move_distance * index + move_distance / 2;
+
+        $wizard.find($(".progress-bar")).css({ width: move_distance + "%" });
+        //e.relatedTarget // previous tab
+
+        $wizard
+            .find($(".wizard-card .nav-pills li.active a .icon-circle"))
+            .addClass("checked");
+    },
+});
+
+// Prepare the preview for profile picture
+$("#wizard-picture").change(function() {
+    readURL(this);
+});
+
+$('[data-toggle="wizard-radio"]').click(function() {
+    wizard = $(this).closest(".wizard-card");
+    wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
+    $(this).addClass("active");
+    $(wizard).find('[type="radio"]').removeAttr("checked");
+    $(this).find('[type="radio"]').attr("checked", "true");
+});
+
+$('[data-toggle="wizard-checkbox"]').click(function() {
+    if ($(this).hasClass("active")) {
+        $(this).removeClass("active");
+        $(this).find('[type="checkbox"]').removeAttr("checked");
+    } else {
+        $(this).addClass("active");
+        $(this).find('[type="checkbox"]').attr("checked", "true");
+    }
+});
+
+$(".set-full-height").css("height", "auto");
+// });
 
 function fetch_user_status() {
     base_url = $("#assessment_section").data("baseurl");

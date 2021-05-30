@@ -26,6 +26,8 @@ class Main extends MY_Controller
 	{
 		$ref_no = $this->session->userdata('reference_no');
 		$legend = $this->AdvisingModel->getlegend();
+		// $this->data['md5_ref_no'] = '29a83a8a9641bb860a679d7e5ba52d26';
+		$this->data['md5_ref_no'] = md5($ref_no);
 
 		// Get Enrolled Students
 		$enrolled_students = $this->AssesmentModel->enrolled_student($ref_no);

@@ -61,7 +61,9 @@
                 </div>
             </div>
             <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank" class="intro-step-1">
-                <div class="btn btn-sm btn-primary" for="success-outlined">
+                <div class="btn btn-success">
+                <i class="bi bi-file-earmark-arrow-down" style="font-size: 20px;"></i>
+                <!-- <i class="bi bi-file-earmark-arrow-down-fill" style="font-size: 20px;"></i> -->
                     DOWNLOAD APPLICATION
                 </div>
             </a>
@@ -105,10 +107,10 @@
                     <br>
 
                     <input type="radio" class="btn-check" name="eductype" id="educ_new_student" checked value="freshmen" data-etype='freshmen' autocomplete="off">
-                    <label class="btn btn-sm btn-outline-primary" for="educ_new_student" id="educ_new_student_label">NEW STUDENT</label>
+                    <label class="btn btn-outline-primary" for="educ_new_student" id="educ_new_student_label">NEW STUDENT</label>
 
                     <input type="radio" class="btn-check" name="eductype" id="educ_transferee" value="transferee" data-etype='transferee' autocomplete="off">
-                    <label class="btn btn-sm btn-outline-primary" for="educ_transferee" id="educ_transferee_label">TRANSFEREE</label>
+                    <label class="btn btn-outline-primary" for="educ_transferee" id="educ_transferee_label">TRANSFEREE</label>
                     <!-- <button class="btn btn-sm btn-outline-primary">NEW STUDENT</button> -->
 
                 </div>

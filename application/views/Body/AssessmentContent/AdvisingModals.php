@@ -560,11 +560,11 @@
                 <div class="modal-footer">
                     <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
 
-                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-lg btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Close</span>
                     </button>
-                    <input type="submit" class="btn btn-primary" id="select_pay_submit">
+                    <input type="submit" class="btn btn-lg btn-primary" id="select_pay_submit">
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block"></span>
                     </input>

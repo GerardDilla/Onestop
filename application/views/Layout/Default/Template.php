@@ -41,6 +41,7 @@
         <?php if($inquiry) echo $inquiry;?>
         <?php
         $this->load->view('body/CloseIziToastAfterModalClick');
+        $this->load->view('body/StudentModal');
         ?>
         
         <!-- <span class="chat-logo"><i class="bi bi-chat-text"></i></span> -->

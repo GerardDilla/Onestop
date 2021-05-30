@@ -89,7 +89,7 @@
                             <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Set As Enrolled</a>
                         </li>
                         <li class="submenu-item">
-                            <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Old Student Account Creation</a>
+                            <a data-bs-toggle="modal" data-bs-target="#oldStudentAccountModal">Old Student Account Creation</a>
                         </li>
                     </ul>
                 </li>

@@ -162,4 +162,17 @@ class MainModel extends CI_Model
     public function insertCashierPaymentLogs($data){
         $this->db->insert('cashier_payment_email_logs', $data);
     }
+    public function getOldAccountStudentInfo($semester,$sy){
+        $this->db->select('*');
+        $this->db->from('student_info as si');
+        $this->db->join('fees_enrolled_college as fg','si.Reference_Number = fg.Reference_Number');
+        $this->db->where('fg.schoolyear !=',$sy);
+        $this->db->where('fg.semester !=',$semester);
+        $this->db->limit(100);
+        $result = $this->db->get()->result_array();
+        return $result;
+    }
+    // public function checkIfthi
+    // if fees not enrolled college
+    //  if semester not equal to current semester in legend
 }

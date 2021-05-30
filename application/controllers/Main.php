@@ -1095,4 +1095,10 @@ class Main extends MY_Controller
 	public function account_creation_old()
 	{
 	}
+	public function getOldAccountTable(){
+		$legend = $this->AdvisingModel->getlegend();
+		$getOldAccountStudentInfo = $this->mainmodel->getOldAccountStudentInfo($legend['Semester'],$legend['School_Year']);
+		echo json_encode($getOldAccountStudentInfo);
+		// echo '<pre>'.print_r($getOldAccountStudentInfo,1).'</pre>';
+	}
 }

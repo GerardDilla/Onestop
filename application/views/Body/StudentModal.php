@@ -50,18 +50,18 @@ $('#oldStudentAccountTable').DataTable({
 $('#oldStudentAccountModal').on('shown.bs.modal', function () {
     
     // url: "<?php echo base_url(); ?>index.php/main/getOldAccountTable",
-    $('#oldStudentAccountModal').waitMe({
-        effect: 'bounce',
-        text: '',
-        bg: 'rgba(255,255,255,0.7)',
-        color: '#000',
-        maxSize: '',
-        waitTime: -1,
-        textPos: 'vertical',
-        fontSize: '',
-        source: '',
-        onClose: function() {}
-    });
+    // $('body').waitMe({
+    //     effect: 'bounce',
+    //     text: '',
+    //     bg: 'rgba(255,255,255,0.7)',
+    //     color: '#000',
+    //     maxSize: '',
+    //     waitTime: -1,
+    //     textPos: 'vertical',
+    //     fontSize: '',
+    //     source: '',
+    //     onClose: function() {}
+    // });
     $.ajax({
         url: "<?php echo base_url(); ?>main/getOldAccountTable",
         method: 'get',
@@ -88,12 +88,16 @@ $('#oldStudentAccountModal').on('shown.bs.modal', function () {
                 "bLengthChange": false,
                 "responsive": true
             });
-            $('#oldStudentAccountModal').waitMe('hide');
+        },
+        done: function(respo){
+            console.log(respo)
+            $('body').waitMe('hide');
+            alert('he')
         },
         error: function(response) {
-            $('#oldStudentAccountModal').waitMe('hide');
+            $('body').waitMe('hide');
         }
     });
 });
 </script>
-<script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
+<!-- <script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script> -->

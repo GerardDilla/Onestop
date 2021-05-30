@@ -172,6 +172,10 @@ class MainModel extends CI_Model
         $result = $this->db->get()->result_array();
         return $result;
     }
+    public function updateLegend($data){
+        $this->db->update('legend', $data);
+        $this->db->where(1);
+    }
     // public function checkIfthi
     // if fees not enrolled college
     //  if semester not equal to current semester in legend

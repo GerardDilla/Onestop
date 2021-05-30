@@ -44,22 +44,6 @@ app.configure(express.rest());
 // app.use(cors);
 app.get("/", (req, res) => {
   res.send('Welcome to OSE API Date:' + moment().format('YYYY-MM-DD kk:mm:ss'))
-
-  var crypto = require('crypto');
-
-  var pem = fs.readFileSync('./live/privkey.pem');
-  var key = pem.toString('ascii');
-
-  var sign = crypto.createSign('RSA-SHA256');
-  // sign.update('abcdef');  // data from your file would go here
-  var sig = sign.sign(key, 'hex');
-  console.log(sig)
-
-  res.send(sig)
-  // fs.readFile("./live/privkey.pem", "sha256", function (pemContents) {
-  //   // do whatever you want here
-  //   console.log(pemContents)
-  // });
 });
 app.use('/chat-inquiry',new ChatService());
 app.use('/chat-action',new ChatActionService());

@@ -992,7 +992,7 @@ class Main extends MY_Controller
 		// echo $this->session->userdata('email');
 		// $result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
 		// $result = $this->gdrive_uploader->getAllFilesInFolder();
-		$result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_1417420210507034814.png', 'folder_id' => $this->session->userdata('gdrive_folder')));
+		$result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_120210516165438.jpg', 'folder_id' => '1liBMl-D_lnaddA7oWrsJv59V37XDFwtM'));
 		// $decode = json_decode($result,true);
 		// echo '<pre>'.print_r($decode,1).'</pre>';
 		echo $result;

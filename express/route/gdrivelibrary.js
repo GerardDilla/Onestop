@@ -439,10 +439,12 @@ router.post("/get_id",(req,res)=>{
     }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
-        // cons
+        // console.log(files);
+        // const found_all = files.filter( ({parents}) => { return [parents] == '1kLW5Gwogxz1llDOAjWwsYwIjNSbSTD0g'});
+        // console.log(found_all)
         if(file_name!=""){
-            const found = files.find(element => element.name == file_name && element.parents==folder_id);
-            // console.log(found);
+            const found = files.find((element) =>{ return element.name == file_name && [element.parents]==folder_id});
+            
             if(found==null){
                 sendBackToPHP('');
                 console.log(`Get Id: Cant find ${file_name}`)
@@ -453,7 +455,8 @@ router.post("/get_id",(req,res)=>{
             }
         }
         else{
-            const found = files.filter( ({parents}) => parents==folder_id);
+            console.log('hello')
+            const found = files.filter( ({parents}) => [parents] == folder_id);
             sendBackToPHP(JSON.stringify(found));
         }
         

@@ -330,8 +330,8 @@ echo '</script>';
                     <?php
                     if (isset($this->data['requirementstab'])) {
                         echo '<div>';
-                        echo '<div class="col-md-12 student_info_submit_div" style="text-align:center">';
-                        echo '<button type="submit" class="btn btn-lg btn-primary" id="submit_val_doc">PROCEED</button>';
+                        echo '<div class="col-md-12 student_info_submit_div" style="text-align:center; padding-top:20px">';
+                        echo '<button type="submit" class="btn btn-lg btn-primary btn-priamry-hover-transparent" id="submit_val_doc">PROCEED</button>';
                         // echo '<button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>'
                         echo '<div>';
                     } else {

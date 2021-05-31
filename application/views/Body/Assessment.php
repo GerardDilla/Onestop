@@ -94,7 +94,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <div class="col-md-12 student_info_submit_div" style="text-align:center">
                                     <hr>
                                     <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
-                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>
+                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info btn-priamry-hover-transparent" onclick="submit_course()">PROCEED</button>
                                 </div>
                             </div>
                             <div class="tab-pane container" id="advising_content">
@@ -102,7 +102,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
                                     <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
-                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-advising" id="wizard-button">PROCEED</button>
+                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-advising btn-priamry-hover-transparent" id="wizard-button">PROCEED</button>
                                 </div>
                             </div>
                             <div class="tab-pane container" id="requirements_content">
@@ -130,7 +130,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['registration']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form">Print Registration Form</a>
+                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form btn-success-hover-transparent">Print Registration Form</a>
 
                                 </div>
                                 <hr>

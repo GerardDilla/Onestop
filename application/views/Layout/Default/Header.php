@@ -95,4 +95,15 @@
         background-color: #05BCC8;
         border: 3px solid #05BCC8;
     }
+    .payment_methods{
+        padding-bottom: 10px;
+    }
+    .btn-priamry-hover-transparent:hover{
+        background-color: rgba(65, 94, 190, .1) !important;
+        color: rgba(65, 94, 190, 1) !important;
+    }
+    .btn-success-hover-transparent:hover{
+        background-color: rgba(25, 135, 84, .1) !important;
+        color: rgba(25, 135, 84, 1) !important;
+    }
 </style>

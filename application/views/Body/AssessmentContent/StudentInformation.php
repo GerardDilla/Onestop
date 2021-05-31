@@ -6,8 +6,8 @@
                 <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION
                     <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
                 </h6>
-                <div class="col-md-6">
-                    <table class="table table-striped table-hover" style="display: block; overflow: auto;">
+                <div class="col-md-5">
+                    <table class="table table-striped table-hover" style="display: table; overflow: auto;">
                         <tbody>
                             <tr>
                                 <td>REFERENCE NUMBER:</td>
@@ -32,8 +32,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-6">
-                    <table class="table table-striped table-hover" style="display: block; overflow: auto;">
+                <div class="col-md-7">
+                    <table class="table table-striped table-hover" style="display: table; overflow: auto;">
                         <tbody>
                             <tr>
                                 <td>ADDRESS:</td>
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank" class="intro-step-1">
-                <div class="btn btn-success btn-success-hover-transparent">
+                <div class="btn btn-success btn-hover-red">
                 <i class="bi bi-file-earmark-arrow-down" style="font-size: 20px;"></i>
                 <!-- <i class="bi bi-file-earmark-arrow-down-fill" style="font-size: 20px;"></i> -->
                     DOWNLOAD APPLICATION

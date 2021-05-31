@@ -145,6 +145,9 @@
                     <h6>CONFIRM YOUR PROGRAM</h6>
                     <div id='have_course'></div>
                     <br>
+                    <?php
+                    if ($data_course == 'N/A') {
+                    ?>
                     <fieldset class="form-group">
                         <select class="form-select" id="courses" required>
                             <option value="none" disabled selected>PREFERRED PROGRAM</option>
@@ -166,12 +169,14 @@
                             ?>
                         </select>
                     </fieldset>
+                    
                     <fieldset class="form-group">
                         <select class="form-select" id="majors">
                             <option value="none" disabled selected>COURSE MAJOR</option>
 
                         </select>
                     </fieldset>
+                    <?php } ?>
                     <!-- <button class="btn btn-sm btn-primary" onclick="submit_course()" for="success-outlined">
                         SUBMIT COURSE
                     </button> -->

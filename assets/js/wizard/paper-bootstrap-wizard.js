@@ -162,6 +162,7 @@ $(document).ready(function () {
     // });
 
     $('.wizard-proceed-advising').click(function (e) {
+
         $.ajax({
             url: 'https://stdominiccollege.edu.ph/SDCALMSv2/index.php/API/BalanceAPI?Reference_Number=' + ref__,
             dataType: 'JSON',
@@ -204,7 +205,9 @@ $(document).ready(function () {
                                 // wizard_payment();
                                 init_advise();
                                 // location.reload();
-
+                                hideIziToastGuide();
+                                var ose_guide1 = new OSE_Guide('payment');
+                                ose_guide1.play();
                                 instance.hide({
                                     transitionOut: 'fadeOut'
                                 }, toast, 'button');

@@ -179,6 +179,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script>
 
 </script>
+
 <!--   Core JS Files   -->
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>
@@ -192,6 +193,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js" defer></script>
+
 <script>
 
 

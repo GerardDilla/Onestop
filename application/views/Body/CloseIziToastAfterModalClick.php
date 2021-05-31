@@ -10,22 +10,23 @@ function showIziToastUser(){
         $('.modal.show').each(function(){
             ++count_modal;
         })
-        // if(){}
-        iziToast.show({
-            class:'izitoast-welcome-user',
-            theme: 'dark',
-            icon: 'icon-person',
-            title: 'Welcome',
-            message: student_name,
-            position: 'topRight',
-            progressBarColor: '#cc0000',
-            image: "<?php echo base_url('assets/vendors/login_asset/img/sdcalogo.png'); ?>",
-            timeout:false,
-            close: false,
-            closeOnEscape: false,
-            closeOnClick: false,
-            drag:false
-        });
+        if($(window).width()>568){
+            iziToast.show({
+                class:'izitoast-welcome-user',
+                theme: 'dark',
+                icon: 'icon-person',
+                title: 'Welcome',
+                message: student_name,
+                position: 'topRight',
+                progressBarColor: '#cc0000',
+                image: "<?php echo base_url('assets/vendors/login_asset/img/sdcalogo.png'); ?>",
+                timeout:false,
+                close: false,
+                closeOnEscape: false,
+                closeOnClick: false,
+                drag:false
+            });
+        }
     // }
 }
 function showIziToastGuide(){
@@ -143,6 +144,17 @@ $('#overthecounterModal').on('hidden.bs.modal', function (e) {
     status="open";
 });
 $('#overthecounterModal').on('shown.bs.modal', function () {
+    hideIziToast()
+    $('#chat-logo').hide();
+    status="close";
+});
+$('#oldStudentAccountModal').on('hidden.bs.modal', function (e) {
+    showIziToastGuide();
+    showIziToastUser();
+    $('#chat-logo').show();
+    status="open";
+});
+$('#oldStudentAccountModal').on('shown.bs.modal', function () {
     hideIziToast()
     $('#chat-logo').hide();
     status="close";

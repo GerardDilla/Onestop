@@ -83,13 +83,13 @@
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item">
-                            <a href="<?php echo base_url(); ?>index.php/ose_api/reset_progress" target="_blank">Reset Assessment and Enrollment</a>
+                            <a href="<?php echo base_url(); ?>index.php/main/resetEnrollmentLegend" target="_blank">Reset Assessment and Enrollment</a>
                         </li>
                         <li class="submenu-item">
                             <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Set As Enrolled</a>
                         </li>
                         <li class="submenu-item">
-                            <a data-bs-toggle="modal" data-bs-target="#oldStudentAccountModal">Old Student Account Creation</a>
+                            <a href="void(0)" data-bs-toggle="modal" data-bs-target="#oldStudentAccountModal">Old Student Account Creation</a>
                         </li>
                     </ul>
                 </li>

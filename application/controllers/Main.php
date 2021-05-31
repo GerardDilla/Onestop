@@ -1101,4 +1101,17 @@ class Main extends MY_Controller
 		echo json_encode($getOldAccountStudentInfo);
 		// echo '<pre>'.print_r($getOldAccountStudentInfo,1).'</pre>';
 	}
+
+	public function resetEnrollmentLegend(){
+		$legend = $this->AdvisingModel->getlegend();
+		$this->data['sem'] =  $legend['Semester'];
+		$this->data['sy'] =  $legend['School_Year'];
+		$this->default_template($this->view_directory->resetEnrollmentLegend());
+	}
+	public function updateEnrollmentLegend(){
+		$sy = $this->input->get('school_year');
+		$sem = $this->input->get('sem');
+		$this->mainmodel->updateLegend(array('Semester'=>$sem,'School_Year'=>$sy));
+		echo json_encode('success');
+	}
 }

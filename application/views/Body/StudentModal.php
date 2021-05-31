@@ -3,6 +3,9 @@
         max-width: 650px;
     }
 </style>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendors/Datatable2/Responsive-2.2.7/js/dataTables.responsive.min.js"></script>
 <div class="modal fade text-left w-100" id="oldStudentAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full" role="document">
         <div class="modal-content">
@@ -142,3 +145,4 @@
     }
 </script>
 <script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js'); ?>"></script>
+

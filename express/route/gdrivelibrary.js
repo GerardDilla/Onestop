@@ -463,7 +463,7 @@ router.post("/get_id",(req,res)=>{
       res.send(id);
   }
 })
-router.post("/sample",(req,res)=>{
+router.get("/sample",(req,res)=>{
     // res.send('Welcome to Google Drive Api');
     res.json(JSON.stringify({status:'success',msg:'hello'}))
 })

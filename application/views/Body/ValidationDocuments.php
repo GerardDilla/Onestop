@@ -6,6 +6,8 @@ if (!empty($this->session->flashdata('error'))) {
                 message: '" . $this->session->flashdata('error') . "',
                 position: 'topRight',
             });";
+    echo "console.log('".$this->session->flashdata('error')."');";
+    echo "console.log('".$this->session->flashdata('error_files')."');";
     $this->session->set_flashdata('error', '');
 } else if (!empty($this->session->flashdata('success'))) {
     echo "iziToast.success({
@@ -15,6 +17,7 @@ if (!empty($this->session->flashdata('error'))) {
         });";
     $this->session->set_flashdata('success', '');
 }
+
 echo '</script>';
 ?>
 <style>
@@ -273,9 +276,7 @@ echo '</script>';
                                         </div>
                                         <div class="col-lg-1 row div-td">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
-                                                                                                                                                        echo $list['status'] == "" ? 'checked="true"' : '';
-                                                                                                                                                    } ?> type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
+                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> checked="true" type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>

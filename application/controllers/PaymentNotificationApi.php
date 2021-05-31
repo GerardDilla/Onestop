@@ -30,16 +30,17 @@ class PaymentNotificationApi extends CI_Controller
                 //     $student_email = $student_info['Email'];
                 // }
                 $student_email = empty($student_info['Email'])?'':$student_info['Email'];
+                // echo json_encode($student_info);
+                // exit;
                 $all_uploadeddata = array(
                     'ref_no' => $ref_no,
                     'amount' => $amount
                 );
                 $string = http_build_query($all_uploadeddata);
-                $ch = curl_init("https://localhost:4003/api/NotifyIfSubmitted/");
+                $ch = curl_init("http://stdominiccollege.edu.ph:4004/api/NotifyIfSubmitted/");
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-                curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
                 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
                 // curl_exec($ch);
                 curl_setopt($ch, CURLOPT_FAILONERROR, true);
@@ -49,7 +50,7 @@ class PaymentNotificationApi extends CI_Controller
                 echo $error_msg .'<br>';
                 }
                 else{
-                echo $result.'<br>';
+                // echo json_encode(array('success'=>$result));
                 }
                 curl_close($ch);
                 $email_data = array(
@@ -68,6 +69,7 @@ class PaymentNotificationApi extends CI_Controller
                     'ref_no' => $ref_no,
                     'date_created' => date("Y-m-d H:i:s")
                 ));
+                // echo json_encode('success');
             }
         
     }

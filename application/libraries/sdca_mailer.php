@@ -59,11 +59,11 @@ class sdca_mailer
 		$this->library['email']->subject($subject);
 		$this->library['email']->message($this->library['load']->view($message,$add_data,true));
 		if($this->library['email']->send()){
-				// echo  'Email has been sent to '.$cp;
+				echo  'Email has been sent to '.$cp;
 				// echo json_encode(array('success'=>'Email has been sent to '.$cp));
 		}else{
 			echo json_encode(array('error'=>'There was a problem sending an email'));
-				// echo  "<h4>There was a problem with sending an email.</h4>";
+				echo  "There was a problem with sending an email.";
 				// echo  "<br><br>For any concers, proceed to our <a href'#' style'font-size:15px; color:#00F;'>Helpdesk</a> or the MIS Office.";        
 		}
 

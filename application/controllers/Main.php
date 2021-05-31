@@ -222,7 +222,7 @@ class Main extends MY_Controller
 
 				// for live stdominiccollege.edu.ph
 				// $this->sdca_mailer->sendEmail($data['First_Name'] . ' ' . $data['Last_Name'], 'jfabregas@sdca.edu.ph', 'St. Dominic College of Asia', $this->input->post('email'), 'Forgot Password', 'Click this link to reset your password. {unwrap}https://stdominiccollege.edu.ph/Onestop/index.php/main/changePassword/' . $encrypt_code . '{/unwrap}');
-				
+
 				$this->sdca_mailer->sendEmail($data['First_Name'] . ' ' . $data['Last_Name'], 'jfabregas@sdca.edu.ph', 'St. Dominic College of Asia', $this->input->post('email'), 'Forgot Password', 'Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/' . $encrypt_code . '{/unwrap}');
 				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
 				$this->session->set_flashdata('success', "We've sent a confirmation link on your email. Click the link to reset your password.");
@@ -675,6 +675,8 @@ class Main extends MY_Controller
 		$array_completefiles = array();
 		$upload_count = 0;
 		$error_count = 0;
+		$error_files = array();
+		$validate_count = 0;
 		try {
 			$email_data = array(
 				'send_to' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name'),
@@ -695,6 +697,7 @@ class Main extends MY_Controller
 				$req_status = 'to be follow';
 				$status_col = empty($checkRequirement) ? '' : $checkRequirement['status'];
 				if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "") {
+					++$validate_count;
 					$req_status = 'pending';
 					if ($this->upload->do_upload($id_name)) {
 						++$upload_count;
@@ -707,11 +710,14 @@ class Main extends MY_Controller
 						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
 					} else {
 						++$error_count;
+						array_push($error_files, $list['id_name']);
 					}
 				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to be follow") {
+					++$validate_count;
 					$req_status = 'pending';
 					if ($this->upload->do_upload($id_name)) {
 						$uploaded_data = $this->upload->data();
+						++$upload_count;
 						array_push($array_files, array(
 							"name" => $uploaded_data['orig_name'],
 							"type" => $uploaded_data['file_type'],
@@ -720,6 +726,7 @@ class Main extends MY_Controller
 						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
 					} else {
 						++$error_count;
+						array_push($error_files, $list['id_name']);
 						// echo json_encode(array("msg" => $this->upload->display_errors()));
 						// $this->session->set_flashdata('error', $this->upload->display_errors());
 
@@ -775,7 +782,7 @@ class Main extends MY_Controller
 			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
 			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
-			if ($error_count == 0) {
+			if ($error_count == 0 && $upload_count > 0) {
 				$result = $this->gdrive_uploader->index($all_uploadeddata);
 				$decode_result = json_decode($result, true);
 				if (!empty($result)) {
@@ -816,9 +823,16 @@ class Main extends MY_Controller
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			} else {
+			}
+			else if($upload_count == 0){
+				$this->session->set_flashdata('success', 'Successfully submitted!!');
+				redirect($_SERVER['HTTP_REFERER']);
+			}
+			else {
 				$this->mainmodel->revertIfErrorInRequirementUpload();
-				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!!');
+				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!! failed on -');
+				$error_files2 = implode(',',$error_files);
+				$this->session->set_flashdata('error_files', $error_files2);
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 			// echo json_encode(array("msg" => 'Successfully Uploaded'));
@@ -978,7 +992,7 @@ class Main extends MY_Controller
 		// echo $this->session->userdata('email');
 		// $result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
 		// $result = $this->gdrive_uploader->getAllFilesInFolder();
-		$result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_108820210415102145.jpg', 'folder_id' => $this->session->userdata('gdrive_folder')));
+		$result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_1417420210507034814.png', 'folder_id' => $this->session->userdata('gdrive_folder')));
 		// $decode = json_decode($result,true);
 		// echo '<pre>'.print_r($decode,1).'</pre>';
 		echo $result;
@@ -1095,23 +1109,26 @@ class Main extends MY_Controller
 	public function account_creation_old()
 	{
 	}
-	public function getOldAccountTable(){
+	public function getOldAccountTable()
+	{
 		$legend = $this->AdvisingModel->getlegend();
-		$getOldAccountStudentInfo = $this->mainmodel->getOldAccountStudentInfo($legend['Semester'],$legend['School_Year']);
+		$getOldAccountStudentInfo = $this->mainmodel->getOldAccountStudentInfo($legend['Semester'], $legend['School_Year']);
 		echo json_encode($getOldAccountStudentInfo);
 		// echo '<pre>'.print_r($getOldAccountStudentInfo,1).'</pre>';
 	}
 
-	public function resetEnrollmentLegend(){
+	public function resetEnrollmentLegend()
+	{
 		$legend = $this->AdvisingModel->getlegend();
 		$this->data['sem'] =  $legend['Semester'];
 		$this->data['sy'] =  $legend['School_Year'];
 		$this->default_template($this->view_directory->resetEnrollmentLegend());
 	}
-	public function updateEnrollmentLegend(){
+	public function updateEnrollmentLegend()
+	{
 		$sy = $this->input->get('school_year');
 		$sem = $this->input->get('sem');
-		$this->mainmodel->updateLegend(array('Semester'=>$sem,'School_Year'=>$sy));
+		$this->mainmodel->updateLegend(array('Semester' => $sem, 'School_Year' => $sy));
 		echo json_encode('success');
 	}
 }

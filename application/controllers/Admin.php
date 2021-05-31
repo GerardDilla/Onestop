@@ -32,7 +32,7 @@ class Admin extends MY_Controller
 			if (!empty($data)) {
 				$this->session->set_userdata("admin_id", $data['id']);
 				$this->session->set_flashdata('success', $data['name']);
-				redirect(base_url('admin/sdcainquiry'));
+				redirect(base_url('index.php/admin/sdcainquiry'));
 			} else {
 				$this->session->set_flashdata('msg', 'Incorrect username or password!!');
 				redirect($_SERVER['HTTP_REFERER']);
@@ -105,6 +105,6 @@ class Admin extends MY_Controller
 	public function logout()
 	{
 		$this->session->set_userdata("admin_id");
-		redirect(base_url('admin/'));
+		redirect(base_url('index.php/admin/'));
 	}
 }

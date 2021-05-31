@@ -1263,6 +1263,7 @@ class Ose_api extends CI_Controller
 				'automated_code' => $code,
 				'email' => $student_info['Email'],
 				'reference_no' => $reference_number,
+				'interview_status' => 'NO',
 			);
 			$this->MainModel->insert_student_account($array_insert);
 		}

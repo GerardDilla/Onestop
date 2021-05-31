@@ -391,11 +391,11 @@ function fetch_user_status() {
 
             } else if (student_information == 1) {
                 $('input[name=current_tab_selection]').val('requirements');
-                // wizard_requirements();
+                wizard_requirements();
                 if ($('.wizard-proceed-advising').hasClass('old-student')) {
-                    // $("#progress_bar").css("width", "50%");
-                } else {
-                    wizard_requirements();
+                    $("#progress_bar").css("width", "50%");
+                    $("#requirements_content").removeClass("active");
+                    $("#li_requirements").removeClass("active");
                 }
                 var ose_guide1 = new OSE_Guide('requirements');
 

@@ -3,14 +3,10 @@ var ref_no = $('input[name=chat_reference_no]').val();
 var typing_timeout = null;
 var modal_status = 0;
 var connectionOptions =  {          
-            "transports" : ["websocket"],
-            forceNew: true,
-            secure: false,
-            requestCert: false,
-            rejectUnauthorized: false
+            "transports" : ["websocket"]
         };
-const socket = io('http://localhost:4003');
-// const socket = io('ws://stdominiccollege.edu.ph:4003/');
+// const socket = io('https://localhost:4003');
+const socket = io('https://stdominiccollege.edu.ph:4003',connectionOptions);
 const app = feathers();
 var array_status = [];
 var status_running = false;
@@ -119,7 +115,7 @@ $('#chat-textarea').on('keydown',function(e){
 })
 $('#chat-textarea').on('keyup',function(){
     app.service('chat-action').create({
-        ref_no:"<?php echo $this->session->userdata('reference_no');?>",
+        ref_no:ref_no,
         type:'student'
     });
 })
@@ -130,7 +126,7 @@ function sendMessage(id){
 }
 function renderIdea(all) {
     
-    // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+    // if(data.ref_no==ref_no){
         var render_count = 0;
         $.each(all,function(index,data){
             var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
@@ -166,7 +162,7 @@ function renderIdea(all) {
 //     $('#chatInquiryTable tbody').append(html);
 // }
 function updateToSeen(data){
-    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+    if(data.ref_no==ref_no){
         if(data.type=="admin"){
             $('.sent').each(function(){
                 $(this).removeClass("sent");
@@ -205,12 +201,12 @@ function receivedMessage(data) {
     
     // getInquiryTableList(data.total_message);
     console.log(data);
-    var get_current_count = data.message_count.find(data=> data.ref_no=="<?php echo $this->session->userdata('reference_no');?>")
-    var get
+    console.log(data.ref_no);
+    var get_current_count = data.message_count.find(data=>{return data.ref_no==$('input[name=chat_reference_no]').val()})
     // total_message
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
     
-    // if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+    // if(data.ref_no==ref_no){
         if(data.user_type=="student"){
             array_status.push(data.return_id);
             if(get_current_count.total_message==1){
@@ -229,7 +225,7 @@ function receivedMessage(data) {
 }
 async function typing(data){
     // console.log(data.type)
-    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+    if(data.ref_no==ref_no){
         if(data.type=="admin"){
             $('#someone-typing').show();
             // $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
@@ -252,7 +248,8 @@ async function someone_typing(){
 }   
 async function init() {
 // Find ideas
-const ideas = await app.service('chat-inquiry').get({ref_no:"<?php echo $this->session->userdata('reference_no');?>"});
+const ideas = await app.service('chat-inquiry').get({ref_no:ref_no});
+console.log(ideas)
     renderIdea(ideas);
     app.service('chat-inquiry').on('created', receivedMessage);
     app.service('chat-inquiry').on('updated', updateToSeen);
@@ -263,7 +260,7 @@ init();
 
 function notifyIfSubmitted(data){
     // alert("hello");
-    if(data.ref_no=="<?php echo $this->session->userdata('reference_no');?>"){
+    if(data.ref_no==ref_no){
         
         iziToast.show({
             theme: 'light',

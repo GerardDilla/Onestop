@@ -94,7 +94,12 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <div class="col-md-12 student_info_submit_div" style="text-align:center">
                                     <hr>
                                     <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
+                                    <?php
+                                    $data_course = empty($this->data['course']) ? 'N/A' : $this->data['course'];
+                    if ($data_course == 'N/A') {
+                    ?>
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info btn-hover-red" onclick="submit_course()">PROCEED</button>
+                                    <?php } ?>
                                 </div>
                             </div>
                             <div class="tab-pane container" id="advising_content">

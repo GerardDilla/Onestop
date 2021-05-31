@@ -228,14 +228,14 @@ class Ose_api extends CI_Controller
 		}
 
 		#Check if slot is available
-		// $slot_status = $this->AdvisingModel->count_subject_enrolled($data);
-		// $new_slot = $slot_status + 1;
-		// if ($new_slot >= $sched_data['Total_Slot']) {
+		$slot_status = $this->AdvisingModel->count_subject_enrolled($data);
+		$new_slot = $slot_status + 1;
+		if ($new_slot >= $sched_data['Total_Slot']) {
 
-		// 	$output['status'] = 1;
-		// 	$output['data'] = 'The slots for this Subject is Full';
-		// 	return $output;
-		// }
+			$output['status'] = 1;
+			$output['data'] = 'The slots for this Subject is Full';
+			return $output;
+		}
 
 		#Check if there are schedule conflicts
 		$conflict_checker_parameters = array(
@@ -280,20 +280,20 @@ class Ose_api extends CI_Controller
 		}
 
 		#Check if subject has already been taken
-		// $finished_status = $this->AdvisingModel->check_finished_subject($data);
-		// if ($finished_status != 0) {
-		// 	$output['status'] = 1;
-		// 	$output['data'] = 'Subject was already taken before: ' . $sched_data['CourseCode'];
-		// 	return $output;
-		// }
+		$finished_status = $this->AdvisingModel->check_finished_subject($data);
+		if ($finished_status != 0) {
+			$output['status'] = 1;
+			$output['data'] = 'Subject was already taken before: ' . $sched_data['CourseCode'];
+			return $output;
+		}
 
 		#Check if pre requisite has not been taken (Check if transferee)
-		// $prereq_status = $this->AdvisingModel->check_finished_finished_prerequisite($data, $sched_data['sp_pre_req']);
-		// if ($prereq_status == 0) {
-		// 	$output['status'] = 1;
-		// 	$output['data'] = 'Pre Requisite Subject has not been taken yet: ' . $sched_data['CourseCode'];
-		// 	return $output;
-		// }
+		$prereq_status = $this->AdvisingModel->check_finished_finished_prerequisite($data, $sched_data['sp_pre_req']);
+		if ($prereq_status == 0) {
+			$output['status'] = 1;
+			$output['data'] = 'Pre Requisite Subject has not been taken yet: ' . $sched_data['CourseCode'];
+			return $output;
+		}
 
 		return $output;
 	}
@@ -1238,26 +1238,17 @@ class Ose_api extends CI_Controller
 		return $code;
 	}
 
-	public function create_old_student_account()
+	public function create_old_student_account($referencenumber_param)
 	{
 		// $reference_number = '5';
-		$reference_number = $this->input->post('ref_no');
-		
+		$reference_number = $this->input->post('ref_no') != '' ? $this->input->post('ref_no') : $referencenumber_param;
+
 		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($reference_number);
 		$student_info = $this->AssesmentModel->get_student_by_reference_number($reference_number);
 		$code = $this->generate_random_code();
 		// die(json_encode($student_account));
 		if (!empty($student_account)) {
 			$code = $student_account['automated_code'];
-			if($student_account['automated_code'] == ''){
-				$output = array(
-					'status' => 'failed',
-					'title' => 'Already have account.',
-					'message' => 'Please check your email '.$student_info['Email'].'.',
-				);
-				echo json_encode($output);
-				return;
-			}
 		} else {
 			$array_insert = array(
 				'automated_code' => $code,
@@ -1265,34 +1256,37 @@ class Ose_api extends CI_Controller
 				'reference_no' => $reference_number,
 			);
 			$this->MainModel->insert_student_account($array_insert);
+			$student_account = $this->AssesmentModel->get_student_account_by_reference_number($reference_number);
+			$code = $student_account['automated_code'];
 		}
-		
-		$email_data = array(
-			'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
-			'reply_to' => 'webmailer@sdca.edu.ph',
-			'sender_name' => 'St. Dominic College of Asia',
-			'send_to_email' => $student_info['Email'],
-			'subject' => 'Old Student Account for Onestop Enrollment',
-			'message' => 'Email/SendAccountCode'
-		);
+		redirect('main/setupUserPass/' . $student_account['automated_code']);
 
-		$this->sdca_mailer->sendHtmlEmail(
-			$email_data['send_to'],
-			$email_data['reply_to'],
-			$email_data['sender_name'],
-			$email_data['send_to_email'],
-			$email_data['subject'],
-			$email_data['message'],
-			array(
-				'student_info' => $student_info,
-				'code' => $code
-			)
-		);
-		$output = array(
-			'status' => 'success',
-			'title' => 'Account Created.',
-			'message' => 'Please check your email '.$student_info['Email'].'.',
-		);
-		echo json_encode($output);
+		// $email_data = array(
+		// 	'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
+		// 	'reply_to' => 'webmailer@sdca.edu.ph',
+		// 	'sender_name' => 'St. Dominic College of Asia',
+		// 	'send_to_email' => $student_info['Email'],
+		// 	'subject' => 'Old Student Account for Onestop Enrollment',
+		// 	'message' => 'Email/SendAccountCode'
+		// );
+
+		// $this->sdca_mailer->sendHtmlEmail(
+		// 	$email_data['send_to'],
+		// 	$email_data['reply_to'],
+		// 	$email_data['sender_name'],
+		// 	$email_data['send_to_email'],
+		// 	$email_data['subject'],
+		// 	$email_data['message'],
+		// 	array(
+		// 		'student_info' => $student_info,
+		// 		'code' => $code
+		// 	)
+		// );
+		// $output = array(
+		// 	'status' => 'success',
+		// 	'title' => 'Account Created.',
+		// 	'message' => 'Please check your email ' . $student_info['Email'] . '.',
+		// );
+		// echo json_encode($output);
 	}
 }

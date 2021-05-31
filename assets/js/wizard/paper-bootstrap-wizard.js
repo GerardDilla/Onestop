@@ -177,14 +177,13 @@ $(document).ready(function () {
                         color: 'red',
                     });
                 } else {
+
                     // if ($(this).hasClass('old-student')) {
                     //     console.log('has class');
                     // }
                     // console.log($(this).hasClass('old-student'));
                     // Event handler when proceeding to next step
                     // if ($('#advising_content').hasClass('active')) {
-
-
                     // init_advise();
 
                     // console.log('ready to advise');

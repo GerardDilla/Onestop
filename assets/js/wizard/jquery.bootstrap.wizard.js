@@ -31,8 +31,8 @@ var bootstrapWizardCreate = function(element, options) {
 		// Get the current active tab
 		if(!$activeTab.length) {
 			// Select first one
-			$navigation.find('a:first').tab('show');
-			$activeTab = $navigation.find(baseItemSelector + ':first');
+			// $navigation.find('a:first').tab('show');
+			// $activeTab = $navigation.find(baseItemSelector + ':first');
 		}
 
 		// See if we're currently in the first/last then disable the previous and last buttons

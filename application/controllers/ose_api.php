@@ -68,8 +68,8 @@ class Ose_api extends CI_Controller
 		$this->date_now = date($datestring, $time);
 
 		#Fixed Units
-		$this->grad_units = 30;
-		$this->nongrad_units = 27;
+		$this->grad_units = 31;
+		$this->nongrad_units = 31;
 	}
 	public function subjects()
 	{

@@ -902,7 +902,7 @@ class Main extends MY_Controller
 		$config['upload_path'] = './express/assets/';
 		$config['allowed_types'] = '*';
 		$config['file_name'] = $id_name . '_' . $ref_no . '' . date("YmdHis");
-		$this->load->library('upload', $config);
+		$this->load->library('upload',$config);
 		$this->upload->initialize($config);
 		$this->upload->overwrite = true;
 		$uploaded = array();
@@ -910,9 +910,13 @@ class Main extends MY_Controller
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
 		$orig_name = "";
 		$orig_type = "";
+		// print_r($_FILES['images']);
+		// exit;
 		if ($this->upload->do_upload('images')) {
 			$uploaded_data = $this->upload->data();
 			// print_r($uploaded_data);
+			// echo 'success';
+			// exit;
 			$orig_name = $uploaded_data['orig_name'];
 			$orig_type = $uploaded_data['file_type'];
 			array_push($uploaded, array(
@@ -975,6 +979,9 @@ class Main extends MY_Controller
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 		} else {
+			$error = array('error' => $this->upload->display_errors());
+			// print_r($error);
+			// exit;
 			$this->session->set_flashdata('error', 'Upload Error');
 			redirect($_SERVER['HTTP_REFERER']);
 			exit;

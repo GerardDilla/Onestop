@@ -82,4 +82,14 @@ td.schedule-time{
     margin-bottom: 50px;
 }
 
-
+.introjs-tooltip{
+    border:2px solid #cc0000;
+}
+.introjs-helperLayer{
+    border:2px solid #cc0000;
+    /* box-shadow: 0!important; */
+    box-shadow: rgba(33, 33, 33, 0.1) 0px 0px 1px 2px, rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px;
+}
+.introjs-disabled{
+    display:none;
+}

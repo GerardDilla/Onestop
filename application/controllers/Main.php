@@ -749,7 +749,7 @@ class Main extends MY_Controller
 							'requirements_date' => date("Y-m-d H:i:s"),
 							'file_submitted' => $orig_name,
 							'file_type' => $file_type,
-							'status' => 'pending',
+							'status' => $req_status,
 						), $id_name);
 					}
 					$row = $row . "<tr><td>" . $checkRequirement['requirements_name'] . "</td><td>" . date("M. j,Y g:ia") . "</td></tr>";
@@ -779,8 +779,6 @@ class Main extends MY_Controller
 					));
 				}
 			}
-			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
-			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
 			if ($error_count == 0 && $upload_count > 0) {
 				$result = $this->gdrive_uploader->index($all_uploadeddata);

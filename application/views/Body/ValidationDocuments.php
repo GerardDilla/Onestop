@@ -221,6 +221,9 @@ echo '</script>';
                                 if ($list['status'] != "") {
                                     ++$req_count;
                                 }
+                                if ($list['status'] == ""&&$list['status'] != "") {
+                                    ++$req_count;
+                                }
                             }
                             $req = 0;
                             foreach ($requirements as $list) {
@@ -237,15 +240,16 @@ echo '</script>';
                                         <div class="col-lg-4 row div-td">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></span></div>
                                             <div class="col-lg-12 col-md-8 col-sm-8">
-                                                <input required <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
+                                                <input type="file" class="form-control form-control-sm" <?php echo $list['status']!="to be follow"&&$list['status']!="" ? 'disabled="true"' : 'required'; ?> name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>">
                                                 <div class="invalid-feedback feedback-<?php echo $list['id_name']; ?>"><i class="bx bx-radio-circle"></i>This is required.</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-1 row div-td">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> <?php if ($req_count > 0) {
-                                                                                                                                                        echo $list['status'] == "" ? 'checked="true"' : '';
-                                                                                                                                                    } ?> type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
+                                            <?php 
+                                            // echo $list['status'] == "to be follow" ? 'checked="true"' : '';
+                                            ?>
+                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo  $list['status']=="to be follow" ? '' : 'disabled="true"'; ?>  type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>
@@ -270,13 +274,13 @@ echo '</script>';
                                         <div class="col-lg-4 row div-td">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></span></div>
                                             <div class="col-lg-12 col-md-8 col-sm-8">
-                                                <input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> class="form-control form-control-sm" name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" type="file">
+                                                <input type="file" class="form-control form-control-sm" <?php echo $list['status'] != "to be follow" && $list['status'] != "" ? 'disabled="true"' : ''; ?> name="<?php echo $list['id_name']; ?>" id="<?php echo $list['id_name']; ?>" >
                                                 <div class="invalid-feedback feedback-<?php echo $list['id_name']; ?>"><i class="bx bx-radio-circle"></i>This is required.</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-1 row div-td">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $req_count > 0 ? 'disabled="true"' : ''; ?> checked="true" type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
+                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $list['status']=="to be follow" ? '' : 'disabled="true"'; ?> checked="true" type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>
@@ -336,11 +340,11 @@ echo '</script>';
                         // echo '<button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>'
                         echo '<div>';
                     } else {
-                        if ($req_count == 0) {
+                        // if ($req_count == 0) {
                             echo '<div class="col-md-12 col-sm-12" align="right" style="margin-top:10px">';
                             echo '<button type="submit" class="btn btn-info" id="submit_val_doc">Submit</button>';
                             echo '<div></div>';
-                        }
+                        // }
                     }
                     ?>
 

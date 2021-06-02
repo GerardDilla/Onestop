@@ -15,6 +15,10 @@ $('#chatinquiryModal').on('hidden.bs.modal', function (e) {
     $('#chat-logo').show();
     modal_status = 0;
 })
+$('#chatinquiryModal').on('shown.bs.modal', function () {
+    // alert('hello');
+    $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
+});
 function sessionExpired(){
     window.location.replace("/Onestop/");
 }

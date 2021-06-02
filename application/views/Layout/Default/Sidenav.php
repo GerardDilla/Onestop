@@ -25,10 +25,16 @@
                         <span>Enrollment Guide</span>
                     </a>
                 </li> -->
-                <li class="sidebar-item <?php echo $tab_active == 'Self Assessment' ? 'active' : ''; ?>">
+                <li class="sidebar-item <?php echo $tab_active == 'Self Enrollment' ? 'active' : ''; ?>">
                     <a href="<?php echo base_url('index.php/Main/selfassesment') ?>" class='sidebar-link'>
                         <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Self Assesment</span>
+                    </a>
+                </li>
+                <li class="sidebar-item twinkling-background" <?php echo $tab_active == 'Self Enrollment' ? '' : 'style="display:none;"'; ?>>
+                    <a href="javascript:" class='sidebar-link' id="open_guide">
+                        <i class="bi bi-info-circle"></i>
+                        <span>Open Guide</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -38,13 +44,13 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+                <li class="sidebar-item <?php echo $tab_active == 'Upload Proof of Payment' ? 'active' : ''; ?>">
                     <a href="<?php echo base_url('index.php/Main/uploadProofOfPayment') ?>" class='sidebar-link'>
                         <i class="bi bi-credit-card-fill"></i>
                         <span>Proof of Payment</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                <li class="sidebar-item <?php echo $tab_active == 'Enrollment Breakdown' ? 'active' : ''; ?>">
                     <a href="<?php echo base_url('index.php/Main/enrollment_breakdown') ?>" class='sidebar-link'>
                         <i class="bi bi-menu-app-fill"></i>
                         <span>Enrollment Breakdown</span>
@@ -64,19 +70,32 @@
                         <span>ID Application</span>
                     </a>
                 </li> -->
-
+                <li class="sidebar-item twinkling-background" id="chat-me-here" <?php 
+                    if(strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))){
+                        echo ' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"';
+                    }
+                    else{
+                        echo ' onclick="timeWarning()"';
+                    }
+                    ?>>
+                    <a href="javascript:" class='sidebar-link'>
+                        <i class="bi bi-chat-dots"></i>
+                        <span>Chat Me Here!</span>
+                    </a>
+                </li>
+                
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-gear-fill"></i>
                         <span>Admin</span>
                     </a>
-                    <ul class="submenu">
+                    <ul class="submenu <?php echo $tab_active == 'Password Reset' ? 'active' : ''; ?>">
                         <li class="submenu-item <?php echo $tab_active == 'Password Reset' ? 'active' : ''; ?>">
                             <a href="<?php echo base_url('index.php/Main/passwordReset') ?>">Reset Password</a>
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item  has-sub">
+                <!-- <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-gear-fill"></i>
                         <span>DevTools</span>
@@ -92,7 +111,7 @@
                             <a href="void(0)" data-bs-toggle="modal" data-bs-target="#oldStudentAccountModal">Old Student Account Creation</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <li class="sidebar-item">
                     <a href="<?php echo base_url('main/logout'); ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>

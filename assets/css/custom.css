@@ -83,13 +83,73 @@ td.schedule-time{
 }
 
 .introjs-tooltip{
-    border:2px solid #cc0000;
+    border:5px solid #cc0000;
 }
 .introjs-helperLayer{
     border:2px solid #cc0000;
-    /* box-shadow: 0!important; */
-    box-shadow: rgba(33, 33, 33, 0.1) 0px 0px 1px 2px, rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px;
+    box-shadow: rgba(204, 0, 0,1) 0px 0px 1px 2px, rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px !important;
 }
 .introjs-disabled{
     display:none;
+}
+.twinkling-background{
+    animation: change-background 6s ease infinite;
+    color:white;
+    border-radius:.5rem;
+}
+.twinkling-background span{
+    color:white!important;
+}
+.twinkling-background i{
+    color:white!important;
+}
+.sidebar-wrapper .menu .twinkling-background .sidebar-link:hover {
+    color:black;
+    background-color:inherit;
+}
+@keyframes change-background {
+    0% {
+        background: #CC1C00;
+        color:white;
+    }
+    10%{
+        background: #CC3B00; 
+        color:white;
+    }
+    20%{
+        background: #CC7200; 
+        color:white;
+    }
+    30%{
+        background: #CC9A00; 
+        color:white;
+    }
+    40%{
+        background: #CCB000; 
+        color:white;
+    }
+    50% {
+        background: #AECC00;
+        color:white;
+    }
+    60% {
+        background: #6ACC00;
+        color:white;
+    }
+    70% {
+        background: #00CC08;
+        color:white;
+    }
+    80% {
+        background: #00CC74;
+        color:white;
+    }
+    90% {
+        background: #00CCBE;
+        color:white;
+    }
+    100% {
+        background: #00B5CC;
+        color:white;
+    }
 }

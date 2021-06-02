@@ -380,27 +380,30 @@ function fetch_user_status() {
                 check_next_enrollment();
 
             } else if (advising == 1) {
-
+                $('input[name=current_tab_selection]').val('payment')
                 wizard_payment();
                 var ose_guide1 = new OSE_Guide('payment');
 
             } else if (requirements == 1) {
                 wizard_advising();
+                $('input[name=current_tab_selection]').val('advising')
                 var ose_guide1 = new OSE_Guide('advising');
                 hasclass_oldstudent();
 
             } else if (student_information == 1) {
-                $('input[name=current_tab_selection]').val('requirements');
+                
                 wizard_requirements();
                 if ($('.wizard-proceed-advising').hasClass('old-student')) {
                     $("#progress_bar").css("width", "50%");
                 }
+                $('input[name=current_tab_selection]').val('requirements');
                 var ose_guide1 = new OSE_Guide('requirements');
 
             } else {
                 wizard_student_info();
                 hasclass_oldstudent();
                 var ose_guide1 = new OSE_Guide('student_information');
+                $('input[name=current_tab_selection]').val('student_information');
 
             }
             ose_guide1.play();

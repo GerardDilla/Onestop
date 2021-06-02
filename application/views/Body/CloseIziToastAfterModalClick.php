@@ -110,7 +110,9 @@ $('#subjectModal').on('hidden.bs.modal', function (e) {
 $('#subjectModal').on('shown.bs.modal', function () {
     hideIziToast()
     $('#chat-logo').hide();
+    $('#chat-logo').css('display','none');
     status="close";
+    // alert('hello');
 });
 // scheduleModal
 $('#scheduleModal').on('hidden.bs.modal', function (e) {

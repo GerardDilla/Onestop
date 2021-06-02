@@ -5,8 +5,8 @@ var modal_status = 0;
 var connectionOptions =  {          
             "transports" : ["websocket"]
         };
-// const socket = io('https://localhost:4003');
-const socket = io('https://stdominiccollege.edu.ph:4003',connectionOptions);
+const socket = io('https://localhost:4003');
+// const socket = io('https://stdominiccollege.edu.ph:4003',connectionOptions);
 const app = feathers();
 var array_status = [];
 var status_running = false;
@@ -15,6 +15,12 @@ $('#chatinquiryModal').on('hidden.bs.modal', function (e) {
     $('#chat-logo').show();
     modal_status = 0;
 })
+function sessionExpired(){
+    window.location.replace("/Onestop/");
+}
+if(ref_no==""||ref_no==null){
+    sessionExpired();
+}
 function timeWarning(){
     iziToast.show({
         theme: 'light',
@@ -188,6 +194,9 @@ function setStatus(){
 window.setInterval(()=>{
     if(status_running==false){
         setStatus()
+    }
+    if(ref_no==""||ref_no==null){
+        sessionExpired();
     }
 },2000);
 function welcomeMessage(){

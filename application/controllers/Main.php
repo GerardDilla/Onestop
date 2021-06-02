@@ -222,7 +222,7 @@ class Main extends MY_Controller
 
 				// for live stdominiccollege.edu.ph
 				// $this->sdca_mailer->sendEmail($data['First_Name'] . ' ' . $data['Last_Name'], 'jfabregas@sdca.edu.ph', 'St. Dominic College of Asia', $this->input->post('email'), 'Forgot Password', 'Click this link to reset your password. {unwrap}https://stdominiccollege.edu.ph/Onestop/index.php/main/changePassword/' . $encrypt_code . '{/unwrap}');
-				
+
 				$this->sdca_mailer->sendEmail($data['First_Name'] . ' ' . $data['Last_Name'], 'jfabregas@sdca.edu.ph', 'St. Dominic College of Asia', $this->input->post('email'), 'Forgot Password', 'Click this link to reset your password. {unwrap}http://localhost/Onestop/main/changePassword/' . $encrypt_code . '{/unwrap}');
 				// echo array('type'=>'success','msg' => "We've sent a confirmation link on your email. Click the link to reset your password.");
 				$this->session->set_flashdata('success', "We've sent a confirmation link on your email. Click the link to reset your password.");
@@ -1095,10 +1095,24 @@ class Main extends MY_Controller
 	public function account_creation_old()
 	{
 	}
-	public function getOldAccountTable(){
+	public function getOldAccountTable()
+	{
 		$legend = $this->AdvisingModel->getlegend();
-		$getOldAccountStudentInfo = $this->mainmodel->getOldAccountStudentInfo($legend['Semester'],$legend['School_Year']);
+		$getOldAccountStudentInfo = $this->mainmodel->getOldAccountStudentInfo($legend['Semester'], $legend['School_Year']);
 		echo json_encode($getOldAccountStudentInfo);
 		// echo '<pre>'.print_r($getOldAccountStudentInfo,1).'</pre>';
+	}
+	public function checksession()
+	{
+		if (!$this->session->userdata('reference_no')) {
+			$this->session->set_flashdata('msg', 'Session Timed Out');
+			echo base_url() . 'index.php/Main/logout';
+		} else {
+			echo '';
+		}
+	}
+	public function unsetdata()
+	{
+		$this->session->unset_userdata('reference_no');
 	}
 }

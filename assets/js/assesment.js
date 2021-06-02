@@ -3,7 +3,7 @@ $(document).ready(function () {
     checksession();
     setInterval(function () {
         checksession();
-    }, 10000);
+    }, 60000);
 
 });
 

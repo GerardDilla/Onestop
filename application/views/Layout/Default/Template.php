@@ -6,7 +6,7 @@
     <!-- Header Content -->
     <title><?php if ($Title) echo $Title; ?></title>
     <?php if ($Header) echo $Header; ?>
-    
+
 </head>
 
 <body>
@@ -38,17 +38,17 @@
             <?php if ($Footer) echo $Footer; ?>
 
         </div>
-        <?php if($inquiry) echo $inquiry;?>
+        <?php if ($inquiry) echo $inquiry; ?>
         <?php
-        $this->load->view('body/CloseIziToastAfterModalClick');
-        $this->load->view('body/StudentModal');
+        $this->load->view('Body/CloseIziToastAfterModalClick');
+        $this->load->view('Body/StudentModal');
         ?>
-        
+
         <!-- <span class="chat-logo"><i class="bi bi-chat-text"></i></span> -->
     </div>
 
     <!-- Scripts Content -->
-    
+
 
 </body>
 

@@ -77,7 +77,7 @@ class OSE_Guide {
             },
             {
                 element: document.querySelector('.addsubject-button'),
-                intro: 'Click this to choose the subject you want to take. <strong>NOTE: Only Old students are allowed to choose subject\'s that they want to take.</strong>'
+                intro: 'Click this to choose the subject you want to take. <strong>NOTE: Only Old students are allowed to choose subjects that they want to take.</strong>'
             },
             {
                 element: document.querySelector('.viewsched-button'),
@@ -93,7 +93,7 @@ class OSE_Guide {
             },
             {
                 element: document.querySelector('.wizard-proceed-advising'),
-                intro: ' If your are finished then click proceed.'
+                intro: ' If you are finished then click proceed.'
             }
 
         ]

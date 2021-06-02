@@ -96,4 +96,16 @@
         background-color: #05BCC8;
         border: 3px solid #05BCC8;
     }
+    .payment_methods{
+        padding-bottom: 10px;
+    }
+    .btn-hover-red:hover{
+        background-color: rgba(128, 0, 0, 1) !important;
+        /* background-color: rgba(25, 135, 84, 1) !important; */
+        /* color: rgba(255, 0, 0, 1) !important; */
+    }
+    /* .btn-success-hover-transparent:hover{
+        background-color: rgba(255, 0, 0, 1) !important;
+        color: rgba(25, 135, 84, 1) !important;
+    } */
 </style>

@@ -817,7 +817,7 @@ class Main extends MY_Controller
 							}
 						}
 					}
-					$this->mainmodel->revertIfErrorInRequirementUpload();
+					// $this->mainmodel->revertIfErrorInRequirementUpload();
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
@@ -1121,7 +1121,19 @@ class Main extends MY_Controller
 		echo json_encode($getOldAccountStudentInfo);
 		// echo '<pre>'.print_r($getOldAccountStudentInfo,1).'</pre>';
 	}
-
+	public function checksession()
+	{
+		if (!$this->session->userdata('reference_no')) {
+			$this->session->set_flashdata('msg', 'Session Timed Out');
+			echo base_url() . 'index.php/Main/logout';
+		} else {
+			echo '';
+		}
+	}
+	public function unsetdata()
+	{
+		$this->session->unset_userdata('reference_no');
+	}
 	public function resetEnrollmentLegend()
 	{
 		$legend = $this->AdvisingModel->getlegend();

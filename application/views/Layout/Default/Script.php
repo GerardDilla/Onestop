@@ -12,22 +12,31 @@
 <script src="<?php echo base_url(); ?>assets/js/assesment.js" defer></script>
 <script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
 <?php
-    echo "<script>iziToast.show({
-        class:'izitoast-welcome-user',
-        theme: 'dark',
-        icon: 'icon-person',
-        title: 'Welcome',
-        message: '".$this->session->userdata('first_name')." ".$this->session->userdata('last_name')."',
-        position: 'topRight',
-        progressBarColor: '#cc0000',
-        image: '" . base_url('assets/vendors/login_asset/img/sdcalogo.png') . "',
-        timeout:false,
-        close: false,
-        closeOnEscape: false,
-        closeOnClick: false,
-        drag:false
-    });</script>";
+    echo "<script>
+    function showWelcome(){
+        iziToast.show({
+            class:'izitoast-welcome-user',
+            theme: 'dark',
+            icon: 'icon-person',
+            title: 'Welcome',
+            message: '".$this->session->userdata('first_name')." ".$this->session->userdata('last_name')."',
+            position: 'topRight',
+            progressBarColor: '#cc0000',
+            image: '" . base_url('assets/vendors/login_asset/img/sdcalogo.png') . "',
+            timeout:false,
+            close: false,
+            closeOnEscape: false,
+            closeOnClick: false,
+            drag:false
+        });
+    }
+    </script>";
 ?>
+<script>
+if($(window).width()>568){
+    showWelcome();
+}
+</script>
 <!-- <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/jquery.dataTables.min.js"></script> -->
 <!-- <script src="<?php echo base_url(); ?>assets/vendors/Datatable/DataTables-1.10.23/js/dataTables.bootstrap4.min.js"></script> -->
 <!-- <script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script> -->

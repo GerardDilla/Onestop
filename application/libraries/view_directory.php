@@ -108,4 +108,9 @@ class view_directory
 		$data['title'] = 'Enrollment Breakdown';
 		return $data;	
 	}
+	public function resetEnrollmentLegend(){
+		$data['view'] = $this->body.'ResetEnrollment';
+		$data['title'] = 'Reset Assessment & Enrollment';
+		return $data;	
+	}
 }

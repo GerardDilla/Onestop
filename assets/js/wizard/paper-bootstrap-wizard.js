@@ -12,10 +12,10 @@ transparent = true;
 // advising
 // payment
 // registration
-$(document).ready(function () {
+$(document).ready(function() {
 
 
-    $('#readvise_button').click(function () {
+    $('#readvise_button').click(function() {
         wizard_advising();
         hasclass_oldstudent();
         init_paymentmethod();
@@ -32,6 +32,7 @@ $(document).ready(function () {
             transitionOut: 'fadeOutUp'
         }, izitoastWalkthrough);
     }
+
     function showIziToastGuide() {
         iziToast.show({
             class: 'izitoast-open-walkthrough',
@@ -56,25 +57,25 @@ $(document).ready(function () {
                 // ['<button>Ok</button>', function (instance, toast) {
                 //     alert("Hello world!");
                 // }, true],
-                ['<button>Open Guide</button>', function (instance, toast) {
+                ['<button>Open Guide</button>', function(instance, toast) {
                     // current_this.play();
                     var ose_guide1 = new OSE_Guide($('input[name=current_tab_selection]').val());
                     ose_guide1.play();
                     instance.hide({
                         transitionOut: 'fadeOutUp',
-                        onClosing: function (instance, toast, closedBy) {
+                        onClosing: function(instance, toast, closedBy) {
                             // console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
 
                         }
                     }, toast, 'buttonName');
                 }]
             ],
-            onClosing: function (instance, toast, closedBy) {
+            onClosing: function(instance, toast, closedBy) {
                 console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
             }
         });
     }
-    $('#tab_student_information').click(function () {
+    $('#tab_student_information').click(function() {
         setTimeout(() => {
             if ($('#li_student_information').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('student_information');
@@ -85,7 +86,7 @@ $(document).ready(function () {
             }
         }, 500)
     })
-    $('#tab_requirements').click(function () {
+    $('#tab_requirements').click(function() {
         setTimeout(() => {
             if ($('#li_requirements').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('requirements');
@@ -96,7 +97,7 @@ $(document).ready(function () {
             }
         }, 500)
     })
-    $('#tab_advising').click(function () {
+    $('#tab_advising').click(function() {
         setTimeout(() => {
             if ($('#li_advising').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('advising');
@@ -107,7 +108,7 @@ $(document).ready(function () {
             }
         }, 500)
     })
-    $('#tab_payment').click(function () {
+    $('#tab_payment').click(function() {
         setTimeout(() => {
             if ($('#li_payment').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('payment');
@@ -119,7 +120,7 @@ $(document).ready(function () {
         }, 500)
     })
 
-    $('#tab_registration').click(function () {
+    $('#tab_registration').click(function() {
         setTimeout(() => {
             if ($('#li_registration').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('registration');
@@ -161,11 +162,12 @@ $(document).ready(function () {
     //     }
     // });
 
-    $('.wizard-proceed-advising').click(function (e) {
+    $('.wizard-proceed-advising').click(function(e) {
+
         $.ajax({
             url: 'https://stdominiccollege.edu.ph/SDCALMSv2/index.php/API/BalanceAPI?Reference_Number=' + ref__,
             dataType: 'JSON',
-            success: function (response) {
+            success: function(response) {
                 // console.log(response['Output']['Outstanding_Balance']);
                 balance = response['Output']['Outstanding_Balance'];
                 if (balance >= 1) {
@@ -176,14 +178,13 @@ $(document).ready(function () {
                         color: 'red',
                     });
                 } else {
+
                     // if ($(this).hasClass('old-student')) {
                     //     console.log('has class');
                     // }
                     // console.log($(this).hasClass('old-student'));
                     // Event handler when proceeding to next step
                     // if ($('#advising_content').hasClass('active')) {
-
-
                     // init_advise();
 
                     // console.log('ready to advise');
@@ -197,20 +198,22 @@ $(document).ready(function () {
                         message: 'You cannot change subjects after the Assessment. Do you want to proceed?',
                         position: 'center',
                         buttons: [
-                            ['<button><b>YES</b></button>', function (instance, toast) {
+                            ['<button><b>YES</b></button>', function(instance, toast) {
                                 console.log('ready to advise');
                                 // Came from advising.js
 
                                 // wizard_payment();
                                 init_advise();
                                 // location.reload();
-
+                                hideIziToastGuide();
+                                var ose_guide1 = new OSE_Guide('payment');
+                                ose_guide1.play();
                                 instance.hide({
                                     transitionOut: 'fadeOut'
                                 }, toast, 'button');
 
                             }, true],
-                            ['<button>NO</button>', function (instance, toast) {
+                            ['<button>NO</button>', function(instance, toast) {
 
                                 e.preventDefault();
                                 instance.hide({
@@ -219,10 +222,10 @@ $(document).ready(function () {
 
                             }, true],
                         ],
-                        onClosing: function (instance, toast, closedBy) {
+                        onClosing: function(instance, toast, closedBy) {
                             console.info('Closing | closedBy: ' + closedBy);
                         },
-                        onClosed: function (instance, toast, closedBy) {
+                        onClosed: function(instance, toast, closedBy) {
                             console.info('Closed | closedBy: ' + closedBy);
                         }
                     });
@@ -232,7 +235,7 @@ $(document).ready(function () {
 
     });
 
-    $('.wizard-proceed-student_info').click(function () {
+    $('.wizard-proceed-student_info').click(function() {
 
     });
 
@@ -253,7 +256,7 @@ $(document).ready(function () {
         //     }
         // },
 
-        onInit: function (tab, navigation, index) {
+        onInit: function(tab, navigation, index) {
             //check number of tabs and fill the entire row
             var $total = navigation.find("li").length;
             $width = 100 / $total;
@@ -261,7 +264,7 @@ $(document).ready(function () {
             navigation.find("li").css("width", $width + "%");
         },
 
-        onTabClick: function (tab, navigation, index) {
+        onTabClick: function(tab, navigation, index) {
             alert(index);
             // var $valid = $('.wizard-card form').valid();
             // if (!$valid) {
@@ -271,7 +274,7 @@ $(document).ready(function () {
             // }
         },
 
-        onTabShow: function (tab, navigation, index) {
+        onTabShow: function(tab, navigation, index) {
             var $total = navigation.find("li").length;
             var $current = index + 1;
 
@@ -300,16 +303,16 @@ $(document).ready(function () {
     });
 
     // Prepare the preview for profile picture
-    $("#wizard-picture").change(function () {
+    $("#wizard-picture").change(function() {
         readURL(this);
     });
 
     // Prepare the preview for profile picture
-    $("#wizard-picture").change(function () {
+    $("#wizard-picture").change(function() {
         readURL(this);
     });
 
-    $('[data-toggle="wizard-radio"]').click(function () {
+    $('[data-toggle="wizard-radio"]').click(function() {
         wizard = $(this).closest(".wizard-card");
         wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
         $(this).addClass("active");
@@ -317,7 +320,7 @@ $(document).ready(function () {
         $(this).find('[type="radio"]').attr("checked", "true");
     });
 
-    $('[data-toggle="wizard-checkbox"]').click(function () {
+    $('[data-toggle="wizard-checkbox"]').click(function() {
         if ($(this).hasClass("active")) {
             $(this).removeClass("active");
             $(this).find('[type="checkbox"]').removeAttr("checked");
@@ -344,7 +347,7 @@ function fetch_user_status() {
         url: base_url + "index.php/Main/wizard_tracker_status",
         async: true,
         dataType: "JSON",
-        success: function (response) {
+        success: function(response) {
             // alert(response);
             // result = JSON.parse(response);
             payment = response.payment;
@@ -391,6 +394,8 @@ function fetch_user_status() {
                 wizard_requirements();
                 if ($('.wizard-proceed-advising').hasClass('old-student')) {
                     $("#progress_bar").css("width", "50%");
+                    $("#requirements_content").removeClass("active");
+                    $("#li_requirements").removeClass("active");
                 }
                 var ose_guide1 = new OSE_Guide('requirements');
 
@@ -402,7 +407,7 @@ function fetch_user_status() {
             }
             ose_guide1.play();
         },
-        error: function (response) { },
+        error: function(response) {},
     });
 
 

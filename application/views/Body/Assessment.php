@@ -94,7 +94,12 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <div class="col-md-12 student_info_submit_div" style="text-align:center">
                                     <hr>
                                     <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
-                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>
+                                    <?php
+                                    $data_course = empty($this->data['course']) ? 'N/A' : $this->data['course'];
+                    if ($data_course == 'N/A') {
+                    ?>
+                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info btn-hover-red" onclick="submit_course()">PROCEED</button>
+                                    <?php } ?>
                                 </div>
                             </div>
                             <div class="tab-pane container" id="advising_content">
@@ -102,7 +107,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
                                     <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
-                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-advising" id="wizard-button">PROCEED</button>
+                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-advising btn-hover-red" id="wizard-button">PROCEED</button>
                                 </div>
                             </div>
                             <div class="tab-pane container" id="requirements_content">
@@ -130,7 +135,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <?php $this->load->view($this->data['registration']); ?>
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
-                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form">Print Registration Form</a>
+                                    <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form btn-hover-red">Print Registration Form</a>
 
                                 </div>
                                 <hr>
@@ -179,6 +184,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 <script>
 
 </script>
+
 <!--   Core JS Files   -->
 <script src="<?php echo base_url() ?>assets/js/wizard/jquery-2.2.4.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.js" type="text/javascript"></script>
@@ -192,6 +198,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
 
 <!-- Advising -->
 <script src="<?php echo base_url(); ?>assets/js/advising.js" defer></script>
+
 <script>
 
 

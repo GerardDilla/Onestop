@@ -6,8 +6,8 @@
                 <h6 class="col-md-12" style="margin-bottom:15px">YOUR INFORMATION
                     <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
                 </h6>
-                <div class="col-md-6">
-                    <table class="table table-striped table-hover" style="display: block; overflow: auto;">
+                <div class="col-md-5">
+                    <table class="table table-striped table-hover" style="display: table; overflow: auto;">
                         <tbody>
                             <tr>
                                 <td>REFERENCE NUMBER:</td>
@@ -32,8 +32,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-6">
-                    <table class="table table-striped table-hover" style="display: block; overflow: auto;">
+                <div class="col-md-7">
+                    <table class="table table-striped table-hover" style="display: table; overflow: auto;">
                         <tbody>
                             <tr>
                                 <td>ADDRESS:</td>
@@ -61,9 +61,9 @@
                 </div>
             </div>
             <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank" class="intro-step-1">
-                <div class="btn btn-success">
-                <i class="bi bi-file-earmark-arrow-down" style="font-size: 20px;"></i>
-                <!-- <i class="bi bi-file-earmark-arrow-down-fill" style="font-size: 20px;"></i> -->
+                <div class="btn btn-success btn-hover-red">
+                    <i class="bi bi-file-earmark-arrow-down" style="font-size: 20px;"></i>
+                    <!-- <i class="bi bi-file-earmark-arrow-down-fill" style="font-size: 20px;"></i> -->
                     DOWNLOAD APPLICATION
                 </div>
             </a>
@@ -100,30 +100,39 @@
                 <?php
                 }
                 ?>
+                <?php
+                // if ($data_course == 'N/A') {
+                ?>
+                <?php
+                    if ($data_course == 'N/A') {
+                    ?>
+                    <div class="col-md-12" id="choose_your_status">
+                        <HR>
+                        <h6>CHOOSE YOUR STATUS</h6>
+                        <br>
 
-                <div class="col-md-12" id="choose_your_status">
-                    <HR>
-                    <h6>CHOOSE YOUR STATUS</h6>
-                    <br>
+                        <input type="radio" class="btn-check" name="eductype" id="educ_new_student" checked value="freshmen" data-etype='freshmen' autocomplete="off">
+                        <label class="btn btn-outline-primary" for="educ_new_student" id="educ_new_student_label">NEW STUDENT</label>
 
-                    <input type="radio" class="btn-check" name="eductype" id="educ_new_student" checked value="freshmen" data-etype='freshmen' autocomplete="off">
-                    <label class="btn btn-outline-primary" for="educ_new_student" id="educ_new_student_label">NEW STUDENT</label>
+                        <input type="radio" class="btn-check" name="eductype" id="educ_transferee" value="transferee" data-etype='transferee' autocomplete="off">
+                        <label class="btn btn-outline-primary" for="educ_transferee" id="educ_transferee_label">TRANSFEREE</label>
+                        <!-- <button class="btn btn-sm btn-outline-primary">NEW STUDENT</button> -->
 
-                    <input type="radio" class="btn-check" name="eductype" id="educ_transferee" value="transferee" data-etype='transferee' autocomplete="off">
-                    <label class="btn btn-outline-primary" for="educ_transferee" id="educ_transferee_label">TRANSFEREE</label>
-                    <!-- <button class="btn btn-sm btn-outline-primary">NEW STUDENT</button> -->
-
-                </div>
-                <div class="col-md-12 shs-verification">
-                    <br>
-                    <div class="form-check">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" <?php echo $data_shs_student_number > 0 ? 'checked' : ''; ?> class="form-check-input form-check-primary shsverification" name="shsverification" id="shsverification">
-                            <label class="form-check-label" for="customColorCheck1">I Graduated from St. Dominic College of Asia</label>
+                    </div>
+                    
+                    <div class="col-md-12 shs-verification">
+                        <br>
+                        <div class="form-check">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" <?php echo $data_shs_student_number > 0 ? 'checked' : ''; ?> class="form-check-input form-check-primary shsverification" name="shsverification" id="shsverification">
+                                <label class="form-check-label" for="customColorCheck1">I Graduated from St. Dominic College of Asia</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                    <?php } ?>
+                <?
+                //  }
+                 ?>
                 <div class="col-md-12 balance-verification" style="display:none">
                     <br>
                     <div class="form-check" style="padding-left:0px">
@@ -145,33 +154,38 @@
                     <h6>CONFIRM YOUR PROGRAM</h6>
                     <div id='have_course'></div>
                     <br>
-                    <fieldset class="form-group">
-                        <select class="form-select" id="courses" required>
-                            <option value="none" disabled selected>PREFERRED PROGRAM</option>
-                            <?php
-                            // if ($reference_number_from_session) {
-                            if ($this->data['courses']) {
-                                // foreach ($this->data['courses'] as $index => $course) {
-                                //     echo "<option value='$course'>$course : " . $this->data['courses_info'][$index]['Program_Name'] . "</option>";
-                                // }
-                                foreach ($this->data['courses'] as $course) {
-                                    echo "<option value='" . $course['Program_Code'] . "'>" . $course['Program_Code'] . " : " . $course['Program_Name'] . "</option>";
+                    <?php
+                    if ($data_course == 'N/A') {
+                    ?>
+                        <fieldset class="form-group">
+                            <select class="form-select" id="courses" required>
+                                <option value="none" disabled selected>PREFERRED PROGRAM</option>
+                                <?php
+                                // if ($reference_number_from_session) {
+                                if ($this->data['courses']) {
+                                    // foreach ($this->data['courses'] as $index => $course) {
+                                    //     echo "<option value='$course'>$course : " . $this->data['courses_info'][$index]['Program_Name'] . "</option>";
+                                    // }
+                                    foreach ($this->data['courses'] as $course) {
+                                        echo "<option value='" . $course['Program_Code'] . "'>" . $course['Program_Code'] . " : " . $course['Program_Name'] . "</option>";
+                                    }
                                 }
-                            }
-                            // } else {
-                            ?>
-                            <!-- <option value="none" disabled selected>No Session Get</option> -->
-                            <?php
-                            // }
-                            ?>
-                        </select>
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <select class="form-select" id="majors">
-                            <option value="none" disabled selected>COURSE MAJOR</option>
+                                // } else {
+                                ?>
+                                <!-- <option value="none" disabled selected>No Session Get</option> -->
+                                <?php
+                                // }
+                                ?>
+                            </select>
+                        </fieldset>
 
-                        </select>
-                    </fieldset>
+                        <fieldset class="form-group">
+                            <select class="form-select" id="majors">
+                                <option value="none" disabled selected>COURSE MAJOR</option>
+
+                            </select>
+                        </fieldset>
+                    <?php } ?>
                     <!-- <button class="btn btn-sm btn-primary" onclick="submit_course()" for="success-outlined">
                         SUBMIT COURSE
                     </button> -->

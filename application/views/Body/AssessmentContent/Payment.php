@@ -107,22 +107,24 @@
             </label>
         </div>
     </div>
+    <!-- Spacing -->
+    <div style="padding: 30px;"></div>
     <!-- Payment Options -->
     <div class="col-md-12 row">
         <div class="col-md-12">
             <h3>Payment Options</h3>
         </div>
-        <div class="col-md-3" style="padding: 10px;">
+        <div class="col-md-3 payment_methods">
             <!-- <a href="https://stdominiccollege.edu.ph/SDCAPayment/" target=="_blank" type="button" class="btn btn-lg btn-primary">PAY ONLINE</a> -->
-            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary online-payment" data-bs-toggle="modal" data-bs-target="#onlinepaymentModal">PAY ONLINE</button>
+            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary online-payment btn-hover-red" data-bs-toggle="modal" data-bs-target="#onlinepaymentModal">PAY ONLINE</button>
         </div>
-        <div class="col-md-3" style="padding: 10px;">
-            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary over-the-counter" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br>
+        <div class="col-md-3 payment_methods">
+            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary over-the-counter btn-hover-red" data-bs-toggle="modal" data-bs-target="#overthecounterModal">OVER THE COUNTER</button><br>
         </div>
-        <div class="col-md-3" style="padding: 10px;">
-            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary pay-at-sdca" data-bs-toggle="modal" data-bs-target="#cashierPayment">Pay at SDCA Cashier</button><br>
+        <div class="col-md-3 payment_methods">
+            <button type="button" style="width: 100%;" class="btn btn-lg btn-primary pay-at-sdca btn-hover-red" data-bs-toggle="modal" data-bs-target="#cashierPayment">Pay at SDCA Cashier</button><br>
         </div>
-        <div class="col-md-3" style="padding: 10px;">
+        <div class="col-md-3 payment_methods">
         </div>
     </div>
     <br>
@@ -131,18 +133,17 @@
         <div class="col-md-12">
             <h4>Already Paid?</h4>
         </div>
-        <div class="col-md-3">
-            <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" style="width: 100%;" target="_blank" type="button" class="btn btn-lg btn-primary upload-proof">UPLOAD PROOF OF PAYMENT</a>
+        <div class="col-md-3 payment_methods">
+            <a href="<?php echo site_url('main/uploadProofOfPayment'); ?>" style="width: 100%;" target="_blank" type="button" class="btn btn-lg btn-primary upload-proof btn-hover-red">UPLOAD PROOF OF PAYMENT</a>
         </div>
         <div class="col-md-12">
-
         </div>
     </div>
     <div class="col-md-12 row">
         <hr>
         <div class="col-md-3">
             <h4>Change your Mind?</h4>
-            <button type="button" class="btn btn-lg btn-primary" id="readvise_button">CHOOSE AGAIN</button>
+            <button type="button" class="btn btn-lg btn-primary btn-hover-red" id="readvise_button">CHOOSE AGAIN</button>
         </div>
         <div class="col-md-3" style="text-align:center">
             <img style="width:50%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>"></li>

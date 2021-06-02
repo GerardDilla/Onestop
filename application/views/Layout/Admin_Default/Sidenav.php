@@ -3,7 +3,7 @@
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
                 <div class="logo">
-                    <a href="index.html"><img src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png');?>" alt="Logo" srcset=""></a>
+                    <a href="index.html"><img src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png'); ?>" alt="Logo" srcset=""></a>
                     <hr>
                     <h6 style="text-align: center;">ADMISSIONS PORTAL</h6>
                 </div>
@@ -62,7 +62,7 @@
                     </ul>
                 </li> -->
                 <li class="sidebar-item">
-                    <a href="<?php echo base_url('admin/logout'); ?>" class='sidebar-link'>
+                    <a href="<?php echo base_url('index.php/admin/logout'); ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>
                         <span>Logout</span>
                     </a>

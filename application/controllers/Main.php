@@ -775,7 +775,7 @@ class Main extends MY_Controller
 			// echo '<pre>'.print_r($array_completefiles,1).'</pre>';
 			// exit;
 			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
-			if ($error_count == 0) {
+			if ($error_count == 0 && $upload_count != 0) {
 				$result = $this->gdrive_uploader->index($all_uploadeddata);
 				$decode_result = json_decode($result, true);
 				if (!empty($result)) {
@@ -812,12 +812,12 @@ class Main extends MY_Controller
 							}
 						}
 					}
-					$this->mainmodel->revertIfErrorInRequirementUpload();
+					// $this->mainmodel->revertIfErrorInRequirementUpload();
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
 			} else {
-				$this->mainmodel->revertIfErrorInRequirementUpload();
+				// $this->mainmodel->revertIfErrorInRequirementUpload();
 				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!!');
 				redirect($_SERVER['HTTP_REFERER']);
 			}
@@ -1114,5 +1114,19 @@ class Main extends MY_Controller
 	public function unsetdata()
 	{
 		$this->session->unset_userdata('reference_no');
+	}
+	public function resetEnrollmentLegend()
+	{
+		$legend = $this->AdvisingModel->getlegend();
+		$this->data['sem'] =  $legend['Semester'];
+		$this->data['sy'] =  $legend['School_Year'];
+		$this->default_template($this->view_directory->resetEnrollmentLegend());
+	}
+	public function updateEnrollmentLegend()
+	{
+		$sy = $this->input->get('school_year');
+		$sem = $this->input->get('sem');
+		$this->mainmodel->updateLegend(array('Semester' => $sem, 'School_Year' => $sy));
+		echo json_encode('success');
 	}
 }

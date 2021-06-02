@@ -67,7 +67,7 @@ if ($this->session->flashdata('msg') != '') {
                 <div class="col-lg-6 col-md-6 col-sm-6 second_row login-row bg-white">
                     <div class="form d-flex">
                         <div class="content">
-                            <form method="post" class="form-validate" action="<?php echo base_url('admin/loginProcess') ?>" tabindex="1">
+                            <form method="post" class="form-validate" action="<?php echo base_url('index.php/admin/loginProcess') ?>" tabindex="1">
                                 <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png'); ?>">
                                     <span class="white-box"></span>
                                     <div class="col-md-12" style="margin-bottom:20px;text-align:center;">

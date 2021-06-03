@@ -163,7 +163,7 @@
 </section>
 <script>
     <?php
-    if ($this->session->flashdata('success')) {
+    if ($this->session->flashdata('success') != '') {
     ?>
         iziToast.success({
             title: 'OK',
@@ -171,11 +171,11 @@
         });
     <?php
     }
-    if ($this->session->flashdata('error')) {
+    if ($this->session->flashdata('error') != '') {
     ?>
         iziToast.error({
             title: 'Error',
-            message: 'Already have data',
+            message: '<?php echo $this->session->flashdata('error'); ?>',
         });
     <?php
     }

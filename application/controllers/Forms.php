@@ -67,52 +67,73 @@ class Forms extends MY_Controller
 	}
 	public function submit_id_application()
 	{
-		
+
 		$config['upload_path'] = './express/assets/';
 		$config['allowed_types'] = '*';
-		
 
+		echo ('1');
 		$id_app = $this->FormsModel->check_student_id($this->reference_number);
 		$check_data = empty($id_app['count']) ? "no_data" : $id_app['count'];
 
 		$array_files = array();
 		$array_filestodelete = array();
-		$error_count = 0;
-		if ($check_data == 'no_data') {
-			$first_name = $this->input->post('first_name');
-			$middle_name = $this->input->post('middle_name');
-			$last_name = $this->input->post('last_name');
-			$config['file_name'] = 'id_picture_' . $this->reference_number . '' . date("YmdHis");
-			$this->load->library('upload', $config);
-			$this->upload->initialize($config);
-			if ($this->upload->do_upload('id_picture')) {
-				$uploaded_data = $this->upload->data();
-				array_push($array_files, array(
-					"name" => $uploaded_data['orig_name'],
-					"type" => $uploaded_data['file_type']
-				));
-				array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			}
-			else{
-				++$error_count;
-			}
-			$config['file_name'] = 'signature_' . $this->reference_number . '' . date("YmdHis");
-			$this->load->library('upload', $config);
-			$this->upload->initialize($config);
-			if ($this->upload->do_upload('signature')) {
-				$uploaded_data = $this->upload->data();
-				array_push($array_files, array(
-					"name" => $uploaded_data['orig_name'],
-					"type" => $uploaded_data['file_type']
-				));
-				array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			}
-			else{
-				++$error_count;
-			}
-			if($error_count==0){
-				$result = $this->gdrive_uploader->index(array("folder_name" => $this->reference_number . '/'.strtoupper($this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name')), "data" => $array_files));
-				$decode_result = json_decode($result,true);
+		$error_pic_count = 0;
+		$error_sign_count = 0;
+		echo ('2');
+		$first_name = $this->input->post('first_name');
+		$middle_name = $this->input->post('middle_name');
+		$last_name = $this->input->post('last_name');
+		$config['file_name'] = 'id_picture_' . $this->reference_number . '' . date("YmdHis");
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		if ($this->upload->do_upload('id_picture')) {
+			echo ('3');
+			$uploaded_data = $this->upload->data();
+			array_push($array_files, array(
+				"name" => $uploaded_data['orig_name'],
+				"type" => $uploaded_data['file_type']
+			));
+			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+		} else {
+			echo ('4');
+			++$error_pic_count;
+		}
+		$config['file_name'] = 'signature_' . $this->reference_number . '' . date("YmdHis");
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		if ($this->upload->do_upload('signature')) {
+			echo ('5');
+			$uploaded_data = $this->upload->data();
+			array_push($array_files, array(
+				"name" => $uploaded_data['orig_name'],
+				"type" => $uploaded_data['file_type']
+			));
+			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+		} else {
+			echo ('6');
+			++$error_sign_count;
+		}
+		if ($error_pic_count != 0) {
+			echo ('7');
+			$this->session->set_flashdata('error', 'Please upload a Picture');
+			redirect($_SERVER['HTTP_REFERER']);
+			return;
+		} else if ($error_sign_count != 0) {
+			echo ('8');
+			$this->session->set_flashdata('error', 'Please upload a E-Signature');
+			redirect($_SERVER['HTTP_REFERER']);
+			return;
+		} else if ($error_pic_count == 0 && $error_sign_count == 0) {
+			echo ('9');
+			if ($check_data == 'no_data') {
+				echo ('-10');
+				$result = $this->gdrive_uploader->index(
+					array(
+						"folder_name" => $this->reference_number . '/' . strtoupper($this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name')),
+						"data" => $array_files
+					)
+				);
+				$decode_result = json_decode($result, true);
 				$files = glob('express/assets/*'); // get all file names
 				foreach ($files as $file) {
 					if (in_array($file, $array_filestodelete)) {
@@ -121,8 +142,8 @@ class Forms extends MY_Controller
 						}
 					}
 				}
-				if(!empty($result)){
-					if($decode_result['msg']=="success"){
+				if (!empty($result)) {
+					if ($decode_result['msg'] == "success") {
 						$array = array(
 							'reference_number' => $this->reference_number,
 							'first_name' => $first_name,
@@ -134,20 +155,26 @@ class Forms extends MY_Controller
 						$digital_id = $this->FormsModel->id_application($array);
 						$this->session->set_flashdata('success', 'ID Application send');
 						redirect($_SERVER['HTTP_REFERER']);
-					}
-					else{
-						$this->session->set_flashdata('error', "Files Upload Error: ".$result);
+						return;
+					} else {
+						$this->session->set_flashdata('error', "Files Upload Error: " . $result);
 						redirect($_SERVER['HTTP_REFERER']);
+						return;
 					}
-				}
-				else{
+				} else {
 					$this->session->set_flashdata('error', "Files Upload Error: Google drive is OFFLINE");
 					redirect($_SERVER['HTTP_REFERER']);
+					return;
 				}
+			} else {
+				$this->session->set_flashdata('error', 'Already Have Data');
+				redirect($_SERVER['HTTP_REFERER']);
+				return;
 			}
-		}else{
-			$this->session->set_flashdata('error', 'Already Have Data');
+		} else {
+			$this->session->set_flashdata('error', 'Failed to Upload');
 			redirect($_SERVER['HTTP_REFERER']);
+			return;
 		}
 	}
 }

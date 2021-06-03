@@ -65,6 +65,12 @@ class Admin extends MY_Controller
 	public function getDigitalCitizenship()
 	{
 		$getDigitalCitizenship = $this->adminmodel->getDigitalCitizenship();
+
+		// $student = $this->AssesmentModel->get_student_with_course($getDigitalCitizenship['reference_number']);
+		// $first_name = $this->clean($student['First_Name']);
+		// $last_name = $this->clean($student['Last_Name']);
+		// $getDigitalCitizenship['email'] = $first_name.'.'.$last_name.'@sdca.edu.ph';
+
 		echo json_encode($getDigitalCitizenship);
 	}
 	public function getDigitalCitizenshipAccount()
@@ -106,5 +112,20 @@ class Admin extends MY_Controller
 	{
 		$this->session->set_userdata("admin_id");
 		redirect(base_url('admin/'));
+	}
+
+	function test_name()
+	{
+		$student = $this->AssesmentModel->get_student_with_course($this->reference_number);
+		$first_name = $this->clean($student['First_Name']);
+		$last_name = $this->clean($student['Last_Name']);
+		echo $first_name.'.'.$last_name.'@sdca.edu.ph';
+	}
+
+	function clean($string)
+	{
+		$trim = trim($string);
+		$trim_string = str_replace(' ', '', $trim);
+		return strtolower($trim_string);
 	}
 }

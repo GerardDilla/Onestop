@@ -65,9 +65,10 @@ class AdminModel extends CI_Model
         $this->db->update('digital_citizenship_accounts', $data);
     }
     public function getIdApplication(){
-        $this->db->select('*');
-        $this->db->from('id_application');
-        $this->db->join('Student_Info','id_application.reference_number = Student_Info.Reference_Number','LEFT');
+        $this->db->select('ia.*,
+        si.*');
+        $this->db->from('id_application ia');
+        $this->db->join('Student_Info si','ia.reference_number = si.Reference_Number','LEFT');
         return $this->db->get()->result_array();
     }
     public function updateIdApplication($array)

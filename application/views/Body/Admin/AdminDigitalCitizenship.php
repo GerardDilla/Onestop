@@ -9,10 +9,11 @@
                         <tr>
                             <th>Name (Last, First Middle)</th>
                             <th>Student Number</th>
-                            <th width="15%">Blackboard Account</th>
+                            <th width="15%">Emails for Account</th>
+                            <!-- <th width="15%">Blackboard Account</th>
                             <th width="15%">Microsoft Office 365</th>
                             <th width="15%">SDCA Gmail Account</th>
-                            <th width="15%">Student Portal</th>
+                            <th width="15%">Student Portal</th> -->
                         </tr>
                     </thead>
                     <tbody id="adminDigitalTbody">
@@ -26,6 +27,7 @@
 </section>
 <script>
     ajax_digital()
+
     function digital_update_status(id, id_acc) {
         switch_id = $('#switch' + id + id_acc);
         switch_value = switch_id.val();
@@ -46,7 +48,6 @@
             success: function(response) {}
         })
     }
-    
 
     function ajax_digital() {
         $.ajax({
@@ -54,7 +55,22 @@
             dataType: 'json',
             success: function(response) {
                 $.each(response, function(key, value) {
-                    ajax_digital_account(value);
+                    // ajax_digital_account(value);
+                    sdca_email = '';
+                    sdca_email = remove_space_regex(value['First_Name']) +'.'+ remove_space_regex(value['Last_Name']) + '@sdca.edu.ph';
+                    console.log(sdca_email);
+                    html = '<tr>' +
+                            '<td>' +
+                                value['Last_Name'] + ', ' + value['First_Name'] + ' ' + value['Middle_Name'] +
+                            '</td>' +
+                            '<td>' +
+                                value['Student_Number'] +
+                            '</td>' +
+                            '<td>' +
+                                sdca_email +
+                            '</td>' +
+                            '</tr>';
+                    $('#adminDigitalTbody').append(html);
                 });
             }
         })
@@ -76,20 +92,27 @@
                     '<td>' +
                     data['Student_Number']
                 '</td>';
-                $.each(response, function(key_acc, value_acc) {
-                    checked = '';
-                    if (value_acc['status'] == 'done') {
-                        checked = 'checked';
-                    }
-                    html += '<td><label class="switch">' +
-                        '<input type="checkbox" ' + checked + ' id="switch' + data['id'] + value_acc['id'] + '" data-' + value_acc['request'] + '="' + value_acc['id'] + '"value="' + value_acc['request'] + '" onclick="digital_update_status(' + data['id'] + ',' + value_acc['id'] + ')">' +
-                        '<span class="slider round"></span>' +
-                        '</label>' +
-                        '</td>';
-                });
+                // $.each(response, function(key_acc, value_acc) {
+                //     checked = '';
+                //     if (value_acc['status'] == 'done') {
+                //         checked = 'checked';
+                //     }
+                //     html += '<td><label class="switch">' +
+                //         '<input type="checkbox" ' + checked + ' id="switch' + data['id'] + value_acc['id'] + '" data-' + value_acc['request'] + '="' + value_acc['id'] + '"value="' + value_acc['request'] + '" onclick="digital_update_status(' + data['id'] + ',' + value_acc['id'] + ')">' +
+                //         '<span class="slider round"></span>' +
+                //         '</label>' +
+                //         '</td>';
+                // });
                 html += '</tr>';
                 $('#adminDigitalTbody').append(html);
             }
         })
+    }
+
+    // alert('Juan Pedro'.replace(/\s/g, ''));
+    function remove_space_regex(string) {
+        replace = string.replace(/\s/g, '');
+        lowercase = string.toLowerCase();
+        return lowercase;
     }
 </script>

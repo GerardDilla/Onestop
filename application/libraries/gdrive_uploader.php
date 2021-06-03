@@ -13,8 +13,8 @@ class gdrive_uploader
         $main_folder_id = $this->config['folder_id'];
         $all_uploadeddata = array('folder_name'=>$data['folder_name'],"folder_id"=>$main_folder_id,"data" => $data['data']);
         $string = http_build_query($all_uploadeddata);
-        $ch = curl_init("https://stdominiccollege.edu.ph:4003/gdriveuploader/");
-        // $ch = curl_init("htts://localhost:4003/gdriveuploader/");
+        // $ch = curl_init("https://stdominiccollege.edu.ph:4003/gdriveuploader/");
+        $ch = curl_init("http://localhost:4003/gdriveuploader/");
         // curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$string);

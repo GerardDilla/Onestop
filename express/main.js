@@ -8,6 +8,7 @@ const NotificationService = require('./Service/NotificationService');
 const bodyParser = require('body-parser');
 const uploadToGdrive = require("./route/uploadtogdrive");
 const gdriveuploader = require("./route/gdrivelibrary");
+const nextCloud = require("./route/NextCloud");
 const moment = require("moment")
 const app = express(feathers());
 const path = require("path");
@@ -45,12 +46,13 @@ app.configure(express.rest());
 app.get("/", (req, res) => {
   res.send('Welcome to OSE API Date:' + moment().format('YYYY-MM-DD kk:mm:ss'))
 });
+
 app.use('/chat-inquiry',new ChatService());
 app.use('/chat-action',new ChatActionService());
 app.use('/notification',new NotificationService());
 app.use("/uploadtodrive",uploadToGdrive);
 app.use("/gdriveuploader",gdriveuploader);
-
+app.use('/next-cloud',nextCloud); 
 // const cors = require("cors");
 // app.use(cors)
 

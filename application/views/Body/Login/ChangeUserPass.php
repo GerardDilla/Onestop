@@ -54,9 +54,9 @@ if ($this->session->flashdata('error') != '') {
                                     <br>
                                     <input type="hidden" name="JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=" value="<?php echo $key; ?>">
 
-                                    <!-- <div class="col-md-12" style="margin-bottom:40px">
-                    <h1>Forgot Password</h1>
-                </div> -->
+                                    <div class="col-md-12" style="margin-bottom:40px">
+                                        <h1>Create your Account</h1>
+                                    </div>      
                                     <div class="form-group anim3" id="input_username">
                                         <input required autocomplete="off" type="text" name="username" data-msg="Please enter your new username" class="input-material">
                                         <label for="login-new" class="label-material" style="color:black;font-weight:bold;">Input your Username</label>

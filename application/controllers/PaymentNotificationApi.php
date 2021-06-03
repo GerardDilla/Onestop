@@ -57,7 +57,7 @@ class PaymentNotificationApi extends CI_Controller
                 curl_close($ch);
                 $email_data = array(
                     'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
-                    'reply_to' => 'jfabregas@sdca.edu.ph',
+                    'reply_to' => '',
                     'sender_name' => 'St. Dominic College of Asia',
                     'send_to_email' => $student_email,
                     'title' => 'Proof of Payment',

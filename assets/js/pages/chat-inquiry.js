@@ -5,8 +5,8 @@ var modal_status = 0;
 var connectionOptions =  {          
             "transports" : ["websocket"]
         };
-const socket = io('https://localhost:4003');
-// const socket = io('https://stdominiccollege.edu.ph:4003',connectionOptions);
+// const socket = io('https://localhost:4003');
+const socket = io('https://stdominiccollege.edu.ph:4003',connectionOptions);
 const app = feathers();
 var array_status = [];
 var status_running = false;

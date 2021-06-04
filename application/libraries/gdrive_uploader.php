@@ -11,7 +11,25 @@ class gdrive_uploader
 	public function index($data)
 	{
         $main_folder_id = $this->config['folder_id'];
-        $all_uploadeddata = array('folder_name'=>$data['folder_name'],"folder_id"=>$main_folder_id,"data" => $data['data']);
+        $all_uploadeddata = array('folder_name'=>$data['folder_name'],"folder_id"=>$main_folder_id,"data" => $data['data'],'token_type'=>'');
+        $string = http_build_query($all_uploadeddata);
+        // $ch = curl_init("http://stdominiccollege.edu.ph:4004/gdriveuploader/");
+        $ch = curl_init("http://localhost:4004/gdriveuploader/");
+        // curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
+        curl_setopt($ch,CURLOPT_POST,true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        // curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        // curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        $result = curl_exec($ch);
+        return $result;
+        curl_close($ch);
+  }
+  public function uploadWithDifferentToken($data)
+	{
+        $main_folder_id = $this->config['folder_id'];
+        $all_uploadeddata = array('folder_name'=>$data['folder_name'],"folder_id"=>$main_folder_id,"data" => $data['data'],'token_type'=>$data['token_type']);
         $string = http_build_query($all_uploadeddata);
         // $ch = curl_init("http://stdominiccollege.edu.ph:4004/gdriveuploader/");
         $ch = curl_init("http://localhost:4004/gdriveuploader/");

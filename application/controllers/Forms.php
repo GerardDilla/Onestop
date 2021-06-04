@@ -8,7 +8,8 @@ class Forms extends MY_Controller
 		parent::__construct();
 		$this->load->model('FormsModel');
 		$this->load->library('session');
-		$this->load->library('gdrive_uploader', array('folder_id' => '1ule2fZTDODUKtTNzqSPD-taEqAUYuPKZ'));
+		// $this->load->library('gdrive_uploader', array('folder_id' => '1ule2fZTDODUKtTNzqSPD-taEqAUYuPKZ'));
+		$this->load->library('gdrive_uploader', array('folder_id' => '15hfHgkH02M7MW5h9-vHxUbut-HYaOamr'));
 		$this->reference_number = $this->session->userdata('reference_no');
 	}
 
@@ -111,7 +112,9 @@ class Forms extends MY_Controller
 				++$error_count;
 			}
 			if($error_count==0){
-				$result = $this->gdrive_uploader->index(array("folder_name" => $this->reference_number . '/'.strtoupper($this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name')), "data" => $array_files));
+				// $result = $this->gdrive_uploader->index(array("folder_name" => $this->reference_number . '/'.strtoupper($this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name')), "data" => $array_files));
+				
+				$result = $this->uploadWithDifferentToken->index(array("token_type"=>'des',"folder_name" => $this->reference_number . '/'.strtoupper($this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name')), "data" => $array_files));
 				$decode_result = json_decode($result,true);
 				$files = glob('express/assets/*'); // get all file names
 				foreach ($files as $file) {

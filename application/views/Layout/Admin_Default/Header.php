@@ -38,8 +38,6 @@
 
 <!-- <script href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.js'); ?>"></script> -->
 
-
-
 <style>
     /* sticky sidenav responsive to content */
     #sidebar {

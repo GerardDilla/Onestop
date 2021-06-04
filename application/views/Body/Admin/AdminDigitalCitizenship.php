@@ -8,6 +8,7 @@
                     <thead>
                         <tr>
                             <th>Name (Last, First Middle)</th>
+                            <th>Course</th>
                             <th>Student Number</th>
                             <th width="15%">Emails for Account</th>
                             <!-- <th width="15%">Blackboard Account</th>
@@ -64,6 +65,9 @@
                                 value['Last_Name'] + ', ' + value['First_Name'] + ' ' + value['Middle_Name'] +
                             '</td>' +
                             '<td>' +
+                                value['Course'] +
+                            '</td>' +
+                            '<td>' +
                                 value['Student_Number'] +
                             '</td>' +
                             '<td>' +
@@ -92,17 +96,17 @@
                     '<td>' +
                     data['Student_Number']
                 '</td>';
-                // $.each(response, function(key_acc, value_acc) {
-                //     checked = '';
-                //     if (value_acc['status'] == 'done') {
-                //         checked = 'checked';
-                //     }
-                //     html += '<td><label class="switch">' +
-                //         '<input type="checkbox" ' + checked + ' id="switch' + data['id'] + value_acc['id'] + '" data-' + value_acc['request'] + '="' + value_acc['id'] + '"value="' + value_acc['request'] + '" onclick="digital_update_status(' + data['id'] + ',' + value_acc['id'] + ')">' +
-                //         '<span class="slider round"></span>' +
-                //         '</label>' +
-                //         '</td>';
-                // });
+                $.each(response, function(key_acc, value_acc) {
+                    checked = '';
+                    if (value_acc['status'] == 'done') {
+                        checked = 'checked';
+                    }
+                    html += '<td><label class="switch">' +
+                        '<input type="checkbox" ' + checked + ' id="switch' + data['id'] + value_acc['id'] + '" data-' + value_acc['request'] + '="' + value_acc['id'] + '"value="' + value_acc['request'] + '" onclick="digital_update_status(' + data['id'] + ',' + value_acc['id'] + ')">' +
+                        '<span class="slider round"></span>' +
+                        '</label>' +
+                        '</td>';
+                });
                 html += '</tr>';
                 $('#adminDigitalTbody').append(html);
             }

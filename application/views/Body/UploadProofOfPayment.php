@@ -205,7 +205,10 @@
 </section>
 <div id="view_image" data-izimodal-group="" data-izimodal-loop="" style="display:none;" data-izimodal-title="">
     <div class="col-md-12" style="margin:10px;" align="center">
-        <img src="<?php echo empty($gdrive_link) ? '' : 'https://drive.google.com/uc?export=view&id=' . $gdrive_link; ?>" id="uploaded_image">
+        <img src="<?php echo empty($gdrive_link) ? '' :  $gdrive_link.'/preview'; ?>" id="uploaded_image">
+        <!-- <img src="<?php 
+        // echo empty($gdrive_link) ? '' : 'https://drive.google.com/uc?export=view&id=' . $gdrive_link; 
+        ?>" id="uploaded_image"> -->
     </div>
 </div>
 <!-- onlinepaymentModal -->
@@ -360,7 +363,8 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(response) {
-                    resolve(`https://drive.google.com/uc?export=view&id=${response}`);
+                    // resolve(`https://drive.google.com/uc?export=view&id=${response}`);
+                    resolve(`${response}/preview`);
                     // storagedata
                 },
                 error: function(response) {
@@ -479,6 +483,10 @@ if (!empty($this->session->flashdata('error'))) {
         });";
     echo "OnloadImage();";
     $this->session->set_flashdata('success', '');
+}
+else if (!empty($this->session->flashdata('load_image'))) {
+    echo "OnloadImage();";
+    $this->session->set_flashdata('load_image', '');
 }
 echo '</script>';
 ?>

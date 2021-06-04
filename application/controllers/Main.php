@@ -14,6 +14,7 @@ class Main extends MY_Controller
 		parent::__construct();
 		$this->studentdata = array();
 		$this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
+		$this->load->library('nextcloud_api',array('folder_id' => 'Student Requirements'));
 	}
 
 	public function index()
@@ -779,9 +780,10 @@ class Main extends MY_Controller
 					));
 				}
 			}
-			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
+			$all_uploadeddata = array("folder_name" => $ref_no . '-' . $user_fullname, "data" => $array_files);
 			if ($error_count == 0 && $upload_count > 0) {
-				$result = $this->gdrive_uploader->index($all_uploadeddata);
+				// $result = $this->gdrive_uploader->index($all_uploadeddata);
+				$result = $this->nextcloud_api->index($all_uploadeddata);
 				$decode_result = json_decode($result, true);
 				if (!empty($result)) {
 					if ($decode_result['msg'] == "success") {
@@ -789,7 +791,8 @@ class Main extends MY_Controller
 							'student_name' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name'),
 							'requirements' => $array_completefiles,
 							'datetime' => date("Y-m-d H:i:s"),
-							'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
+							'gdrive_link' => $decode_result['id']
+							// 'gdrive_link' => "https://drive.google.com/drive/u/0/folders/" . $result
 						));
 
 						$files = glob('express/assets/*'); // get all file names
@@ -886,7 +889,11 @@ class Main extends MY_Controller
 			$this->data['gdrive_link'] = $checkRequirement['path_id'];
 			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
 			$this->data['payment_type'] = empty($this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])) ? '' : $this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])['payment_type'];
+			if($checkRequirement['path_id']==""){
+				$this->session->set_flashdata("load_image","no image");
+			}
 		}
+		
 		// echo '<pre>'.print_r($checkRequirement,1).'</pre>';
 		// exit;
 		// print_r($checkRequirement);
@@ -923,8 +930,11 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
+			// $result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
+			$result = $this->nextcloud_api->index(array("folder_name" => $ref_no . '-' . $user_fullname, "data" => $uploaded));
 			$decode_result = json_decode($result, true);
+			// echo $result;
+			// exit;
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {
 				if (in_array($file, $array_filestodelete)) {
@@ -993,13 +1003,13 @@ class Main extends MY_Controller
 	}
 	public function checkForGdriveUploader()
 	{
-		// $
 		// echo $this->session->userdata('email');
 		// $result = $this->gdrive_uploader->getFileId(array('file_name'=>'proof_of_payment_1958820210413144412.jpg','folder_id'=>'1G3uDh8fY0RF4B_uIjbhmXWtdXDdrH3tk'));
 		// $result = $this->gdrive_uploader->getAllFilesInFolder();
-		$result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_120210516165438.jpg', 'folder_id' => '1liBMl-D_lnaddA7oWrsJv59V37XDFwtM'));
+		// $result = $this->gdrive_uploader->getFileId(array('file_name' => 'proof_of_payment_120210516165438.jpg', 'folder_id' => '1liBMl-D_lnaddA7oWrsJv59V37XDFwtM'));
 		// $decode = json_decode($result,true);
 		// echo '<pre>'.print_r($decode,1).'</pre>';
+		$result = $this->nextcloud_api->getFileId(array('file_name' => '', 'folder_id' => 'Jhon Norman Fabregas'));
 		echo $result;
 	}
 	public function testSession()
@@ -1008,12 +1018,35 @@ class Main extends MY_Controller
 	}
 	public function getProofOfPaymentImage()
 	{
+		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
+		$ref_no = $this->session->userdata('reference_no');
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-		$result = $this->gdrive_uploader->getFileId(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('gdrive_folder')));
-		if (!empty($result)) {
-			$this->mainmodel->updateRequirementLog(array('path_id' => $result), 'proof_of_payment');
+		
+		// $result = $this->gdrive_uploader->getFileId(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('gdrive_folder')));
+		// if (!empty($result)) {
+		// 	$this->mainmodel->updateRequirementLog(array('path_id' => $result), 'proof_of_payment');
+		// }
+
+		$result = $this->nextcloud_api->getFileId(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $ref_no . '-' . $user_fullname));
+		// echo $result;
+		$decoded_result = json_decode($result,true);
+		// echo '<pre>'.print_r($decoded_result,1).'</pre>';
+		// $decoded_result = json_decode($result,true);
+		// echo $user_fullname;
+		// exit;
+		if(!empty($result)){
+			if($decoded_result['msg']=="success"){
+				$this->mainmodel->updateRequirementLog(array('path_id' => $decoded_result['id']), 'proof_of_payment');
+				echo json_encode($decoded_result['id']);
+			}
+			else{
+				$this->mainmodel->updateRequirementLog(array('path_id' => ''), 'proof_of_payment');
+				echo json_encode('');
+			}
 		}
-		echo json_encode($result);
+		else{
+			echo json_encode('');
+		}
 	}
 
 	public function assign_curriculum($param)

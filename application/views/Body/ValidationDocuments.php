@@ -249,7 +249,7 @@ echo '</script>';
                                             <?php 
                                             // echo $list['status'] == "to be follow" ? 'checked="true"' : '';
                                             ?>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo  $list['status']=="to be follow" ? '' : 'disabled="true"'; ?>  type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
+                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo  $list['status']!="to be follow"&&$list['status']!="" ? 'disabled="true"' : ''; ?>  type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>
@@ -280,7 +280,7 @@ echo '</script>';
                                         </div>
                                         <div class="col-lg-1 row div-td">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $list['status']=="to be follow" ? '' : 'disabled="true"'; ?> checked="true" type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
+                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $list['status']!="to be follow"&&$list['status']!="" ? 'disabled="true"' : ''; ?> checked="true" type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>

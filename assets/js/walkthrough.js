@@ -9,58 +9,125 @@ class OSE_Guide {
         this.intro = introJs();
     }
     student_information() {
-        return [
-            {
-                intro: 'This is the <strong>Student Information</strong> tab'
-            },
-            {
+        var data = [];
+        data.push({
+            intro: 'This is the <strong>Student Information</strong> tab'
+        })
+        if($(".your_information")[0]){
+            data.push({
                 element: document.querySelector('.your_information'),
                 intro: 'This is your information'
-            },
-            {
+            })
+        }
+        if($(".intro-step-1")[0]){
+            data.push({
                 element: document.querySelector('.intro-step-1'),
                 intro: 'Click this button if you like to download your application summary. <strong>(not required)</strong>'
-            }
-            , {
+            })
+        }
+        if($("#choose_your_status")[0]){
+            data.push({
                 element: document.querySelector('#choose_your_status'),
                 intro: 'Click this button and choose your status, Are you a <strong>NEW STUDENT</strong> or a <strong>TRANSFEREE?</strong>'
-            }
-            // ,{
-            //     element:document.querySelector('#shsverification'),
-            //     intro:'Click this button to download your application summary'
-            // }
-            , {
+            })
+        }
+        // if($("#shsverification")[0]){
+        //     data.push({
+        //         element:document.querySelector('#shsverification'),
+        //         intro:'Click this button to download your application summary'
+        //     })
+        // }
+
+        if($("#confirm_your_course")[0]){
+            data.push({
                 element: document.querySelector('#confirm_your_course'),
                 intro: 'Choose 1 of your Preferred <strong>COURSE</strong> and <strong>MAJOR</strong>'
-            }
-            , {
+            })
+        }
+        if($(".wizard-proceed-student_info")[0]){
+            data.push({
                 element: document.querySelector('.wizard-proceed-student_info'),
                 intro: 'Click this button to submit your changes'
-            }
-        ]
+            })
+        }
+        return data;
+        // return [
+        //     {
+        //         intro: 'This is the <strong>Student Information</strong> tab'
+        //     },
+        //     {
+        //         element: document.querySelector('.your_information'),
+        //         intro: 'This is your information'
+        //     },
+        //     {
+        //         element: document.querySelector('.intro-step-1'),
+        //         intro: 'Click this button if you like to download your application summary. <strong>(not required)</strong>'
+        //     }
+        //     , {
+        //         element: document.querySelector('#choose_your_status'),
+        //         intro: 'Click this button and choose your status, Are you a <strong>NEW STUDENT</strong> or a <strong>TRANSFEREE?</strong>'
+        //     }
+        //     // ,{
+        //     //     element:document.querySelector('#shsverification'),
+        //     //     intro:'Click this button to download your application summary'
+        //     // }
+        //     , {
+        //         element: document.querySelector('#confirm_your_course'),
+        //         intro: 'Choose 1 of your Preferred <strong>COURSE</strong> and <strong>MAJOR</strong>'
+        //     }
+        //     , {
+        //         element: document.querySelector('.wizard-proceed-student_info'),
+        //         intro: 'Click this button to submit your changes'
+        //     }
+        // ]
     }
     requirements() {
-        return [
-            {
-                intro: 'This is the <strong>Requirements tab</strong> where you will upload all needed requirements.'
-            },
-            {
-                element: document.querySelector(".requirement-1"),
-                intro: 'Check this requirements if it is to be follow. <br><strong>NOTE: You can just check all the requirements as to be follow if you still dont have any requirements to submit.</strong.'
-            },
-            {
-                element: document.querySelector(".are_you_married"),
-                intro: "Are you married? if you are married you need to submit a <strong>PSA Marriage Certificate</strong>"
-            },
-            {
-                element: document.querySelector(".interview-status"),
-                intro: 'Do you want to be Interviewed? if you want it click <strong>Yes</strong> and if you dont click <strong>No</strong>'
-            },
-            {
-                element: document.querySelector("#submit_val_doc"),
-                intro: 'Click this button to submit all your requirements!'
-            }
-        ]
+        if ($(".interview-status")[0]){
+            return [
+                {
+                    intro: 'This is the <strong>Requirements tab</strong> where you will upload all needed requirements.'
+                },
+                {
+                    element: document.querySelector(".requirement-1"),
+                    intro: 'Check this requirements if it is to be follow. <br><strong>NOTE: You can just check all the requirements as to be follow if you still dont have any requirements to submit.</strong.'
+                },
+                {
+                    element: document.querySelector(".are_you_married"),
+                    intro: "Are you married? if you are married you need to submit a <strong>PSA Marriage Certificate</strong>"
+                },
+                {
+                    element: document.querySelector(".interview-status"),
+                    intro: 'Do you want to be Interviewed? if you want it click <strong>Yes</strong> and if you dont click <strong>No</strong>'
+                },
+                {
+                    element: document.querySelector("#submit_val_doc"),
+                    intro: 'Click this button to submit all your requirements!'
+                }
+            ]
+        }
+        else{
+            return [
+                {
+                    intro: 'This is the <strong>Requirements tab</strong> where you will upload all needed requirements.'
+                },
+                {
+                    element: document.querySelector(".requirement-1"),
+                    intro: 'Check this requirements if it is to be follow. <br><strong>NOTE: You can just check all the requirements as to be follow if you still dont have any requirements to submit.</strong.'
+                },
+                {
+                    element: document.querySelector(".are_you_married"),
+                    intro: "Are you married? if you are married you need to submit a <strong>PSA Marriage Certificate</strong>"
+                },
+                // {
+                //     element: document.querySelector(".interview-status"),
+                //     intro: 'Do you want to be Interviewed? if you want it click <strong>Yes</strong> and if you dont click <strong>No</strong>'
+                // },
+                {
+                    element: document.querySelector("#submit_val_doc"),
+                    intro: 'Click this button to submit all your requirements!'
+                }
+            ]
+        }
     }
     advising() {
         return [
@@ -108,7 +175,7 @@ class OSE_Guide {
                 intro: "Here is the OVER ALL <strong>Summary of your Assessment</strong>"
             },
             {
-                element: document.querySelector(".paymentbullet"),
+                element: document.querySelector(".payment-options"),
                 intro: "Here is your <strong>Payment Options</strong>"
             },
             {
@@ -128,7 +195,7 @@ class OSE_Guide {
                 intro: "You need to upload your <strong>proof of payment</strong> if you are already paid"
             },
             {
-                element: document.querySelector(".readvise_tab"),
+                element: document.querySelector("#readvise_button"),
                 intro: "You can choose subjects again by clicking the <strong>CHOOSE AGAIN</strong> button"
             }
 

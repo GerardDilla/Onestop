@@ -26,9 +26,9 @@ base_url = $('#assessment_section').data('baseurl');
 // alert(base_url);
 function hideIziToastGuide() {
     var izitoastWalkthrough = document.querySelector('.izitoast-open-walkthrough');
-    iziToast.hide({
-        transitionOut: 'fadeOutUp'
-    }, izitoastWalkthrough);
+    // iziToast.hide({
+    //     transitionOut: 'fadeOutUp'
+    // }, izitoastWalkthrough);
 }
 $('input[type=radio][name=eductype]').change(function () {
 

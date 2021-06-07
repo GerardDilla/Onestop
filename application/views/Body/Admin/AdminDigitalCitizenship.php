@@ -11,6 +11,7 @@
                             <th>Course</th>
                             <th>Student Number</th>
                             <th width="15%">Emails for Account</th>
+                            <th>Action</th>
                             <!-- <th width="15%">Blackboard Account</th>
                             <th width="15%">Microsoft Office 365</th>
                             <th width="15%">SDCA Gmail Account</th>
@@ -72,11 +73,16 @@
                             '</td>' +
                             '<td>' +
                                 sdca_email +
-                            '</td>' +
+                            '</td>' ;
+                            html += '<td><label class="switch">' +
+                        '<input type="checkbox">' +
+                        '<span class="slider round"></span>' +
+                        '</label>' +
+                        '</td>';
                             '</tr>';
                     $('#adminDigitalTbody').append(html);
                 });
-            }
+            },
         })
     }
 

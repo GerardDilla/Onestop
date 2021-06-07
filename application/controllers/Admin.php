@@ -106,6 +106,26 @@ class Admin extends MY_Controller
 			'status' => $status,
 		);
 		$this->adminmodel->updateIdApplication($array);
+		if ($status == 'done') {
+			$id_user = $this->adminmodel->getSingleIdApplication($array['id_application']);
+			$email_data = array(
+				'send_to' => $id_user['first_name'] . ' ' . $id_user['last_name'],
+				'reply_to' => 'webmailer@sdca.edu.ph',
+				'sender_name' => 'St. Dominic College of Asia',
+				'send_to_email' => $id_user['Email'],
+				'subject' => 'ID Application Update',
+				'message' => 'Email/IdApplication'
+			);
+			$this->sdca_mailer->sendHtmlEmail_NoEcho(
+				$email_data['send_to'],
+				$email_data['reply_to'],
+				$email_data['sender_name'],
+				$email_data['send_to_email'],
+				$email_data['subject'],
+				$email_data['message'],
+				null
+			);
+		}
 	}
 
 	public function logout()
@@ -114,18 +134,48 @@ class Admin extends MY_Controller
 		redirect(base_url('index.php/admin/'));
 	}
 
-	function test_name()
-	{
-		$student = $this->AssesmentModel->get_student_with_course($this->reference_number);
-		$first_name = $this->clean($student['First_Name']);
-		$last_name = $this->clean($student['Last_Name']);
-		echo $first_name.'.'.$last_name.'@sdca.edu.ph';
-	}
+	// function test_name()
+	// {
+	// 	$student = $this->AssesmentModel->get_student_with_course($this->reference_number);
+	// 	$first_name = $this->clean($student['First_Name']);
+	// 	$last_name = $this->clean($student['Last_Name']);
+	// 	echo $first_name.'.'.$last_name.'@sdca.edu.ph';
+	// }
 
-	function clean($string)
-	{
-		$trim = trim($string);
-		$trim_string = str_replace(' ', '', $trim);
-		return strtolower($trim_string);
-	}
+	// function clean($string)
+	// {
+	// 	$trim = trim($string);
+	// 	$trim_string = str_replace(' ', '', $trim);
+	// 	return strtolower($trim_string);
+	// }
+
+	// public function idApplicationDoneEmail(){
+	// 	$email_data = array(
+	// 		'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
+	// 		'reply_to' => 'webmailer@sdca.edu.ph',
+	// 		'sender_name' => 'St. Dominic College of Asia',
+	// 		'send_to_email' => $student_info['Email'],
+	// 		'subject' => 'Old Student Account for Onestop Enrollment',
+	// 		'message' => 'Email/SendAccountCode'
+	// 	);
+
+	// 	$this->sdca_mailer->sendHtmlEmail_NoEcho(
+	// 		$email_data['send_to'],
+	// 		$email_data['reply_to'],
+	// 		$email_data['sender_name'],
+	// 		$email_data['send_to_email'],
+	// 		$email_data['subject'],
+	// 		$email_data['message'],
+	// 		array(
+	// 			'student_info' => $student_info,
+	// 			'code' => $code
+	// 		)
+	// 	);
+	// 	$output = array(
+	// 		'status' => 'success',
+	// 		'title' => 'Account Created.',
+	// 		'message' => 'Please check your email ' . $student_info['Email'] . '.',
+	// 	);
+	// 	echo json_encode($output);
+	// } 
 }

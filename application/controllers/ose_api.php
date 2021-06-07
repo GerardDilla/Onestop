@@ -1271,7 +1271,7 @@ class Ose_api extends CI_Controller
 		// 	'message' => 'Email/SendAccountCode'
 		// );
 
-		// $this->sdca_mailer->sendHtmlEmail(
+		// $this->sdca_mailer->sendHtmlEmail_NoEcho(
 		// 	$email_data['send_to'],
 		// 	$email_data['reply_to'],
 		// 	$email_data['sender_name'],

@@ -78,5 +78,13 @@ class AdminModel extends CI_Model
         );
         $this->db->where('id', $array['id_application']);
         $this->db->update('id_application', $data);
+        return $array['id_application'];
+    }
+    public function getSingleIdApplication($id){
+        $this->db->select('*');
+        $this->db->from('id_application ia');
+        $this->db->join('Student_Info si','si.Reference_Number = ia.reference_number');
+        $this->db->where('ia.id',$id);
+        return $this->db->get()->row_array();
     }
 }

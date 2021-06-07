@@ -95,6 +95,9 @@
                         </li>
                     </ul>
                 </li>
+                <?php
+                // if($this->session->userdata('reference_no')=='14174'){
+                ?>
                 <!-- <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-gear-fill"></i>
@@ -112,6 +115,9 @@
                         </li>
                     </ul>
                 </li> -->
+                <?php 
+                // } 
+                ?>
                 <li class="sidebar-item">
                     <a href="<?php echo base_url('index.php/main/logout'); ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>

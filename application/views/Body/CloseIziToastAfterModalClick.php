@@ -30,6 +30,7 @@ function showIziToastUser(){
     // }
 }
 function showIziToastGuide(){
+    return false;
     iziToast.show({
         class:'izitoast-open-walkthrough',
         theme: 'dark',
@@ -50,9 +51,6 @@ function showIziToastGuide(){
         closeOnEscape: false,
         closeOnClick: false,
         buttons: [
-            // ['<button>Ok</button>', function (instance, toast) {
-            //     alert("Hello world!");
-            // }, true],
             ['<button>Open Guide</button>', function(instance, toast) {
                 // current_this.play();
                 var ose_guide1 = new OSE_Guide($('input[name=current_tab_selection]').val());
@@ -72,15 +70,15 @@ function showIziToastGuide(){
     });
 }
 function hideIziToast(){
-    var toast = document.querySelector('.iziToast');
-    var izitoastWalkthrough = document.querySelector('.izitoast-open-walkthrough');
+    // var toast = document.querySelector('.iziToast');
+    // var izitoastWalkthrough = document.querySelector('.izitoast-open-walkthrough');
     var iziToastWelcome = document.querySelector('.izitoast-welcome-user');
-    iziToast.hide({
-        transitionOut: 'fadeOutUp'
-    }, toast);
-    iziToast.hide({
-        transitionOut: 'fadeOutUp'
-    },izitoastWalkthrough);
+    // iziToast.hide({
+    //     transitionOut: 'fadeOutUp'
+    // }, toast);
+    // iziToast.hide({
+    //     transitionOut: 'fadeOutUp'
+    // },izitoastWalkthrough);
     iziToast.hide({
         transitionOut: 'fadeOutUp'
     },iziToastWelcome);
@@ -110,7 +108,9 @@ $('#subjectModal').on('hidden.bs.modal', function (e) {
 $('#subjectModal').on('shown.bs.modal', function () {
     hideIziToast()
     $('#chat-logo').hide();
+    $('#chat-logo').css('display','none');
     status="close";
+    // alert('hello');
 });
 // scheduleModal
 $('#scheduleModal').on('hidden.bs.modal', function (e) {

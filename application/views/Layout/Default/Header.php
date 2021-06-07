@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/perfect-scrollbar/perfect-scrollbar.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/bootstrap-icons/bootstrap-icons.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/app.css'); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css'); ?>">
+
 <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.svg'); ?>" type="image/x-icon">
 <!-- <link rel="stylesheet" href="<?php echo base_url('assets/vendors/simple-datatables/style.css'); ?>"> -->
 <!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"> -->
@@ -47,6 +47,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.4.0/introjs.min.css" integrity="sha512-631ugrjzlQYCOP9P8BOLEMFspr5ooQwY3rgt8SMUa+QqtVMbY/tniEUOcABHDGjK50VExB4CNc61g5oopGqCEw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.4.0/intro.min.js" integrity="sha512-QWPjvFqgUJv5X6Sq5NXmwJQSEzUEBxmCCcgqJd5/5luZnS6llRbshsChUNKrFlZ4bshKZEJxAHDB+WWdMsGvUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url('assets/js/walkthrough.js'); ?>"></script>
+<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css'); ?>">
 <!-- <script src="<?php echo base_url('assets/js/notify.js'); ?>"></script> -->
 <!-- <script href="<?php echo base_url('assets/vendors/fullcalendar/lib/main.js'); ?>"></script> -->
 <style>

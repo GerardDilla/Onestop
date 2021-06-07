@@ -356,7 +356,7 @@
     async function getImageLink(id) {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: "<?php echo base_url(); ?>main/getProofOfPaymentImage",
+                url: "<?php echo base_url(); ?>index.php/main/getProofOfPaymentImage",
                 method: 'get',
                 dataType: 'json',
                 success: function(response) {

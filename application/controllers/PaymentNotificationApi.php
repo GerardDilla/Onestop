@@ -32,27 +32,45 @@ class PaymentNotificationApi extends CI_Controller
             //     $student_email = $student_info['Email'];
             // }
             $student_email = empty($student_info['Email']) ? '' : $student_info['Email'];
+            // echo json_encode($student_info);
+            // exit;
             $all_uploadeddata = array(
                 'ref_no' => $ref_no,
                 'amount' => $amount
             );
-            $string = http_build_query($all_uploadeddata);
-            $ch = curl_init("https://stdominiccollege.edu.ph:4003/api/NotifyIfSubmitted/");
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-            curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__) . "\cred\cert.pem");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            // curl_exec($ch);
-            curl_setopt($ch, CURLOPT_FAILONERROR, true);
-            $result = curl_exec($ch);
-            if (curl_errno($ch)) {
-                $error_msg = curl_error($ch);
-                echo $error_msg . '<br>';
-            } else {
-                echo $result . '<br>';
-            }
-            curl_close($ch);
+            // $string = http_build_query($all_uploadeddata);
+            // $ch = curl_init("http://stdominiccollege.edu.ph:4004/api/NotifyIfSubmitted/");
+            // curl_setopt($ch, CURLOPT_POST, true);
+            // curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
+            // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+            // curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            // curl_setopt($ch, CURLOPT_FAILONERROR, true);
+            // $result = curl_exec($ch);
+            // if (curl_errno($ch)) {
+            // $error_msg = curl_error($ch);
+            // echo $error_msg .'<br>';
+            // }
+            // else{
+            // }
+            // curl_close($ch);
+            $email_data = array(
+                'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
+                'reply_to' => '',
+                'sender_name' => 'St. Dominic College of Asia',
+                'send_to_email' => $student_email,
+                'title' => 'Proof of Payment',
+                'message' => 'Email/PaymentEvidence'
+            );
+            $this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array('student_info' => $student_info, 'total_amount' => $amount));
+            $this->MainModel->insertCashierPaymentLogs(array(
+                'cashier_id' => $cashier_id,
+                'total_amount' => $amount,
+                'email' => $student_email,
+                'ref_no' => $ref_no,
+                'date_created' => date("Y-m-d H:i:s")
+            ));
+            // echo json_encode('success');
+            // }
             $email_data = array(
                 'send_to' => $student_info['First_Name'] . ' ' . $student_info['Last_Name'],
                 'reply_to' => 'jfabregas@sdca.edu.ph',

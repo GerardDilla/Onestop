@@ -179,44 +179,44 @@ class OSE_Guide {
         })
         var current_this = this;
         this.intro.onbeforeexit(function () {
-            iziToast.show({
-                class: 'izitoast-open-walkthrough',
-                theme: 'dark',
-                icon: 'bi-info-circle-fill',
-                iconColor: 'white',
-                title: 'Guide:',
-                titleSize: "18",
-                message: '',
-                messageSize: '18',
-                // messageLineHeight: '30',
-                position: 'bottomLeft', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
-                progressBarColor: '#cc0000',
-                overlay: false,
-                timeout: false,
-                overlayClose: false,
-                drag: false,
-                close: false,
-                closeOnEscape: false,
-                closeOnClick: false,
-                buttons: [
-                    // ['<button>Ok</button>', function (instance, toast) {
-                    //     alert("Hello world!");
-                    // }, true],
-                    ['<button>Open Guide</button>', function (instance, toast) {
-                        current_this.play();
-                        instance.hide({
-                            transitionOut: 'fadeOutUp',
-                            onClosing: function (instance, toast, closedBy) {
-                                // console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+            // iziToast.show({
+            //     class: 'izitoast-open-walkthrough',
+            //     theme: 'dark',
+            //     icon: 'bi-info-circle-fill',
+            //     iconColor: 'white',
+            //     title: 'Guide:',
+            //     titleSize: "18",
+            //     message: '',
+            //     messageSize: '18',
+            //     // messageLineHeight: '30',
+            //     position: 'bottomLeft', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+            //     progressBarColor: '#cc0000',
+            //     overlay: false,
+            //     timeout: false,
+            //     overlayClose: false,
+            //     drag: false,
+            //     close: false,
+            //     closeOnEscape: false,
+            //     closeOnClick: false,
+            //     buttons: [
+            //         // ['<button>Ok</button>', function (instance, toast) {
+            //         //     alert("Hello world!");
+            //         // }, true],
+            //         ['<button>Open Guide</button>', function (instance, toast) {
+            //             current_this.play();
+            //             instance.hide({
+            //                 transitionOut: 'fadeOutUp',
+            //                 onClosing: function (instance, toast, closedBy) {
+            //                     // console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
 
-                            }
-                        }, toast, 'buttonName');
-                    }]
-                ],
-                onClosing: function (instance, toast, closedBy) {
-                    console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
-                }
-            });
+            //                 }
+            //             }, toast, 'buttonName');
+            //         }]
+            //     ],
+            //     onClosing: function (instance, toast, closedBy) {
+            //         console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
+            //     }
+            // });
         }).start();
     }
 }

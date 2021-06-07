@@ -31,10 +31,21 @@ router.post('/',(req,res)=>{
 var data_body = req.body.data;
 var folder_name = req.body.folder_name;
 var main_folder_id = req.body.folder_id;
+var token_type = req.body.token_type;
+var credential_url = "";
+var token_url = "";
+if(token_type=="des"){
+    credential_url = "token/des/credentials.json";
+    token_url = "token/des/token.json";
+}
+else{
+    credential_url = "credentials.json";
+    token_url = "token.json";
+}
 console.log(main_folder_id);
 // var folder_name = "requirements";
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
-  const TOKEN_PATH = 'token.json';
+  const TOKEN_PATH = token_url;
     function sendBackToPHP(status,data){
         if(status==400){
             res.status(400).send(JSON.stringify(ApiError.badRequest(data)));
@@ -46,7 +57,7 @@ const SCOPES = ['https://www.googleapis.com/auth/drive'];
         
     }
   // Load client secrets from a local file.
-  fs.readFile('credentials.json', (err, content) => {
+  fs.readFile(credential_url, (err, content) => {
       if (err) return console.log('Error loading client secret file:', err);
     //   authorize(JSON.parse(content), createFolder);
 
@@ -439,10 +450,12 @@ router.post("/get_id",(req,res)=>{
     }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
-        // cons
+        // console.log(files);
+        // const found_all = files.filter( ({parents}) => { return [parents] == '1kLW5Gwogxz1llDOAjWwsYwIjNSbSTD0g'});
+        // console.log(found_all)
         if(file_name!=""){
-            const found = files.find(element => element.name == file_name && element.parents==folder_id);
-            // console.log(found);
+            const found = files.find((element) =>{ return element.name == file_name && [element.parents]==folder_id});
+            
             if(found==null){
                 sendBackToPHP('');
                 console.log(`Get Id: Cant find ${file_name}`)
@@ -453,7 +466,8 @@ router.post("/get_id",(req,res)=>{
             }
         }
         else{
-            const found = files.filter( ({parents}) => parents==folder_id);
+            console.log('hello')
+            const found = files.filter( ({parents}) => [parents] == folder_id);
             sendBackToPHP(JSON.stringify(found));
         }
         
@@ -463,7 +477,7 @@ router.post("/get_id",(req,res)=>{
       res.send(id);
   }
 })
-router.post("/sample",(req,res)=>{
+router.get("/sample",(req,res)=>{
     // res.send('Welcome to Google Drive Api');
     res.json(JSON.stringify({status:'success',msg:'hello'}))
 })

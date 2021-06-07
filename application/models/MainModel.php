@@ -95,7 +95,7 @@ class MainModel extends CI_Model
     {
         $ref_no = $this->session->userdata('reference_no');
         $this->db->where('reference_no', $ref_no);
-        $this->db->delete('requirements_log');
+        $this->db->update('requirements_log',array('reference_no'=>''));
     }
     public function getStudentAccountInfo($ref_no)
     {

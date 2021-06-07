@@ -20,7 +20,14 @@ $(document).ready(function () {
         "bLengthChange": false,
     });
 
-
+    $('#open_guide').on('click',function(){
+        var ose_guide1 = new OSE_Guide($('input[name=current_tab_selection]').val());
+        ose_guide1.play();
+        // $('.sidebar-hide').trigger('click')
+        if($(window).width()<1080){
+            $('#sidebar').removeClass('active')
+        }
+    })
 
     $('#sy_legend').change(function () {
 

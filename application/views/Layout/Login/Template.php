@@ -47,7 +47,7 @@
 <script src="<?php echo base_url('assets/js/animations.js')?>"></script>
 <!-- <?php if ($Footer) echo $Footer; ?> -->
 <?php
-$this->load->view('TokenHandler');
+// $this->load->view('TokenHandler');
 ?>
 </body>
 

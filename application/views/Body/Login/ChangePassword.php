@@ -20,6 +20,7 @@
                     <div class="form d-flex bg-white">
                         <div class="content">
                             <form method="post" class="form-validate" action="<?php echo base_url('index.php/Main/changePasswordProcess'); ?>" id="form_submit">
+                            <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                                 <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png'); ?>">
                                     <span class="white-box"></span>
                                     <input type="hidden" name="JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=" value="<?php echo $key; ?>">

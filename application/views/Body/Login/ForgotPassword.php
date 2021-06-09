@@ -58,6 +58,7 @@ echo '});</script>';
                     <div class="form d-flex bg-white" style="background:transparent">
                         <div class="content">
                             <form method="post" class="form-validate" action="<?php echo base_url('index.php/Main/sendEmail'); ?>" tabindex="1">
+                            <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>"> 
                                 <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png'); ?>">
                                     <span class="white-box"></span>
                                     <div class="col-md-12" style="margin-bottom:40px">

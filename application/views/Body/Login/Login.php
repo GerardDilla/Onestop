@@ -68,6 +68,7 @@ if ($this->session->flashdata('msg') != '') {
                     <div class="form d-flex">
                         <div class="content">
                             <form method="post" class="form-validate" action="<?php echo base_url('index.php/Main/loginProcess') ?>" tabindex="1">
+                            <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                                 <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png'); ?>">
                                     <span class="white-box"></span>
                                     <div class="col-md-12" style="margin-bottom:20px;text-align:center;">

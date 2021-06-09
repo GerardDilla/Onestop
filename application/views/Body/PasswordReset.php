@@ -23,6 +23,7 @@ echo '</script>';
         </div>
         <div class="card-body">
             <form id="form_submit" action="<?php echo base_url('index.php/Main/passwordResetProcess'); ?>" method="post">
+            <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>"> 
                 <div class="col-md-12" align="center">
                     <div class="col-md-6 col-sm-12 mb-4">
                         <div class="input-group mb-3">

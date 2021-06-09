@@ -19,7 +19,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
     });</script>";
 }
 ?>
-
+<input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
 <!-- Unused css
     <link href="<?php echo base_url() ?>assets/js/wizard/bootstrap.min.css" rel="stylesheet" /> -->
 <section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>" data-ref="<?php echo $this->data['md5_ref_no']; ?>">
@@ -178,7 +178,6 @@ if ($this->session->flashdata('online_payment_zero') != "") {
     </div>
     <?php $this->load->view($this->data['advising_modals']); ?>
     <input type="hidden" name="current_tab_selection" value="">
-
 
 </section>
 <script>

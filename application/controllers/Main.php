@@ -8,20 +8,36 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Main extends MY_Controller
 {
-
+	protected $token;
 	public function __construct()
 	{
 		parent::__construct();
 		$this->studentdata = array();
 		$this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
 	}
-
 	public function index()
-	{
+	{	
+		// generate token
+		$token = hash('tiger192,3', uniqid());
+		$this->data['csrf_token'] = $token;
+		$_SESSION['csrf_token']['login'] = $token;
+
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
+	
 	}
-
+	public function tokenHandler($type){
+		if(isset($this->session->csrf_token)){
+			if($this->session->csrf_token[$type]==""||$this->session->csrf_token[$type]!=$this->input->post('b3df6e650330df4c0e032e16141f')){
+				echo 'Something went wrong!';
+				exit;
+			}
+		}else{
+			echo 'Something went wrong!';
+			exit;
+		}
+		$_SESSION['csrf_token'][$type] = '';
+	}
 	public function selfassesment()
 	{
 		$ref_no = $this->session->userdata('reference_no');
@@ -119,7 +135,7 @@ class Main extends MY_Controller
 		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($ref_no);
 		$this->data['shs_student_number'] = empty($shs_bridge) ? '' : $shs_bridge['shs_student_number'];
 		$this->data['applied_status'] = empty($shs_bridge) ? '' : $shs_bridge['applied_status'];
-
+		$this->data['csrf_token'] = hash('tiger192,3', uniqid());
 		$this->default_template($this->view_directory->assessment());
 	}
 
@@ -184,6 +200,7 @@ class Main extends MY_Controller
 	}
 	public function loginProcess()
 	{
+		$this->tokenHandler('login');
 		try {
 			$username = $this->input->post('loginUsername');
 			$password = $this->input->post('loginPassword');
@@ -878,6 +895,11 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPayment()
 	{
+		// token proof of payment
+		$token = hash('tiger192,3', uniqid());
+		$this->data['csrf_token'] = $token;
+		$_SESSION['csrf_token']['proof_of_payment'] = $token;
+
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
 		$getStudentAccountInfo = $this->mainmodel->getStudentAccountInfo($this->session->userdata('reference_no'));
 		$this->data['student_number'] = $getStudentAccountInfo['Student_Number'];
@@ -894,6 +916,7 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPaymentProcess()
 	{
+		$this->tokenHandler('proof_of_payment');
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
 		$ref_no = $this->session->userdata('reference_no');
 		$id_name = "proof_of_payment";
@@ -1147,5 +1170,10 @@ class Main extends MY_Controller
 		$sem = $this->input->get('sem');
 		$this->mainmodel->updateLegend(array('Semester' => $sem, 'School_Year' => $sy));
 		echo json_encode('success');
+	}
+	public function hashSomething(){
+		// $gen = hash(algo:'sha256',uniqid());
+		$gen = hash('tiger192,3', uniqid());
+		echo $this->session->csrf_token['login'];
 	}
 }

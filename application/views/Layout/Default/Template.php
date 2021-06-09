@@ -42,6 +42,7 @@
         <?php
         $this->load->view('Body/CloseIziToastAfterModalClick');
         $this->load->view('Body/StudentModal');
+        // $this->load->view('TokenHandler');
         ?>
 
         <!-- <span class="chat-logo"><i class="bi bi-chat-text"></i></span> -->

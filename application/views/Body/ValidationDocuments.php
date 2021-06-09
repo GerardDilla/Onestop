@@ -199,6 +199,7 @@ echo '</script>';
         </div>
         <div class="card-body">
             <form id="form_submit" action="<?php echo base_url('index.php/Main/validationDocumentsProcess'); ?>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                 <input type="hidden" value="0" name="if_married">
                 <!-- <form  id="form_submit" action="http://localhost:4003/uploadtodrive/test_post2" method="post" enctype="multipart/form-data" > -->
                 <div class="col-md-12">

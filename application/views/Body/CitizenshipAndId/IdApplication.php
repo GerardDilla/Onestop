@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <form action="<?php echo base_url(); ?>Forms/submit_id_application" method="POST" id="id_application_form" enctype="multipart/form-data">
+                        <form action="<?php echo base_url(); ?>index.php/Forms/submit_id_application" method="POST" id="id_application_form" enctype="multipart/form-data">
                         <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                             <div class="row">
                                 <div class="col-md-6">

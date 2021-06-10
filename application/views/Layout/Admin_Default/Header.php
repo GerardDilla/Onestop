@@ -46,9 +46,9 @@
         z-index: 100;
     }
 
-    div#main {
+    /* div#main { */
         /* margin-left: 300px;   */
-    }
+    /* } */
 
     #pr-box i {
         border-bottom: 7px solid #05BCC8;

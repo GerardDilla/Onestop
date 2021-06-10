@@ -127,6 +127,28 @@ class Admin extends MY_Controller
 			);
 		}
 	}
+	public function idApplicationError()
+	{
+		$id_application = $this->input->post('id_application');
+		$id_user = $this->adminmodel->getSingleIdApplication($id_application);
+		$email_data = array(
+			'send_to' => $id_user['first_name'] . ' ' . $id_user['last_name'],
+			'reply_to' => 'webmailer@sdca.edu.ph',
+			'sender_name' => 'St. Dominic College of Asia',
+			'send_to_email' => $id_user['Email'],
+			'subject' => 'ID Application Error',
+			'message' => 'Email/IdApplicationError'
+		);
+		$this->sdca_mailer->sendHtmlEmail_NoEcho(
+			$email_data['send_to'],
+			$email_data['reply_to'],
+			$email_data['sender_name'],
+			$email_data['send_to_email'],
+			$email_data['subject'],
+			$email_data['message'],
+			null
+		);
+	}
 
 	public function logout()
 	{

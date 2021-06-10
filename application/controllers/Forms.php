@@ -16,8 +16,31 @@ class Forms extends MY_Controller
 	public function index()
 	{
 	}
+
+	public function tokenHandler($type){
+		if(isset($this->session->csrf_token)){
+			if(isset($this->session->csrf_token[$type])){
+				if($this->session->csrf_token[$type]==""||$this->session->csrf_token[$type]!=$this->input->post('b3df6e650330df4c0e032e16141f')){
+					echo 'Something went wrong!';
+					exit;
+				}
+			}else{
+				echo 'Something went wrong!';
+				exit;
+			}
+		}else{
+			echo 'Something went wrong!';
+			exit;
+		}
+		$_SESSION['csrf_token'][$type] = '';
+	}
 	public function digital_citizenship()
 	{
+		// generate token
+		$token = hash('tiger192,3', uniqid());
+		$this->data['csrf_token'] = $token;
+		$_SESSION['csrf_token']['digital'] = $token;
+
 		$digital = $this->FormsModel->check_student_digital($this->reference_number);
 		empty($digital['count']) ? $this->data['digital'] = true : $this->data['digital'] = false;
 
@@ -25,6 +48,8 @@ class Forms extends MY_Controller
 	}
 	public function submit_digital_citizenship()
 	{
+		$this->tokenHandler('digital');
+		
 		$digital_id = $this->FormsModel->check_student_digital($this->reference_number);
 		$check_data = empty($digital_id['count']) ? "no_data" : $digital_id['count'];
 		if ($check_data == 'no_data') {

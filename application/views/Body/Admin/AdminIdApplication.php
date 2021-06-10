@@ -28,7 +28,7 @@ The name and photo associated with your Google account will be recorded when you
                             <th>Guardian Contact</th>
                             <!-- <th>Guardian Email</th> -->
                             <th width="5%">To Gdrive</th>
-                            <th width="5%" colspan="2">Action</th>
+                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody id="adminIdTbody">

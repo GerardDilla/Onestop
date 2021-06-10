@@ -4,13 +4,17 @@
         </div>
         <div class="card-body">
             <div class="col-md-12 table-responsive">
+                <div>
+                    <div id="sdcapassword"></div>
+                </div>
                 <table id="chatInquiryTable" class="table table-hover">
                     <thead>
                         <tr>
                             <th>Name (Last, First Middle)</th>
                             <th>Course</th>
                             <th>Student Number</th>
-                            <th width="15%">Emails for Account</th>
+                            <th>Emails for Account</th>
+                            <!-- <th>Password</th> -->
                             <th>Action</th>
                             <!-- <th width="15%">Blackboard Account</th>
                             <th width="15%">Microsoft Office 365</th>
@@ -29,6 +33,10 @@
 </section>
 <script>
     ajax_digital()
+    var new_date = new Date();
+    year_today = new_date.getFullYear();
+    sdca_pass = 'sdca' + year_today;
+    $('#sdcapassword').html(sdca_pass);
 
     function digital_update_status(id, id_acc) {
         switch_id = $('#switch' + id + id_acc);
@@ -51,6 +59,7 @@
         })
     }
 
+
     function ajax_digital() {
         $.ajax({
             url: 'getDigitalCitizenship',
@@ -59,27 +68,27 @@
                 $.each(response, function(key, value) {
                     // ajax_digital_account(value);
                     sdca_email = '';
-                    sdca_email = remove_space_regex(value['First_Name']) +'.'+ remove_space_regex(value['Last_Name']) + '@sdca.edu.ph';
+                    sdca_email = remove_space_regex('juan pedro') + '.' + remove_space_regex(value['Last_Name']) + '@sdca.edu.ph';
                     console.log(sdca_email);
                     html = '<tr>' +
-                            '<td>' +
-                                value['Last_Name'] + ', ' + value['First_Name'] + ' ' + value['Middle_Name'] +
-                            '</td>' +
-                            '<td>' +
-                                value['Course'] +
-                            '</td>' +
-                            '<td>' +
-                                value['Student_Number'] +
-                            '</td>' +
-                            '<td>' +
-                                sdca_email +
-                            '</td>' ;
-                            html += '<td><label class="switch">' +
+                        '<td>' +
+                        value['Last_Name'] + ', ' + value['First_Name'] + ' ' + value['Middle_Name'] +
+                        '</td>' +
+                        '<td>' +
+                        value['Course'] +
+                        '</td>' +
+                        '<td>' +
+                        value['Student_Number'] +
+                        '</td>' +
+                        '<td>' +
+                        sdca_email +
+                        '</td>';
+                    html += '<td><label class="switch">' +
                         '<input type="checkbox">' +
                         '<span class="slider round"></span>' +
                         '</label>' +
                         '</td>';
-                            '</tr>';
+                    '</tr>';
                     $('#adminDigitalTbody').append(html);
                 });
             },
@@ -121,8 +130,11 @@
 
     // alert('Juan Pedro'.replace(/\s/g, ''));
     function remove_space_regex(string) {
-        replace = string.replace(/\s/g, '');
+        var reg = /\s+/g;
         lowercase = string.toLowerCase();
-        return lowercase;
+        replace = lowercase.replace(reg, '');
+        // alert(replace);
+
+        return replace;
     }
 </script>

@@ -208,7 +208,7 @@ The name and photo associated with your Google account will be recorded when you
                         '</a>' +
                         '</td>';
                     html += '<td>' +
-                        '<button class="btn action_button-error">Error</button>' +
+                        '<button class="btn action_button-error" onclick="ajax_id_error('+value['id']+')">Error</button>' +
                         '</td>';
                     html += '<td><label class="switch">' +
                         '<input type="checkbox" ' + checked + ' data-student_name_' + value['id'] + '="' + student_name + '" id="switch' + value['id'] + '" onclick="id_update_status(' + value['id'] + ')">' +
@@ -223,6 +223,18 @@ The name and photo associated with your Google account will be recorded when you
                     "ordering": false,
                     "info": false
                 });
+            }
+        })
+    }
+    function ajax_id_error(id){
+        $.ajax({
+            url: 'idApplicationError',
+            dataType: 'json',
+            method: 'post',
+            data: {
+                'id_application': id,
+            },
+            success: function(response) {
             }
         })
     }

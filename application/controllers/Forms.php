@@ -86,6 +86,11 @@ class Forms extends MY_Controller
 	}
 	public function id_application()
 	{
+		// generate token
+		$token = hash('tiger192,3', uniqid());
+		$this->data['csrf_token'] = $token;
+		$_SESSION['csrf_token']['digital'] = $token;
+		
 		$id_app = $this->FormsModel->check_student_id($this->reference_number);
 		empty($id_app['count']) ? $this->data['id_app'] = true : $this->data['id_app'] = false;
 
@@ -97,7 +102,6 @@ class Forms extends MY_Controller
 		$config['upload_path'] = './express/assets/';
 		$config['allowed_types'] = '*';
 
-		echo ('1');
 		$id_app = $this->FormsModel->check_student_id($this->reference_number);
 		$check_data = empty($id_app['count']) ? "no_data" : $id_app['count'];
 
@@ -141,6 +145,9 @@ class Forms extends MY_Controller
 				
 				$result = $this->gdrive_uploader->uploadWithDifferentToken(array("token_type"=>'des',"folder_name" => $this->reference_number . '/'.strtoupper($this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name')), "data" => $array_files));
 				$decode_result = json_decode($result,true);
+				// echo json_encode($decode_result['id']);
+				// die(json_encode($decode_result['id']));
+				// exit;
 				$files = glob('express/assets/*'); // get all file names
 				foreach ($files as $file) {
 					if (in_array($file, $array_filestodelete)) {
@@ -157,7 +164,7 @@ class Forms extends MY_Controller
 							'middle_name' => $middle_name,
 							'last_name' => $last_name,
 							'status' => 'pending',
-							'gdrive_folder_id' => $decode_result['id']
+							'gdrive_folder_id' => $decode_result['id'],
 						);
 						$digital_id = $this->FormsModel->id_application($array);
 						$this->session->set_flashdata('success', 'ID Application send');

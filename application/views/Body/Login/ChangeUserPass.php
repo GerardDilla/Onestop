@@ -49,6 +49,7 @@ if ($this->session->flashdata('error') != '') {
                     <div class="form d-flex bg-white">
                         <div class="content">
                             <form method="post" id="form_process" class="form-validate" action="<?php echo base_url('index.php/Main/changeUserPassProcess'); ?>">
+                            <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                                 <image class="dose-logo" src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png'); ?>">
                                     <span class="white-box"></span>
                                     <br>

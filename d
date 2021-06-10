@@ -38,3 +38,15 @@
   jhon-backup                           [m 78ceb7d hide welcome message when device width < 568px
   main                                  [m 39ab493 Revert "Revert "Merge branch 'feature-assessment-module' into main""
   v                                     [m 8c6b20c Merge branch 'development' into feature-registration-form
+  development[m
+  feature-add-walkthrough[m
+  feature-admin-side[m
+  feature-chat-inquiry-v1.1[m
+  feature-dashboard-responsiveness-v1.3[m
+  feature-digital-citizenship-form[m
+  feature-fix-gdrive-uploader[m
+  feature-payment-api-notification[m
+  feature-update-legend[m
+  jhon-backup[m
+* [32mjhon-onestop-v1.0[m
+  main[m

@@ -199,6 +199,7 @@ echo '</script>';
         </div>
         <div class="card-body">
             <form id="form_submit" action="<?php echo base_url('index.php/Main/validationDocumentsProcess'); ?>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                 <input type="hidden" value="0" name="if_married">
                 <!-- <form  id="form_submit" action="http://localhost:4003/uploadtodrive/test_post2" method="post" enctype="multipart/form-data" > -->
                 <div class="col-md-12">
@@ -249,7 +250,7 @@ echo '</script>';
                                             <?php 
                                             // echo $list['status'] == "to be follow" ? 'checked="true"' : '';
                                             ?>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo  $list['status']=="to be follow" ? '' : 'disabled="true"'; ?>  type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
+                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $list['status'] != "to be follow" && $list['status'] != "" ? 'disabled="true"' : ''; ?>  type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>

@@ -25,6 +25,24 @@ async function getUrl(){
     const url = await file.getUrl();
     console.log(url)
 }
+async function getFileUrl(file_name,folder_name,main_folder_id){
+    return new Promise((resolve,reject)=>{
+        (async () => {
+            const file = await client.getFile(`/${main_folder_id}/${folder_name}/${file_name}`);
+            const url = await file.getUrl();
+            resolve(url)
+        })().catch(e => reject(e));
+    })
+}
+async function getFolderUrl(folder_name,main_folder_id){
+    return new Promise((resolve,reject)=>{
+        (async () => {
+            const folder = await client.getFolder(`/${main_folder_id}/${folder_name}`);
+            const url = await folder.getUrl();
+            resolve(url)
+        })().catch(e => reject(e));
+    })
+}
 async function getQuota(){
     const q = await client.getQuota();
     console.log(q);
@@ -139,6 +157,28 @@ router.post("/get_id",(req,res)=>{
     }
     else{
         shareFileName(file_name,folder_name,main_folder_id).then(result=>sendBackToPHP(200,result)).catch(error=>sendBackToPHP(400,error))
+    }
+})
+router.post("/get_url",(req,res)=>{
+    const folder_name = req.body.folder_name;
+    const file_name = req.body.file_name;
+    const main_folder_id = req.body.folder_id;
+    function sendBackToPHP(status,data){
+        if(status==400){
+            res.status(400).send(ApiError.badRequest(data));
+            return;
+        }
+        else{
+            res.status(200).send(JSON.stringify({msg:'success',id:data}));
+        }
+    }
+    if(file_name==""){
+        getFolderUrl(folder_name,main_folder_id).then(result=>sendBackToPHP(200,result)).catch(error=>sendBackToPHP(400,error))
+        // shareFolder(folder_name,main_folder_id).then(result=>sendBackToPHP(200,result)).catch(error=>sendBackToPHP(400,error))
+    }
+    else{
+        getFileUrl(file_name,folder_name,main_folder_id).then(result=>sendBackToPHP(200,result)).catch(error=>sendBackToPHP(400,error))
+        // shareFileName(file_name,folder_name,main_folder_id).then(result=>sendBackToPHP(200,result)).catch(error=>sendBackToPHP(400,error))
     }
 })
 // router.get("/get-quota",(req,res)=>{

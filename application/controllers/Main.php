@@ -8,7 +8,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Main extends MY_Controller
 {
-
+	protected $nextcloud_user = "dbadmin";
+	protected $nextcloud_pass = "7SjdDBEi70mjZfbz";
 	public function __construct()
 	{
 		parent::__construct();
@@ -1180,5 +1181,76 @@ class Main extends MY_Controller
 		$sem = $this->input->get('sem');
 		$this->mainmodel->updateLegend(array('Semester' => $sem, 'School_Year' => $sy));
 		echo json_encode('success');
+	}
+	public function msleep($time)
+	{
+		usleep($time * 1000000);
+	}
+	public function testDownloadNas(){
+		$this->load->helper('download');
+		$result = $this->nextcloud_api->getFileUrl(array(
+			'file_name' => '78.png',
+			'folder_id' => 'Jhon Norman Fabregas'
+		));
+		$decoded_result = json_decode($result,true);
+		// exit;
+		if(!empty($result)){
+			if($decoded_result["msg"]=="success"){
+				// $url = "http://10.0.0.14/remote.php/webdav/Student Requirements/Jhon Norman Fabregas/Coast 1.jpg";
+				$url = $decoded_result["id"];
+				$username = $this->nextcloud_user;
+				$password = $this->nextcloud_pass;
+				
+				$ch = curl_init();
+				$file_name = "cacheimage_".date("YmdHisU").'.jpg';
+				$file_url = "assets/cache_download/$file_name";
+				// echo $file_url;
+				// exit;
+				$fp = fopen($file_url, "w");
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+				curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+				
+				$output = curl_exec($ch);
+				$decoded = json_decode($output,true);
+				// print_r($output);
+				fwrite($fp, $output);
+				curl_close($ch);
+				fclose($fp);
+				force_download($file_url, null);
+				ignore_user_abort(false);
+				echo 'hello';
+				if(file_exists($file_url)){
+					// force_download($file_url, null);
+					unlink($file_url);
+				}
+				
+				// unlink($file_name);
+				// $this->msleep(3);
+				
+				// if(file_exists($file_url)) // here is the problem
+				// {
+				// 	unlink($file_url);
+				// }
+				
+				
+				// unlink('assets/cache_download/cacheimage_202106081453211623135201.jpg');
+
+				// $files = glob('assets/cache_download/*'); // get all file names
+				// foreach ($files as $file) {
+				// 	if($file == $file_url){
+				// 		if (is_file($file)) {
+				// 			unlink($file); // delete file
+				// 		}
+				// 	}
+				// }
+				// unlink('assets/cache_download/downloadtest.jpg');
+			}
+		}
+		
+		
 	}
 }

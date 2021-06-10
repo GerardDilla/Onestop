@@ -439,6 +439,18 @@ echo '</script>';
         // }
         if (count == 0) {
             // FORM SUBMISSION
+            $('body').waitMe({
+                effect: 'bounce',
+                text: '',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000',
+                maxSize: '',
+                waitTime: -1,
+                textPos: 'vertical',
+                fontSize: '',
+                source: '',
+                onClose: function() {}
+            });
             $('button[type=submit]').attr('disabled', 'disabled');
             $('#form_submit')[0].submit();
         }

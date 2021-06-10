@@ -7,7 +7,7 @@
     <?php if (empty($date_submitted)) { ?>
         <form id="proof_of_payment_form" action="<?php echo base_url('index.php/Main/uploadProofOfPaymentProcess'); ?>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="payment_type" value="online_payment">
-            <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
+            <!-- <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>"> -->
             <div class="card" style="margin:none;">
                 <div class="card-header">
                     <div class="col-md-12 row">
@@ -458,6 +458,18 @@
             });
         }
         if (count == 0) {
+            $('body').waitMe({
+                effect: 'bounce',
+                text: '',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000',
+                maxSize: '',
+                waitTime: -1,
+                textPos: 'vertical',
+                fontSize: '',
+                source: '',
+                onClose: function() {}
+            });
             $('#upload_form button[type=submit]').attr('disabled', true);
             $(this)[0].submit();
         }

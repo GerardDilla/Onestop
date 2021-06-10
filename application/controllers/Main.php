@@ -33,6 +33,7 @@ class Main extends MY_Controller
 					echo 'Something went wrong!';
 					exit;
 				}
+				
 			}else{
 				echo 'Something went wrong!';
 				exit;

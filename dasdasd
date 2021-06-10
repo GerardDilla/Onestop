@@ -1,0 +1,30 @@
+  =v                                    [m f51888f fix conflicts
+  development                           [m f26fd63 [behind 90] feat:create a model folder for all query in express
+  development-backup                    [m 9166183 feat:fix responsiveness
+  feature-add-walkthrough               [m c7a1466 feat:payment api notification add cashier logs
+  feature-backup-responsiveness         [m 8c6b20c Merge branch 'development' into feature-registration-form
+  feature-chat-inquiry                  [m 6e9b5a7 [behind 3] change message background color to light red
+  feature-chat-inquiry-v1.1             [m 588257a fix conflicts
+  feature-dashboard-responsiveness      [m 7514969 feat: create modal for payment online & over the counter
+  feature-dashboard-responsiveness-v1.1 [m be994a0 fix conflicts
+  feature-dashboard-responsiveness-v1.2 [m 447a2f7 fix conflicts
+  feature-dashboard-responsiveness-v1.3 [m 7f7780f when click other it will show a guide of the current tab & fixes for live
+  feature-digital-citizenship-form      [m 97feb32 [behind 89] Logout pathing
+  feature-fix-gdrive-uploader           [m f82a5a8 remove back button in first step in guide
+  feature-fix-merge-conflict            [m 4f26a1a Merge branch 'feature-wizard' into feature-advising-major-revisions
+  feature-new-login-layout              [m f51888f fix conflicts
+  feature-payment-api-notification      [m 5a065a6 feature-payment-api-notification
+  feature-registration-form             [m 8c6b20c Merge branch 'development' into feature-registration-form
+  feature-schedule-plotting             [m cee9829 feat:change datatables setting to responsive
+  feature-update-legend                 [m d636efa [ahead 2] feature-update-legend
+  feature-upload-proof-of-payment       [m 76adc57 [behind 1] fix merge conflicts from development
+  feature-upload-proof-of-payment-v1.1  [m 272c9e6 feat:include student number and student name ( Proof of Payment)
+  feature-upload-proof-of-payment-v1.2.1[m e8783a7 feat: fix bugs in proof of payment
+  feature-validation-of-documents       [m be54ac7 feat: change email bug
+  feature-validation-of-documents-v1.1  [m 1b336d2 feature: proof of payments change layout
+  jhon-backup                           [m 78ceb7d hide welcome message when device width < 568px
+  jhon-onestop-v1.0                     [m 67ce4aa fix bugs from hideizitoast
+  jhon-onestop-v1.1                     [m a20cf62 fix conflicts
+* [32mjhon-onestop-v1.2                     [m e881a81 feat: add crf_token to views
+  main                                  [m 39ab493 Revert "Revert "Merge branch 'feature-assessment-module' into main""
+  v                                     [m 8c6b20c Merge branch 'development' into feature-registration-form

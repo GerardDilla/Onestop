@@ -1026,6 +1026,9 @@ class Ose_api extends CI_Controller
 	}
 	public function setpaid_test()
 	{
+		if (ENVIRONMENT == 'production') {
+			die('Access Denied');
+		}
 		# Will Remove: for development only
 		$advising_history = $this->AdvisingModel->get_advising_history(array('reference_no' => $this->reference_number));
 		$array = array(
@@ -1040,8 +1043,12 @@ class Ose_api extends CI_Controller
 		echo 'SET AS ENROLLED! Please close page';
 		// insert_fees_test
 	}
+
 	public function reset_progress()
 	{
+		if (ENVIRONMENT == 'production') {
+			die('Access Denied');
+		}
 		# Will Remove: for development only
 		$array = array(
 			'School_Year' => $this->legend_sy,

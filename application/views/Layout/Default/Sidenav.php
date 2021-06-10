@@ -4,6 +4,11 @@
             <div class="d-flex justify-content-between">
                 <div class="logo">
                     <a href="index.html"><img src="<?php echo base_url('assets/images/logo/DOSE_LOGO.png'); ?>" alt="Logo" srcset=""></a>
+
+                    <?php if (ENVIRONMENT != 'production') : ?>
+                        <h6 style="text-align: center; color:red"><?php echo strtoupper(ENVIRONMENT); ?></h6>
+                    <?php endif; ?>
+
                     <hr>
                     <h6 style="text-align: center;">ADMISSIONS PORTAL</h6>
                 </div>
@@ -70,20 +75,19 @@
                         <span>ID Application</span>
                     </a>
                 </li> -->
-                <li class="sidebar-item twinkling-background" id="chat-me-here" <?php 
-                    if(strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))){
-                        echo ' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"';
-                    }
-                    else{
-                        echo ' onclick="timeWarning()"';
-                    }
-                    ?>>
+                <li class="sidebar-item twinkling-background" id="chat-me-here" <?php
+                                                                                if (strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))) {
+                                                                                    echo ' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"';
+                                                                                } else {
+                                                                                    echo ' onclick="timeWarning()"';
+                                                                                }
+                                                                                ?>>
                     <a href="javascript:" class='sidebar-link'>
                         <i class="bi bi-chat-dots"></i>
                         <span>Chat Me Here!</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-gear-fill"></i>
@@ -95,29 +99,26 @@
                         </li>
                     </ul>
                 </li>
-                <?php
-                // if($this->session->userdata('reference_no')=='14174'){
-                ?>
-                <!-- <li class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-gear-fill"></i>
-                        <span>DevTools</span>
-                    </a>
-                    <ul class="submenu">
-                        <li class="submenu-item">
-                            <a href="<?php echo base_url(); ?>index.php/main/resetEnrollmentLegend" target="_blank">Reset Assessment and Enrollment</a>
-                        </li>
-                        <li class="submenu-item">
-                            <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Set As Enrolled</a>
-                        </li>
-                        <li class="submenu-item">
-                            <a href="void(0)" data-bs-toggle="modal" data-bs-target="#oldStudentAccountModal">Old Student Account Creation</a>
-                        </li>
-                    </ul>
-                </li> -->
-                <?php 
-                // } 
-                ?>
+                <?php if (ENVIRONMENT != 'production') : ?>
+                    <li class="sidebar-item  has-sub">
+                        <a href="#" class='sidebar-link'>
+                            <i class="bi bi-gear-fill"></i>
+                            <span>DevTools</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="<?php echo base_url(); ?>index.php/main/resetEnrollmentLegend" target="_blank">Reset Assessment and Enrollment</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Set As Enrolled</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="void(0)" data-bs-toggle="modal" data-bs-target="#oldStudentAccountModal">Old Student Account Creation</a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+
                 <li class="sidebar-item">
                     <a href="<?php echo base_url('index.php/main/logout'); ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>

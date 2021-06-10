@@ -36,31 +36,6 @@
                         <span>ID Application</span>
                     </a>
                 </li>
-                <!-- <li class="sidebar-item">
-                    <a href="<?php echo base_url('index.php/Main/validationOfDocuments') ?>" class='sidebar-link'>
-                        <i class="bi bi-card-checklist"></i>
-                        <span>Requirements</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a href="<?php echo base_url('index.php/Main/uploadProofOfPayment') ?>" class='sidebar-link'>
-                        <i class="bi bi-credit-card-fill"></i>
-                        <span>Proof of Payment</span>
-                    </a>
-                </li> -->
-
-                <!-- <li class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-gear-fill"></i>
-                        <span>Admin</span>
-                    </a>
-                    <ul class="submenu">
-                        <li class="submenu-item <?php echo $tab_active == 'Password Reset' ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('index.php/Main/passwordReset') ?>">Reset Password</a>
-                        </li>
-                    </ul>
-                </li> -->
                 <li class="sidebar-item">
                     <a href="<?php echo base_url('index.php/admin/logout'); ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-left"></i>

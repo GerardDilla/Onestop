@@ -1,5 +1,13 @@
 <!-- <style href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css"></style> -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<style>
+    .checked_form {
+        background-color: rgba(193, 255, 193, 1) !important;
+    }
+    .checked_form:hover {
+        background-color: rgba(137, 251, 137, 1) !important;
+    }
+</style>
 <section class="section col-lg-12" id="admin_id-selection">
     <div class="card" style="margin:none;">
         <div class="card-header">
@@ -11,6 +19,7 @@ The name and photo associated with your Google account will be recorded when you
                 <table id="idApplicationTable" class="hover">
                     <thead>
                         <tr>
+                            <th>Status</th>
                             <th>Name (Last, First Middle)</th>
                             <th>Student Number</th>
                             <th>Course</th>
@@ -19,7 +28,7 @@ The name and photo associated with your Google account will be recorded when you
                             <th>Guardian Contact</th>
                             <!-- <th>Guardian Email</th> -->
                             <th width="5%">To Gdrive</th>
-                            <th width="5%">Action</th>
+                            <th width="5%" colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody id="adminIdTbody">
@@ -162,10 +171,15 @@ The name and photo associated with your Google account will be recorded when you
                 $.each(response, function(key, value) {
                     student_name = value['Last_Name'] + ', ' + value['First_Name'] + ' ' + value['Middle_Name'];
                     checked = '';
+                    class_check = '';
                     if (value['status'] == 'done') {
-                        checked = 'checked class="checked_form"';
+                        checked = 'checked';
+                        class_check =' class="checked_form"';
                     }
-                    html = '<tr ' + checked + 'id="tr-switch' + value['id'] + '">';
+                    html = '<tr ' + class_check + 'id="tr-switch' + value['id'] + '">';
+                    html += '<td>' +
+                    value['status'].toUpperCase() +
+                        '</td>';
                     html += '<td>' +
                         student_name +
                         '</td>' +
@@ -192,6 +206,9 @@ The name and photo associated with your Google account will be recorded when you
                         '<a href="https://drive.google.com/drive/folders/' + value['gdrive_folder_id'] + '" target="_blank">' +
                         '<button class="btn action_button">Link</button>' +
                         '</a>' +
+                        '</td>';
+                    html += '<td>' +
+                        '<button class="btn action_button-error">Error</button>' +
                         '</td>';
                     html += '<td><label class="switch">' +
                         '<input type="checkbox" ' + checked + ' data-student_name_' + value['id'] + '="' + student_name + '" id="switch' + value['id'] + '" onclick="id_update_status(' + value['id'] + ')">' +

@@ -79,7 +79,7 @@ $(document).ready(function() {
         setTimeout(() => {
             if ($('#li_student_information').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('student_information');
-                hideIziToastGuide();
+                // hideIziToastGuide();
                 // showIziToastGuide();
                 var ose_guide1 = new OSE_Guide('student_information');
                 ose_guide1.play();
@@ -90,7 +90,7 @@ $(document).ready(function() {
         setTimeout(() => {
             if ($('#li_requirements').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('requirements');
-                hideIziToastGuide();
+                // hideIziToastGuide();
                 // showIziToastGuide();
                 var ose_guide1 = new OSE_Guide('requirements');
                 ose_guide1.play();
@@ -101,7 +101,7 @@ $(document).ready(function() {
         setTimeout(() => {
             if ($('#li_advising').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('advising');
-                hideIziToastGuide();
+                // hideIziToastGuide();
                 // showIziToastGuide();
                 var ose_guide1 = new OSE_Guide('advising');
                 ose_guide1.play();
@@ -112,7 +112,7 @@ $(document).ready(function() {
         setTimeout(() => {
             if ($('#li_payment').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('payment');
-                hideIziToastGuide();
+                // hideIziToastGuide();
                 // showIziToastGuide();
                 var ose_guide1 = new OSE_Guide('payment');
                 ose_guide1.play();
@@ -124,7 +124,7 @@ $(document).ready(function() {
         setTimeout(() => {
             if ($('#li_registration').hasClass('active')) {
                 $('input[name=current_tab_selection]').val('registration');
-                hideIziToastGuide();
+                // hideIziToastGuide();
                 // showIziToastGuide();
                 var ose_guide1 = new OSE_Guide('registration');
                 ose_guide1.play();
@@ -366,48 +366,79 @@ function fetch_user_status() {
                 // wizard_payment();
                 // wizard_advising();
                 $('.wizard-proceed-advising').addClass('old-student');
-
+                $('input[name=current_tab_selection]').val('advising');
+                var ose_guide1 = new OSE_Guide('advising');
                 wizard_old_student();
                 // hasclass_oldstudent()
-            }
-            if (payment == 1) {
+                if (payment == 1) {
 
-                $('input[name=current_tab_selection]').val('registration');
-                wizard_registration();
-                hasclass_oldstudent();
-                $("#advising_content").removeClass("active");
-                var ose_guide1 = new OSE_Guide('registration');
-                check_next_enrollment();
-
-            } else if (advising == 1) {
-                $('input[name=current_tab_selection]').val('payment')
-                wizard_payment();
-                var ose_guide1 = new OSE_Guide('payment');
-
-            } else if (requirements == 1) {
-                wizard_advising();
-                $('input[name=current_tab_selection]').val('advising')
-                var ose_guide1 = new OSE_Guide('advising');
-                hasclass_oldstudent();
-
-            } else if (student_information == 1) {
-                
-                wizard_requirements();
-                if ($('.wizard-proceed-advising').hasClass('old-student')) {
-                    $("#progress_bar").css("width", "50%");
-                    $("#requirements_content").removeClass("active");
-                    $("#li_requirements").removeClass("active");
+                    wizard_registration();
+                    hasclass_oldstudent();
+                    $("#advising_content").removeClass("active");
+                    check_next_enrollment();
+    
+                } else if (advising == 1) {
+                    wizard_payment();
+    
+                } else if (requirements == 1) {
+                    wizard_advising();
+                    hasclass_oldstudent();
+    
+                } else if (student_information == 1) {
+                    
+                    wizard_requirements();
+                    if ($('.wizard-proceed-advising').hasClass('old-student')) {
+                        $("#progress_bar").css("width", "50%");
+                        $("#requirements_content").removeClass("active");
+                        $("#li_requirements").removeClass("active");
+                    }
+    
+                } else {
+                    wizard_student_info();
+                    hasclass_oldstudent();
                 }
-                $('input[name=current_tab_selection]').val('requirements');
-                var ose_guide1 = new OSE_Guide('requirements');
-
-            } else {
-                wizard_student_info();
-                hasclass_oldstudent();
-                var ose_guide1 = new OSE_Guide('student_information');
-                $('input[name=current_tab_selection]').val('student_information');
-
             }
+            else{
+                if (payment == 1) {
+
+                    $('input[name=current_tab_selection]').val('registration');
+                    wizard_registration();
+                    hasclass_oldstudent();
+                    $("#advising_content").removeClass("active");
+                    var ose_guide1 = new OSE_Guide('registration');
+                    check_next_enrollment();
+    
+                } else if (advising == 1) {
+                    $('input[name=current_tab_selection]').val('payment')
+                    wizard_payment();
+                    var ose_guide1 = new OSE_Guide('payment');
+    
+                } else if (requirements == 1) {
+                    wizard_advising();
+                    $('input[name=current_tab_selection]').val('advising')
+                    var ose_guide1 = new OSE_Guide('advising');
+                    hasclass_oldstudent();
+    
+                } else if (student_information == 1) {
+                    
+                    wizard_requirements();
+                    if ($('.wizard-proceed-advising').hasClass('old-student')) {
+                        $("#progress_bar").css("width", "50%");
+                        $("#requirements_content").removeClass("active");
+                        $("#li_requirements").removeClass("active");
+                    }
+                    $('input[name=current_tab_selection]').val('requirements');
+                    var ose_guide1 = new OSE_Guide('requirements');
+    
+                } else {
+                    wizard_student_info();
+                    hasclass_oldstudent();
+                    var ose_guide1 = new OSE_Guide('student_information');
+                    $('input[name=current_tab_selection]').val('student_information');
+    
+                }
+            }
+            
             ose_guide1.play();
         },
         error: function(response) {},

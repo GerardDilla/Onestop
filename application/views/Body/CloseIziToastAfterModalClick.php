@@ -79,9 +79,11 @@ function hideIziToast(){
     // iziToast.hide({
     //     transitionOut: 'fadeOutUp'
     // },izitoastWalkthrough);
-    iziToast.hide({
-        transitionOut: 'fadeOutUp'
-    },iziToastWelcome);
+    if ($(".izitoast-welcome-user")[0]){
+        iziToast.hide({
+            transitionOut: 'fadeOutUp'
+        },iziToastWelcome);
+    }
     status="close";
 }
 // var toast = document.querySelector('.iziToast');

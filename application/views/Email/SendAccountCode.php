@@ -11,7 +11,7 @@
         <br>
         Click this link for the Admissions Portal:
         <br>
-        <a href="http://stdominiccollege.edu.ph/Onestop/main/setupUserPass/<?php echo $code; ?>">CLICK ME!</a>
+        <a href="https://stdominiccollege.edu.ph/Onestop/main/setupUserPass/<?php echo $code; ?>">CLICK ME!</a>
         <br>
         <br>
         Should you have any questions feel free to call us anytime.

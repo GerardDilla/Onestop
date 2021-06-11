@@ -9,7 +9,11 @@
   feature-dashboard-responsiveness-v1.1 [m be994a0 fix conflicts
   feature-dashboard-responsiveness-v1.2 [m 447a2f7 fix conflicts
   feature-dashboard-responsiveness-v1.3 [m 7f7780f when click other it will show a guide of the current tab & fixes for live
+<<<<<<< HEAD
   feature-digital-citizenship-form      [m 97feb32 [behind 89] Logout pathing
+=======
+  feature-digital-citizenship-form      [m 97feb32 [behind 71] Logout pathing
+>>>>>>> jhon-onestop-v1.0
   feature-fix-gdrive-uploader           [m f82a5a8 remove back button in first step in guide
   feature-fix-merge-conflict            [m 4f26a1a Merge branch 'feature-wizard' into feature-advising-major-revisions
   feature-new-login-layout              [m f51888f fix conflicts
@@ -23,8 +27,13 @@
   feature-validation-of-documents       [m be54ac7 feat: change email bug
   feature-validation-of-documents-v1.1  [m 1b336d2 feature: proof of payments change layout
   jhon-backup                           [m 78ceb7d hide welcome message when device width < 568px
+<<<<<<< HEAD
   jhon-onestop-v1.0                     [m 67ce4aa fix bugs from hideizitoast
   jhon-onestop-v1.1                     [m a20cf62 fix conflicts
 * [32mjhon-onestop-v1.2                     [m e881a81 feat: add crf_token to views
+=======
+* [32mjhon-onestop-v1.0                     [m f69005f feat: add des credentials
+  jhon-onestop-v1.1                     [m 034f3b6 feat: use nextcloud library and apply to proof of payment & validation of documents
+>>>>>>> jhon-onestop-v1.0
   main                                  [m 39ab493 Revert "Revert "Merge branch 'feature-assessment-module' into main""
   v                                     [m 8c6b20c Merge branch 'development' into feature-registration-form

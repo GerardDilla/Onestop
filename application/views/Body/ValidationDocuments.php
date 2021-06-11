@@ -219,12 +219,13 @@ echo '</script>';
                             $requirements_list = [];
                             $req_count = 0;
                             foreach ($requirements as $list) {
-                                if ($list['status'] != "") {
+                                
+                                if ($list['status'] == ""||$list['status'] == "to be follow") {
                                     ++$req_count;
                                 }
-                                if ($list['status'] == ""&&$list['status'] != "") {
-                                    ++$req_count;
-                                }
+                                // else if ($list['status'] != "") {
+                                //     ++$req_count;
+                                // }
                             }
                             $req = 0;
                             foreach ($requirements as $list) {
@@ -250,7 +251,7 @@ echo '</script>';
                                             <?php 
                                             // echo $list['status'] == "to be follow" ? 'checked="true"' : '';
                                             ?>
-                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $list['status'] != "to be follow" && $list['status'] != "" ? 'disabled="true"' : ''; ?>  type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
+                                            <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo  $list['status']!="to be follow"&&$list['status']!="" ? 'disabled="true"' : ''; ?>  type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>Status</span></div>
@@ -265,9 +266,9 @@ echo '</script>';
                                 } else {
                                 ?>
                                     <div class="table-row row col-md-12 are_you_married" id="are_you_married">
-                                        <div class="col-md-12">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes"> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" checked="true"></div>
+                                        <div class="col-md-12">Are you married? Yes <input onchange="ifMarried('yes')" type="checkbox" class="form-check-input" name="yes" <?php echo $list['status']!=""&&$list['status']!="to be follow"?"checked='true' disabled='true'":''; ?>> or No <input type="checkbox" onchange="ifMarried('no')" class="form-check-input" name="no" <?php echo $list['status']!=""&&$list['status']!="to be follow"?"disabled='true'":'checked="true"'; ?>></div>
                                     </div>
-                                    <div class="table-row row col-md-12" style="display:none;" id="married_certificate_div">
+                                    <div class="table-row row col-md-12" <?php echo $list['status']!=""&&$list['status']!="to be follow"?"":'style="display:none;"'; ?>  id="married_certificate_div">
                                         <div class="col-lg-3 row div-td div-align-center header-per-row">
                                             <div class="col-lg-12 col-md-4 col-sm-4 min-th">Requirements</div>
                                             <div class="col-lg-12 col-md-8 col-sm-8"><?php echo $list['rq_name']; ?></div>
@@ -335,17 +336,19 @@ echo '</script>';
 
                     <?php
                     if (isset($this->data['requirementstab'])) {
-                        echo '<div>';
-                        echo '<div class="col-md-12 student_info_submit_div" style="text-align:center; padding-top:20px">';
-                        echo '<button type="submit" class="btn btn-lg btn-primary btn-hover-red" id="submit_val_doc">PROCEED</button>';
-                        // echo '<button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>'
-                        echo '<div>';
+                        if ($req_count > 0) {
+                            echo '<div>';
+                            echo '<div class="col-md-12 student_info_submit_div" style="text-align:center; padding-top:20px">';
+                            echo '<button type="submit" class="btn btn-lg btn-primary btn-hover-red" id="submit_val_doc">PROCEED</button>';
+                            // echo '<button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info" onclick="submit_course()">PROCEED</button>'
+                            echo '<div>';
+                        }
                     } else {
-                        // if ($req_count == 0) {
+                        if ($req_count > 0) {
                             echo '<div class="col-md-12 col-sm-12" align="right" style="margin-top:10px">';
                             echo '<button type="submit" class="btn btn-info" id="submit_val_doc">Submit</button>';
                             echo '<div></div>';
-                        // }
+                        }
                     }
                     ?>
 
@@ -440,16 +443,16 @@ echo '</script>';
         if (count == 0) {
             // FORM SUBMISSION
             $('body').waitMe({
-                effect: 'bounce',
-                text: '',
+                effect: 'win8',
+                text: 'Please wait...',
                 bg: 'rgba(255,255,255,0.7)',
-                color: '#000',
+                color: 'maroon',
                 maxSize: '',
                 waitTime: -1,
                 textPos: 'vertical',
                 fontSize: '',
                 source: '',
-                onClose: function() {}
+                onClose : function() {}
             });
             $('button[type=submit]').attr('disabled', 'disabled');
             $('#form_submit')[0].submit();

@@ -1,3 +1,4 @@
+require('dotenv').config();
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
@@ -8,12 +9,17 @@ const NotificationService = require('./Service/NotificationService');
 const bodyParser = require('body-parser');
 const uploadToGdrive = require("./route/uploadtogdrive");
 const gdriveuploader = require("./route/gdrivelibrary");
+const nextCloud = require("./route/NextCloud");
 const moment = require("moment")
 const app = express(feathers());
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
+const google_calendar = require("./route/GoogleCalendar");
+const google_meet = require("./route/GoogleMeet");
+const { auth } = require('googleapis/build/src/apis/abusiveexperiencereport');
+const jwt = require('jsonwebtoken');
 // const NodeRSA = require("node-rsa");
 // const pfxLoad = require("pfx-load");
 // const openssl = require("openssl")
@@ -45,12 +51,55 @@ app.configure(express.rest());
 app.get("/", (req, res) => {
   res.send('Welcome to OSE API Date:' + moment().format('YYYY-MM-DD kk:mm:ss'))
 });
+app.post("/login",(req,res)=>{
+  // const io = require('socket.io');
+  // const socket = io();
+  // const client = feathers();
+  // client.configure(feathers.socketio(socket))
+  // client.configure(feathers.authentication({
+  //   storage: window.localStorage
+  // }))
+  // const login = async () => {
+  //   try{
+  //     return await client.reAuthenticate();
+  //   }
+  //   catch(e){
+  //     return await client.authenticate({
+  //       strategy: 'local',
+  //       email: 'hello@feathersjs.com',
+  //       password: 'supersecret'
+  //     });
+  //   }
+  // }
+  // const main = async () => {
+  //   const auth = await login();
+  
+  //   console.log('User is authenticated', auth);
+  
+  //   await client.logout();
+  // };
+  // main();
+  const username = req.body.username;
+  const user = {name:username}
+
+  const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET)
+  res.json({accessToken:accessToken})
+})
+function authenticateToken(){
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]
+  if(token == null){
+    return res.sendStatus(401)
+  }
+}
 app.use('/chat-inquiry',new ChatService());
 app.use('/chat-action',new ChatActionService());
 app.use('/notification',new NotificationService());
 app.use("/uploadtodrive",uploadToGdrive);
 app.use("/gdriveuploader",gdriveuploader);
-
+app.use('/next-cloud',nextCloud); 
+app.use('/google-calendar',google_calendar);
+app.use('/google-meet',google_meet);
 // const cors = require("cors");
 // app.use(cors)
 

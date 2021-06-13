@@ -112,17 +112,17 @@
     <div class="col-md-3">
         <a href="<?php echo base_url('index.php/forms/digital_citizenship') ?>" style="color:inherit">
             <button class="btn btn-primary digital-citizenship btn-hover-red">
-                Go to Digital Citizenship Form
+                Go to Digital Citizenship and ID Application Form
             </button>
         </a>
         <br><br>
     </div>
-    <div class="col-md-3">
+    <!-- <div class="col-md-3">
         <a href="<?php echo base_url('index.php/forms/id_application') ?>" style="color:inherit">
             <button class="btn btn-primary id-application btn-hover-red">
                 Go to ID Application Form
             </button>
         </a>
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-4"></div> -->
 </div>

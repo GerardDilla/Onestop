@@ -4,6 +4,18 @@
     }
 </style>
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
+    <div class="button-function_div">
+        <a href="<?php echo base_url('index.php/Main/selfassesment') ?>" style="color:inherit">
+            <button class="btn btn-lg btn-primary btn-hover-red">
+                Go Back to Self Assesment
+            </button>
+        </a>
+        <a href="<?php echo base_url('index.php/forms/id_application') ?>" style="color:inherit">
+            <button class="btn btn-lg btn-primary btn-hover-red button-function_next">
+                Go to ID Application Form
+            </button>
+        </a>
+    </div>
     <?php
     if ($this->data['digital'] === true) {
     ?>
@@ -23,92 +35,92 @@
         <div class="row">
             <div class="card">
                 <div class="card-content">
-                    <div class="card-body">
-                        <form id="digital_citizen_form" action="<?php echo base_url(); ?>index.php/Forms/submit_digital_citizenship" method="POST">
+                    <!-- <div class="card-body"> -->
+                    <form id="digital_citizen_form" action="<?php echo base_url(); ?>index.php/Forms/submit_digital_citizenship" method="POST">
                         <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
-                            <div class="row">
+                        <div class="row">
+                            <p>
+                                <span class="title_color">Full Name</span>
+                                <span class="required_field"> *</span> (
+                                <small class="text-muted">Last name, Given Name, M.I</small>)
+                            </p>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <?php
+                                    if ($this->data['digital'] === true) {
+                                        echo '<input type="text" class="form-control" placeholder="Last Name" name="last_name" id="digital_last_name">';
+                                    } else {
+                                        echo '<input type="text" class="form-control" readonly placeholder="Last Name" name="last_name" id="digital_last_name">';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <?php
+                                    if ($this->data['digital'] === true) {
+                                        echo '<input type="text" class="form-control" placeholder="Given Name" name="first_name" id="digital_first_name">';
+                                    } else {
+                                        echo '<input type="text" class="form-control" readonly placeholder="Given Name" name="first_name" id="digital_first_name">';
+                                    }
+                                    ?>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <?php
+                                    if ($this->data['digital'] === true) {
+                                        echo '<input type="text" class="form-control" placeholder="Middle Initial" name="middle_name" id="digital_middle_name">';
+                                    } else {
+                                        echo '<input type="text" class="form-control" readonly placeholder="Middle Initial" name="middle_name" id="digital_middle_name">';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <p>
-                                    <span class="title_color">Full Name</span>
-                                    <span class="required_field"> *</span> (
-                                    <small class="text-muted">Last name, Given Name, M.I</small>)
+                                    <span class="title_color">Course / Department</span>
+                                    <!-- <span class="required_field"> *</span> -->
                                 </p>
-                                <div class="col-md-4">
-                                    <div class="input-group mb-3">
-                                        <?php
-                                        if ($this->data['digital'] === true) {
-                                            echo '<input type="text" class="form-control" placeholder="Last Name" name="last_name" id="digital_last_name">';
-                                        } else {
-                                            echo '<input type="text" class="form-control" readonly placeholder="Last Name" name="last_name" id="digital_last_name">';
-                                        }
-                                        ?>
-                                    </div>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Course / Department" readonly name="course" id="digital_course">
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="input-group mb-3">
-                                        <?php
-                                        if ($this->data['digital'] === true) {
-                                            echo '<input type="text" class="form-control" placeholder="Given Name" name="first_name" id="digital_first_name">';
-                                        } else {
-                                            echo '<input type="text" class="form-control" readonly placeholder="Given Name" name="first_name" id="digital_first_name">';
-                                        }
-                                        ?>
-
-                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                <p>
+                                    <span class="title_color">Personal Email/ SDCA Gmail</span>
+                                    <!-- <span class="required_field"> *</span> -->
+                                </p>
+                                <div class="input-group mb-3">
+                                    <input type="email" class="form-control" placeholder="Email" name="email" readonly id="digital_email">
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="input-group mb-3">
-                                        <?php
-                                        if ($this->data['digital'] === true) {
-                                            echo '<input type="text" class="form-control" placeholder="Middle Initial" name="middle_name" id="digital_middle_name">';
-                                        } else {
-                                            echo '<input type="text" class="form-control" readonly placeholder="Middle Initial" name="middle_name" id="digital_middle_name">';
-                                        }
-                                        ?>
-                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                <p>
+                                    <span class="title_color">Accounts</span><br>
+                                    <!-- <span class="title_color">Concern</span> -->
+                                    <span class="required_field">NOTE</span>: This are the accounts you will get.
+                                </p>
+                                <div class="form-check">
+                                    <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_gmail" value="sdca_gmail_account" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
+                                    <label for="customColorCheck1">SDCA Gmail Account</label>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <p>
-                                        <span class="title_color">Course / Department</span>
-                                        <!-- <span class="required_field"> *</span> -->
-                                    </p>
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Course / Department" readonly name="course" id="digital_course">
-                                    </div>
+                                <div class="form-check">
+                                    <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_portal" value="student_portal" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
+                                    <label for="customColorCheck2">Student Portal</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <p>
-                                        <span class="title_color">Personal Email/ SDCA Gmail</span>
-                                        <!-- <span class="required_field"> *</span> -->
-                                    </p>
-                                    <div class="input-group mb-3">
-                                        <input type="email" class="form-control" placeholder="Email" name="email" readonly id="digital_email">
-                                    </div>
+                                <div class="form-check">
+                                    <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_blackboard" value="blackboard_account" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
+                                    <label for="customColorCheck3">Blackboard Account</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <p>
-                                        <span class="title_color">Accounts</span><br>
-                                        <!-- <span class="title_color">Concern</span> -->
-                                        <span class="required_field">NOTE</span>: This are the accounts you will get.
-                                    </p>
-                                    <div class="form-check">
-                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_gmail" value="sdca_gmail_account" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
-                                        <label for="customColorCheck1">SDCA Gmail Account</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_portal" value="student_portal" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
-                                        <label for="customColorCheck2">Student Portal</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_blackboard" value="blackboard_account" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
-                                        <label for="customColorCheck3">Blackboard Account</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_365" value="microsoft_office_365" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
-                                        <label for="customColorCheck4">Microsoft Office 365</label>
-                                    </div>
+                                <div class="form-check">
+                                    <input type="checkbox" checked readonly class="form-check-input form-check-primary" name="concern[]" id="concern_365" value="microsoft_office_365" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;">
+                                    <label for="customColorCheck4">Microsoft Office 365</label>
                                 </div>
-                                <!-- <div class="col-md-6">
+                            </div>
+                            <!-- <div class="col-md-6">
                                     <p>
                                         <span class="title_color">Request Details</span>
                                         <span class="required_field"> *</span>
@@ -129,18 +141,27 @@
                                     </div>
                                     <br><br><br>
                                 </div> -->
-                                <?php
-                                if ($this->data['digital'] === true) {
-                                ?>
-                                    <!-- <div class="col-md-8"></div> -->
-                                    <div class="col-md-12" style="text-align:center">
-                                        <button class="btn btn-lg btn-primary">PROCEED</button>
+                            <?php
+                            if ($this->data['digital'] === true) {
+                            ?>
+                                <!-- <div class="col-md-4"></div> -->
+                                <div class="row col-md-12" style="text-align:center;margin-top:30px;">
+                                    <!-- <div class="col-md-4" style="margin-top:20px;">
+                                            <button class="btn btn-lg btn-primary btn-hover-red">PROCEED</button>
+                                        </div> -->
+                                    <div class="col-md-12" style="margin-top:20px;">
+                                        <button class="btn btn-lg btn-primary btn-hover-red">PROCEED</button>
                                     </div>
-                                <?php } ?>
+                                    <!-- <div class="col-md-4" style="margin-top:20px;">
+                                            <button class="btn btn-lg btn-primary btn-hover-red">PROCEED</button>
+                                        </div> -->
+                                    <!-- <button class="btn btn-lg btn-primary">PROCEED</button> -->
+                                </div>
+                            <?php } ?>
 
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>

@@ -13,3 +13,28 @@
 .text_note {
     color: rgba(255, 0, 0, 1) !important;
 }
+
+.button-function_div {
+    margin-bottom: 10px;
+}
+
+.button-function_next {
+    float: right;
+}
+
+.btn-back_to_assesment {
+    background-color: #435ebe;
+    border-color: #435ebe;
+    /* background-color: rgba(200, 0, 0, 1); */
+    color: white;
+}
+
+@media only screen and (max-width: 646px) {
+    .button-function_div {
+        text-align: center;
+    }
+    .button-function_next {
+        margin-top: 10px;
+        float: none;
+    }
+}

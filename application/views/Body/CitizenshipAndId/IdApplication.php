@@ -1,4 +1,16 @@
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
+    <div class="button-function_div">
+        <a href="<?php echo base_url('index.php/Main/selfassesment') ?>" style="color:inherit">
+            <button class="btn btn-lg btn-primary btn-hover-red">
+                Go Back to Self Assesment
+            </button>
+        </a>
+        <a href="<?php echo base_url('index.php/forms/digital_citizenship') ?>" style="color:inherit">
+            <button class="btn btn-lg btn-primary btn-hover-red button-function_next">
+                Go to ID Application Form
+            </button>
+        </a>
+    </div>
     <?php
     if ($this->data['id_app'] === true) {
     ?>
@@ -20,7 +32,7 @@
                 <div class="card-content">
                     <div class="card-body">
                         <form action="<?php echo base_url(); ?>index.php/Forms/submit_id_application" method="POST" id="id_application_form" enctype="multipart/form-data">
-                        <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
+                            <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                             <div class="row">
                                 <div class="col-md-6">
                                     <p>

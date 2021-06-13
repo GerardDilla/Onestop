@@ -185,7 +185,7 @@
                 $('#digital_middle_name').val(response['Middle_Name']);
                 $('#digital_last_name').val(response['Last_Name']);
                 $('#digital_course').val(response['Course'] + " : " + response['Program_Name']);
-                $('digital_#email').val(response['Email']);
+                $('#digital_email').val(response['Email']);
             }
         })
     }

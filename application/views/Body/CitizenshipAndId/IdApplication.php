@@ -197,7 +197,7 @@
             dataType: 'JSON',
             success: function(response) {
                 $('#id_reference_number').val(response['Reference_Number']);
-                $('#id_student_number').val(response['Reference_Number']);
+                $('#id_student_number').val(response['Student_Number']);
                 $('#id_first_name').val(response['First_Name']);
                 $('#id_middle_name').val(response['Middle_Name']);
                 $('#id_last_name').val(response['Last_Name']);

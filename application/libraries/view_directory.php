@@ -12,7 +12,13 @@ class view_directory
 		$data['title'] = 'Self Enrollment';
 		return $data;
 	}
-
+	
+	public function digitalAndIdForms()
+	{
+		$data['view'] = $this->body.'CitizenshipAndId/OnePage';
+		$data['title'] = ' ';
+		return $data;
+	}
 	public function digitalCitizenship()
 	{
 		$data['view'] = $this->body.'CitizenshipAndId/DigitalCitizenship';

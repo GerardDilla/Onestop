@@ -110,7 +110,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <a href="<?php echo base_url('index.php/forms/digital_citizenship') ?>" style="color:inherit">
+        <a href="<?php echo base_url('index.php/forms') ?>" style="color:inherit">
             <button class="btn btn-primary digital-citizenship btn-hover-red">
                 Go to Digital Citizenship and ID Application Form
             </button>

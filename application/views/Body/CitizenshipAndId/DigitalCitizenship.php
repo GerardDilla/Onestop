@@ -4,7 +4,7 @@
     }
 </style>
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
-    <div class="button-function_div">
+    <!-- <div class="button-function_div">
         <a href="<?php echo base_url('index.php/Main/selfassesment') ?>" style="color:inherit">
             <button class="btn btn-lg btn-primary btn-hover-red">
                 Go Back to Self Assesment
@@ -15,7 +15,7 @@
                 Go to ID Application Form
             </button>
         </a>
-    </div>
+    </div> -->
     <?php
     if ($this->data['digital'] === true) {
     ?>
@@ -31,11 +31,11 @@
             <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
         </div>
     <?php } ?>
-    <div class="card">
+    <!-- <div class="card"> -->
         <div class="row">
             <div class="card">
                 <div class="card-content">
-                    <!-- <div class="card-body"> -->
+                    <div class="card-body">
                     <form id="digital_citizen_form" action="<?php echo base_url(); ?>index.php/Forms/submit_digital_citizenship" method="POST">
                         <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
                         <div class="row">
@@ -161,11 +161,11 @@
 
                         </div>
                     </form>
-                    <!-- </div> -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 </section>
 <script>
     <?php
@@ -181,14 +181,15 @@
     ?>
         iziToast.error({
             title: 'Error',
-            message: 'Already have data',
+            message: '<?php echo $this->session->flashdata('error'); ?>',
         });
     <?php
     }
 
     ?>
     $(document).ready(function() {
-        student_information();
+        // alert('asdsa');
+        digital_student_information();
         $("#digital_citizen_form").submit(function(e) {
 
             if ($('input[type=text]').val() == '') {
@@ -197,11 +198,12 @@
         });
     });
 
-    function student_information() {
+    function digital_student_information() {
         $.ajax({
-            url: 'ajaxGetStudent',
+            url: 'Forms/ajaxGetStudent',
             dataType: 'JSON',
             success: function(response) {
+                console.log(response);
                 $('#digital_first_name').val(response['First_Name']);
                 $('#digital_middle_name').val(response['Middle_Name']);
                 $('#digital_last_name').val(response['Last_Name']);

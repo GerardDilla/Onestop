@@ -191,6 +191,17 @@ class MainModel extends CI_Model
         $this->db->update('legend', $data);
         $this->db->where(1);
     }
+    public function checkStudentInfoRefNo($ref_no){
+        $this->db->where('Reference_Number',$ref_no);
+        $result = $this->db->get('Student_Info');
+        return $result->row_array();
+    }
+    public function checkStudentAccountByRefNo($ref_no){
+        $this->db->where('reference_no',$ref_no);
+        // $this->db->like('title', 'match');
+        $result = $this->db->get('student_account');
+        return $result->row_array();
+    }
     // public function checkIfthi
     // if fees not enrolled college
     //  if semester not equal to current semester in legend

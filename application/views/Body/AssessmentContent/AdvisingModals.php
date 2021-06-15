@@ -28,25 +28,53 @@
 
                 <hr>
 
-                <table class="mdl-data-table" id="subjectTable" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Sched Code</th>
-                            <th>Subject Code</th>
-                            <th>Subject Title</th>
-                            <th>Section</th>
-                            <th>Units</th>
-                            <th>Day</th>
-                            <th>Time</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="card-body" id="subject-panel">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#block_subjects" role="tab" aria-controls="home" aria-selected="true">BLOCK SUBJECTS</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#open_subjects" role="tab" aria-controls="profile" aria-selected="false">OPEN SUBJECTS</a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" style="padding-top:1%" id="block_subjects" role="tabpanel" aria-labelledby="home-tab">
+                            <table class="mdl-data-table" id="subjectTable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Sched Code</th>
+                                        <th>Subject Code</th>
+                                        <th>Subject Title</th>
+                                        <th>Section</th>
+                                        <th>Units</th>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
 
-                    </tbody>
+                                </tbody>
 
-                </table>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="open_subjects" style="padding-top:1%" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="valid-state" placeholder="Search Subject" value="" required="">
+                                </div>
+                                <div class="col-md-1">
+                                    <button stlye="display:inline-block" class="btn btn-sm btn-primary" type="button">Search</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">

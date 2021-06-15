@@ -573,8 +573,23 @@ class Ose_api extends CI_Controller
 		//get student info
 		$student_info = $this->AdvisingModel->get_student_info_by_reference_no($this->reference_number);
 
-		//get current sem and sy
-		//$array_legend = $this->Schedule_Model->get_legend();
+		#Assign Curriculum if there is non assigned already
+		if ($this->curriculum == 'N/A' || $this->curriculum == '0') {
+
+			$Program_ID = $this->AdvisingModel->get_course($this->reference_number);
+			$Program_Major = $this->AdvisingModel->get_major_details($student_info[0]['Course']);
+
+			$params = array(
+				'Program_ID' => $Program_ID,
+				'Major' => $Program_Major,
+				'Reference_Number' => $this->reference_number
+			);
+			#Gets Latest Curriculum of Program
+			$params['Curriculum_ID'] = $this->AdvisingModel->latest_curriculum($params);
+
+			#Updates curriculum of student
+			$this->AdvisingModel->update_curriculum($params);
+		}
 
 		$array_data = array(
 			'program_code' => $student_info[0]['Course'],

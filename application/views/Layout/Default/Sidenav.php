@@ -107,7 +107,10 @@
                         </a>
                         <ul class="submenu">
                             <li class="submenu-item">
-                                <a href="<?php echo base_url(); ?>index.php/main/resetEnrollmentLegend" target="_blank">Reset Assessment and Enrollment</a>
+                                <a href="<?php echo base_url(); ?>index.php/main/resetEnrollmentLegend" target="_blank">Change Legend</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="<?php echo base_url(); ?>index.php/ose_api/reset_progress" target="_blank">Reset Assessment and Enrollment</a>
                             </li>
                             <li class="submenu-item">
                                 <a href="<?php echo base_url(); ?>index.php/ose_api/setpaid_test" target="_blank">Set As Enrolled</a>

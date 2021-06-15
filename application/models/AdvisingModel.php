@@ -759,4 +759,32 @@ class AdvisingModel extends CI_Model
         $query = $this->db->get('Programs');
         return $query->row_array();
     }
+    public function get_major_details($program_code)
+    {
+        $this->db->select('Program_Major');
+        $this->db->where('Program_Code', $program_code);
+        $query = $this->db->get('Program_Majors');
+        if (empty($query->row_array())) {
+            return false;
+        }
+        return $query->row_array()['Program_Major'];
+    }
+    public function latest_curriculum($data)
+    {
+        $this->db->select('Curriculum_ID');
+        $this->db->where('Program_ID', $data['Program_ID']);
+        $this->db->where('Program_Major', $data['Major'] != false  ? $data['Major'] : 'N/A');
+        $this->db->order_by('Curriculum_Year', 'DESC');
+        $query = $this->db->get('Curriculum_Info');
+        if (!$query) {
+            return false;
+        }
+        return $query->row_array()['Curriculum_ID'];
+    }
+    public function update_curriculum($data)
+    {
+        $this->db->set('Curriculum', $data['Curriculum_ID']);
+        $this->db->where('Reference_Number', $data['Reference_Number']);
+        $this->db->update('Student_Info');
+    }
 }

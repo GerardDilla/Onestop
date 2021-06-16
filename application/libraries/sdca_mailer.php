@@ -99,5 +99,36 @@ class sdca_mailer
 		}
 
 	}
+	public function sendHtmlEmail_forDes($cp,$from,$from_name,$send_to,$subject,$message,$add_data)
+	{
+        $config = Array(
+			'protocol'  => 'smtp',
+			'smtp_host' => 'ssl://smtp.gmail.com',
+			'smtp_port' => '465',
+			'smtp_timeout' => '7',
+			'smtp_user' => 'des.ict@sdca.edu.ph',
+			'smtp_pass' => 'digitalcampus',
+			'charset' => 'utf-8',
+			'newline' => '\r\n',
+			'mailtype'  => 'html',
+			'validation' => true
+			// 'wordwrap' => true
+		);
+		$this->library['email']->initialize($config);
+		$this->library['email']->set_newline("\r\n");
+		$this->library['email']->from($from, $from_name);
+		$this->library['email']->to($send_to);
+		$this->library['email']->subject($subject);
+		$this->library['email']->message($this->library['load']->view($message,$add_data,true));
+		if($this->library['email']->send()){
+				echo  'Email has been sent to '.$cp;
+				// echo json_encode(array('success'=>'Email has been sent to '.$cp));
+		}else{
+			// echo json_encode(array('error'=>'There was a problem sending an email'));
+				echo  "There was a problem with sending an email.";
+				// echo  "<br><br>For any concers, proceed to our <a href'#' style'font-size:15px; color:#00F;'>Helpdesk</a> or the MIS Office.";        
+		}
+
+	}
 
 }

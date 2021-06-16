@@ -116,7 +116,7 @@ class Admin extends MY_Controller
 				'subject' => 'ID Application Update',
 				'message' => 'Email/IdApplication'
 			);
-			$this->sdca_mailer->sendHtmlEmail_NoEcho(
+			$this->sdca_mailer->sendHtmlEmail_forDes(
 				$email_data['send_to'],
 				$email_data['reply_to'],
 				$email_data['sender_name'],

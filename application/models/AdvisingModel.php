@@ -787,4 +787,7 @@ class AdvisingModel extends CI_Model
         $this->db->where('Reference_Number', $data['Reference_Number']);
         $this->db->update('Student_Info');
     }
+    public function curriculum_list()
+    {
+    }
 }

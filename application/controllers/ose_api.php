@@ -1312,4 +1312,17 @@ class Ose_api extends CI_Controller
 		// );
 		// echo json_encode($output);
 	}
+
+	public function get_curriculum_status()
+	{
+
+
+		#Get Curriculum 
+		$Curriculum_ID = $this->curriculum; 
+
+		$this->AdvisingModel->($Curriculum_ID);
+	
+	
+	
+	}
 }

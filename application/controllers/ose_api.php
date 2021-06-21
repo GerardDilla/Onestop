@@ -233,7 +233,7 @@ class Ose_api extends CI_Controller
 		if ($new_slot >= $sched_data['Total_Slot']) {
 
 			$output['status'] = 1;
-			$output['data'] = 'The slots for this Subject is Full';
+			$output['data'] = 'The slots for this Subject is Full:' . $sched_data['CourseCode'] . '. <br> Please Enroll to another section';
 			return $output;
 		}
 

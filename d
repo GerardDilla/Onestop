@@ -50,3 +50,37 @@
   jhon-backup[m
 * [32mjhon-onestop-v1.0[m
   main[m
+  =v[m
+  development[m
+  development-backup[m
+  feature-add-walkthrough[m
+  feature-backup-responsiveness[m
+  feature-chat-inquiry[m
+  feature-chat-inquiry-v1.1[m
+  feature-dashboard-responsiveness[m
+  feature-dashboard-responsiveness-v1.1[m
+  feature-dashboard-responsiveness-v1.2[m
+  feature-dashboard-responsiveness-v1.3[m
+  feature-digital-citizenship-form[m
+  feature-fix-gdrive-uploader[m
+  feature-fix-merge-conflict[m
+  feature-flexible-advising[m
+  feature-new-login-layout[m
+  feature-payment-api-notification[m
+  feature-registration-form[m
+  feature-schedule-plotting[m
+  feature-update-legend[m
+  feature-upload-proof-of-payment[m
+  feature-upload-proof-of-payment-v1.1[m
+  feature-upload-proof-of-payment-v1.2.1[m
+  feature-validation-of-documents[m
+  feature-validation-of-documents-v1.1[m
+  jhon-backup[m
+  jhon-onestop-v1.0[m
+  jhon-onestop-v1.1[m
+  jhon-onestop-v1.2[m
+  jhon-onestop-v1.3[m
+* [32mjhon-onestop-v1.3.1[m
+  main[m
+  node-token-authentication[m
+  v[m

@@ -15,6 +15,7 @@ class ChatService {
   async get(data) {
     // console.log(data)
     let getdata = getQuery(`SELECT * FROM student_inquiry WHERE ref_no='${data.ref_no}' ORDER BY id ASC`)
+    let data4 = await this.cm.MessageCountPerRefNo(data);
     return getdata.then((result) => {
       return result;
     }).catch(error => { return { error: error } });

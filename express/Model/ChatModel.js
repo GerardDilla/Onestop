@@ -15,7 +15,8 @@ class ChatModel {
         return current_message_count.then((result)=>{ return result}).catch(error=> console.log(error));
     }
     async MessageCountPerRefNo(data){
-        var current_message_count = getQuery(`SELECT Student_Info.YearLevel,Student_Info.Course,Student_Info.First_Name,Student_Info.Middle_Name,Student_Info.Last_Name,Student_Info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message FROM student_inquiry INNER JOIN Student_Info ON student_inquiry.ref_no = Student_Info.Reference_Number  WHERE user_type = "student" AND ref_no = "${data.ref_no}" GROUP BY student_inquiry.ref_no ORDER BY Student_Info.First_Name ASC`)
+        const today = moment().format('YYYY-MM-DD')
+        var current_message_count = getQuery(`SELECT Student_Info.YearLevel,Student_Info.Course,Student_Info.First_Name,Student_Info.Middle_Name,Student_Info.Last_Name,Student_Info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message,CONCAT(Student_Info.First_Name, ' ',Student_Info.Middle_Name,' ', Student_Info.Last_Name) as Full_Name FROM student_inquiry INNER JOIN Student_Info ON student_inquiry.ref_no = Student_Info.Reference_Number  WHERE user_type = "student" AND date_created LIKE '${today}%' GROUP BY student_inquiry.ref_no ORDER BY Student_Info.First_Name ASC`)
         return current_message_count.then((result)=>{ return result}).catch(error=> console.log(error)); 
     }
     async insertFromChatInquiry(data){

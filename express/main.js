@@ -74,11 +74,11 @@ app.publish(data => app.channel('stream'));
 
 const PORT = 4003;
 
-// app
-//   .listen(4004)
-//   .on('listening', () =>
-//     console.log(`Realtime server running on port ${4004}`)
-//   );
+app
+  .listen(4004)
+  .on('listening', () =>
+    console.log(`Realtime server running on port ${4004}`)
+  );
 // const credentials = {
 //   key: fs.readFileSync('cred/key.pem','utf8'),
 //   cert: fs.readFileSync('cred/cert.pem','utf8')
@@ -102,37 +102,12 @@ const domain_name = 'localhost'
 //   passphrase: 'sdca',
 //   key: privateKey,
 // },app)
-const httpServer = http.createServer(app);
-const httpPort = 4004;
-httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))
-const sslServer = https.createServer({
-  key: fs.readFileSync(path.join(__dirname,'keys','0019_key-certbot.pem')),
-  cert: fs.readFileSync(path.join(__dirname,'cert','cert.pem'))
-},app)
-// pem.createCertificate({ days: 500, selfSigned: true }, function (err, keys) {
- 
-//   if (err) {
-//     console.log(err)
-//   }
-//   // var app = express()
- 
-//   app.get('/', function (req, res) {
-//     res.send('o hai!')
-//   })
- 
-//   https.createServer({ key: keys.serviceKey, cert: keys.certificate }, app).listen(4003)
-// })
-app.setup(sslServer);
-sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`))
-
 // const httpServer = http.createServer(app);
 // const httpPort = 4004;
 // httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))
-
-
 // const sslServer = https.createServer({
-//   key: fs.readFileSync(path.join(__dirname,'cred','server.key')),
-//   cert: fs.readFileSync(path.join(__dirname,'cred','server.crt')),
-//   rejectUnauthorized: false,
-//   requestCert: false
+//   key: fs.readFileSync(path.join(__dirname,'keys','0019_key-certbot.pem')),
+//   cert: fs.readFileSync(path.join(__dirname,'cert','cert.pem'))
 // },app)
+// app.setup(sslServer);
+// sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`))

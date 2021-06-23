@@ -5,8 +5,8 @@ var modal_status = 0;
 var connectionOptions = {
     "transports": ["websocket"]
 };
-// const socket = io('http://localhost:4004');
-const socket = io('https://stdominiccollege.edu.ph:4003', connectionOptions);
+const socket = io('http://localhost:4004');
+// const socket = io('https://stdominiccollege.edu.ph:4003', connectionOptions);
 const app = feathers();
 var array_status = [];
 var status_running = false;
@@ -132,6 +132,7 @@ $('#chat-textarea').on('keyup', function() {
     });
 })
 
+
 function sendMessage(id) {
     var current_time = moment().format('MMM DD,YYYY h:kk a');
     document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML +
@@ -235,8 +236,11 @@ function receivedMessage(data) {
 
         }
     } else {
-        document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML +
+        if(data.ref_no==ref_no){
+            document.getElementById('chat-message').innerHTML = document.getElementById('chat-message').innerHTML +
             `<div class="col-md-12 chat-card" tab-index="1"><div class="chat-admin chat"><div class="message-head">SDCA ADMIN</div><div class="message-time">${current_time}</div><div class="message-body">${data.message}</div></div></div>`;
+        }
+        
     }
     $('#chatinquiryModal .modal-body').animate({ scrollTop: 100000000000000000000000000000000 }, 'slow');
     // }
@@ -267,7 +271,7 @@ async function someone_typing() {
 async function init() {
     // Find ideas
     const ideas = await app.service('chat-inquiry').get({ ref_no: ref_no });
-    console.log(ideas)
+    // console.log(ideas)
     renderIdea(ideas);
     app.service('chat-inquiry').on('created', receivedMessage);
     app.service('chat-inquiry').on('updated', updateToSeen);

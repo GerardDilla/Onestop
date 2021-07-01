@@ -19,9 +19,14 @@ class ChatModel {
         var current_message_count = getQuery(`SELECT Student_Info.YearLevel,Student_Info.Course,Student_Info.First_Name,Student_Info.Middle_Name,Student_Info.Last_Name,Student_Info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message,CONCAT(Student_Info.First_Name, ' ',Student_Info.Middle_Name,' ', Student_Info.Last_Name) as Full_Name FROM student_inquiry INNER JOIN Student_Info ON student_inquiry.ref_no = Student_Info.Reference_Number  WHERE user_type = "student" AND date_created LIKE '${today}%' GROUP BY student_inquiry.ref_no ORDER BY Student_Info.First_Name ASC`)
         return current_message_count.then((result)=>{ return result}).catch(error=> console.log(error)); 
     }
+    async TotalMessageCountPerRefNo(data){
+        const today = moment().format('YYYY-MM-DD')
+        var current_message_count = getQuery(`SELECT Student_Info.YearLevel,Student_Info.Course,Student_Info.First_Name,Student_Info.Middle_Name,Student_Info.Last_Name,Student_Info.Reference_Number as ref_no,COUNT(student_inquiry.id) as total_message,CONCAT(Student_Info.First_Name, ' ',Student_Info.Middle_Name,' ', Student_Info.Last_Name) as Full_Name FROM student_inquiry INNER JOIN Student_Info ON student_inquiry.ref_no = Student_Info.Reference_Number  WHERE user_type = "student" GROUP BY student_inquiry.ref_no ORDER BY Student_Info.First_Name ASC`)
+        return current_message_count.then((result)=>{ return result}).catch(error=> console.log(error)); 
+    }
     async insertFromChatInquiry(data){
         const this_time = moment().format('YYYY-MM-DD kk:mm:ss')
-        let getdata = getQuery(`INSERT INTO student_inquiry(ref_no,message,date_created,user_type) VALUES(${data.ref_no},'${data.message}','${this_time}','${data.type}')`)
+        let getdata = getQuery(`INSERT INTO student_inquiry(ref_no,message,date_created,user_type,admin_id) VALUES(${data.ref_no},'${data.message}','${this_time}','${data.type}','${data.admin_id}')`)
         return getdata.then((result)=>{
         return result
         }).catch(error=>{ console.log(error)});

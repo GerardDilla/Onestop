@@ -1320,7 +1320,7 @@ class Ose_api extends CI_Controller
 		#Get Curriculum 
 		$Curriculum_ID = $this->curriculum; 
 
-		$this->AdvisingModel->($Curriculum_ID);
+		// $this->AdvisingModel->($Curriculum_ID);
 	
 	
 	

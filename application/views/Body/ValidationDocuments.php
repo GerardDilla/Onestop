@@ -207,7 +207,7 @@ echo '</script>';
                         <div class="table-header col-md-12 row">
                             <div class="col-lg-3 div-th column-1"><span>Requirements</span></div>
                             <div class="col-lg-4 div-th column-2"><span>Add File / <font style="font-weight:100;font-size:11px;">check the checkbox on TBF column if the requirements is to be followed</font></span></div>
-                            <div class="col-lg-1 div-th column-3"><span>To be Follow</span></div>
+                            <div class="col-lg-1 div-th column-3"><span>To Follow</span></div>
                             <div class="col-lg-2 div-th column-4"><span>Status</span></div>
                             <div class="col-lg-2 div-th column-5"><span>Date</span></div>
                         </div>
@@ -246,7 +246,7 @@ echo '</script>';
                                             </div>
                                         </div>
                                         <div class="col-lg-1 row div-td">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
+                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To Follow</span></div>
                                             <?php 
                                             // echo $list['status'] == "to be follow" ? 'checked="true"' : '';
                                             ?>
@@ -280,7 +280,7 @@ echo '</script>';
                                             </div>
                                         </div>
                                         <div class="col-lg-1 row div-td">
-                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To be Follow</span></div>
+                                            <div class="col-lg-12 col-md-4 col-sm-4 min-th"><span>To Follow</span></div>
                                             <div class="col-lg-12 col-md-8 col-sm-8"><input <?php echo $list['status'] != "to be follow" && $list['status'] != "" ? 'disabled="true"' : ''; ?> checked="true" type="checkbox" class="form-check-input <?php echo $req == 1 ? 'requirement-1' : ''; ?>" name="check_<?php echo $list['id_name']; ?>" onclick="toBeFollow(`<?php echo $list['id_name']; ?>`)"></div>
                                         </div>
                                         <div class="col-lg-2 row div-td div-align-center">

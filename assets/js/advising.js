@@ -13,7 +13,8 @@ $(document).ready(function () {
     $('#subject-panel').hide();
 
     $('#subjectTable').DataTable({
-        "ordering": false
+        "ordering": false,
+        "responsive":true
     });
 
     $('#queueTable').DataTable({
@@ -788,6 +789,7 @@ function subject_tablerenderer(element = '', data = []) {
     element.DataTable({
         "ordering": false,
         "bPaginate": false,
+        "responsive":true,
         "columns": [
             null,
             null,

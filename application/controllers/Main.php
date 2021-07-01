@@ -300,20 +300,49 @@ class Main extends MY_Controller
 	}
 	public function setupUserPass($key = '')
 	{
-		// token setup user & password
-		$token = hash('tiger192,3', uniqid());
-		$this->data['csrf_token'] = $token;
-		$_SESSION['csrf_token']['setup_userpass'] = $token;
-
 		if (!empty($key)) {
 			$this->data['key'] = $key;
 			$data = $this->mainmodel->checkKey($key);
-			if (!empty($data)) {
+			$checkStudentInfoRefNo = $this->mainmodel->checkStudentInfoRefNo($key);
+			$ref_id = empty($checkStudentInfoRefNo)?'':$checkStudentInfoRefNo['Reference_Number'];
+			$checkStudentAccountByRefNo = $this->mainmodel->checkStudentAccountByRefNo($key);
+			// creation of account using reference number
+			if ($ref_id!=""&&$ref_id==$key) {
+				if(!empty($checkStudentAccountByRefNo)){
+					if($checkStudentAccountByRefNo['username']==""&&$checkStudentAccountByRefNo['password']==""){
+						$this->mainmodel->updateAccountWithRefNo($key,array(
+							'automated_code' => $key
+						));
+					}
+					else{
+						$this->session->set_flashdata('msg', 'Incorrect key!!');
+						redirect(base_url('/'));
+					}
+					
+				}
+				else{
+					$this->mainmodel->insert_student_account(array(
+						'automated_code' => $key,
+						'reference_no' => $key
+					));
+				}
 				$this->login_template($this->view_directory->setupUserPass());
+			}
+			// creation of account using automated_code
+			else if (!empty($data)) {
+				$this->login_template($this->view_directory->setupUserPass());
+				// exit;
 			} else {
 				$this->session->set_flashdata('msg', 'Incorrect key!!');
 				redirect(base_url('/'));
 			}
+			// if (!empty($data)) {
+			// 	$this->login_template($this->view_directory->setupUserPass());
+			// 	exit;
+			// } else {
+			// 	$this->session->set_flashdata('msg', 'Incorrect key!!');
+			// 	redirect(base_url('/'));
+			// }
 		} else {
 			$this->session->set_flashdata('msg', 'Incorrect key!!');
 			redirect(base_url('/'));
@@ -670,9 +699,9 @@ class Main extends MY_Controller
 	public function validationOfDocuments()
 	{
 		// generate token
-		$token = hash('tiger192,3', uniqid());
-		$this->data['csrf_token'] = $token;
-		$_SESSION['csrf_token']['requirements'] = $token;
+		// $token = hash('tiger192,3', uniqid());
+		// $this->data['csrf_token'] = $token;
+		// $_SESSION['csrf_token']['requirements'] = $token;
 
 		// date_default_timezone_set('Asia/Kolkata');
 		$getRequirementsList = $this->mainmodel->getRequirementsList();
@@ -706,7 +735,7 @@ class Main extends MY_Controller
 	}
 	public function validationDocumentsProcess()
 	{
-		$this->tokenHandler('requirements');
+		// $this->tokenHandler('requirements');
 
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
 		date_default_timezone_set('Asia/manila');

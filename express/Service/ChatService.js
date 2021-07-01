@@ -37,13 +37,15 @@ class ChatService {
     let insert = await this.cm.insertFromChatInquiry(data);
     insert;
     let data4 = await this.cm.MessageCountPerRefNo(data);
+    let TotalMessageCountPerRefNo = await this.cm.TotalMessageCountPerRefNo(data);
     return {
       ref_no:data.ref_no,
       date_created:this_time,
       message:data.message,
       user_type:data.type,
       return_id:data.return_id,
-      message_count:data4
+      message_count:data4,
+      total_message:TotalMessageCountPerRefNo
     }
   }
 }

@@ -93,11 +93,13 @@
                 <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-sm-block">Close</span>
                 </button>
                 <button type="button" class="btn btn-primary add-all-subject" data-bs-dismiss="modal">
+                    <!-- <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Add All</span> -->
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Add All</span>
+                    <span class="d-sm-block">Add All</span>
                 </button>
             </div>
         </div>
@@ -459,8 +461,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                    <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <i class="bx bx-x d-block"></i>
+                    <span class="d-sm-block">Close</span>
                 </button>
 
             </div>
@@ -491,11 +493,11 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-sm-block">Close</span>
                 </button>
                 <button onclick="assessment_exporter('<?php echo site_url('ose_api/export_assessmentform') ?>')" class="btn btn-primary ml-1">
                     <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Download Assessment Form</span>
+                    <span class="d-sm-block">Download Assessment Form</span>
                 </button>
             </div>
         </div>
@@ -520,7 +522,7 @@
                 <img style="width:10%; display:none" class="temp_loading" src="<?php echo base_url('assets/images/barloader.gif'); ?>">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-sm-block">Close</span>
                 </button>
             </div>
         </div>
@@ -603,11 +605,11 @@
 
                     <button type="button" class="btn btn-lg btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-sm-block">Close</span>
                     </button>
                     <input type="submit" class="btn btn-lg btn-primary" id="select_pay_submit">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block"></span>
+                    <span class="d-sm-block"></span>
                     </input>
                 </div>
             </form>

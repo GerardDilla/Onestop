@@ -5,8 +5,8 @@ var modal_status = 0;
 var connectionOptions = {
     "transports": ["websocket"]
 };
-const socket = io('http://localhost:4004');
-// const socket = io('https://stdominiccollege.edu.ph:4003', connectionOptions);
+// const socket = io('http://localhost:4004');
+const socket = io('https://stdominiccollege.edu.ph:4003', connectionOptions);
 const app = feathers();
 var array_status = [];
 var status_running = false;
@@ -64,10 +64,13 @@ function timeWarning() {
 }
 $('#inquiryForm button').on('click', function() {
     if ($('#chat-textarea').html() != "") {
+        const uuid = uuidv4();
         app.service('chat-inquiry').create({
             message: $('#chat-textarea').html(),
             ref_no: ref_no,
-            type: 'student'
+            type: 'student',
+            return_id:uuid,
+            admin_id:''
         });
         sendMessage();
         $('#chat-textarea').html('');
@@ -110,6 +113,7 @@ $('#chat-textarea').on('keydown', function(e) {
                 message: $('#chat-textarea').html(),
                 ref_no: ref_no,
                 type: 'student',
+                admin_id:'',
                 return_id: uuid
             });
             sendMessage(uuid);
@@ -222,7 +226,7 @@ function receivedMessage(data) {
     // getInquiryTableList(data.total_message);
     console.log(data);
     console.log(data.ref_no);
-    var get_current_count = data.message_count.find(data => { return data.ref_no == $('input[name=chat_reference_no]').val() })
+    var get_current_count = data.total_message.find(data => { return data.ref_no == $('input[name=chat_reference_no]').val() })
         // total_message
     var current_time = moment(Date.parse(data.date_created)).format('MMM DD,YYYY h:kk a');
 

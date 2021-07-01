@@ -45,8 +45,10 @@ class AdminModel extends CI_Model
 
     public function getDigitalCitizenship(){
         $this->db->select('*');
-        $this->db->from('digital_citizenship');
-        $this->db->join('Student_Info','digital_citizenship.reference_number = Student_Info.Reference_Number','LEFT');
+        $this->db->from('digital_citizenship dc');
+        $this->db->join('Student_Info si','dc.reference_number = si.Reference_Number','LEFT');
+        $this->db->where('dc.id >','0');
+        $this->db->where('dc.reference_number >','0');
         return $this->db->get()->result_array();
     }
     public function getDigitalCitizenshipAccount($digital_id){
@@ -69,6 +71,8 @@ class AdminModel extends CI_Model
         si.*');
         $this->db->from('id_application ia');
         $this->db->join('Student_Info si','ia.reference_number = si.Reference_Number','LEFT');
+        $this->db->where('ia.id >','0');
+        $this->db->where('ia.reference_number >','0');
         return $this->db->get()->result_array();
     }
     public function updateIdApplication($array)

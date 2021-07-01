@@ -104,10 +104,11 @@ $('#courses').on('change', function() {
     $.ajax({
         url: base_url + "index.php/main/get_student_course_major/" + program_code,
         dataType: "json",
+        async: false,
         success: function(response) {
             $('#majors').empty();
             html = ""
-            if ($.trim(response) != '') {
+            if (response.length > 0) {
                 $.each(response, function(key, value) {
                     html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
                 });
@@ -121,28 +122,28 @@ $('#courses').on('change', function() {
 })
 init_student_info();
 // init_have_course();
-$('#courses').on('change', function() {
-        program_code = $('#courses').children("option:selected").val();
-        $.ajax({
-            url: "get_student_information",
-            dataType: "json",
-            success: function(response) {
-                $('#majors').empty();
-                $('#majors').append("<option value='0' disabled selected>NO COURSE MAJOR</option>");
-                html = ""
-                if (response.length > 0) {
-                    $.each(response, function(key, value) {
-                        html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
-                    });
-                    $('#majors').empty();
-                    $('#majors').append(html);
-                }
-            }
-        })
-    })
-    // init_student_info();
-    // init_have_course();
-    // });
+// $('#courses').on('change', function() {
+//         program_code = $('#courses').children("option:selected").val();
+//         $.ajax({
+//             url: "get_student_information",
+//             dataType: "json",
+//             success: function(response) {
+//                 $('#majors').empty();
+//                 $('#majors').append("<option value='0' disabled selected>NO COURSE MAJOR</option>");
+//                 html = ""
+//                 if (response.length > 0) {
+//                     $.each(response, function(key, value) {
+//                         html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
+//                     });
+//                     $('#majors').empty();
+//                     $('#majors').append(html);
+//                 }
+//             }
+//         })
+//     })
+// init_student_info();
+// init_have_course();
+// });
 
 function init_student_info() {
     $.ajax({

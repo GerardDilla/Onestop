@@ -112,6 +112,8 @@ class AssesmentModel extends CI_Model
         $data = array(
             'Course' => $array_update['course'],
             'Major' => $array_update['major'],
+            'AdmittedSY' => $array_update['admitted_sy'],
+            'AdmittedSEM' => $array_update['admitted_sem'],
         );
         $this->db->where('Reference_Number', $array_update['reference_number']);
         $this->db->update('Student_Info', $data);

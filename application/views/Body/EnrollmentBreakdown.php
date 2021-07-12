@@ -117,6 +117,24 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div>
+            <div class="accordion">
+                <!-- <div class="accordion-item"> -->
+                <h2 class="accordion-header">
+                    <button class="collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Lorem ipsum
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt nisi quaerat fuga, fugit, inventore neque omnis eum temporibus iusto reiciendis quo tempora ipsum a perferendis in, excepturi quas dignissimos rerum!
+                    </div>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
 </section>
 <script>
     init_breakdown_si()
@@ -164,18 +182,24 @@
                     // console.log(values['requirements_name']);
                     if (values['requirements_name'] == 'report_card') {
                         $('#breakdown_f9').html(values['status']);
-                    } else if (values['requirements_name'] == 'original_form_id') {
+                    }
+                    if (values['requirements_name'] == 'original_form_id') {
                         $('#breakdown_fid').html(values['status']);
-                    } else if (values['requirements_name'] == 'good_moral') {
+                    }
+                    if (values['requirements_name'] == 'good_moral') {
                         $('#breakdown_gmoral').html(values['status']);
-                    } else if (values['requirements_name'] == 'birth_certificate') {
+                    }
+                    if (values['requirements_name'] == 'birth_certificate') {
                         $('#breakdown_psa').html(values['status']);
-                    } else if (values['requirements_name'] == 'passport_id_pic') {
+                    }
+                    if (values['requirements_name'] == 'passport_id_pic') {
                         $('#breakdown_passport').html(values['status']);
-                    } else if (values['requirements_name'] == 'marriage_certificate') {
+                    }
+                    if (values['requirements_name'] == 'marriage_certificate') {
                         $('#breakdown_marriage_tr').removeClass('breakdisplaynone');
                         $('#breakdown_marriage_cert').html(values['status']);
-                    } else if (values['requirements_name'] == 'proof_of_payment') {
+                    }
+                    if (values['requirements_name'] == 'proof_of_payment') {
                         $('#breakdown_proof_pay').html(values['status']);
                     }
                 });

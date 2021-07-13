@@ -13,7 +13,9 @@ class Main extends MY_Controller
 	{
 		parent::__construct();
 		$this->studentdata = array();
-		$this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
+		$this->load->library('gdrive_uploader', array('folder_id' => '1_Ui30Jb_-N9ENG1XatjdT2GzVHXzmuRi'));
+		// $this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
+		
 	}
 	public function index()
 	{	
@@ -777,7 +779,7 @@ class Main extends MY_Controller
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				$this->upload->overwrite = true;
-				$req_status = 'to be follow';
+				$req_status = 'to follow';
 				$status_col = empty($checkRequirement) ? '' : $checkRequirement['status'];
 				if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "") {
 					++$validate_count;
@@ -795,7 +797,7 @@ class Main extends MY_Controller
 						++$error_count;
 						array_push($error_files, $list['id_name']);
 					}
-				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to be follow") {
+				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to follow") {
 					++$validate_count;
 					$req_status = 'pending';
 					if ($this->upload->do_upload($id_name)) {
@@ -827,7 +829,7 @@ class Main extends MY_Controller
 					$orig_name = empty($uploaded_data['orig_name']) ? '' : $uploaded_data['orig_name'];
 				}
 				if (!empty($checkRequirement)) {
-					if ($checkRequirement['status'] == "to be follow") {
+					if ($checkRequirement['status'] == "to follow") {
 						$this->mainmodel->updateRequirementLog(array(
 							'requirements_date' => date("Y-m-d H:i:s"),
 							'file_submitted' => $orig_name,

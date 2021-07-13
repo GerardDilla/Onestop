@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     $('#subjectTable').DataTable({
         "ordering": false,
-        "responsive":true
+        // "responsive":true
     });
 
     $('#queueTable').DataTable({
@@ -789,7 +789,7 @@ function subject_tablerenderer(element = '', data = []) {
     element.DataTable({
         "ordering": false,
         "bPaginate": false,
-        "responsive":true,
+        // "responsive":true,
         "columns": [
             null,
             null,

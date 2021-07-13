@@ -420,7 +420,7 @@ class AdvisingModel extends CI_Model
 
         $this->db->query("
         
-        INSERT INTO fees_enrolled_college (
+        INSERT INTO Fees_Enrolled_College (
             Reference_Number,
             course,
             semester,
@@ -458,7 +458,7 @@ class AdvisingModel extends CI_Model
             Third_Pay,
             Fourth_Pay
           FROM
-            fees_temp_college
+            Fees_Temp_College
           WHERE Reference_Number = '" . $data['Reference_Number'] . "'
           AND schoolyear = '" . $data['School_Year'] . "'
           AND semester = '" . $data['Semester'] . "'
@@ -472,7 +472,7 @@ class AdvisingModel extends CI_Model
         $this->db->where('semester', $data['Semester']);
         $this->db->order_by('id', 'DESC');
         $this->db->limit('1');
-        $result = $this->db->get('fees_enrolled_college');
+        $result = $this->db->get('Fees_Enrolled_College');
         $row = $result->row_array();
         $last_id = $row['id'];
         return $last_id;
@@ -482,7 +482,7 @@ class AdvisingModel extends CI_Model
         $result = $this->db->query("
         
 
-        INSERT INTO fees_enrolled_college_item (
+        INSERT INTO Fees_Enrolled_College_Item (
             Fees_Enrolled_College_Id,
             Fees_Type,
             Fees_Name,
@@ -498,8 +498,8 @@ class AdvisingModel extends CI_Model
             ftci.Scholarship_Discount,
             '1'
           FROM
-            fees_temp_college_item AS ftci
-            JOIN fees_temp_college AS ftc
+            Fees_Temp_College_Item AS ftci
+            JOIN Fees_Temp_College AS ftc
             ON ftc.id = ftci.Fees_Temp_College_Id
           WHERE ftc.Reference_Number = '" . $data['Reference_Number'] . "'
           AND ftc.schoolyear = '" . $data['School_Year'] . "'
@@ -510,7 +510,7 @@ class AdvisingModel extends CI_Model
 
         return $result;
 
-        // INSERT INTO fees_enrolled_college_item (
+        // INSERT INTO Fees_Enrolled_College_Item (
         //     Fees_Enrolled_College_Id,
         //     Fees_Type,
         //     Fees_Name,
@@ -524,7 +524,7 @@ class AdvisingModel extends CI_Model
         //     Fees_Amount,
         //     Scholarship_Discount
         //   FROM
-        //     fees_temp_college_item
+        //     Fees_Temp_College_Item
         //   WHERE Fees_Temp_College_Id = '" . $id . "'
 
         // ");

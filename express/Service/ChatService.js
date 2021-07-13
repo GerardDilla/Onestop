@@ -8,9 +8,11 @@ class ChatService {
     this.cm = new ChatModel();
   }
 
-  async find() {
-    let getdata = this.cm.getChat();
-    return getdata;
+  async find(data) {
+    data_sample['search_date'] = data; 
+    let data4 = await this.cm.MessageCountPerRefNo(data_sample);
+    // let getdata = this.cm.getChat();
+    return data4;
   }
   async get(data) {
     // console.log(data)

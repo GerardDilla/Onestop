@@ -19,7 +19,7 @@ class Main extends MY_Controller
 		$this->reference_number = $this->session->userdata('reference_no');
 	}
 	public function index()
-	{	
+	{
 		// generate token
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;
@@ -27,20 +27,20 @@ class Main extends MY_Controller
 
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
-	
 	}
-	public function tokenHandler($type){
-		if(isset($this->session->csrf_token)){
-			if(isset($this->session->csrf_token[$type])){
-				if($this->session->csrf_token[$type]==""||$this->session->csrf_token[$type]!=$this->input->post('b3df6e650330df4c0e032e16141f')){
+	public function tokenHandler($type)
+	{
+		if (isset($this->session->csrf_token)) {
+			if (isset($this->session->csrf_token[$type])) {
+				if ($this->session->csrf_token[$type] == "" || $this->session->csrf_token[$type] != $this->input->post('b3df6e650330df4c0e032e16141f')) {
 					echo 'Something went wrong!';
 					exit;
 				}
-			}else{
+			} else {
 				echo 'Something went wrong!';
 				exit;
 			}
-		}else{
+		} else {
 			echo 'Something went wrong!';
 			exit;
 		}
@@ -48,7 +48,7 @@ class Main extends MY_Controller
 	}
 	public function selfassesment()
 	{
-		
+
 		$legend = $this->AdvisingModel->getlegend();
 		// $this->data['md5_ref_no'] = '29a83a8a9641bb860a679d7e5ba52d26';
 		$this->data['md5_ref_no'] = md5($this->reference_number);
@@ -612,8 +612,8 @@ class Main extends MY_Controller
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;
 		$_SESSION['csrf_token']['forgot_password'] = $token;
-		
-		
+
+
 		$this->login_template($this->view_directory->forgotPassword());
 	}
 	public function passwordReset()
@@ -881,15 +881,13 @@ class Main extends MY_Controller
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			}
-			else if($upload_count == 0){
+			} else if ($upload_count == 0) {
 				$this->session->set_flashdata('success', 'Successfully submitted!!');
 				redirect($_SERVER['HTTP_REFERER']);
-			}
-			else {
+			} else {
 				$this->mainmodel->revertIfErrorInRequirementUpload();
 				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!! failed on -');
-				$error_files2 = implode(',',$error_files);
+				$error_files2 = implode(',', $error_files);
 				$this->session->set_flashdata('error_files', $error_files2);
 				redirect($_SERVER['HTTP_REFERER']);
 			}
@@ -966,7 +964,7 @@ class Main extends MY_Controller
 		$config['upload_path'] = './express/assets/';
 		$config['allowed_types'] = '*';
 		$config['file_name'] = $id_name . '_' . $this->reference_number . '' . date("YmdHis");
-		$this->load->library('upload',$config);
+		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 		$this->upload->overwrite = true;
 		$uploaded = array();
@@ -1180,7 +1178,54 @@ class Main extends MY_Controller
 	public function ajaxBreakdownSubjects()
 	{
 		$getAllEnrolledSubjects = $this->mainmodel->getAllEnrolledSubjects($this->reference_number);
-		echo json_encode($getAllEnrolledSubjects);
+		$getAllEnrolledSubjects_Year = $this->mainmodel->getAllEnrolledSubjectsYear($this->reference_number);
+		foreach ($getAllEnrolledSubjects_Year as $year) {
+			$units_total = 0;
+			echo '
+				<h2 class="accordion-header">
+					<button class="btn btn-lg btn-primary btn-hover-red button-subject-year" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse' . $year['School_Year'] . '" aria-expanded="false" aria-controls="flush-collapse' . $year['School_Year'] . '">
+						Year ' . $year['School_Year'] . '
+					</button>
+				</h2>
+				<div id="flush-collapse' . $year['School_Year'] . '" class="table-scroll collapse" aria-labelledby="flush-heading' . $year['School_Year'] . '">
+					<table class="table table-striped table-hover">
+						<tr>
+							<th>Semester</th>
+							<th>Section</th>
+							<th>Subject Name</th>
+							<th>Units</th>
+							<th>Day</th>
+							<th>Time</th>
+							<th>Room</th>
+							<th>Instructor</th>
+						</tr>
+				';
+			foreach ($getAllEnrolledSubjects as $subject) {
+
+				if ($year['School_Year'] == $subject['School_Year']) {
+					$units = 0;
+					$units = intval($subject['Course_Lec_Unit']) + intval($subject['Course_Lab_Unit']);
+					$units_total += $units;
+					echo '
+						<tr>
+							<td>' . $subject['Semester'] . '</td>
+							<td>' . $subject['Section'] . '</td>
+							<td>' . $subject['Course_Title'] . '</td>
+							<td>' . $units . '</td>
+							<td>' . $subject['Day'] . '</td>
+							<td>' . $subject['Start_Time'] . ' - ' . $subject['End_Time'] . '</td>
+							<td>' . $subject['Room'] . '</td>
+							<td>' . $subject['Instructor_Name'] . '</td>
+						</tr>
+					';
+				}
+			}
+			echo '
+					</table>
+				</div>
+			';
+		}
+		// echo json_encode($getAllEnrolledSubjects);
 
 	}
 	public function account_creation_old()
@@ -1220,7 +1265,8 @@ class Main extends MY_Controller
 		$this->mainmodel->updateLegend(array('Semester' => $sem, 'School_Year' => $sy));
 		echo json_encode('success');
 	}
-	public function hashSomething(){
+	public function hashSomething()
+	{
 		// $gen = hash(algo:'sha256',uniqid());
 		$gen = hash('tiger192,3', uniqid());
 		echo $this->session->csrf_token['login'];

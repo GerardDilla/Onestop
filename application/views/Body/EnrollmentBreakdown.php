@@ -1,17 +1,23 @@
 <style>
     .breakdown_table_label {
         font-size: 25px;
-        color: #0045ff;
+        color: #800000;
     }
 
     .breakdisplaynone {
         display: none;
     }
+    .button-subject-year{
+        width: 100%;
+    }
+    .table-scroll{
+        overflow:auto;
+    }
 </style>
 <section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
     <div class="card">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <label for="personal_information_table" class="breakdown_table_label"><b>Personal Information</b></label>
                 <table class="table table-striped" id="personal_information_table" style="display: block; overflow: auto;">
                     <tr>
@@ -40,7 +46,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <!-- <label for="course_year_table" class="breakdown_table_label"><b>Year and Courses</b></label> -->
                 <table class="table table-striped" id="course_year_table" style="display: block; overflow: auto;">
                     <tr>
@@ -69,7 +75,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <label for="requirements_table" class="breakdown_table_label"><b>Requirements</b></label>
                 <table class="table table-striped" id="requirements_table" style="display: block; overflow: auto;">
                     <tr>
@@ -102,7 +108,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <label for="proof_payment_table" class="breakdown_table_label"><b>Proof of Payments</b></label>
                 <table class="table table-striped" id="proof_payment_table" style="display: block; overflow: auto;">
                     <tr>
@@ -120,18 +126,9 @@
     <div class="card">
         <div>
             <div class="accordion">
-                <!-- <div class="accordion-item"> -->
-                <h2 class="accordion-header">
-                    <button class="collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        Lorem ipsum
-                    </button>
-                </h2>
-                <div id="flush-collapseOne" class="collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt nisi quaerat fuga, fugit, inventore neque omnis eum temporibus iusto reiciendis quo tempora ipsum a perferendis in, excepturi quas dignissimos rerum!
-                    </div>
+                <div id="accordion_school_year">
+
                 </div>
-                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -139,6 +136,16 @@
 <script>
     init_breakdown_si()
     init_breakdown_req()
+    init_breakdown_subjects();
+
+    function init_breakdown_subjects(){
+        $.ajax({
+            url: 'ajaxBreakdownSubjects',
+            success:function(response){
+                $('#accordion_school_year').html(response);
+            }
+        })
+    }
 
     function init_breakdown_si() {
         $.ajax({

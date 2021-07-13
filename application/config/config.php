@@ -27,7 +27,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (ENVIRONMENT == 'production') {
     $config['base_url'] = 'https://stdominiccollege.edu.ph/Onestop/';
 } else {
-    $config['base_url'] = 'http://localhost/Onestop/';
+    // $config['base_url'] = 'http://localhost/Onestop/';
+    $config['base_url'] = 'http://10.0.0.65/Onestop/';
 }
 
 

@@ -542,7 +542,7 @@ function tab_registration() {
     $("#tab_registration").attr("data-toggle", "tab");
     $("#tab_payment").removeAttr("data-toggle");
     $("#tab_advising").removeAttr("data-toggle");
-    // $("#tab_student_information").removeAttr("data-toggle");
+    $("#tab_student_information").removeAttr("data-toggle");
 
     $("#li_registration").attr("class", "active");
     $("#li_payment").removeClass("active");

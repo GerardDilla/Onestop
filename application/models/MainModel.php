@@ -79,7 +79,7 @@ class MainModel extends CI_Model
             Sub.Course_Title, Sub.Course_Lec_Unit, Sub.Course_Lab_Unit,
             R.Room,
             I.Instructor_Name,
-            T1.Schedule_Timse AS Start_Time,
+            T1.Schedule_Time AS Start_Time,
             T2.Schedule_Time AS End_Time,
         ');
         $this->db->from('EnrolledStudent_Subjects AS ES');

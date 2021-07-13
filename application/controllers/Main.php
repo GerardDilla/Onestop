@@ -519,16 +519,25 @@ class Main extends MY_Controller
 	}
 	public function update_course_by_reference_number()
 	{
-		$reference_number = $this->session->userdata('reference_no');
+		$reference_number = $this->reference_number;
 		$student_number = $this->input->post('student_number');
 		$status = $this->input->post('status');
 		// $student_number = '2';
 		// $status = 'freshmen';
 		// $check_course = $this->check_course_by_reference_number($this->session->userdata('reference_no'));
 		// if ($check_course == 'none') {
+		$enrolled_payment = $this->mainmodel->getEnrolledStudentPayments($this->reference_number);
+
 		$shs_status = $this->shs_balance_checker($student_number, $status);
 		// die(json_encode($shs_status));
-		if ($shs_status['status'] == 'empty') {
+		if (!empty($enrolled_payment)) {
+			echo json_encode(array(
+				'title' => "You can't change Course if you are alread Enrolled.",
+				'body' => '',
+				'status' => 'failed'
+			));
+			return;
+		} else if ($shs_status['status'] == 'empty') {
 			echo json_encode(array(
 				'title' => 'No Data Found in Database!',
 				'body' => '',

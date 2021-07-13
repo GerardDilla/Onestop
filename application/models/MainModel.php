@@ -79,7 +79,7 @@ class MainModel extends CI_Model
             Sub.Course_Title, Sub.Course_Lec_Unit, Sub.Course_Lab_Unit,
             R.Room,
             I.Instructor_Name,
-            T1.Schedule_Time AS Start_Time,
+            T1.Schedule_Timse AS Start_Time,
             T2.Schedule_Time AS End_Time,
         ');
         $this->db->from('EnrolledStudent_Subjects AS ES');
@@ -93,6 +93,14 @@ class MainModel extends CI_Model
         $this->db->where('ES.Reference_Number', $reference_number);
         $this->db->where('ES.Cancelled !=', '1');
         // $this->db->where('Valid =', '1');
+        return $this->db->get()->result_array();
+    }
+    public function getEnrolledStudentPayments($reference_number)
+    {
+        $this->db->select('*');
+        $this->db->from('EnrolledStudent_Payments');
+        $this->db->where('Reference_Number', $reference_number);
+
         return $this->db->get()->result_array();
     }
     public function getAllEnrolledSubjectsYear($reference_number)

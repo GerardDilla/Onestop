@@ -14,8 +14,8 @@
                             <th>Course</th>
                             <th>Student Number</th>
                             <th>Emails for Account</th>
-                            <!-- <th>Password</th> -->
-                            <th>Action</th>
+                            <th>Posible Password</th>
+                            <!-- <th>Action</th> -->
                             <!-- <th width="15%">Blackboard Account</th>
                             <th width="15%">Microsoft Office 365</th>
                             <th width="15%">SDCA Gmail Account</th>
@@ -35,7 +35,7 @@
     ajax_digital()
     var new_date = new Date();
     year_today = new_date.getFullYear();
-    sdca_pass = 'sdca' + year_today;
+    sdca_pass = 'Password this year : sdca' + year_today;
     $('#sdcapassword').html(sdca_pass);
 
     function digital_update_status(id, id_acc) {
@@ -66,9 +66,12 @@
             dataType: 'json',
             success: function(response) {
                 $.each(response, function(key, value) {
+                    year = '';
+                    date_created = value['created_at'];
+                    year = new Date(date_created).getFullYear();
                     // ajax_digital_account(value);
                     sdca_email = '';
-                    sdca_email = remove_space_regex('juan pedro') + '.' + remove_space_regex(value['Last_Name']) + '@sdca.edu.ph';
+                    sdca_email = remove_space_regex(value['First_Name']) + '.' + remove_space_regex(value['Last_Name']) + '@sdca.edu.ph';
                     console.log(sdca_email);
                     html = '<tr>' +
                         '<td>' +
@@ -82,13 +85,16 @@
                         '</td>' +
                         '<td>' +
                         sdca_email +
-                        '</td>';
-                    html += '<td><label class="switch">' +
-                        '<input type="checkbox">' +
-                        '<span class="slider round"></span>' +
-                        '</label>' +
-                        '</td>';
-                    '</tr>';
+                        '</td>' +
+                        '<td>' +
+                        'sdca' + year +
+                        '</td>' +
+                        // html += '<td><label class="switch">' +
+                        //     '<input type="checkbox">' +
+                        //     '<span class="slider round"></span>' +
+                        //     '</label>' +
+                        //     '</td>';
+                        '</tr>';
                     $('#adminDigitalTbody').append(html);
                 });
             },
@@ -131,7 +137,10 @@
     // alert('Juan Pedro'.replace(/\s/g, ''));
     function remove_space_regex(string) {
         var reg = /\s+/g;
-        lowercase = string.toLowerCase();
+        if (string != null) {
+            lowercase = string.toLowerCase();
+        }
+
         replace = lowercase.replace(reg, '');
         // alert(replace);
 

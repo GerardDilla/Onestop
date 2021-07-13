@@ -571,11 +571,14 @@ class Main extends MY_Controller
 			));
 			return;
 		} else {
+			$student = $this->AssesmentModel->get_student_by_reference_number($reference_number);
 			$today = date("Y-m-d H:i:s");
 			$array_update = array(
 				'reference_number' => $reference_number,
 				'course' => $this->input->post('course'),
 				'major' => $this->input->post('major'),
+				'admitted_sy' => $student['Applied_SchoolYear'],
+				'admitted_sem' => $student['Applied_Semester'],
 			);
 			$update = $this->AssesmentModel->update_course_by_reference_number($array_update);
 			//

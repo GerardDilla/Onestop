@@ -60,7 +60,7 @@
                     <br>
                 </div>
             </div>
-            <a href="<?php echo base_url('/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank" class="intro-step-1">
+            <a href="<?php echo base_url('/index.php/main/ExportInquiry/' . $this->session->userdata('reference_no')) ?>" target="_blank" class="intro-step-1">
                 <div class="btn btn-success btn-hover-red">
                     <i class="bi bi-file-earmark-arrow-down" style="font-size: 20px;"></i>
                     <!-- <i class="bi bi-file-earmark-arrow-down-fill" style="font-size: 20px;"></i> -->

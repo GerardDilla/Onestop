@@ -1,7 +1,7 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     checksession();
-    setInterval(function () {
+    setInterval(function() {
         checksession();
     }, 60000);
 
@@ -12,7 +12,7 @@ function checksession() {
 
     $.ajax({
         url: "/Onestop/index.php/Main/checksession",
-        success: function (response) {
+        success: function(response) {
             if (response != '') {
                 window.location.replace(response);
             }
@@ -30,7 +30,7 @@ function hideIziToastGuide() {
         transitionOut: 'fadeOutUp'
     }, izitoastWalkthrough);
 }
-$('input[type=radio][name=eductype]').change(function () {
+$('input[type=radio][name=eductype]').change(function() {
 
     type = $(this).data('etype');
     if (type == 'freshmen') {
@@ -48,7 +48,7 @@ $('input[type=radio][name=eductype]').change(function () {
     // console.log('Changed');
 });
 
-$('input[type=checkbox][name=shsverification]').change(function () {
+$('input[type=checkbox][name=shsverification]').change(function() {
     shsChecker = $('.shsverification:checkbox:checked').length > 0
     if (shsChecker) {
         $('.balance-verification').fadeIn();
@@ -62,7 +62,7 @@ if ($('input[type=checkbox][name=shsverification]').prop("checked") == true) {
 }
 
 
-$('#shs_student_number').on('change', function () {
+$('#shs_student_number').on('change', function() {
     applied_status = $('input[type=radio][name=eductype]:checked').val();
     if (applied_status == 'transferee') {
         stundent_number_text = '';
@@ -73,9 +73,9 @@ $('#shs_student_number').on('change', function () {
             $("#educ_new_student_label").prop("checked", true);
         }
         $.ajax({
-            url: base_url + "main/shs_balance_checker_echo/" + stundent_number_text + "/" + applied_status,
+            url: base_url + "index.php/main/shs_balance_checker_echo/" + stundent_number_text + "/" + applied_status,
             dataType: "json",
-            success: function (response) {
+            success: function(response) {
                 if ($.trim(response) != '') {
                     if (response['status'] == 'empty') {
                         $('#shs_student_number').removeClass('is-valid');
@@ -99,16 +99,17 @@ $('#shs_student_number').on('change', function () {
         })
     }
 })
-$('#courses').on('change', function () {
+$('#courses').on('change', function() {
     program_code = $('#courses').children("option:selected").val();
     $.ajax({
-        url: base_url + "main/get_student_course_major/" + program_code,
+        url: base_url + "index.php/main/get_student_course_major/" + program_code,
         dataType: "json",
-        success: function (response) {
+        async: false,
+        success: function(response) {
             $('#majors').empty();
             html = ""
-            if ($.trim(response) != '') {
-                $.each(response, function (key, value) {
+            if (response.length > 0) {
+                $.each(response, function(key, value) {
                     html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
                 });
                 $('#majors').append(html);
@@ -121,25 +122,25 @@ $('#courses').on('change', function () {
 })
 init_student_info();
 // init_have_course();
-$('#courses').on('change', function () {
-    program_code = $('#courses').children("option:selected").val();
-    $.ajax({
-        url: "get_student_information",
-        dataType: "json",
-        success: function (response) {
-            $('#majors').empty();
-            $('#majors').append("<option value='0' disabled selected>NO COURSE MAJOR</option>");
-            html = ""
-            if (response.length > 0) {
-                $.each(response, function (key, value) {
-                    html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
-                });
-                $('#majors').empty();
-                $('#majors').append(html);
-            }
-        }
-    })
-})
+// $('#courses').on('change', function() {
+//         program_code = $('#courses').children("option:selected").val();
+//         $.ajax({
+//             url: "get_student_information",
+//             dataType: "json",
+//             success: function(response) {
+//                 $('#majors').empty();
+//                 $('#majors').append("<option value='0' disabled selected>NO COURSE MAJOR</option>");
+//                 html = ""
+//                 if (response.length > 0) {
+//                     $.each(response, function(key, value) {
+//                         html += "<option value='" + value['ID'] + "'>" + value['Program_Major'] + "</option>"
+//                     });
+//                     $('#majors').empty();
+//                     $('#majors').append(html);
+//                 }
+//             }
+//         })
+//     })
 // init_student_info();
 // init_have_course();
 // });
@@ -148,7 +149,7 @@ function init_student_info() {
     $.ajax({
         url: "get_student_information",
         dataType: "json",
-        success: function (response) {
+        success: function(response) {
             $('#stud_info_reference_number').html(response['Reference_Number']);
             $('#stud_info_first_name').html(response['First_Name']);
             $('#stud_info_middle_name').html(response['Middle_Name']);
@@ -199,7 +200,7 @@ function init_have_course(course, major) {
                 program_major: major,
             },
             dataType: 'JSON',
-            success: function (response) {
+            success: function(response) {
                 $('#have_course').html('');
                 html = 'Your Chosen Program : <br>';
                 html += response.Program_Code + ' : ' + response.Program_Name + '<br>';
@@ -271,7 +272,7 @@ function submit_course() {
                 message: confirm_msg,
                 position: 'center',
                 buttons: [
-                    ['<button><b>YES</b></button>', function (instance, toast) {
+                    ['<button><b>YES</b></button>', function(instance, toast) {
                         $.ajax({
                             url: base_url + "index.php/main/update_course_by_reference_number",
                             type: "post",
@@ -282,7 +283,7 @@ function submit_course() {
                                 status: applied_status,
                             },
                             dataType: "json",
-                            success: function (response) {
+                            success: function(response) {
                                 // alert(response['title']);
                                 if (response['status'] == 'success') {
                                     izi_toast(response['title'], response['body'], 'green');
@@ -310,7 +311,7 @@ function submit_course() {
                         }, toast, 'button');
 
                     }, true],
-                    ['<button>NO</button>', function (instance, toast) {
+                    ['<button>NO</button>', function(instance, toast) {
 
                         event.preventDefault();
 
@@ -320,10 +321,10 @@ function submit_course() {
 
                     }],
                 ],
-                onClosing: function (instance, toast, closedBy) {
+                onClosing: function(instance, toast, closedBy) {
                     console.info('Closing | closedBy: ' + closedBy);
                 },
-                onClosed: function (instance, toast, closedBy) {
+                onClosed: function(instance, toast, closedBy) {
                     console.info('Closed | closedBy: ' + closedBy);
                 }
             });

@@ -532,7 +532,7 @@
 <div class="modal fade text-left w-100" id="onlinepaymentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
-            <form action="<?php echo base_url('/ose_api/total_online_payment') ?>" target="_blank" method="POST" id="online_payment_form">
+            <form action="<?php echo base_url('index.php/ose_api/total_online_payment') ?>" target="_blank" method="POST" id="online_payment_form">
                 <div class="modal-body">
                     <div class="alert alert-light-info color-warning">
                         <i class="bi bi-exclamation-circle"></i>

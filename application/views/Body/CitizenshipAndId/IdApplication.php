@@ -205,7 +205,7 @@
 
     function id_student_information() {
         $.ajax({
-            url: 'Forms/ajaxGetStudent',
+            url: '<?= base_url() ?>Forms/ajaxGetStudent',
             dataType: 'JSON',
             success: function(response) {
                 $('#id_reference_number').val(response['Reference_Number']);

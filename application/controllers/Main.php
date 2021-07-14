@@ -316,7 +316,6 @@ class Main extends MY_Controller
 	{
 		// token setup user & password
 		// $this->generageToken('setup_userpass');
-
 		if (!empty($key)) {
 			$this->data['key'] = $key;
 			$data = $this->mainmodel->checkKey($key);
@@ -367,7 +366,7 @@ class Main extends MY_Controller
 	}
 	public function changeUserPassProcess()
 	{
-		$this->tokenHandler('setup_userpass');
+		// $this->tokenHandler('setup_userpass');
 		try {
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
 			// $data = $this->mainmodel->checkKey($key);

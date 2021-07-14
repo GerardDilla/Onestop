@@ -18,21 +18,17 @@ class Main extends MY_Controller
 		// $this->ref_no = $this->session->userdata('reference_no');
 		$this->reference_number = $this->session->userdata('reference_no');
 	}
-	public function index()
-	{
-		// generate token
+	public function generageToken($name){
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;
-		$_SESSION['csrf_token']['login'] = $token;
-
-		$this->login_template($this->view_directory->login());
-		$this->appkey = 'testkey101';
+		$this->session->set_userdata(array('csrf_token' => array($name => $token)));
 	}
-	public function tokenHandler($type)
-	{
-		if (isset($this->session->csrf_token)) {
-			if (isset($this->session->csrf_token[$type])) {
-				if ($this->session->csrf_token[$type] == "" || $this->session->csrf_token[$type] != $this->input->post('b3df6e650330df4c0e032e16141f')) {
+	public function tokenHandler($type){
+		// echo 'csrf_token:'.$this->session->csrf_token[$type].'<br>';
+		// echo 'post_token:'.$this->input->post('b3df6e650330df4c0e032e16141f').'<br>';
+		if(isset($this->session->csrf_token)){
+			if(isset($this->session->csrf_token[$type])){
+				if($this->session->csrf_token[$type]==""||$this->session->csrf_token[$type]!=$this->input->post('b3df6e650330df4c0e032e16141f')){
 					echo 'Something went wrong!';
 					exit;
 				}
@@ -44,7 +40,16 @@ class Main extends MY_Controller
 			echo 'Something went wrong!';
 			exit;
 		}
-		$_SESSION['csrf_token'][$type] = '';
+		
+		// $_SESSION['csrf_token'][$type] = '';
+	}
+	public function index()
+	{	
+		// generate token
+		$this->generageToken('login');
+		$this->login_template($this->view_directory->login());
+		$this->appkey = 'testkey101';
+	
 	}
 	public function selfassesment()
 	{
@@ -144,6 +149,12 @@ class Main extends MY_Controller
 		$this->data['shs_student_number'] = empty($shs_bridge) ? '' : $shs_bridge['shs_student_number'];
 		$this->data['applied_status'] = empty($shs_bridge) ? '' : $shs_bridge['applied_status'];
 		$this->data['csrf_token'] = hash('tiger192,3', uniqid());
+
+		// generate token
+		$token = hash('tiger192,3', uniqid());
+		$this->data['csrf_token'] = $token;
+		$_SESSION['csrf_token']['requirements'] = $token;
+		
 		$this->default_template($this->view_directory->assessment());
 	}
 
@@ -304,19 +315,51 @@ class Main extends MY_Controller
 	public function setupUserPass($key = '')
 	{
 		// token setup user & password
-		$token = hash('tiger192,3', uniqid());
-		$this->data['csrf_token'] = $token;
-		$_SESSION['csrf_token']['setup_userpass'] = $token;
+		// $this->generageToken('setup_userpass');
 
 		if (!empty($key)) {
 			$this->data['key'] = $key;
 			$data = $this->mainmodel->checkKey($key);
-			if (!empty($data)) {
+			$checkStudentInfoRefNo = $this->mainmodel->checkStudentInfoRefNo($key);
+			$ref_id = empty($checkStudentInfoRefNo)?'':$checkStudentInfoRefNo['Reference_Number'];
+			$checkStudentAccountByRefNo = $this->mainmodel->checkStudentAccountByRefNo($key);
+			// creation of account using reference number
+			if ($ref_id!=""&&$ref_id==$key) {
+				if(!empty($checkStudentAccountByRefNo)){
+					if($checkStudentAccountByRefNo['username']==""&&$checkStudentAccountByRefNo['password']==""){
+						$this->mainmodel->updateAccountWithRefNo($key,array(
+							'automated_code' => $key
+						));
+					}
+					else{
+						$this->session->set_flashdata('msg', 'Incorrect key!!');
+						redirect(base_url('/'));
+					}
+					
+				}
+				else{
+					$this->mainmodel->insert_student_account(array(
+						'automated_code' => $key,
+						'reference_no' => $key
+					));
+				}
 				$this->login_template($this->view_directory->setupUserPass());
+			}
+			// creation of account using automated_code
+			else if (!empty($data)) {
+				$this->login_template($this->view_directory->setupUserPass());
+				// exit;
 			} else {
 				$this->session->set_flashdata('msg', 'Incorrect key!!');
 				redirect(base_url('/'));
 			}
+			// if (!empty($data)) {
+			// 	$this->login_template($this->view_directory->setupUserPass());
+			// 	exit;
+			// } else {
+			// 	$this->session->set_flashdata('msg', 'Incorrect key!!');
+			// 	redirect(base_url('/'));
+			// }
 		} else {
 			$this->session->set_flashdata('msg', 'Incorrect key!!');
 			redirect(base_url('/'));

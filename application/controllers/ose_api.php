@@ -313,6 +313,12 @@ class Ose_api extends CI_Controller
 
 		echo 'removed';
 	}
+	public function unadvised_all()
+	{
+		$this->AdvisingModel->remove_all_advising($this->reference_number);
+
+		echo 'removed';
+	}
 
 	public function payment_plan()
 	{

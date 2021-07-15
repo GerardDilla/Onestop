@@ -117,6 +117,13 @@ class AdvisingModel extends CI_Model
         $this->db->update('advising_session');
     }
 
+    public function remove_all_advising($refnum)
+    {
+        $this->db->set('valid', 0);
+        $this->db->where('Reference_Number', $refnum);
+        $this->db->update('Advising');
+    }
+
     public function get_year_level($array_data)
     {
         $this->db->select('*');

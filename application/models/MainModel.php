@@ -72,6 +72,52 @@ class MainModel extends CI_Model
         $this->db->where('reference_no', $ref_no);
         return $this->db->get('requirements_log')->result_array();
     }
+<<<<<<< Updated upstream
+=======
+    public function getAllEnrolledSubjects($reference_number)
+    {
+        $this->db->select('
+            ES.Sched_Code, ES.Semester, ES.Section, ES.School_Year,
+            SD.End_Time, SD.Day,
+            Sub.Course_Title, Sub.Course_Lec_Unit, Sub.Course_Lab_Unit,
+            R.Room,
+            I.Instructor_Name,
+            T1.Schedule_Time AS Start_Time,
+            T2.Schedule_Time AS End_Time,
+        ');
+        $this->db->from('EnrolledStudent_Subjects AS ES');
+        $this->db->join('Sched AS S', 'ES.Sched_Code = S.Sched_Code', 'left');
+        $this->db->join('Sched_Display AS SD', 'ES.Sched_Code = SD.Sched_Code', 'left');
+        $this->db->join('Subject AS Sub', 'S.Course_Code = Sub.Course_Code', 'left');
+        $this->db->join('Room AS R', 'SD.RoomID = R.ID', 'left');
+        $this->db->join('Instructor AS I', 'SD.Instructor_ID = I.ID', 'left');
+        $this->db->join('Time AS T1', 'SD.Start_Time = T1.Time_From');
+        $this->db->join('Time AS T2', 'SD.End_Time = T2.Time_To');
+        $this->db->where('ES.Reference_Number', $reference_number);
+        $this->db->where('ES.Cancelled !=', '1');
+        // $this->db->where('Valid =', '1');
+        return $this->db->get()->result_array();
+    }
+    public function getEnrolledStudentPayments($reference_number)
+    {
+        $this->db->select('*');
+        $this->db->from('Fees_Enrolled_College');
+        $this->db->where('Reference_Number', $reference_number);
+
+        return $this->db->get()->result_array();
+    }
+    public function getAllEnrolledSubjectsYear($reference_number)
+    {
+        $this->db->select('School_Year');
+        $this->db->from('EnrolledStudent_Subjects');
+        $this->db->where('Reference_Number', $reference_number);
+        $this->db->where('Cancelled !=', '1');
+        $this->db->group_by('School_Year');
+        $this->db->order_by('School_Year','DESC');
+
+        return $this->db->get()->result_array();
+    }
+>>>>>>> Stashed changes
     public function checkRequirement($requirements_name)
     {
         $ref_no = $this->session->userdata('reference_no');

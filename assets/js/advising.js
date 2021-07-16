@@ -450,6 +450,14 @@ function init_remove_all_queue() {
 
 }
 
+function init_remove_payment_assesment() {
+
+    return $.ajax({
+        url: "/Onestop/index.php/ose_api/remove_payment_assesment_form",
+        async: false,
+    });
+}
+
 function ajax_change_sy_legend() {
 
     return $.ajax({
@@ -1031,6 +1039,72 @@ function assessmentform_renderer(resultdata = []) {
     //Total Units and Subjects
     $('#trf_total_units').html(units);
     $('#trf_total_subject').html(subjectcount);
+
+    $('#regform').modal('show');
+
+}
+
+function assessmentform_remove_renderer() {
+
+    //Displays DATA
+    //Displays Basic Info
+    $('#trf_rn').html('');
+    $('#trf_name').html('');
+    $('#trf_address').html('');
+    $('#trf_sem').html('');
+    $('#trf_course').html('');
+    $('#trf_sy').html('');
+    $('#trf_yl').html('');
+    $('#trf_sec').html('');
+
+    //Displays Payments
+    $('#trf_tuition').html('');
+    $('#trf_misc').html('');
+    $('#trf_other').html('');
+    $('#trf_initial').html('');
+    $('#trf_first').html('');
+    $('#trf_second').html('');
+    $('#trf_third').html('');
+    $('#trf_fourth').html('');
+    $('#trf_scholar').html('');
+    $('#trf_scholar').html('');
+
+    $('#initial_checkbox').removeAttr('data-paymentvalue');
+    $('#initial_value').html('');
+    $('#first_checkbox').removeAttr('data-paymentvalue');
+    $('#first_value').html('');
+    $('#second_checkbox').removeAttr('data-paymentvalue');
+    $('#second_value').html('');
+    $('#third_checkbox').removeAttr('data-paymentvalue');
+    $('#third_value').html('');
+    $('#fourth_checkbox').removeAttr('data-paymentvalue');
+    $('#fourth_value').html('');
+    if (
+        get_advise_first == 0 &&
+        get_advise_second == 0 &&
+        get_advise_third == 0 &&
+        get_advise_fourth == 0
+    ) {
+        $('#downpayment_tr').remove();
+    }
+    //Lab Fees
+    $('#trf_lab').html('');
+
+    //Total Fees
+    $('#trf_total_fees').html('');
+
+
+    //Displays Sched
+    showtable = $('#temporary_regform_subjects');
+    //clears the table before append
+    showtable.html('');
+    sched_checking = '';
+    units = 0;
+    subjectcount = 0;
+
+    //Total Units and Subjects
+    $('#trf_total_units').html('');
+    $('#trf_total_subject').html('');
 
     $('#regform').modal('show');
 

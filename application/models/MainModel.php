@@ -98,7 +98,7 @@ class MainModel extends CI_Model
     public function getEnrolledStudentPayments($reference_number)
     {
         $this->db->select('*');
-        $this->db->from('EnrolledStudent_Payments');
+        $this->db->from('Fees_Enrolled_College');
         $this->db->where('Reference_Number', $reference_number);
 
         return $this->db->get()->result_array();
@@ -110,7 +110,7 @@ class MainModel extends CI_Model
         $this->db->where('Reference_Number', $reference_number);
         $this->db->where('Cancelled !=', '1');
         $this->db->group_by('School_Year');
-        $this->db->order_by('School_Year','DESC');
+        $this->db->order_by('School_Year', 'DESC');
 
         return $this->db->get()->result_array();
     }
@@ -235,13 +235,15 @@ class MainModel extends CI_Model
         $this->db->update('legend', $data);
         $this->db->where(1);
     }
-    public function checkStudentInfoRefNo($ref_no){
-        $this->db->where('Reference_Number',$ref_no);
+    public function checkStudentInfoRefNo($ref_no)
+    {
+        $this->db->where('Reference_Number', $ref_no);
         $result = $this->db->get('Student_Info');
         return $result->row_array();
     }
-    public function checkStudentAccountByRefNo($ref_no){
-        $this->db->where('reference_no',$ref_no);
+    public function checkStudentAccountByRefNo($ref_no)
+    {
+        $this->db->where('reference_no', $ref_no);
         // $this->db->like('title', 'match');
         $result = $this->db->get('student_account');
         return $result->row_array();

@@ -307,6 +307,13 @@ class Ose_api extends CI_Controller
 		echo $session['Course_Code'];
 	}
 
+	public function remove_payment_assesment_form(){
+		$this->AdvisingModel->invalid_all_advising($this->reference_number);
+		$this->AdvisingModel->update_reference_fees_temp_to_old($this->reference_number);
+
+		echo 'removed';
+	}
+
 	public function unqueue_all()
 	{
 		$this->AdvisingModel->remove_all_advising_session($this->reference_number);

@@ -72,8 +72,7 @@ class MainModel extends CI_Model
         $this->db->where('reference_no', $ref_no);
         return $this->db->get('requirements_log')->result_array();
     }
-<<<<<<< Updated upstream
-=======
+    
     public function getAllEnrolledSubjects($reference_number)
     {
         $this->db->select('
@@ -117,7 +116,6 @@ class MainModel extends CI_Model
 
         return $this->db->get()->result_array();
     }
->>>>>>> Stashed changes
     public function checkRequirement($requirements_name)
     {
         $ref_no = $this->session->userdata('reference_no');

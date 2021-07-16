@@ -116,12 +116,19 @@ class AdvisingModel extends CI_Model
         $this->db->where('Reference_Number', $refnum);
         $this->db->update('advising_session');
     }
-
-    public function remove_all_advising($refnum)
+    
+    public function invalid_all_advising($refnum)
     {
         $this->db->set('valid', 0);
         $this->db->where('Reference_Number', $refnum);
         $this->db->update('Advising');
+    }
+    public function update_reference_fees_temp_to_old($refnum)
+    {
+        $old_reference = '(OLD)'.$refnum;
+        $this->db->set('Reference_Number', $old_reference);
+        $this->db->where('Reference_Number', $refnum);
+        $this->db->update('Fees_Temp_College');
     }
 
     public function get_year_level($array_data)

@@ -444,6 +444,14 @@ function init_remove_all_queue() {
 
 }
 
+function init_remove_payment_assesment() {
+
+    return $.ajax({
+        url: "/Onestop/index.php/ose_api/remove_payment_assesment_form",
+        async: false,
+    });
+}
+
 function ajax_change_sy_legend() {
 
     return $.ajax({

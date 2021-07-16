@@ -65,14 +65,12 @@ class MainModel extends CI_Model
     {
         return $this->db->get('requirements')->result_array();
     }
-    public function getAllRequirementsLogByRef()
+    public function getAllRequirementsLogByRef($reference_number)
     {
-        $ref_no = $this->session->userdata('reference_no');
         // $this->db->where('requirements_name', 'proof_of_payment');
-        $this->db->where('reference_no', $ref_no);
+        $this->db->where('reference_no', $reference_number);
         return $this->db->get('requirements_log')->result_array();
     }
-    
     public function getAllEnrolledSubjects($reference_number)
     {
         $this->db->select('
@@ -112,7 +110,7 @@ class MainModel extends CI_Model
         $this->db->where('Reference_Number', $reference_number);
         $this->db->where('Cancelled !=', '1');
         $this->db->group_by('School_Year');
-        $this->db->order_by('School_Year','DESC');
+        $this->db->order_by('School_Year', 'DESC');
 
         return $this->db->get()->result_array();
     }
@@ -139,7 +137,7 @@ class MainModel extends CI_Model
     {
         $ref_no = $this->session->userdata('reference_no');
         $this->db->where('reference_no', $ref_no);
-        $this->db->update('requirements_log',array('reference_no'=>''));
+        $this->db->update('requirements_log', array('reference_no' => ''));
     }
     public function getStudentAccountInfo($ref_no)
     {
@@ -221,19 +219,34 @@ class MainModel extends CI_Model
         $this->db->insert('student_account', $array_insert);
         return $this->db->insert_id();
     }
-    public function getOldAccountStudentInfo($semester,$sy){
+    public function getOldAccountStudentInfo($semester, $sy)
+    {
         $this->db->select('*');
         $this->db->from('student_info as si');
-        $this->db->join('fees_enrolled_college as fg','si.Reference_Number = fg.Reference_Number');
-        $this->db->where('fg.schoolyear !=',$sy);
-        $this->db->where('fg.semester !=',$semester);
+        $this->db->join('fees_enrolled_college as fg', 'si.Reference_Number = fg.Reference_Number');
+        $this->db->where('fg.schoolyear !=', $sy);
+        $this->db->where('fg.semester !=', $semester);
         $this->db->limit(100);
         $result = $this->db->get()->result_array();
         return $result;
     }
-    public function updateLegend($data){
+    public function updateLegend($data)
+    {
         $this->db->update('legend', $data);
         $this->db->where(1);
+    }
+    public function checkStudentInfoRefNo($ref_no)
+    {
+        $this->db->where('Reference_Number', $ref_no);
+        $result = $this->db->get('Student_Info');
+        return $result->row_array();
+    }
+    public function checkStudentAccountByRefNo($ref_no)
+    {
+        $this->db->where('reference_no', $ref_no);
+        // $this->db->like('title', 'match');
+        $result = $this->db->get('student_account');
+        return $result->row_array();
     }
     // public function checkIfthi
     // if fees not enrolled college

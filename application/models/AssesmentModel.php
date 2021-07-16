@@ -153,6 +153,7 @@ class AssesmentModel extends CI_Model
     public function get_all_programs()
     {
         $this->db->select('*');
+        $this->db->where('valid', '1');
         $this->db->from('Programs');
         $this->db->order_by('Program_Code', 'ASC');
         $query = $this->db->get();

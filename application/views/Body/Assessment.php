@@ -40,7 +40,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                         <!-- Progress Nav -->
                         <ul>
                             <li id="li_student_information">
-                                <a href="#student_information_content" id="tab_student_information">
+                                <a href="#student_information_content" id="tab_student_information" data-toggle="tab">
                                     <div id="tab_student_information-circle" class="icon-circle">
                                         <!-- <div class="success_check"><i class="bi bi-check"></i></div> -->
                                         <i class="bi bi-person-lines-fill" id="bi_resize"></i>
@@ -96,10 +96,12 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                     <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <?php
                                     $data_course = empty($this->data['course']) ? 'N/A' : $this->data['course'];
-                    if ($data_course == 'N/A') {
-                    ?>
-                                    <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info btn-hover-red" onclick="submit_course()">PROCEED</button>
-                                    <?php } ?>
+                                    // if ($data_course == 'N/A') {
+                                    ?>
+                                        <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info btn-hover-red" onclick="submit_course()">PROCEED</button>
+                                    <?php
+                                //  } 
+                                 ?>
                                 </div>
                             </div>
                             <div class="tab-pane container" id="advising_content">

@@ -26,7 +26,6 @@ class Main extends MY_Controller
 
 		$this->login_template($this->view_directory->login());
 		$this->appkey = 'testkey101';
-	
 	}
 	public function tokenHandler($type){
 		if(isset($this->session->csrf_token)){
@@ -301,8 +300,7 @@ class Main extends MY_Controller
 		}
 	}
 	public function setupUserPass($key = '')
-	{
-		if (!empty($key)) {
+	{w
 			$this->data['key'] = $key;
 			$data = $this->mainmodel->checkKey($key);
 			$checkStudentInfoRefNo = $this->mainmodel->checkStudentInfoRefNo($key);

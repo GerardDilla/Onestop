@@ -223,6 +223,7 @@ class Main extends MY_Controller
 	public function loginProcess()
 	{
 		$this->tokenHandler('login');
+		$this->removeToken('login');
 		try {
 			$username = $this->input->post('loginUsername');
 			$password = $this->input->post('loginPassword');

@@ -199,15 +199,31 @@ $(document).ready(function() {
                         position: 'center',
                         buttons: [
                             ['<button><b>YES</b></button>', function(instance, toast) {
+                                $('body').waitMe({
+                                    effect : 'win8',
+                                    text : 'Please wait...',
+                                    bg : 'rgba(255,255,255,0.7)',
+                                    color : '#cc0000',
+                                    maxSize : '',
+                                    waitTime : -1,
+                                    textPos : 'vertical',
+                                    fontSize : '',
+                                    source : '',
+                                    onClose : function() {
+                                        
+                                    }
+                                });
                                 console.log('ready to advise');
                                 // Came from advising.js
 
                                 // wizard_payment();
                                 init_advise();
-                                // location.reload();
-                                hideIziToastGuide();
-                                var ose_guide1 = new OSE_Guide('payment');
-                                ose_guide1.play();
+                                
+                                    // location.reload();
+                                    // hideIziToastGuide();
+                                    // var ose_guide1 = new OSE_Guide('payment');
+                                    // ose_guide1.play();
+                                    
                                 instance.hide({
                                     transitionOut: 'fadeOut'
                                 }, toast, 'button');
@@ -436,9 +452,11 @@ function fetch_user_status() {
                     $('input[name=current_tab_selection]').val('student_information');
 
                 }
-            }
-
-            ose_guide1.play();
+            } 
+            setTimeout(()=>{
+                $('body').waitMe('hide');
+                ose_guide1.play();
+            })
         },
         error: function(response) {},
     });
@@ -521,7 +539,7 @@ function wizard_requirements() {
     // $("#progress_bar").css("width", "62.5%");
     // $("#advising_content").addClass("active");
     $("#requirements_content").addClass("active");
-    // $("#wizard-button-requirements").removeClass("wizard-proceed-hide");
+    // $("#wizard-proceed-advising-requirements").removeClass("wizard-proceed-hide");
     // $("#wizard-button").addClass("wizard-proceed-hide");
 }
 

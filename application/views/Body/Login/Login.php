@@ -33,17 +33,12 @@ if ($this->session->flashdata('msg') != '') {
 }
 ?>
 <style>
-    @media screen (pointer:coarse) and (orientation: landscape) {
+    /* @media screen (pointer:coarse) and (orientation: landscape) {
         html {
             transform: rotate(-90deg);
             transform-origin: left top;
-            /* width: 100vh;
-            overflow-x: hidden;
-            position: absolute;
-            top: 100%;
-            left: 0; */
         }
-    }
+    } */
 </style>
 <div class="page login-page page-1">
     <div class="container d-flex align-items-center">

@@ -15,44 +15,54 @@ class Main extends MY_Controller
 		$this->studentdata = array();
 		$this->load->library('gdrive_uploader', array('folder_id' => '1_Ui30Jb_-N9ENG1XatjdT2GzVHXzmuRi'));
 		// $this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
-		
+		$this->reference_number = $this->session->userdata('reference_no');
 	}
-	public function index()
-	{	
-		// generate token
+	public function generageToken($name){
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;
-		$_SESSION['csrf_token']['login'] = $token;
-
-		$this->login_template($this->view_directory->login());
-		$this->appkey = 'testkey101';
+		$_SESSION['csrf_token'][$name] = $token;
 	}
 	public function tokenHandler($type){
+		// echo 'csrf_token:'.$this->session->csrf_token[$type].'<br>';
+		// echo 'post_token:'.$this->input->post('b3df6e650330df4c0e032e16141f').'<br>';
+		// exit;
 		if(isset($this->session->csrf_token)){
 			if(isset($this->session->csrf_token[$type])){
 				if($this->session->csrf_token[$type]==""||$this->session->csrf_token[$type]!=$this->input->post('b3df6e650330df4c0e032e16141f')){
 					echo 'Something went wrong!';
 					exit;
 				}
-			}else{
+			} else {
 				echo 'Something went wrong!';
 				exit;
 			}
-		}else{
+		} else {
 			echo 'Something went wrong!';
 			exit;
 		}
+		
+		// $_SESSION['csrf_token'][$type] = '';
+	}
+	public function removeToken($type){
 		$_SESSION['csrf_token'][$type] = '';
+	}
+	public function index()
+	{	
+		// generate token
+		$this->generageToken('login');
+		$this->login_template($this->view_directory->login());
+		$this->appkey = 'testkey101';
+	
 	}
 	public function selfassesment()
 	{
-		$ref_no = $this->session->userdata('reference_no');
+
 		$legend = $this->AdvisingModel->getlegend();
 		// $this->data['md5_ref_no'] = '29a83a8a9641bb860a679d7e5ba52d26';
-		$this->data['md5_ref_no'] = md5($ref_no);
+		$this->data['md5_ref_no'] = md5($this->reference_number);
 
 		// Get Enrolled Students
-		$enrolled_students = $this->AssesmentModel->enrolled_student($ref_no);
+		$enrolled_students = $this->AssesmentModel->enrolled_student($this->reference_number);
 		foreach ($enrolled_students as $enrolled_student) {
 			if ($enrolled_student['semester'] != $legend['Semester'] && $enrolled_student['schoolyear'] != $legend['School_Year']) {
 				$this->data['old_student'] = true;
@@ -80,7 +90,7 @@ class Main extends MY_Controller
 		$this->data['registration'] = 'Body/AssessmentContent/Registration';
 
 		// Get the courses student apllied
-		// $this->data['student_courses'] = $this->get_student_course_choices($ref_no);
+		// $this->data['student_courses'] = $this->get_student_course_choices($this->reference_number);
 		// $array = array();
 		// foreach ($this->data['student_courses'] as $student_course) {
 		// 	$course_info = $this->get_student_course_info($student_course);
@@ -92,11 +102,11 @@ class Main extends MY_Controller
 		$this->data['courses'] = $this->AssesmentModel->get_all_programs();
 
 		#Get from Student_Account Table
-		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
+		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($this->reference_number);
 		$this->data['interview_status'] = $student_account['interview_status'];
 
 		#Get from Student_Info Table
-		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($ref_no);
+		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->reference_number);
 		$this->data['course'] = $student_info_array['Course'];
 		// $course_info = $this->get_student_course_info($this->data['course']);
 		// $this->data['courses_info'] = $course_info;
@@ -112,7 +122,7 @@ class Main extends MY_Controller
 		$this->data['major'] = $major['Program_Major'];
 
 		#Get type (Transferee or Freshmen)
-		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->session->userdata('reference_no'));
+		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->reference_number);
 		$this->data['shs_student_number'] = empty($shs_bridge) ? '' : $shs_bridge['shs_student_number'];
 		$this->data['applied_status'] = empty($shs_bridge) ? '' : $shs_bridge['applied_status'];
 
@@ -120,7 +130,7 @@ class Main extends MY_Controller
 		$this->data['legend'] = $this->AdvisingModel->getlegend();
 
 		#Get Advising Session
-		$queue = $this->AdvisingModel->get_queued_subjects($this->session->userdata('reference_no'));
+		$queue = $this->AdvisingModel->get_queued_subjects($this->reference_number);
 		$this->data['sy_session'] = empty($queue) ? $this->data['legend']['School_Year'] : $queue[0]['School_Year'];
 		$this->data['sem_session'] = empty($queue) ? $this->data['legend']['Semester'] : $queue[0]['Semester'];
 
@@ -138,16 +148,22 @@ class Main extends MY_Controller
 		$this->session->set_userdata('SEM_LEGEND', $this->data['sem_session'] != '' ? $this->data['sem_session'] : $this->data['legend']['Semester']);
 
 		// SHS balance checker
-		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($ref_no);
+		$shs_bridge = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->reference_number);
 		$this->data['shs_student_number'] = empty($shs_bridge) ? '' : $shs_bridge['shs_student_number'];
 		$this->data['applied_status'] = empty($shs_bridge) ? '' : $shs_bridge['applied_status'];
 		$this->data['csrf_token'] = hash('tiger192,3', uniqid());
+
+		// generate token
+		$token = hash('tiger192,3', uniqid());
+		$this->data['csrf_token'] = $token;
+		$_SESSION['csrf_token']['requirements'] = $token;
+		
 		$this->default_template($this->view_directory->assessment());
 	}
 
 	public function get_student_information()
 	{
-		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->session->userdata('reference_no'));
+		$student_info_array = $this->AssesmentModel->get_student_by_reference_number($this->reference_number);
 		echo json_encode($student_info_array);
 	}
 
@@ -229,6 +245,7 @@ class Main extends MY_Controller
 	public function sendEmail()
 	{
 		$this->tokenHandler('forgot_password');
+		$this->removeToken('forgot_password');
 		$this->load->helper('string');
 		try {
 			$data = $this->mainmodel->checkEmail($this->input->post('email'));
@@ -300,7 +317,8 @@ class Main extends MY_Controller
 		}
 	}
 	public function setupUserPass($key = '')
-	{w
+	{
+			$this->generageToken('setup_userpass');
 			$this->data['key'] = $key;
 			$data = $this->mainmodel->checkKey($key);
 			$checkStudentInfoRefNo = $this->mainmodel->checkStudentInfoRefNo($key);
@@ -336,21 +354,11 @@ class Main extends MY_Controller
 				$this->session->set_flashdata('msg', 'Incorrect key!!');
 				redirect(base_url('/'));
 			}
-			// if (!empty($data)) {
-			// 	$this->login_template($this->view_directory->setupUserPass());
-			// 	exit;
-			// } else {
-			// 	$this->session->set_flashdata('msg', 'Incorrect key!!');
-			// 	redirect(base_url('/'));
-			// }
-		} else {
-			$this->session->set_flashdata('msg', 'Incorrect key!!');
-			redirect(base_url('/'));
-		}
 	}
 	public function changeUserPassProcess()
 	{
 		$this->tokenHandler('setup_userpass');
+		$this->removeToken('setup_userpass');
 		try {
 			$key = $this->input->post('JoduXy33bU2EUwRsdjR0uhodvplaX54c5mVbGBNBYRU=');
 			// $data = $this->mainmodel->checkKey($key);
@@ -389,7 +397,7 @@ class Main extends MY_Controller
 	}
 	public function validateSession()
 	{
-		if (empty($this->session->userdata('reference_no'))) {
+		if (empty($this->reference_number)) {
 			$this->session->set_flashdata('msg', 'Session Expired!!');
 			redirect(base_url('/'));
 		}
@@ -399,14 +407,14 @@ class Main extends MY_Controller
 	public function wizard_tracker_status()
 	{
 		#Sets Reference Number
-		$ref_no = $this->session->userdata('reference_no');
+		// $ref_no = $this->session->userdata('reference_no');
 
 		#Gets Legend
 		$legend = $this->AdvisingModel->getlegend();
 
 		#Compares legend to recent advising transaction (if any)
 		$data = array(
-			'reference_no' => $ref_no
+			'reference_no' => $this->reference_number
 		);
 
 		#Defaults progress search to current legend if new student or new schoolyear
@@ -426,10 +434,10 @@ class Main extends MY_Controller
 		}
 		// echo $Schoolyear . ':' . $Semester;
 		#Checks progress
-		$status = $this->AssesmentModel->tracker_status($ref_no, $Schoolyear, $Semester);
-		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($ref_no);
+		$status = $this->AssesmentModel->tracker_status($this->reference_number, $Schoolyear, $Semester);
+		$student_account = $this->AssesmentModel->get_student_account_by_reference_number($this->reference_number);
 		// $count = 0;
-		$enrolled_students = $this->AssesmentModel->enrolled_student($ref_no);
+		$enrolled_students = $this->AssesmentModel->enrolled_student($this->reference_number);
 		foreach ($enrolled_students as $enrolled_student) {
 			if ($enrolled_student['semester'] != $legend['Semester'] && $enrolled_student['schoolyear'] != $legend['School_Year']) {
 				$data['old_student'] = 1;
@@ -545,16 +553,25 @@ class Main extends MY_Controller
 	}
 	public function update_course_by_reference_number()
 	{
-		$reference_number = $this->session->userdata('reference_no');
+		$reference_number = $this->reference_number;
 		$student_number = $this->input->post('student_number');
 		$status = $this->input->post('status');
 		// $student_number = '2';
 		// $status = 'freshmen';
 		// $check_course = $this->check_course_by_reference_number($this->session->userdata('reference_no'));
 		// if ($check_course == 'none') {
+		$enrolled_payment = $this->mainmodel->getEnrolledStudentPayments($this->reference_number);
+
 		$shs_status = $this->shs_balance_checker($student_number, $status);
 		// die(json_encode($shs_status));
-		if ($shs_status['status'] == 'empty') {
+		if (!empty($enrolled_payment)) {
+			echo json_encode(array(
+				'title' => "You can't change Course if you are alread Enrolled.",
+				'body' => '',
+				'status' => 'failed'
+			));
+			return;
+		} else if ($shs_status['status'] == 'empty') {
 			echo json_encode(array(
 				'title' => 'No Data Found in Database!',
 				'body' => '',
@@ -635,11 +652,10 @@ class Main extends MY_Controller
 	public function forgotPassword()
 	{
 		// token forgot password
-		$token = hash('tiger192,3', uniqid());
-		$this->data['csrf_token'] = $token;
-		$_SESSION['csrf_token']['forgot_password'] = $token;
-		
-		
+		// $token = hash('tiger192,3', uniqid());
+		// $this->data['csrf_token'] = $token;
+		// $_SESSION['csrf_token']['forgot_password'] = $token;
+		$this->generageToken('forgot_password');
 		$this->login_template($this->view_directory->forgotPassword());
 	}
 	public function passwordReset()
@@ -648,7 +664,7 @@ class Main extends MY_Controller
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;
 		$_SESSION['csrf_token']['password_reset'] = $token;
-
+		
 		$this->default_template($this->view_directory->passwordReset());
 	}
 	public function passwordResetProcess()
@@ -657,7 +673,7 @@ class Main extends MY_Controller
 		try {
 			$old_password = $this->input->post('old_password');
 			$new_password = $this->input->post('new_password');
-			$reference_no = $this->session->userdata('reference_no');
+			$reference_no = $this->reference_number;
 			$data = $this->mainmodel->checkOldPassword($reference_no, $old_password);
 			if (!empty($data)) {
 				$this->mainmodel->updateAccountWithRefNo($reference_no, array(
@@ -742,11 +758,11 @@ class Main extends MY_Controller
 
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
 		date_default_timezone_set('Asia/manila');
-		$ref_no = $this->session->userdata('reference_no');
+		// $ref_no = $this->session->userdata('reference_no');
 		// for interview radio button
 		$interview = $this->input->post('interview');
 		$array_update = array(
-			'reference_number' => $ref_no,
+			'reference_number' => $this->reference_number,
 			'interview' => $this->input->post('interview'),
 		);
 
@@ -776,7 +792,7 @@ class Main extends MY_Controller
 			foreach ($getRequirementsList as $list) {
 				$id_name = $list['id_name'];
 				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
-				$config['file_name'] = $id_name . '_' . $ref_no . '' . date("YmdHis");
+				$config['file_name'] = $id_name . '_' . $this->reference_number . '' . date("YmdHis");
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				$this->upload->overwrite = true;
@@ -844,7 +860,7 @@ class Main extends MY_Controller
 						'requirements_name' => $id_name,
 						'requirements_date' => date("Y-m-d H:i:s"),
 						'status' => $req_status,
-						'reference_no' => $ref_no,
+						'reference_no' => $this->reference_number,
 						'file_submitted' => $orig_name,
 						'file_type' => $file_type,
 						'if_married' => $id_name == 'marriage_certificate' ? $this->input->post('if_married') : 0
@@ -865,7 +881,7 @@ class Main extends MY_Controller
 					));
 				}
 			}
-			$all_uploadeddata = array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $array_files);
+			$all_uploadeddata = array("folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $array_files);
 			if ($error_count == 0 && $upload_count > 0) {
 				$result = $this->gdrive_uploader->index($all_uploadeddata);
 				$decode_result = json_decode($result, true);
@@ -886,7 +902,7 @@ class Main extends MY_Controller
 								}
 							}
 						}
-						$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $decode_result['id']));
+						$this->mainmodel->updateAccountWithRefNo($this->reference_number, array('gdrive_id' => $decode_result['id']));
 						$this->session->set_userdata('gdrive_folder', $decode_result['id']);
 						$this->session->set_flashdata('success', 'Successfully submitted!!');
 						redirect($_SERVER['HTTP_REFERER']);
@@ -907,15 +923,13 @@ class Main extends MY_Controller
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			}
-			else if($upload_count == 0){
+			} else if ($upload_count == 0) {
 				$this->session->set_flashdata('success', 'Successfully submitted!!');
 				redirect($_SERVER['HTTP_REFERER']);
-			}
-			else {
+			} else {
 				$this->mainmodel->revertIfErrorInRequirementUpload();
 				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!! failed on -');
-				$error_files2 = implode(',',$error_files);
+				$error_files2 = implode(',', $error_files);
 				$this->session->set_flashdata('error_files', $error_files2);
 				redirect($_SERVER['HTTP_REFERER']);
 			}
@@ -970,7 +984,7 @@ class Main extends MY_Controller
 		$_SESSION['csrf_token']['proof_of_payment'] = $token;
 
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-		$getStudentAccountInfo = $this->mainmodel->getStudentAccountInfo($this->session->userdata('reference_no'));
+		$getStudentAccountInfo = $this->mainmodel->getStudentAccountInfo($this->reference_number);
 		$this->data['student_number'] = $getStudentAccountInfo['Student_Number'];
 		if (!empty($checkRequirement)) {
 			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
@@ -987,12 +1001,12 @@ class Main extends MY_Controller
 	{
 		$this->tokenHandler('proof_of_payment');
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
-		$ref_no = $this->session->userdata('reference_no');
+		// $ref_no = $this->session->userdata('reference_no');
 		$id_name = "proof_of_payment";
 		$config['upload_path'] = './express/assets/';
 		$config['allowed_types'] = '*';
-		$config['file_name'] = $id_name . '_' . $ref_no . '' . date("YmdHis");
-		$this->load->library('upload',$config);
+		$config['file_name'] = $id_name . '_' . $this->reference_number . '' . date("YmdHis");
+		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 		$this->upload->overwrite = true;
 		$uploaded = array();
@@ -1015,7 +1029,7 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			$result = $this->gdrive_uploader->index(array("folder_name" => $ref_no . '/' . $user_fullname, "data" => $uploaded));
+			$result = $this->gdrive_uploader->index(array("folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
 			$decode_result = json_decode($result, true);
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {
@@ -1028,13 +1042,13 @@ class Main extends MY_Controller
 			if (!empty($result)) {
 				if ($decode_result['msg'] == "success") {
 					$this->session->set_userdata('gdrive_folder', $decode_result['id']);
-					$this->mainmodel->updateAccountWithRefNo($ref_no, array('gdrive_id' => $decode_result['id']));
+					$this->mainmodel->updateAccountWithRefNo($this->reference_number, array('gdrive_id' => $decode_result['id']));
 					if (!empty($checkRequirement)) {
 						$this->mainmodel->updateRequirementLog(array(
 							'requirements_name' => 'proof_of_payment',
 							'requirements_date' => date("Y-m-d H:i:s"),
 							'status' => 'pending',
-							'reference_no' => $ref_no,
+							'reference_no' => $this->reference_number,
 							'file_submitted' => $uploaded_data['orig_name'],
 							'file_type' => $uploaded_data['file_type'],
 							// 'path_id' => empty($getId)?'':$getId
@@ -1044,7 +1058,7 @@ class Main extends MY_Controller
 							'requirements_name' => 'proof_of_payment',
 							'requirements_date' => date("Y-m-d H:i:s"),
 							'status' => 'pending',
-							'reference_no' => $ref_no,
+							'reference_no' => $this->reference_number,
 							'file_submitted' => $orig_name,
 							'file_type' => $orig_type,
 							// 'path_id' => empty($getId)?'':$getId
@@ -1056,7 +1070,7 @@ class Main extends MY_Controller
 							'acc_num' => $this->input->post('account_number'),
 							'acc_holder_name' => $this->input->post('holder_name'),
 							'payment_reference_no' => $this->input->post('reference_number'),
-							'ref_no' => $ref_no,
+							'ref_no' => $this->reference_number,
 							'amount_paid' => $this->input->post('amount_paid')
 						));
 					}
@@ -1155,7 +1169,7 @@ class Main extends MY_Controller
 	{
 		$interview = $this->input->post('interview');
 		$array_update = array(
-			'reference_number' => $this->session->userdata('reference_no'),
+			'reference_number' => $this->reference_number,
 			'interview' => $interview,
 		);
 		$this->AssesmentModel->update_interview_status($array_update);
@@ -1190,7 +1204,7 @@ class Main extends MY_Controller
 	public function ajaxBreakdownRequirements()
 	{
 		$array_completefiles = array();
-		$getRequirementsLogPerRefNo = $this->mainmodel->getAllRequirementsLogByRef();
+		$getRequirementsLogPerRefNo = $this->mainmodel->getAllRequirementsLogByRef($this->reference_number);
 		foreach ($getRequirementsLogPerRefNo as $reqloglist => $values) {
 			// if ($reqloglist['requirements_name'] != "proof_of_payment") {
 			array_push($array_completefiles, array(
@@ -1202,6 +1216,59 @@ class Main extends MY_Controller
 			// }
 		}
 		echo json_encode($getRequirementsLogPerRefNo);
+	}
+	public function ajaxBreakdownSubjects()
+	{
+		$getAllEnrolledSubjects = $this->mainmodel->getAllEnrolledSubjects($this->reference_number);
+		$getAllEnrolledSubjects_Year = $this->mainmodel->getAllEnrolledSubjectsYear($this->reference_number);
+		foreach ($getAllEnrolledSubjects_Year as $year) {
+			$units_total = 0;
+			echo '
+				<h2 class="accordion-header">
+					<button class="btn btn-lg btn-primary btn-hover-red button-subject-year" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse' . $year['School_Year'] . '" aria-expanded="false" aria-controls="flush-collapse' . $year['School_Year'] . '">
+						Year ' . $year['School_Year'] . '
+					</button>
+				</h2>
+				<div id="flush-collapse' . $year['School_Year'] . '" class="table-scroll collapse" aria-labelledby="flush-heading' . $year['School_Year'] . '">
+					<table class="table table-striped table-hover">
+						<tr>
+							<th>Semester</th>
+							<th>Section</th>
+							<th>Subject Name</th>
+							<th>Units</th>
+							<th>Day</th>
+							<th>Time</th>
+							<th>Room</th>
+							<th>Instructor</th>
+						</tr>
+				';
+			foreach ($getAllEnrolledSubjects as $subject) {
+
+				if ($year['School_Year'] == $subject['School_Year']) {
+					$units = 0;
+					$units = intval($subject['Course_Lec_Unit']) + intval($subject['Course_Lab_Unit']);
+					$units_total += $units;
+					echo '
+						<tr>
+							<td>' . $subject['Semester'] . '</td>
+							<td>' . $subject['Section'] . '</td>
+							<td>' . $subject['Course_Title'] . '</td>
+							<td>' . $units . '</td>
+							<td>' . $subject['Day'] . '</td>
+							<td>' . $subject['Start_Time'] . ' - ' . $subject['End_Time'] . '</td>
+							<td>' . $subject['Room'] . '</td>
+							<td>' . $subject['Instructor_Name'] . '</td>
+						</tr>
+					';
+				}
+			}
+			echo '
+					</table>
+				</div>
+			';
+		}
+		// echo json_encode($getAllEnrolledSubjects);
+
 	}
 	public function account_creation_old()
 	{
@@ -1215,7 +1282,7 @@ class Main extends MY_Controller
 	}
 	public function checksession()
 	{
-		if (!$this->session->userdata('reference_no')) {
+		if (!$this->reference_number) {
 			$this->session->set_flashdata('msg', 'Session Timed Out');
 			echo base_url() . 'index.php/Main/logout';
 		} else {
@@ -1240,7 +1307,8 @@ class Main extends MY_Controller
 		$this->mainmodel->updateLegend(array('Semester' => $sem, 'School_Year' => $sy));
 		echo json_encode('success');
 	}
-	public function hashSomething(){
+	public function hashSomething()
+	{
 		// $gen = hash(algo:'sha256',uniqid());
 		$gen = hash('tiger192,3', uniqid());
 		echo $this->session->csrf_token['login'];

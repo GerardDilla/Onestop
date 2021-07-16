@@ -71,6 +71,7 @@ $(window).on('beforeunload', function() {
 //   playPause.play();
 //   alert('hello');
 $(document).ready(function() {
+    // alert('hello')
     gsap.from('.form-holder', { opacity: 0, duration: 1, y: -50 });
     gsap.from('.anim1', { opacity: 0, duration: 1, y: -50, stagger: 0.6 });
     gsap.from('.anim2', { opacity: 0, duration: 1, y: -50, stagger: 0.6 });
@@ -91,17 +92,3 @@ $(document).ready(function() {
     //     alert('1');
     // }, 2000);
 });
-// $('.leave_button').on('click',function(){
-//     var setInterval2 = window.setInterval(function(){ 
-
-//         // alert('1');
-//         clearInterval(setInterval2);
-//         // playPause();
-//     }, 100);
-//     gsap.to('.form-holder',{opacity:0,duration:1,y:-50});
-//     gsap.to('.anim1',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.to('.anim2',{opacity:0,duration:1,y:-50,stagger:0.6});
-//     gsap.to('.anim3',{opacity:0,delay:.5,duration:1,y:-50,stagger:0.3});
-//     var t1 = gsap.timeline();
-//     t1.to('ul.transition li',{duration:.2,scaleY:1,transformOrigin:"bottom left",stagger:.1,delay:.1});
-// });

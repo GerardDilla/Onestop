@@ -15,7 +15,7 @@
                             <div class="form-group payment-type-div">
                                 <label class="input-label payment-page"><b>Payment Type</b></label>
                                 <select class="form-select payment-page" name="payment-type">
-                                    <option value="online_payment">Online Payment</option>
+                                    <option value="online_payment">Online Payment</option>x
                                     <option value="over_the_counter">Over the Counter</option>
                                 </select>
                             </div>

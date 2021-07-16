@@ -1,17 +1,23 @@
 <style>
     .breakdown_table_label {
         font-size: 25px;
-        color: #0045ff;
+        color: #800000;
     }
 
     .breakdisplaynone {
         display: none;
     }
+    .button-subject-year{
+        width: 100%;
+    }
+    .table-scroll{
+        overflow:auto;
+    }
 </style>
 <section class="section" id="assessment_section" data-baseurl="<?php echo base_url(); ?>">
     <div class="card">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <label for="personal_information_table" class="breakdown_table_label"><b>Personal Information</b></label>
                 <table class="table table-striped" id="personal_information_table" style="display: block; overflow: auto;">
                     <tr>
@@ -40,7 +46,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <!-- <label for="course_year_table" class="breakdown_table_label"><b>Year and Courses</b></label> -->
                 <table class="table table-striped" id="course_year_table" style="display: block; overflow: auto;">
                     <tr>
@@ -69,7 +75,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <label for="requirements_table" class="breakdown_table_label"><b>Requirements</b></label>
                 <table class="table table-striped" id="requirements_table" style="display: block; overflow: auto;">
                     <tr>
@@ -102,7 +108,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 table-scroll">
                 <label for="proof_payment_table" class="breakdown_table_label"><b>Proof of Payments</b></label>
                 <table class="table table-striped" id="proof_payment_table" style="display: block; overflow: auto;">
                     <tr>
@@ -117,10 +123,29 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div>
+            <div class="accordion">
+                <div id="accordion_school_year">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <script>
     init_breakdown_si()
     init_breakdown_req()
+    init_breakdown_subjects();
+
+    function init_breakdown_subjects(){
+        $.ajax({
+            url: 'ajaxBreakdownSubjects',
+            success:function(response){
+                $('#accordion_school_year').html(response);
+            }
+        })
+    }
 
     function init_breakdown_si() {
         $.ajax({
@@ -164,18 +189,24 @@
                     // console.log(values['requirements_name']);
                     if (values['requirements_name'] == 'report_card') {
                         $('#breakdown_f9').html(values['status']);
-                    } else if (values['requirements_name'] == 'original_form_id') {
+                    }
+                    if (values['requirements_name'] == 'original_form_id') {
                         $('#breakdown_fid').html(values['status']);
-                    } else if (values['requirements_name'] == 'good_moral') {
+                    }
+                    if (values['requirements_name'] == 'good_moral') {
                         $('#breakdown_gmoral').html(values['status']);
-                    } else if (values['requirements_name'] == 'birth_certificate') {
+                    }
+                    if (values['requirements_name'] == 'birth_certificate') {
                         $('#breakdown_psa').html(values['status']);
-                    } else if (values['requirements_name'] == 'passport_id_pic') {
+                    }
+                    if (values['requirements_name'] == 'passport_id_pic') {
                         $('#breakdown_passport').html(values['status']);
-                    } else if (values['requirements_name'] == 'marriage_certificate') {
+                    }
+                    if (values['requirements_name'] == 'marriage_certificate') {
                         $('#breakdown_marriage_tr').removeClass('breakdisplaynone');
                         $('#breakdown_marriage_cert').html(values['status']);
-                    } else if (values['requirements_name'] == 'proof_of_payment') {
+                    }
+                    if (values['requirements_name'] == 'proof_of_payment') {
                         $('#breakdown_proof_pay').html(values['status']);
                     }
                 });

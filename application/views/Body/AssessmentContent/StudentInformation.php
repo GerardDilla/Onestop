@@ -104,7 +104,7 @@
                 // if ($data_course == 'N/A') {
                 ?>
                 <?php
-                    if ($data_course == 'N/A') {
+                    // if ($data_course == 'N/A') {
                     ?>
                     <div class="col-md-12" id="choose_your_status">
                         <HR>
@@ -129,7 +129,9 @@
                             </div>
                         </div>
                     </div>
-                    <?php } ?>
+                    <?php 
+                // } 
+                ?>
                 <?
                 //  }
                  ?>
@@ -155,7 +157,7 @@
                     <div id='have_course'></div>
                     <br>
                     <?php
-                    if ($data_course == 'N/A') {
+                    // if ($data_course == 'N/A') {
                     ?>
                         <fieldset class="form-group">
                             <select class="form-select" id="courses" required>
@@ -192,7 +194,7 @@
                 </div>
             <?php
                 // }
-            }
+            // }
             ?>
         </div>
         <br>

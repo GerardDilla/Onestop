@@ -100,8 +100,8 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                     ?>
                                         <button type="button" class="btn btn-lg btn-primary wizard-proceed-student_info btn-hover-red" onclick="submit_course()">PROCEED</button>
                                     <?php
-                                //  } 
-                                 ?>
+                                    //  } 
+                                    ?>
                                 </div>
                             </div>
                             <div class="tab-pane container" id="advising_content">
@@ -121,9 +121,9 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                     <!-- <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button> -->
                                     <!-- <?php if ($this->data['interview_status'] == null) { ?>
                                     <button type="button" class="btn btn-lg btn-primary wizard-proceed wizard-proceed-requirements" id="wizard-button-requirements">PROCEED</button>
-                                <?php
-                                            }
-                                ?> -->
+                                    <?php
+                                                }
+                                    ?> -->
                                 </div>
                             </div>
                             <div class="tab-pane container" id="payment_content">
@@ -150,7 +150,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                             <hr>
                             <button type="button" class="btn btn-lg btn-success reset_progress_test">Reset Progress (FOR TESTING)</button>
                             <button type="button" class="btn btn-lg btn-primary wizard-proceed" id="wizard-button">PROCEED</button>
-                        </div> -->
+                            </div> -->
                         </div>
 
                     </div>

@@ -11,21 +11,21 @@
 </style>
 <section class="section" id="id_baseurl" data-baseurl="<?php echo base_url(); ?>">
     <?php
-    if ($this->data['digital'] === true) {
+    if ($this->data['id_app'] != '1' && $this->data['digital'] != '1') {
     ?>
-        <div class="alert alert-light-danger color-danger">
-            <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
-            NOTE: Only NAME can be edited.<br>
-            <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
-        </div>
-    <?php } else { ?>
         <div class="alert alert-light-danger color-danger">
             <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
             NOTE: You have already submited, Please wait for an update.<br>
             <!-- PLEASE USE CAPITAL LETTERS TO FILL IN THIS FORM -->
         </div>
+    <?php } else { ?>
+
+        <div class="alert alert-light-danger color-danger">
+            <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
+            NOTE: Once the form is submitted you can't edit anymore.<br>
+        </div>
     <?php } ?>
-    <div class="form_title">Digital Citizenship</div>
+    <!-- <div class="form_title">Digital Citizenship</div> -->
     <?php
     if ($this->data['digital'] === true) {
     ?>
@@ -42,67 +42,92 @@
         <!-- </div> -->
     <?php } ?>
     <!-- <div class="card"> -->
+
     <form id="digital_citizen_form" action="<?php echo base_url(); ?>index.php/Forms/digitalAndIdSubmit" method="POST" enctype="multipart/form-data">
         <div class="row">
+            <div class="form_title">Personal Info</div>
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <!-- <form id="digital_citizen_form" action="<?php echo base_url(); ?>index.php/Forms/submit_digital_citizenship" method="POST"> -->
-                        <!-- <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>"> -->
                         <div class="row">
-                            <p>
-                                <span class="title_color">Full Name</span>
-                                <span class="required_field"> *</span> (
-                                <small class="text-muted">Last name, Given Name, M.I</small>)
-                            </p>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
+                                <p>
+                                    <span class="title_color">Reference Number</span>
+                                </p>
                                 <div class="input-group mb-3">
-                                    <?php
-                                    if ($this->data['digital'] === true) {
-                                        echo '<input type="text" class="form-control" placeholder="Last Name" name="digital-last_name" id="digital_last_name" required>';
-                                    } else {
-                                        echo '<input type="text" class="form-control" readonly placeholder="Last Name" name="digital-last_name" id="digital_last_name" required>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <?php
-                                    if ($this->data['digital'] === true) {
-                                        echo '<input type="text" class="form-control" placeholder="Given Name" name="digital-first_name" id="digital_first_name" required>';
-                                    } else {
-                                        echo '<input type="text" class="form-control" readonly placeholder="Given Name" name="digital-first_name" id="digital_first_name" required>';
-                                    }
-                                    ?>
-
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <?php
-                                    if ($this->data['digital'] === true) {
-                                        echo '<input type="text" class="form-control" placeholder="Middle Initial" name="digital-middle_name" id="digital_middle_name" required>';
-                                    } else {
-                                        echo '<input type="text" class="form-control" readonly placeholder="Middle Initial" name="digital-middle_name" id="digital_middle_name" required>';
-                                    }
-                                    ?>
+                                    <input type="text" readonly class="form-control" id="reference_number" name="ref_no" placeholder="Reference Number">
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <p>
+                                    <span class="title_color">Student Number</span>
+                                </p>
+                                <div class="input-group mb-3">
+                                    <input type="text" readonly class="form-control" id="student_number" name="std_num" placeholder="Student Number">
+                                </div>
+                            </div>
+                            <p>
+                                <span class="title_color">Full Name</span>
+                                <span class="required_field"> *</span> (
+                                <small class="text-muted">First Name, Middle Name, Last Name</small>)
+                            </p>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <?php
+                                    if ($this->data['id_app'] == '1' || $this->data['digital'] == '1') {
+                                        echo '<input type="text" readonly class="form-control" id="first_name" name="first_name" placeholder="First Name" required>';
+                                    } else {
+                                        echo '<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" required>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <?php
+                                    if ($this->data['id_app'] == '1' || $this->data['digital'] == '1') {
+                                        echo '<input type="text" class="form-control" readonly id="middle_name" name="middle_name" placeholder="Middle Name" required>';
+                                    } else {
+                                        echo '<input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name" required>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <?php
+                                    if ($this->data['id_app'] == '1' || $this->data['digital'] == '1') {
+                                        echo '<input type="text" class="form-control" readonly id="last_name" name="last_name" placeholder="Last Name" required>';
+                                    } else {
+                                        echo '<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" required>';
+                                    }
+                                    ?>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <p>
                                     <span class="title_color">Course / Department</span>
-                                    <!-- <span class="required_field"> *</span> -->
                                 </p>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="Course / Department" readonly name="course" id="digital_course">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-light-warning color-danger">
+            </div>
+            <div class="form_title">Digital Citizenship</div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
                                 <p>
-                                    <span class="title_color">Personal Email/ SDCA Gmail</span>
-                                    <!-- <span class="required_field"> *</span> -->
+                                    <span class="title_color">Personal Email</span>
                                 </p>
                                 <div class="input-group mb-3">
                                     <input type="email" class="form-control" placeholder="Email" name="email" readonly id="digital_email">
@@ -111,7 +136,6 @@
                             <div class="col-md-6">
                                 <p>
                                     <span class="title_color">Accounts</span><br>
-                                    <!-- <span class="title_color">Concern</span> -->
                                     <span class="required_field">NOTE</span>: This are the accounts you will get.
                                 </p>
                                 <div class="form-check">
@@ -132,17 +156,12 @@
                                 </div>
                             </div>
                             <?php
-                            if ($this->data['digital'] === true) {
+                            if ($this->data['digital'] == '1') {
                             ?>
-                                <!-- <div class="row col-md-12" style="text-align:center;margin-top:30px;">
-                                    <div class="col-md-12" style="margin-top:20px;">
-                                        <button class="btn btn-lg btn-primary btn-hover-red">PROCEED</button>
-                                    </div>
-                                </div> -->
+
                             <?php } ?>
 
                         </div>
-                        <!-- </form> -->
                     </div>
                 </div>
             </div>
@@ -150,7 +169,7 @@
         <div class="alert alert-light-warning color-danger">
         </div>
         <?php
-        if ($this->data['id_app'] === true) {
+        if ($this->data['id_app'] == '1') {
         ?>
             <!-- <div class="alert alert-light-danger color-danger"> -->
             <!-- <i class="bi bi-exclamation-circle" alt="Note!" title="Note!"></i>
@@ -166,80 +185,13 @@
         <?php } ?>
         <div class="form_title">ID Application</div>
 
-        <!-- <div class="card"> -->
         <div class="row">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <!-- <form action="<?php echo base_url(); ?>index.php/Forms/submit_id_application" method="POST" id="id_application_form" enctype="multipart/form-data"> -->
-                        <!-- <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>"> -->
                         <div class="row">
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Reference Number</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" readonly class="form-control" id="id_reference_number" name="ref_no" placeholder="Reference Number">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Student Number</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" readonly class="form-control" id="id_student_number" name="std_num" placeholder="Student Number">
-                                </div>
-                            </div>
-                            <p>
-                                <span class="title_color">Full Name</span>
-                                <span class="required_field"> *</span> (
-                                <small class="text-muted">First Name, Middle Name, Last Name</small>)
-                            </p>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <?php
-                                    if ($this->data['id_app'] === true) {
-                                        echo '<input type="text" class="form-control" id="id_first_name" name="id-first_name" placeholder="First Name" required>';
-                                    } else {
-                                        echo '<input type="text" readonly class="form-control" id="id_first_name" name="id-first_name" placeholder="First Name" required>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <?php
-                                    if ($this->data['id_app'] === true) {
-                                        echo '<input type="text" class="form-control" id="id_middle_name" name="id-middle_name" placeholder="Middle Name" required>';
-                                    } else {
-                                        echo '<input type="text" class="form-control" readonly id="id_middle_name" name="id-middle_name" placeholder="Middle Name" required>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-group mb-3">
-                                    <?php
-                                    if ($this->data['id_app'] === true) {
-                                        echo '<input type="text" class="form-control" id="id_last_name" name="id-last_name" placeholder="Last Name" required>';
-                                    } else {
-                                        echo '<input type="text" class="form-control" readonly id="id_last_name" name="id-last_name" placeholder="Last Name" required>';
-                                    }
-                                    ?>
-
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <p>
-                                    <span class="title_color">Course</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" readonly class="form-control" id="id_course" placeholder="Course">
-                                </div>
-                            </div>
                             <?php
-                            if ($this->data['id_app'] === true) {
+                            if ($this->data['id_app'] != '1') {
                             ?>
                                 <div class="col-md-12">
                                     <p>
@@ -255,7 +207,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <p>
-                                        <span class="title_color">Signature</span>
+                                        <span class="title_color">Signature</span><br>
                                         <span class="required_field"> *</span>
                                         <small>
                                             <span class="text_note">NOTE</span>: USE YOUR SETUDENT NUMBER TO NAMe YOUR SIGANTURE ONLY
@@ -265,49 +217,83 @@
                                     <br>
                                 </div>
                             <?php } ?>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Name</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" readonly class="form-control" id="id_gurdian_name" placeholder="Guardian Name">
+                            <?php
+                            if ($this->data['id_app'] == '1') {
+                            ?>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Name</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input readonly type="text" class="form-control" id="gurdian_name" name="gurdian_name" placeholder="Guardian Name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Address</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" readonly class="form-control" id="id_gurdian_address" placeholder="Guardian Address">
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Address</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input readonly type="text" class="form-control" id="gurdian_address" name="gurdian_address" placeholder="Guardian Address">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Contact Number</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" readonly class="form-control" id="id_gurdian_number" placeholder="Guardian Contact Number">
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Contact Number</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input readonly type="text" class="form-control" id="gurdian_number" name="gurdian_number" placeholder="Guardian Contact Number">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>
-                                    <span class="title_color">Guardian Relationship</span>
-                                </p>
-                                <div class="input-group mb-3">
-                                    <input type="text" readonly class="form-control" id="id_gurdian_relationship" placeholder="Guardian Email Address">
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Relationship</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input readonly type="text" class="form-control" id="gurdian_relationship" name="gurdian_relationship" placeholder="Guardian Email Address">
+                                    </div>
                                 </div>
-                            </div>
-
+                            <?php } else { ?>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Name</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="gurdian_name" name="gurdian_name" placeholder="Guardian Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Address</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="gurdian_address" name="gurdian_address" placeholder="Guardian Address">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Contact Number</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="gurdian_number" name="gurdian_number" placeholder="Guardian Contact Number">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <span class="title_color">Guardian Relationship</span>
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="gurdian_relationship" name="gurdian_relationship" placeholder="Guardian Email Address">
+                                    </div>
+                                </div>
+                            <?php } ?>
                         </div>
-                        <!-- </form> -->
                     </div>
                 </div>
             </div>
         </div>
         <?php
-        if ($this->data['id_app'] === true) {
+        if ($this->data['id_app'] != '1') {
         ?>
-            <!-- <div class="col-md-8"></div> -->
             <div class="col-md-12" style="text-align:center">
                 <button class="btn btn-lg btn-primary btn-hover-red">PROCEED</button>
             </div>
@@ -383,16 +369,16 @@
             url: 'Forms/ajaxGetStudent',
             dataType: 'JSON',
             success: function(response) {
-                $('#id_reference_number').val(response['Reference_Number']);
-                $('#id_student_number').val(response['Student_Number']);
-                $('#id_first_name').val(response['First_Name']);
-                $('#id_middle_name').val(response['Middle_Name']);
-                $('#id_last_name').val(response['Last_Name']);
-                $('#id_course').val(response['Course'] + " : " + response['Program_Name']);
-                $('#id_gurdian_name').val(response['Guardian_Name']);
-                $('#id_gurdian_address').val(response['Guardian_Address']);
-                $('#id_gurdian_number').val(response['Guardian_Contact']);
-                $('#id_gurdian_relationship').val(response['Guardian_Contact']);
+                $('#reference_number').val(response['Reference_Number']);
+                $('#student_number').val(response['Student_Number']);
+                $('#first_name').val(response['First_Name']);
+                $('#middle_name').val(response['Middle_Name']);
+                $('#last_name').val(response['Last_Name']);
+                $('#course').val(response['Course'] + " : " + response['Program_Name']);
+                $('#gurdian_name').val(response['Guardian_Name']);
+                $('#gurdian_address').val(response['Guardian_Address']);
+                $('#gurdian_number').val(response['Guardian_Contact']);
+                $('#gurdian_relationship').val(response['Guardian_Contact']);
             }
         })
     }

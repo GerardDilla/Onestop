@@ -19,6 +19,14 @@ class FormsModel extends CI_Model
         $lastid = $this->db->insert_id();
         return $lastid;
     }
+
+    public function update_student_info($ref_num,$arrayData)
+    {
+        $this->db->set($arrayData);
+        $this->db->where('Reference_Number', $ref_num);
+        $this->db->update('Student_Info');
+    }
+
     public function digital_citizenship_account($array)
     {
         // optional: just to make sure that the field names are correct

@@ -125,9 +125,9 @@ if (ENVIRONMENT == 'production') {
 
 	$db['default'] = array(
 		'dsn'	=> '',
-		'hostname' => '10.0.0.9',
-		'username' => 'schoolsysdb',
-		'password' => 'Wpd2$Ya=$dCA<KXM25>',
+		'hostname' => 'localhost',
+		'username' => 'root',
+		'password' => '',
 		// 'database' => 'Schoolsysdb_dev',
 		'database' => 'schoolsysdb',
 		'dbdriver' => 'mysqli',

@@ -223,6 +223,7 @@ class Main extends MY_Controller
 	public function loginProcess()
 	{
 		$this->tokenHandler('login');
+		$this->removeToken('login');
 		try {
 			$username = $this->input->post('loginUsername');
 			$password = $this->input->post('loginPassword');
@@ -452,9 +453,9 @@ class Main extends MY_Controller
 		// $data['requirements'] = 0;
 		// $data['student_information'] = 0;
 
-		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_ftc'] != null) {
+		if ($status['Ref_Num_fec'] != null && $status['Ref_Num_si'] != null && $status['Ref_Num_adv'] != null) {
 			$data['payment'] = 1;
-		} else if ($status['Ref_Num_ftc'] != null) {
+		} else if ($status['Ref_Num_adv'] != null) {
 			$data['advising'] = 1;
 		} else if ($student_account['interview_status'] != null) {
 			$data['requirements'] = 1;

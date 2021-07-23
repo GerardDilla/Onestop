@@ -200,17 +200,17 @@ $(document).ready(function() {
                         buttons: [
                             ['<button><b>YES</b></button>', function(instance, toast) {
                                 $('body').waitMe({
-                                    effect : 'win8',
-                                    text : 'Please wait...',
-                                    bg : 'rgba(255,255,255,0.7)',
-                                    color : '#cc0000',
-                                    maxSize : '',
-                                    waitTime : -1,
-                                    textPos : 'vertical',
-                                    fontSize : '',
-                                    source : '',
-                                    onClose : function() {
-                                        
+                                    effect: 'win8',
+                                    text: 'Please wait...',
+                                    bg: 'rgba(255,255,255,0.7)',
+                                    color: '#cc0000',
+                                    maxSize: '',
+                                    waitTime: -1,
+                                    textPos: 'vertical',
+                                    fontSize: '',
+                                    source: '',
+                                    onClose: function() {
+
                                     }
                                 });
                                 console.log('ready to advise');
@@ -218,12 +218,12 @@ $(document).ready(function() {
 
                                 // wizard_payment();
                                 init_advise();
-                                
-                                    // location.reload();
-                                    // hideIziToastGuide();
-                                    // var ose_guide1 = new OSE_Guide('payment');
-                                    // ose_guide1.play();
-                                    
+
+                                // location.reload();
+                                // hideIziToastGuide();
+                                // var ose_guide1 = new OSE_Guide('payment');
+                                // ose_guide1.play();
+
                                 instance.hide({
                                     transitionOut: 'fadeOut'
                                 }, toast, 'button');
@@ -281,7 +281,7 @@ $(document).ready(function() {
         },
 
         onTabClick: function(tab, navigation, index) {
-            alert(index);
+            // alert(index);
             // var $valid = $('.wizard-card form').valid();
             // if (!$valid) {
             //     return false;
@@ -452,8 +452,8 @@ function fetch_user_status() {
                     $('input[name=current_tab_selection]').val('student_information');
 
                 }
-            } 
-            setTimeout(()=>{
+            }
+            setTimeout(() => {
                 $('body').waitMe('hide');
                 ose_guide1.play();
             })

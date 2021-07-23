@@ -293,6 +293,8 @@ function submit_course() {
                                         init_remove_all_queue();
                                         init_subjectlists();
                                         init_paymentmethod();
+                                        init_remove_payment_assesment();
+                                        assessmentform_remove_renderer();
                                     }
                                     init_student_info();
                                     // init_have_course();

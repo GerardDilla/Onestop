@@ -10,7 +10,7 @@
 <script src="<?php echo base_url('assets/js/iziToast.min.js'); ?>"></script>
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/assesment.js" defer></script>
-<script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>"></script>
+<script src="<?php echo base_url('assets/vendors/waitMe/waitMe.js');?>" defer></script>
 <?php
     echo "<script>
     function showWelcome(){

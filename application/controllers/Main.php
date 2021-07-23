@@ -999,7 +999,7 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPaymentProcess()
 	{
-		$this->tokenHandler('proof_of_payment');
+		// $this->tokenHandler('proof_of_payment');
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
 		// $ref_no = $this->session->userdata('reference_no');
 		$id_name = "proof_of_payment";

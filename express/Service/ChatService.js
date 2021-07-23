@@ -38,7 +38,7 @@ class ChatService {
     const this_time = moment().format('YYYY-MM-DD kk:mm:ss')
     let insert = await this.cm.insertFromChatInquiry(data);
     insert;
-    let data4 = await this.cm.MessageCountPerRefNo(data);
+    let data4 = await this.cm.MessageCountPerRefNoWithoutSearch(data);
     let TotalMessageCountPerRefNo = await this.cm.TotalMessageCountPerRefNo(data);
     return {
       ref_no:data.ref_no,

@@ -7,8 +7,11 @@ class ChatChangeDate {
     this.cm = new ChatModel();
   }
   async get(data) {
-    let data4 = await this.cm.MessageCountPerRefNo(data);
-    return data4;
+    let MessageCountPerRefNoWithoutSearch = await this.cm.MessageCountPerRefNoWithoutSearch(data);
+    var filteredByDate = MessageCountPerRefNoWithoutSearch.filter((item)=>{
+      return Date.parse(data.search_from) >= Date.parse(item.date_created)&&Date.parse(data.search_to) < Date.parse(item.date_created)
+    })
+    return MessageCountPerRefNoWithoutSearch;
   }
   
 }

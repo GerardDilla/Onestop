@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     init_sectionlist();
 
@@ -20,15 +20,16 @@ $(document).ready(function() {
         "bLengthChange": false,
     });
 
-    $('#open_guide').on('click', function() {
+    $('#open_guide').on('click', function () {
         var ose_guide1 = new OSE_Guide($('input[name=current_tab_selection]').val());
         ose_guide1.play();
         // $('.sidebar-hide').trigger('click')
         if ($(window).width() < 1080) {
             $('#sidebar').removeClass('active')
         }
-    })
-    $('#sy_legend').change(function() {
+    });
+
+    $('#sy_legend').change(function () {
 
         if ($('#queueTable').data('queueResult') == 0) {
             ajax_change_sy_legend();
@@ -47,7 +48,7 @@ $(document).ready(function() {
                 message: 'Changing this will remove all Queued Subjects. Do you want to proceed?',
                 position: 'center',
                 buttons: [
-                    ['<button><b>YES</b></button>', function(instance, toast) {
+                    ['<button><b>YES</b></button>', function (instance, toast) {
 
                         $('#section').val('none');
 
@@ -68,7 +69,7 @@ $(document).ready(function() {
                         }, toast, 'button');
 
                     }, true],
-                    ['<button>NO</button>', function(instance, toast) {
+                    ['<button>NO</button>', function (instance, toast) {
 
                         event.preventDefault();
                         // Sets legend Back
@@ -79,10 +80,10 @@ $(document).ready(function() {
 
                     }],
                 ],
-                onClosing: function(instance, toast, closedBy) {
+                onClosing: function (instance, toast, closedBy) {
                     console.info('Closing | closedBy: ' + closedBy);
                 },
-                onClosed: function(instance, toast, closedBy) {
+                onClosed: function (instance, toast, closedBy) {
                     console.info('Closed | closedBy: ' + closedBy);
                 }
             });
@@ -90,7 +91,7 @@ $(document).ready(function() {
         }
     });
 
-    $('#sem_legend').change(function() {
+    $('#sem_legend').change(function () {
 
         if ($('#queueTable').data('queueResult') == 0) {
             ajax_change_sem_legend();
@@ -109,7 +110,7 @@ $(document).ready(function() {
                 message: 'Changing This will remove all Queued Subjects. Do you want to proceed?',
                 position: 'center',
                 buttons: [
-                    ['<button><b>YES</b></button>', function(instance, toast) {
+                    ['<button><b>YES</b></button>', function (instance, toast) {
 
                         $('#section').val('none');
 
@@ -130,7 +131,7 @@ $(document).ready(function() {
                         }, toast, 'button');
 
                     }, true],
-                    ['<button>NO</button>', function(instance, toast) {
+                    ['<button>NO</button>', function (instance, toast) {
 
                         event.preventDefault();
                         // Sets Section Back
@@ -141,10 +142,10 @@ $(document).ready(function() {
 
                     }],
                 ],
-                onClosing: function(instance, toast, closedBy) {
+                onClosing: function (instance, toast, closedBy) {
                     console.info('Closing | closedBy: ' + closedBy);
                 },
-                onClosed: function(instance, toast, closedBy) {
+                onClosed: function (instance, toast, closedBy) {
                     console.info('Closed | closedBy: ' + closedBy);
                 }
             });
@@ -153,7 +154,7 @@ $(document).ready(function() {
 
     });
 
-    $('input[type=radio][name=payment-option]').change(function() {
+    $('input[type=radio][name=payment-option]').change(function () {
 
         init_paymentmethod(this.value);
 
@@ -165,7 +166,7 @@ $(document).ready(function() {
 
     // });
 
-    $('#section').change(function() {
+    $('#section').change(function () {
 
         if ($('#queueTable').data('queueResult') == 0) {
             init_subjectlists();
@@ -181,7 +182,7 @@ $(document).ready(function() {
                 message: 'Changing Section will remove all Queued Subjects. Do you want to proceed?',
                 position: 'center',
                 buttons: [
-                    ['<button><b>YES</b></button>', function(instance, toast) {
+                    ['<button><b>YES</b></button>', function (instance, toast) {
 
                         // Remove Queue Code
                         init_remove_all_queue();
@@ -196,7 +197,7 @@ $(document).ready(function() {
                         }, toast, 'button');
 
                     }, true],
-                    ['<button>NO</button>', function(instance, toast) {
+                    ['<button>NO</button>', function (instance, toast) {
 
                         event.preventDefault();
                         $('#section').val('none');
@@ -206,10 +207,10 @@ $(document).ready(function() {
 
                     }],
                 ],
-                onClosing: function(instance, toast, closedBy) {
+                onClosing: function (instance, toast, closedBy) {
                     console.info('Closing | closedBy: ' + closedBy);
                 },
-                onClosed: function(instance, toast, closedBy) {
+                onClosed: function (instance, toast, closedBy) {
                     console.info('Closed | closedBy: ' + closedBy);
                 }
             });
@@ -231,9 +232,21 @@ $(document).ready(function() {
     //     fetch_user_status();
     // });
 
-    $('.add-all-subject').click(function() {
+    $('.add-all-subject').click(function () {
         init_addAll();
     });
+
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            if ($('#open_search').is(":focus")) {
+
+
+                init_opensubjectlists();
+                // alert('You made a search!');
+            }
+        }
+    });
+
 
 
 });
@@ -243,7 +256,7 @@ function init_advise() {
 
     plan = $('input[type=radio][name=payment-option]:checked').val();
     result = ajax_adviseStudent(plan);
-    result.success(function(response) {
+    result.success(function (response) {
 
         response = JSON.parse(response);
         if (response['success'] == 0) {
@@ -264,7 +277,7 @@ function init_advise() {
 function init_assessmentform() {
 
     result = ajax_assessmentform();
-    result.success(function(response) {
+    result.success(function (response) {
 
         if (response != false) {
             response = JSON.parse(response);
@@ -279,7 +292,7 @@ function init_assessmentform() {
 function init_registrationform() {
 
     result = ajax_registrationform();
-    result.success(function(response) {
+    result.success(function (response) {
         response = JSON.parse(response);
         registrationform_renderer(response);
     })
@@ -289,7 +302,7 @@ function init_registrationform() {
 function init_sectionlist() {
 
     subjects = ajax_sectionlist();
-    subjects.success(function(response) {
+    subjects.success(function (response) {
         response = JSON.parse(response);
         section_id = section_renderer(response);
         $('#section').val(section_id);
@@ -302,14 +315,14 @@ function init_sectionlist() {
 function init_subjectlists() {
 
     subjects = ajax_subjectlist();
-    subjects.success(function(response) {
+    subjects.success(function (response) {
         console.log('tablerun');
         response = JSON.parse(response);
         // console.log(response)
         if (response['data'].length != 0) {
             test = '32132';
             fees_status = ajax_check_fees_listing();
-            fees_status.success(function(fees_response) {
+            fees_status.success(function (fees_response) {
                 fees_response = JSON.parse(fees_response);
                 if (fees_response['success'] == 0) {
                     izi_toast('', fees_response['message'], 'green', 'topCenter');
@@ -332,13 +345,51 @@ function init_subjectlists() {
     })
 }
 
+function init_opensubjectlists() {
+
+
+    subjects = ajax_opensubjectlists();
+    subjects.success(function (response) {
+        console.log('tablerun');
+        response = JSON.parse(response);
+        // console.log(response)
+        if (response['data'].length != 0) {
+            test = '32132';
+            fees_status = ajax_check_fees_listing();
+            fees_status.success(function (fees_response) {
+                fees_response = JSON.parse(fees_response);
+                if (fees_response['success'] == 0) {
+                    izi_toast('', fees_response['message'], 'green', 'topCenter');
+                    $('#openTable').find('tbody').html('');
+                    $('.add-all-subject').hide();
+                } else {
+                    subject_tablerenderer($('#openTable'), response);
+                    $('.add-all-subject').show();
+                }
+            });
+
+        } else {
+            if ($('#section').val() != null) {
+                izi_toast('', 'There are currently no encoded subjects for Section', 'green', 'topCenter');
+            }
+            $('#openTable').find('tbody').html('');
+            $('.add-all-subject').hide();
+        }
+
+    })
+
+    // alert('start searching open subjects');
+
+}
+
+
 function init_addAll() {
 
     result = ajax_add_all_subjects();
-    result.success(function(response) {
+    result.success(function (response) {
 
         response = JSON.parse(response);
-        $.each(response, function(index, row) {
+        $.each(response, function (index, row) {
             // console.log(index + ':' + row);
             if (row != true) {
                 izi_toast('', row, 'green', 'bottomRight');
@@ -354,7 +405,7 @@ function init_add_queue(row) {
 
     schedcode = $(row).data('schedcode');
     queue_status = ajax_insertqueue(schedcode);
-    queue_status.success(function(response) {
+    queue_status.success(function (response) {
         response = JSON.parse(response);
         if (response['status'] == 0) {
             izi_toast('', response['data'], 'red', 'bottomRight');
@@ -373,7 +424,7 @@ function init_remove_queue(row) {
 
     sessionid = $(row).data('sessionid');
     queue_status = ajax_removequeue(sessionid);
-    queue_status.success(function(response) {
+    queue_status.success(function (response) {
         izi_toast('', `Removed from Queue: ${response}`, 'green', 'bottomRight');
         init_paymentmethod($('input[type=radio][name=payment-option]').value);
         init_queuedlist();
@@ -386,7 +437,7 @@ function init_remove_queue(row) {
 function init_queuedlist() {
 
     queue = ajax_queuedlist();
-    queue.success(function(response) {
+    queue.success(function (response) {
 
         response = JSON.parse(response);
         if (response['data'].length != 0) {
@@ -404,7 +455,7 @@ function init_queuedlist() {
 function init_paymentmethod(value = 'installment') {
 
     result = ajax_paymentmethod(value);
-    result.success(function(response) {
+    result.success(function (response) {
 
         response = JSON.parse(response);
         if ($('#section').val() != null) {
@@ -428,7 +479,7 @@ function init_enroll_test() {
 function init_reset_progress() {
 
     reset_status = ajax_reset_progress();
-    reset_status.success(function(result) {
+    reset_status.success(function (result) {
         location.reload();
     });
 
@@ -437,7 +488,7 @@ function init_reset_progress() {
 function init_remove_all_queue() {
 
     removal_status = ajax_removeAllqueue();
-    removal_status.success(function(result) {
+    removal_status.success(function (result) {
         init_queuedlist();
         init_paymentmethod();
     })
@@ -560,6 +611,18 @@ function ajax_subjectlist() {
     });
 }
 
+function ajax_opensubjectlists() {
+
+    return $.ajax({
+        url: "/Onestop/index.php/ose_api/open_subjects",
+        type: 'GET',
+        data: {
+            searchkey: $('#open_search').val(),
+        }
+    });
+
+}
+
 function ajax_sectionlist() {
 
     return $.ajax({
@@ -622,7 +685,7 @@ function queue_tablerenderer(element = '', data = []) {
     units = 0;
     // sum_units = 0;
     //array sched start loop
-    $.each(data['data'], function(index, row) {
+    $.each(data['data'], function (index, row) {
         computeSched(row['Start_Time'], row['End_Time'], row['Day'], row['Course_Code'], row['Course_Title'], row['from_time'], row['to_time'])
         if (data['status'] == true) {
             tablebody.append($('<tr/>').append('\
@@ -690,7 +753,7 @@ function subject_tablerenderer(element = '', data = []) {
     // remove duplication in schedule
     var pass_data = data['data'];
     var filteredArray = data['data'];
-    pass_data.forEach(function(row, index, currentArr) {
+    pass_data.forEach(function (row, index, currentArr) {
         var check_duplicate = filteredArray.filter((val) => { return val.Sched_Code == row['Sched_Code'] && val.Start_Time == row['Start_Time'] && val.End_Time == row['End_Time'] && val.Day == row['Day'] })
         if (check_duplicate.length > 1) {
             for (var x = 0; x < check_duplicate.length; ++x) {
@@ -703,7 +766,7 @@ function subject_tablerenderer(element = '', data = []) {
     });
     //array sched start loop
     units = 0;
-    $.each(filteredArray, function(index, row) {
+    $.each(filteredArray, function (index, row) {
         if (data['type'] == 'transferee') {
 
             if (row['sp_pre_req'] == null) {
@@ -846,7 +909,7 @@ function schedule_tablerenderer(element, time = []) {
     tablehead.html('');
     tablehead.append('<tr>');
     tablehead.append('<th></th>');
-    $.each(days, function(index, day) {
+    $.each(days, function (index, day) {
 
         tablehead.append('<th>' + day + '</th>');
 
@@ -855,7 +918,7 @@ function schedule_tablerenderer(element, time = []) {
 
 }
 
-$('#online_payment_form').submit(function(e) {
+$('#online_payment_form').submit(function (e) {
     if (!$('.downpayment:checkbox').prop("checked")) {
         if ($('.payment_check:checkbox:checked').length <= 0) {
             iziToast.error({
@@ -885,13 +948,13 @@ $('#online_payment_form').submit(function(e) {
 // })
 function downpayment_checked() {
     if ($('.downpayment:checkbox').prop("checked")) {
-        $('.payment_check:checkbox').each(function(i) {
+        $('.payment_check:checkbox').each(function (i) {
             $(this).prop("disabled", true);
             $(this).prop("checked", false);
             $('#payment_total_value').html('5000.00');
         });
     } else {
-        $('.payment_check:checkbox').each(function(i) {
+        $('.payment_check:checkbox').each(function (i) {
             $(this).removeAttr('disabled');
         });
         $('#payment_total_value').html('0');
@@ -900,7 +963,7 @@ function downpayment_checked() {
 
 function get_total_value() {
     var total = 0;
-    $('.payment_check:checkbox:checked').each(function(i) {
+    $('.payment_check:checkbox:checked').each(function (i) {
         total += parseFloat($(this).data('paymentvalue'));
     });
     $('#payment_total_value').html(total);
@@ -994,7 +1057,7 @@ function assessmentform_renderer(resultdata = []) {
     sched_checking = '';
     units = 0;
     subjectcount = 0;
-    $.each(resultdata['get_Advise'], function(index, result) {
+    $.each(resultdata['get_Advise'], function (index, result) {
         row = $("<tr/>");
         if (sched_checking != result['Sched_Code']) {
 
@@ -1088,7 +1151,7 @@ function registrationform_renderer(resultdata = []) {
     sched_checking = '';
     units = 0;
     subjectcount = 0;
-    $.each(resultdata['student_data'], function(index, result) {
+    $.each(resultdata['student_data'], function (index, result) {
         row = $("<tr/>");
         if (sched_checking != result['Sched_Code']) {
 
@@ -1126,7 +1189,7 @@ function registrationform_renderer(resultdata = []) {
 function section_renderer(data) {
 
     $('#section').html('<option value="none" disabled selected>SELECT SECTION</option>');
-    $.each(data['sections'], function(index, result) {
+    $.each(data['sections'], function (index, result) {
         $('#section').append('<option value="' + result['Section_ID'] + '">' + result['Section_Name'] + '</option>');
     });
     return data['section_id'];
@@ -1170,27 +1233,27 @@ function computeSched(start, end, this_day, subject, title, from, to) {
     var filtered = schedule_array.filter((time) => { return time >= start_time && time <= end_time });
     console.log(filtered);
     console.log(day);
-    $.each(filtered, function(index, val) {
+    $.each(filtered, function (index, val) {
 
-            if (day == "M") {
-                var bg_color = "EA49E5"
-            } else if (day == "T") {
-                var bg_color = "18EAC8"
-            } else if (day == "W") {
-                var bg_color = "EA5E18"
-            } else if (day == "H") {
-                var bg_color = "EAD618"
-            } else if (day == "F") {
-                var bg_color = "B1EA18"
-            } else if (day == "SA") {
-                var bg_color = "1860EA"
-            } else {
-                var bg_color = "18EA4A"
-            }
+        if (day == "M") {
+            var bg_color = "EA49E5"
+        } else if (day == "T") {
+            var bg_color = "18EAC8"
+        } else if (day == "W") {
+            var bg_color = "EA5E18"
+        } else if (day == "H") {
+            var bg_color = "EAD618"
+        } else if (day == "F") {
+            var bg_color = "B1EA18"
+        } else if (day == "SA") {
+            var bg_color = "1860EA"
+        } else {
+            var bg_color = "18EA4A"
+        }
 
-            $(`#${val + '_' + day}`).css('background', `#${bg_color}`);
-        })
-        // $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${from + ' to ' + to}</strong><br>${subject}</div>`);
+        $(`#${val + '_' + day}`).css('background', `#${bg_color}`);
+    })
+    // $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${from + ' to ' + to}</strong><br>${subject}</div>`);
     $(`#${start_time + '_' + day}`).html(`<div class="sched-subject"><strong>${title}</strong><br>${subject}</div>`);
 }
 
@@ -1198,7 +1261,7 @@ function check_next_enrollment() {
 
     $.ajax({
         url: "/Onestop/index.php/ose_api/compare_history",
-        success: function(response) {
+        success: function (response) {
 
             response = JSON.parse(response);
             if (response['status'] == true) {
@@ -1226,13 +1289,13 @@ function check_next_enrollment() {
                         // ['<button>Ok</button>', function (instance, toast) {
                         //     alert("Hello world!");
                         // }, true],
-                        ['<button>ENROLL</button>', function(instance, toast) {
+                        ['<button>ENROLL</button>', function (instance, toast) {
 
                             // Reset Advising_history
                             $.ajax({
                                 url: "/Onestop/index.php/ose_api/update_advising_track",
                                 async: true,
-                                success: function() {
+                                success: function () {
                                     fetch_user_status();
                                     $("#registration_content").removeClass("active");
 
@@ -1242,14 +1305,14 @@ function check_next_enrollment() {
                             current_this.play();
                             instance.hide({
                                 transitionOut: 'fadeOutUp',
-                                onClosing: function(instance, toast, closedBy) {
+                                onClosing: function (instance, toast, closedBy) {
                                     // console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
 
                                 }
                             }, toast, 'buttonName');
                         }]
                     ],
-                    onClosing: function(instance, toast, closedBy) {
+                    onClosing: function (instance, toast, closedBy) {
                         console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
                     }
                 });

@@ -73,6 +73,7 @@ class Ose_api extends CI_Controller
 	}
 	public function subjects()
 	{
+		#Block Subjects
 		$output = array(
 			'status' => '',
 			'data' => '',
@@ -94,6 +95,31 @@ class Ose_api extends CI_Controller
 
 		// die(json_encode($params));
 		$output['data'] = $this->AdvisingModel->block_schedule($params);
+		echo json_encode($output);
+	}
+	public function open_subjects()
+	{
+		#Open Subjects
+		$output = array(
+			'status' => '',
+			'data' => '',
+			'type' => '',
+			'encoded_fees' => '',
+		);
+		$params = array(
+			'school_year' => $this->queue_sy,
+			'semester' => $this->queue_sem,
+			'searchkey' => $this->input->get('searchkey')
+		);
+
+		#returns 1 if old student
+		$output['status'] = $this->AdvisingModel->getfees_history($this->reference_number);
+
+		#Get Student type if transferee or new
+		$type = $this->AssesmentModel->get_shs_student_number_by_reference_number($this->reference_number);
+		$output['type'] = empty($type) ? '' : $type['applied_status'];
+
+		$output['data'] = $this->AdvisingModel->get_sched_open_search($params);
 		echo json_encode($output);
 	}
 	public function queue_subject_list()
@@ -219,8 +245,16 @@ class Ose_api extends CI_Controller
 		$output['status'] = 0;
 		$output['data'] = '';
 
-		#Check if Already Taken
+		#Check if SCHEDCODE is Already Taken
 		$existing_status = $this->AdvisingModel->check_existing_queue($data);
+		if (!empty($existing_status)) {
+			$output['status'] = 1;
+			$output['data'] = 'Subject is already on Queue: ' . $sched_data['CourseCode'];
+			return $output;
+		}
+
+		#Check if COURSE CODE is Already Taken
+		$existing_status = $this->AdvisingModel->check_existing_queue_coursecode($data, $sched_data);
 		if (!empty($existing_status)) {
 			$output['status'] = 1;
 			$output['data'] = 'Subject is already on Queue: ' . $sched_data['CourseCode'];
@@ -233,7 +267,7 @@ class Ose_api extends CI_Controller
 		if ($new_slot >= $sched_data['Total_Slot']) {
 
 			$output['status'] = 1;
-			$output['data'] = 'The slots for this Subject is Full:' . $sched_data['CourseCode'] . '. <br> Please Enroll to another section';
+			$output['data'] = 'The slots for this Subject is Full';
 			return $output;
 		}
 
@@ -1296,5 +1330,15 @@ class Ose_api extends CI_Controller
 		// 	'message' => 'Please check your email ' . $student_info['Email'] . '.',
 		// );
 		// echo json_encode($output);
+	}
+
+	public function get_curriculum_status()
+	{
+
+
+		#Get Curriculum 
+		$Curriculum_ID = $this->curriculum;
+
+		$this->AdvisingModel->curriculum_list($Curriculum_ID);
 	}
 }

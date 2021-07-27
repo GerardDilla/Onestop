@@ -49,6 +49,57 @@ class AdvisingModel extends CI_Model
         return $query->result_array();
     }
 
+    public function get_sched_open_search($array_data)
+    {
+        $this->db->select('
+        B.Sched_Code,
+        E.Course_Code,
+        E.Course_Title,
+        A.Section_Name,
+        E.Course_Lec_Unit,
+        E.Course_Lab_Unit,
+        C.Day,
+        C.Start_Time,
+        C.End_Time,
+        R.`Room`,
+        I.Instructor_Name,
+        C.id AS sched_display_id,
+        SP.Course_Code as sp_pre_req
+        ');
+        $this->db->from('Sections AS A');
+        $this->db->join('Sched AS B', 'A.Section_ID = B.Section_ID', 'inner');
+        $this->db->join('Sched_Display AS C', 'B.Sched_Code = C.Sched_Code', 'inner');
+        //$this->db->join('Legend AS D', 'B.SchoolYear = D.School_Year AND B.Semester = D.Semester', 'inner');
+        $this->db->join('`Subject` AS E', 'E.Course_Code = B.Course_Code', 'inner');
+        $this->db->join('Subject_Prerequisite AS SP', 'SP.Subject_ID = E.ID', 'left');
+        $this->db->join('Room AS R', 'C.RoomID = R.ID', 'inner');
+        $this->db->join('Instructor AS I', 'I.ID = C.Instructor_ID', 'left');
+        $this->db->where('A.Active', 1);
+        $this->db->where('A.Section_ID !=', 829);
+        $this->db->where('B.Valid', 1);
+        $this->db->where('C.Valid', 1);
+
+        $this->db->where('B.SchoolYear', $array_data['school_year']);
+        $this->db->where('B.Semester', $array_data['semester']);
+
+        #Search keys
+        $this->db->group_start();
+        $this->db->like('B.Sched_Code', $array_data['searchkey']);
+        $this->db->or_like('E.Course_Code', $array_data['searchkey']);
+        $this->db->or_like('E.Course_Title', $array_data['searchkey']);
+        $this->db->or_like('A.Section_Name', $array_data['searchkey']);
+        $this->db->group_end();
+
+        $this->db->order_by('B.`Sched_Code`', 'ASC');
+
+        $query = $this->db->get();
+        // reset query
+        $this->db->reset_query();
+
+        return $query->result_array();
+    }
+
+
     public function insert_sched_session($array_data)
     {
         $this->db->insert('advising_session', $array_data);
@@ -596,6 +647,16 @@ class AdvisingModel extends CI_Model
         $this->db->where('Sched_Code', $data['Sched_Code']);
         $this->db->where('valid', 1);
         $query = $this->db->get('advising_session');
+        return $query->row_array();
+    }
+    public function check_existing_queue_coursecode($data, $sched_data)
+    {
+        $this->db->select('AS.Sched_Code');
+        $this->db->where('AS.Reference_Number', $data['Reference_Number']);
+        $this->db->where('S.Course_Code', $sched_data['CourseCode']);
+        $this->db->where('AS.valid', 1);
+        $this->db->join('Sched as S', 'AS.Sched_Code = S.Sched_Code');
+        $query = $this->db->get('advising_session as AS');
         return $query->row_array();
     }
     public function count_subject_enrolled($data)

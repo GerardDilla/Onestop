@@ -38,6 +38,25 @@ class ChatModel {
         return result
         }).catch(error=>{ console.log(error)});
     }
+    async getMessageNotifications(){
+        let getdata = getQuery("SELECT * FROM student_inquiry WHERE `status`='not seen' AND `user_type` = 'student' GROUP BY ref_no ORDER BY date_created DESC LIMIT 5")
+        return getdata.then((result)=>{
+        return result
+        }).catch(error=>{ console.log(error)});
+    }
+    async getMessageNotifications(){
+        const today = moment().format('YYYY-MM-DD')
+        let getdata = getQuery("SELECT student_inquiry.*,CONCAT(si.First_Name,' ',si.Middle_Name,' ',si.Last_Name) AS full_name FROM student_inquiry INNER JOIN Student_Info AS si ON student_inquiry.ref_no = si.Reference_Number WHERE `status`='not seen' AND `user_type` = 'student' AND date_created LIKE '"+today+"%' GROUP BY ref_no ORDER BY date_created DESC LIMIT 5")
+        return getdata.then((result)=>{
+        return result
+        }).catch(error=>{ console.log(error)});
+    }
+    async getLastMessage(data){
+        let getdata = getQuery(`SELECT * FROM student_inquiry WHERE ref_no = '${data.ref_no}' ORDER BY id ASC LIMIT 1`)
+        return getdata.then((result)=>{
+        return result
+        }).catch(error=>{ console.log(error)});
+    }
 }
 
 module.exports = ChatModel

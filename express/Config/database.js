@@ -1,10 +1,17 @@
 // import mysql from 'mysql'
 const mysql = require('mysql')
+// var pool = mysql.createPool({
+//     connectionLimit: 10,
+//     host: '10.0.0.9',
+//     user: 'schoolsysdb',
+//     password: 'Wpd2$Ya=$dCA<KXM25>',
+//     database: 'schoolsysdb'
+// })
 var pool = mysql.createPool({
     connectionLimit: 10,
-    host: '10.0.0.9',
-    user: 'schoolsysdb',
-    password: 'Wpd2$Ya=$dCA<KXM25>',
+    host: 'localhost',
+    user: 'root',
+    password: 'asdf',
     database: 'schoolsysdb'
 })
 

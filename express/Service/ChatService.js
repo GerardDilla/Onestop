@@ -35,14 +35,21 @@ class ChatService {
   }
   async create(data) {
     // console.log()
-    const this_time = moment().format('YYYY-MM-DD kk:mm:ss')
-    let insert = await this.cm.insertFromChatInquiry(data);
-    insert;
+    // const this_time = moment().format('YYYY-MM-DD kk:mm:ss')
+    // console.log(this_time)
+    try{
+    this.cm.insertFromChatInquiry(data);
+    }
+    catch(err){
+      console.log(err)
+    }
+    
+    console.log(data)
     let data4 = await this.cm.MessageCountPerRefNoWithoutSearch(data);
     let TotalMessageCountPerRefNo = await this.cm.TotalMessageCountPerRefNo(data);
     return {
       ref_no:data.ref_no,
-      date_created:this_time,
+      date_created:moment().format('YYYY-MM-DD kk:mm:ss'),
       message:data.message,
       user_type:data.type,
       return_id:data.return_id,

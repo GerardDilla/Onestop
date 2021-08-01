@@ -9,6 +9,7 @@ class ChatNotificationService {
   }
   async find() {
     var getMessageNotifications = await this.cm.getMessageNotifications();
+    var TotalNotif = getMessageNotifications.length;
     // var getMessageNotifications = JSON.parse(JSON.stringify(getMessageNotifications))
     getMessageNotifications = Object.values(JSON.parse(JSON.stringify(getMessageNotifications)))
     // console.log(getMessageNotifications)
@@ -20,6 +21,7 @@ class ChatNotificationService {
     var count_m = 0;
     const lastMessage = async(ref_no) => {
         var last_message = await this.cm.getLastMessage({ref_no:ref_no});
+        
         var last_message = JSON.parse(JSON.stringify(last_message))
         // console.log(last_message)
         return last_message[0]['message'];
@@ -33,8 +35,12 @@ class ChatNotificationService {
         })()
       })
     
-    console.log(ChangeMessageValue);
-    return getMessageNotifications;
+    // console.log(getMessageNotifications);
+    // return getMessageNotifications;
+    return {
+      notif:getMessageNotifications,
+      notif_number:TotalNotif
+    }
     // var filteredByDate = MessageCountPerRefNoWithoutSearch.filter((item)=>{
     //   return Date.parse(data.search_from) >= Date.parse(item.date_created)&&Date.parse(data.search_to) < Date.parse(item.date_created)
     // })

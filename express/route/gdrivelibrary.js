@@ -39,8 +39,10 @@ if(token_type=="des"){
     token_url = "token/des/token.json";
 }
 else{
-    credential_url = "credentials.json";
-    token_url = "token.json";
+    credential_url = "token/default/credentials.json";
+    token_url = "token/default/token.json";
+    // credential_url = "credentials.json";
+    // token_url = "token.json";
 }
 console.log(main_folder_id);
 // var folder_name = "requirements";
@@ -366,10 +368,10 @@ router.post("/get_id",(req,res)=>{
   const folder_id = req.body.folder_id;
 //   console.log(folder_id);
   const file_name = req.body.file_name;
-  const TOKEN_PATH = 'token.json';
+  const TOKEN_PATH = 'token/default/token.json';
   const SCOPES = ['https://www.googleapis.com/auth/drive'];
   // Load client secrets from a local file.
-  fs.readFile('credentials.json', (err, content) => {
+  fs.readFile('token/default/credentials.json', (err, content) => {
       if (err) return console.log('Error loading client secret file:', err);
     //   authorize(JSON.parse(content), createFolder);
 

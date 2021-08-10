@@ -60,18 +60,18 @@ app.publish(data => app.channel('stream'));
 
 const PORT = 4003;
 
-app
-  .listen(4004)
-  .on('listening', () =>
-    console.log(`Realtime server running on port ${4004}`)
-  );
+// app
+//   .listen(4004)
+//   .on('listening', () =>
+//     console.log(`Realtime server running on port ${4004}`)
+//   );
 const domain_name = 'localhost'
-// const httpServer = http.createServer(app);
-// const httpPort = 4004;
-// httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))
-// const sslServer = https.createServer({
-//   key: fs.readFileSync(path.join(__dirname,'keys','0019_key-certbot.pem')),
-//   cert: fs.readFileSync(path.join(__dirname,'cert','cert.pem'))
-// },app)
-// app.setup(sslServer);
-// sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`))
+const httpServer = http.createServer(app);
+const httpPort = 4004;
+httpServer.listen(httpPort, () => console.log(`LISTENING TO REAL TIME API http://${domain_name}:${httpPort}`))
+const sslServer = https.createServer({
+  key: fs.readFileSync(path.join(__dirname,'keys','0017_key-certbot.pem')),
+  cert: fs.readFileSync(path.join(__dirname,'cert','cert.pem'))
+},app)
+app.setup(sslServer);
+sslServer.listen(PORT, () => console.log(`LISTENING TO REAL TIME API https://${domain_name}:${PORT}`))

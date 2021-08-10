@@ -69,9 +69,9 @@ class gdrive_uploader
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
         // curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."\cred\cert.pem");
         // CURLOPT_AUTOREFERER    => true,
-        curl_setopt($ch,CURLOPT_AUTOREFERER, true);
-        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
+        // curl_setopt($ch,CURLOPT_AUTOREFERER, true);
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         $result = curl_exec($ch);

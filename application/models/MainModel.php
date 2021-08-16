@@ -117,9 +117,12 @@ class MainModel extends CI_Model
     public function checkRequirement($requirements_name)
     {
         $ref_no = $this->session->userdata('reference_no');
-        $this->db->where('requirements_name', $requirements_name);
-        $this->db->where('reference_no', $ref_no);
-        return $this->db->get('requirements_log')->row_array();
+        $this->db->select('*');
+        $this->db->from('requirements_log');
+        $this->db->join('proof_of_payment_info','requirements_log.id = proof_of_payment_info.req_id','left');
+        $this->db->where('requirements_log.requirements_name', $requirements_name);
+        $this->db->where('requirements_log.reference_no', $ref_no);
+        return $this->db->get()->row_array();
     }
     public function newRequirementLog($data)
     {
@@ -163,10 +166,23 @@ class MainModel extends CI_Model
     {
         $this->db->insert('proof_of_payment_info', $data);
     }
-    public function getProofOfPaymentInfo($req_id)
+    public function getProofOfPaymentList(){
+        $ref_no = $this->session->userdata('reference_no');
+        $this->db->select('requirements_log.requirements_name,requirements_log.file_type,requirements_log.requirements_date,requirements_log.status,proof_of_payment_info.*');
+        $this->db->from('requirements_log');
+        $this->db->join('proof_of_payment_info','requirements_log.id = proof_of_payment_info.req_id','left');
+        $this->db->where('requirements_log.reference_no',$ref_no);
+        $this->db->where('requirements_name','proof_of_payment');
+        return $this->db->get()->result_array();
+    }
+    public function getProofOfPaymentInfo($id)
     {
-        $this->db->where('req_id', $req_id);
-        return $this->db->get('proof_of_payment_info')->row_array();
+        $ref_no = $this->session->userdata('reference_no');
+        $this->db->select('requirements_log.requirements_name,requirements_log.file_type,requirements_log.requirements_date,requirements_log.status,proof_of_payment_info.*');
+        $this->db->from('requirements_log');
+        $this->db->join('proof_of_payment_info','requirements_log.id = proof_of_payment_info.req_id');
+        $this->db->where('proof_of_payment_info.id',$id);
+        return $this->db->get()->row_array();
     }
     public function Get_Info($refstu)
     {
@@ -248,6 +264,7 @@ class MainModel extends CI_Model
         $result = $this->db->get('student_account');
         return $result->row_array();
     }
+    
     // public function checkIfthi
     // if fees not enrolled college
     //  if semester not equal to current semester in legend

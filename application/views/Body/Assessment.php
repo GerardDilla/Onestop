@@ -138,7 +138,7 @@ if ($this->session->flashdata('online_payment_zero') != "") {
                                 <div class="col-md-12" style="text-align:center">
                                     <hr>
                                     <a href="<?php echo base_url(); ?>index.php/ose_api/export_registrationform" target="_blank" class="btn btn-lg btn-success print-registration-form btn-hover-red">Print Registration Form</a>
-
+                                    <br><u><strong>NOTE:</strong> THIS IS NOT THE ORIGINAL REGISTRATION FORM IF YOU WANT TO GET ORIGINAL COPY OF REGISTRATION FORM GO TO THE REGISTRAR'S OFFICE</u>
                                 </div>
                                 <hr>
                                 <!-- <div class="col-md-12" style="text-align:center">

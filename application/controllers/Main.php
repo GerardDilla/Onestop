@@ -251,6 +251,11 @@ class Main extends MY_Controller
 		try {
 			$data = $this->mainmodel->checkEmail($this->input->post('email'));
 			if (!empty($data)) {
+				if(empty($data['username'])){
+					$this->session->set_flashdata('msg', 'You dont have an Account yet!!');
+					redirect(base_url('/'));
+					exit;
+				}
 				$codes = $this->mainmodel->getAllStudAccount();
 				$generate_code = random_string('alnum', 20);
 				foreach ($codes as $list) {
@@ -984,19 +989,27 @@ class Main extends MY_Controller
 		$this->data['csrf_token'] = $token;
 		$_SESSION['csrf_token']['proof_of_payment'] = $token;
 
-		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-		$getStudentAccountInfo = $this->mainmodel->getStudentAccountInfo($this->reference_number);
+		$ref_no = $this->session->userdata('reference_no');
+		// $checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
+		$getProofOfPaymentList = $this->mainmodel->getProofOfPaymentList();
+		$getStudentAccountInfo = $this->mainmodel->getStudentAccountInfo($ref_no);
 		$this->data['student_number'] = $getStudentAccountInfo['Student_Number'];
-		if (!empty($checkRequirement)) {
+		if (!empty($getProofOfPaymentList)) {
 			// $result = $this->gdrive_uploader->getFileId(array('file_name'=>$checkRequirement['file_submitted'],'folder_id'=>$this->session->userdata('gdrive_folder')));
-			$this->data['gdrive_link'] = $checkRequirement['path_id'];
-			$this->data['date_submitted'] = $checkRequirement['requirements_date'];
-			$this->data['payment_type'] = empty($this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])) ? '' : $this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])['payment_type'];
+			// $this->data['gdrive_link'] = $checkRequirement['path_id'];
+			// $this->data['date_submitted'] = $checkRequirement['requirements_date'];
+			// $this->data['payment_type'] = empty($this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])) ? '' : $this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])['payment_type'];
+			$this->data['proof_of_payment'] = $getProofOfPaymentList;
 		}
-		// echo '<pre>'.print_r($checkRequirement,1).'</pre>';
+		// echo '<pre>'.print_r($getProofOfPaymentList,1).'</pre>';
 		// exit;
-		// print_r($checkRequirement);
 		$this->default_template($this->view_directory->uploadProofOfPayment());
+	}
+	//  get data from ajax proof of payment module
+	public function getProofOfPaymentInfo(){
+		$id = $this->input->post('id');
+		$getProofOfPaymentInfo = $this->mainmodel->getProofOfPaymentInfo($id);
+		echo json_encode($getProofOfPaymentInfo);
 	}
 	public function uploadProofOfPaymentProcess()
 	{

@@ -2,9 +2,13 @@
     .payment-type {
         display: none;
     }
+    .form-label{
+        text-align:left;
+        text-indent:5px;
+    }
 </style>
 <section class="section col-sm-12">
-    <?php if (empty($date_submitted)) { ?>
+    <?php if (empty($proof_of_payment)) { ?>
         <form id="proof_of_payment_form" action="<?php echo base_url('index.php/Main/uploadProofOfPaymentProcess'); ?>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="payment_type" value="online_payment">
             <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
@@ -193,11 +197,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach($proof_of_payment as $list)
+                        {
+                        ?>
                         <tr>
-                            <td><?php echo $payment_type; ?></td>
-                            <td style="text-align:center;"><button class="btn btn-sm btn-info" onclick="viewImage()">View</button></td>
-                            <td style="text-align:center;"><?php echo date("F j, Y, g:i a", strtotime($date_submitted)); ?></td>
+                            <td><?= $list['payment_type']=='online_payment'?'Online Payment':'Over the Counter'; ?></td>
+                            <td style="text-align:center;"><button class="btn btn-sm btn-info" onclick="viewImage('<?= $list['id'];?>')">View</button></td>
+                            <td style="text-align:center;"><?php echo date("F j, Y, g:i a", strtotime($list['requirements_date'])); ?></td>
                         </tr>
+                        <?php
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -205,12 +215,44 @@
     <?php } ?>
 </section>
 <div id="view_image" data-izimodal-group="" data-izimodal-loop="" style="display:none;" data-izimodal-title="">
-    <div class="col-md-12" style="margin:10px;" align="center">
-        <img src="<?php echo empty($gdrive_link) ? '' : 'https://drive.google.com/uc?export=view&id=' . $gdrive_link; ?>" id="uploaded_image">
+    <div class="col-md-12 row" style="padding:10px 10% 10px 10%;">
+        <div class="form-group col-md-12">
+            <label class="form-label">Payment Type</label>
+            <input type="text" name="view_payment_type" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group col-md-12 over_counter">
+            <label class="form-label">Payment Reference Number</label>
+            <input type="text" name="view_payment_reference" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group col-md-12 online_payment">
+            <label class="form-label">Bank Type</label>
+            <input type="text" name="view_bank_type" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group col-md-12 online_payment">
+            <label class="form-label">Card Number</label>
+            <input type="text" name="view_card_number" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group col-md-12 online_payment">
+            <label class="form-label">Account Holder Name</label>
+            <input type="text" name="view_acc_holder_name" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="form-label">Amount Paid</label>
+            <input type="text" name="view_amount_paid" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="form-label">File Type of Image you submitted</label>
+            <input type="text" name="view_file_type" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="form-label">Date and Time Submitted</label>
+            <input type="text" name="date_submitted" class="form-control" value="" readonly>
+        </div>
     </div>
 </div>
+
 <!-- onlinepaymentModal -->
-<?php if (empty($date_submitted)) : ?>
+<?php if (empty($proof_of_payment)) : ?>
     <script>
         iziToast.show({
             theme: 'light',
@@ -432,9 +474,60 @@
         }, 3000);
     }
 
-    function viewImage() {
-        $('#view_image').iziModal('open');
-        $('#view_image').iziModal('setTitle', "<b>Proof of Payment:</b>");
+    function viewImage(id) {
+        $('body').waitMe({
+            effect: 'bounce',
+            text: '',
+            bg: 'rgba(255,255,255,0.7)',
+            color: '#000',
+            maxSize: '',
+            waitTime: -1,
+            textPos: 'vertical',
+            fontSize: '',
+            source: '',
+            onClose: function() {}
+        });
+        $.ajax({
+            url: "<?php echo base_url(); ?>index.php/main/getProofOfPaymentInfo",
+            method: 'post',
+            data:{
+                id:id
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                if(response.payment_type=='online_payment'){
+                    $('.online_payment').show();
+                    $('.over_counter').hide();
+                }
+                else{
+                    $('.over_counter').show();
+                    $('.online_payment').hide();
+                }
+                $('input[name=view_payment_type]').val(response.payment_type='online_payment'?'Online Payment':'Over the Counter');
+                $('input[name=view_payment_reference]').val(response.payment_reference_no);
+                $('input[name=view_bank_type]').val(response.bank_type.toUpperCase());
+                $('input[name=view_card_number]').val(response.acc_num);
+                $('input[name=view_acc_holder_name]').val(response.acc_holder_name);
+                $('input[name=view_amount_paid]').val(response.amount_paid);
+                $('input[name=view_file_type]').val(response.file_type);
+                $('input[name=date_submitted]').val(response.requirements_date);
+                // view_payment_type
+                // view_payment_reference
+                // view_bank_type
+                // view_card_number
+                // view_acc_holder_name
+                // view_amount_paid
+                // view_file_type
+                $('#view_image').iziModal('open');
+                $('#view_image').iziModal('setTitle', "<b>Proof of Payment:</b>");
+                $('body').waitMe('hide');
+            },
+            error: function(response) {
+                console.log(response)
+            }
+        });
+        
     }
     var img = document.querySelector(".uploaded-image img");
     // $('.image-uploader.has-files .uploaded-image').css('height',img.height)

@@ -76,18 +76,18 @@
                     </a>
                 </li> -->
                 <!-- <li class="sidebar-item twinkling-background" id="chat-me-here" data-bs-toggle="modal" data-bs-target="#chatinquiryModal"> -->
-                <!-- <li class="sidebar-item twinkling-background" id="chat-me-here" data-bs-toggle="modal" data-bs-target="#chatinquiryModal" <?php
-                                                                                // if (strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))) {
-                                                                                //     echo ' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"';
-                                                                                // } else {
-                                                                                //     echo ' onclick="timeWarning()"';
-                                                                                // }
-                                                                                ?>> -->
-                    <!-- <a href="javascript:" class='sidebar-link'>
+                <li class="sidebar-item twinkling-background" id="chat-me-here" data-bs-toggle="modal" data-bs-target="#chatinquiryModal" <?php
+                                                                                if (strtotime(date("Y-m-d H:i:s")) >= strtotime(date("08:00:00")) && strtotime(date("Y-m-d H:i:s")) < strtotime(date("Y-m-d 17:00:00"))) {
+                                                                                    echo ' data-bs-toggle="modal" data-bs-target="#chatinquiryModal"';
+                                                                                } else {
+                                                                                    echo ' onclick="timeWarning()"';
+                                                                                }
+                                                                                ?>>
+                    <a href="javascript:" class='sidebar-link'>
                         <i class="bi bi-chat-dots"></i>
                         <span>Chat Me Here!</span>
                     </a>
-                </li> -->
+                </li>
 
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>

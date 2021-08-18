@@ -38,6 +38,10 @@ if(token_type=="des"){
     credential_url = "token/des/credentials.json";
     token_url = "token/des/token.json";
 }
+else if(token_type=="treasury"){
+    credential_url = "token/treasury/credentials.json";
+    token_url = "token/treasury/token.json";
+}
 else{
     credential_url = "token/default/credentials.json";
     token_url = "token/default/token.json";
@@ -365,13 +369,30 @@ router.get("/generateToken",(req,res) => {
 
 
 router.post("/get_id",(req,res)=>{
-  const folder_id = req.body.folder_id;
-//   console.log(folder_id);
-  const file_name = req.body.file_name;
-  const TOKEN_PATH = 'token/default/token.json';
-  const SCOPES = ['https://www.googleapis.com/auth/drive'];
+    const folder_id = req.body.folder_id;
+    //   console.log(folder_id);
+    const file_name = req.body.file_name;
+    const TOKEN_PATH = 'token/default/token.json';
+    const SCOPES = ['https://www.googleapis.com/auth/drive'];
+    var token_type = req.body.token_type;
+    var credential_url = "";
+    var token_url = "";
+    if(token_type=="des"){
+        credential_url = "token/des/credentials.json";
+        token_url = "token/des/token.json";
+    }
+    else if(token_type=="treasury"){
+        credential_url = "token/treasury/credentials.json";
+        token_url = "token/treasury/token.json";
+    }
+    else{
+        credential_url = "token/default/credentials.json";
+        token_url = "token/default/token.json";
+        // credential_url = "credentials.json";
+        // token_url = "token.json";
+    }
   // Load client secrets from a local file.
-  fs.readFile('token/default/credentials.json', (err, content) => {
+  fs.readFile(credential_url, (err, content) => {
       if (err) return console.log('Error loading client secret file:', err);
     //   authorize(JSON.parse(content), createFolder);
 
@@ -394,7 +415,7 @@ router.post("/get_id",(req,res)=>{
           client_id, client_secret, redirect_uris[0]);
 
       // Check if we have previously stored a token.
-      fs.readFile(TOKEN_PATH, (err, token) => {
+      fs.readFile(token_url, (err, token) => {
           if (err) return getAccessToken(oAuth2Client, callback);
           oAuth2Client.setCredentials(JSON.parse(token));
 

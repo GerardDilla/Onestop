@@ -1014,7 +1014,7 @@ class Main extends MY_Controller
 	public function uploadProofOfPaymentProcess()
 	{
 		// $this->tokenHandler('proof_of_payment');
-		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
+		$user_fullname = $this->session->userdata('last_name').', '.$this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') ;
 		// $ref_no = $this->session->userdata('reference_no');
 		$id_name = "proof_of_payment";
 		$config['upload_path'] = './express/assets/';
@@ -1043,7 +1043,7 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			$result = $this->gdrive_uploader->index(array("folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
+			$result = $this->gdrive_uploader->uploadWithDifferentDriveID(array("main_folder_id"=>"1aNXXe7fO_amTVsXYFMz8yz36NqeYCXnu","token_type"=>"treasury","folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
 			$decode_result = json_decode($result, true);
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {
@@ -1056,18 +1056,17 @@ class Main extends MY_Controller
 			if (!empty($result)) {
 				if ($decode_result['msg'] == "success") {
 					$this->session->set_userdata('gdrive_folder', $decode_result['id']);
-					$this->mainmodel->updateAccountWithRefNo($this->reference_number, array('gdrive_id' => $decode_result['id']));
-					if (!empty($checkRequirement)) {
-						$this->mainmodel->updateRequirementLog(array(
-							'requirements_name' => 'proof_of_payment',
-							'requirements_date' => date("Y-m-d H:i:s"),
-							'status' => 'pending',
-							'reference_no' => $this->reference_number,
-							'file_submitted' => $uploaded_data['orig_name'],
-							'file_type' => $uploaded_data['file_type'],
-							// 'path_id' => empty($getId)?'':$getId
-						), 'proof_of_payment');
-					} else {
+					// $this->mainmodel->updateAccountWithRefNo($this->reference_number, array('gdrive_id' => $decode_result['id']));
+					// if (!empty($checkRequirement)) {
+					// 	$this->mainmodel->updateRequirementLog(array(
+					// 		'requirements_name' => 'proof_of_payment',
+					// 		'requirements_date' => date("Y-m-d H:i:s"),
+					// 		'status' => 'pending',
+					// 		'reference_no' => $this->reference_number,
+					// 		'file_submitted' => $uploaded_data['orig_name'],
+					// 		'file_type' => $uploaded_data['file_type'],
+					// 	), 'proof_of_payment');
+					// } else {
 						$req_id = $this->mainmodel->newRequirementLog(array(
 							'requirements_name' => 'proof_of_payment',
 							'requirements_date' => date("Y-m-d H:i:s"),
@@ -1085,9 +1084,10 @@ class Main extends MY_Controller
 							'acc_holder_name' => $this->input->post('holder_name'),
 							'payment_reference_no' => $this->input->post('reference_number'),
 							'ref_no' => $this->reference_number,
-							'amount_paid' => $this->input->post('amount_paid')
+							'amount_paid' => $this->input->post('amount_paid'),
+							'gdrive_folder_id' => $decode_result['id']
 						));
-					}
+					// }
 				} else {
 					$this->session->set_flashdata('error', "Files Upload Error: " . $result);
 					redirect($_SERVER['HTTP_REFERER']);
@@ -1129,7 +1129,7 @@ class Main extends MY_Controller
 	public function getProofOfPaymentImage()
 	{
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-		$result = $this->gdrive_uploader->getFileId(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('gdrive_folder')));
+		$result = $this->gdrive_uploader->getFileIdWithDifferentGdriveID(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('gdrive_folder'),'token_type'=>'treasury'));
 		if (!empty($result)) {
 			$this->mainmodel->updateRequirementLog(array('path_id' => $result), 'proof_of_payment');
 		}

@@ -984,6 +984,10 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPayment()
 	{
+		if($this->session->userdata('reference_no')!=27021){
+			echo '<strong>This module is on maintenance.</strong>';
+			exit;
+		}
 		// token proof of payment
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;
@@ -1055,7 +1059,7 @@ class Main extends MY_Controller
 			}
 			if (!empty($result)) {
 				if ($decode_result['msg'] == "success") {
-					// $this->session->set_userdata('gdrive_folder', $decode_result['id']);
+					$this->session->set_userdata('proof_gdrive_folder', $decode_result['id']);
 					// $this->mainmodel->updateAccountWithRefNo($this->reference_number, array('gdrive_id' => $decode_result['id']));
 					// if (!empty($checkRequirement)) {
 					// 	$this->mainmodel->updateRequirementLog(array(
@@ -1129,7 +1133,7 @@ class Main extends MY_Controller
 	public function getProofOfPaymentImage()
 	{
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
-		$result = $this->gdrive_uploader->getFileIdWithDifferentGdriveID(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('gdrive_folder'),'token_type'=>'treasury'));
+		$result = $this->gdrive_uploader->getFileIdWithDifferentGdriveID(array('file_name' => $checkRequirement['file_submitted'], 'folder_id' => $this->session->userdata('proof_gdrive_folder'),'token_type'=>'treasury'));
 		if (!empty($result)) {
 			$this->mainmodel->updateRequirementLog(array('path_id' => $result), 'proof_of_payment');
 		}

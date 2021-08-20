@@ -1055,7 +1055,7 @@ class Main extends MY_Controller
 			}
 			if (!empty($result)) {
 				if ($decode_result['msg'] == "success") {
-					$this->session->set_userdata('gdrive_folder', $decode_result['id']);
+					// $this->session->set_userdata('gdrive_folder', $decode_result['id']);
 					// $this->mainmodel->updateAccountWithRefNo($this->reference_number, array('gdrive_id' => $decode_result['id']));
 					// if (!empty($checkRequirement)) {
 					// 	$this->mainmodel->updateRequirementLog(array(
@@ -1067,26 +1067,26 @@ class Main extends MY_Controller
 					// 		'file_type' => $uploaded_data['file_type'],
 					// 	), 'proof_of_payment');
 					// } else {
-						$req_id = $this->mainmodel->newRequirementLog(array(
-							'requirements_name' => 'proof_of_payment',
-							'requirements_date' => date("Y-m-d H:i:s"),
-							'status' => 'pending',
-							'reference_no' => $this->reference_number,
-							'file_submitted' => $orig_name,
-							'file_type' => $orig_type,
-							// 'path_id' => empty($getId)?'':$getId
-						));
-						$this->mainmodel->insertProofOfPayments(array(
-							'req_id' => $req_id,
-							'bank_type' => $this->input->post('bank_type'),
-							'payment_type' => $this->input->post('payment_type'),
-							'acc_num' => $this->input->post('account_number'),
-							'acc_holder_name' => $this->input->post('holder_name'),
-							'payment_reference_no' => $this->input->post('reference_number'),
-							'ref_no' => $this->reference_number,
-							'amount_paid' => $this->input->post('amount_paid'),
-							'gdrive_folder_id' => $decode_result['id']
-						));
+					$req_id = $this->mainmodel->newRequirementLog(array(
+						'requirements_name' => 'proof_of_payment',
+						'requirements_date' => date("Y-m-d H:i:s"),
+						'status' => 'pending',
+						'reference_no' => $this->reference_number,
+						'file_submitted' => $orig_name,
+						'file_type' => $orig_type,
+						// 'path_id' => empty($getId)?'':$getId
+					));
+					$this->mainmodel->insertProofOfPayments(array(
+						'req_id' => $req_id,
+						'bank_type' => $this->input->post('bank_type'),
+						'payment_type' => $this->input->post('payment_type'),
+						'acc_num' => $this->input->post('account_number'),
+						'acc_holder_name' => $this->input->post('holder_name'),
+						'payment_reference_no' => $this->input->post('reference_number'),
+						'ref_no' => $this->reference_number,
+						'amount_paid' => $this->input->post('amount_paid'),
+						'gdrive_folder_id' => $decode_result['id']
+					));
 					// }
 				} else {
 					$this->session->set_flashdata('error', "Files Upload Error: " . $result);

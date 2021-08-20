@@ -984,7 +984,7 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPayment()
 	{
-		// if($this->session->userdata('reference_no')!=27020){
+		// if($this->session->userdata('reference_no')!=27021){
 		// 	echo '<strong>This module is on maintenance.</strong>';
 		// 	exit;
 		// }

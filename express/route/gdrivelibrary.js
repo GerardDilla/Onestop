@@ -386,10 +386,10 @@ router.post("/get_id",(req,res)=>{
         token_url = "token/treasury/token.json";
     }
     else{
-        credential_url = "token/default/credentials.json";
-        token_url = "token/default/token.json";
-        // credential_url = "credentials.json";
-        // token_url = "token.json";
+        // credential_url = "token/default/credentials.json";
+        // token_url = "token/default/token.json";
+        credential_url = "credentials.json";
+        token_url = "token.json";
     }
   // Load client secrets from a local file.
   fs.readFile(credential_url, (err, content) => {

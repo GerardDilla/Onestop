@@ -571,7 +571,7 @@ if (!empty($this->session->flashdata('error'))) {
             message: '" . $this->session->flashdata('success') . "',
             position: 'topRight',
         });";
-    echo "OnloadImage();";
+    // echo "OnloadImage();";
     $this->session->set_flashdata('success', '');
 }
 echo '</script>';

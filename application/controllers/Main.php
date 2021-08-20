@@ -984,10 +984,10 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPayment()
 	{
-		if($this->session->userdata('reference_no')!=27021){
-			echo '<strong>This module is on maintenance.</strong>';
-			exit;
-		}
+		// if($this->session->userdata('reference_no')!=27020){
+		// 	echo '<strong>This module is on maintenance.</strong>';
+		// 	exit;
+		// }
 		// token proof of payment
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;

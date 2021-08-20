@@ -77,7 +77,7 @@ class gdrive_uploader
 	{
         $main_folder_id = $this->config['folder_id'];
         // $all_uploadeddata = array('folder_name'=>"my_folder","folder_id"=>$main_folder_id,"data" => array(array('name'=>'sample.pdf','type'=>'application/pdf','rq_name'=>"Sample 1"),array('name'=>'sample2.pdf','type'=>'application/pdf','rq_name'=>"Sample 2")));
-        $all_uploadeddata = array('file_name'=>$data['file_name'],"folder_id"=>$data['folder_id']);
+        $all_uploadeddata = array('file_name'=>$data['file_name'],"folder_id"=>$data['folder_id'],'token_type'=>'');
         $string = http_build_query($all_uploadeddata);
         $ch = curl_init("http://stdominiccollege.edu.ph:4004/gdriveuploader/get_id");
         // $ch = curl_init("http://localhost:4004/gdriveuploader/get_id");

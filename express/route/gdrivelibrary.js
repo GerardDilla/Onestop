@@ -500,6 +500,145 @@ router.post("/get_id",(req,res)=>{
       res.send(id);
   }
 })
+// move folder
+router.post('/move',(req,res)=>{
+    const parent_id = req.body.parent_id;
+    const folder_id = req.body.folder_id;
+    const TOKEN_PATH = 'token/default/token.json';
+    const SCOPES = ['https://www.googleapis.com/auth/drive'];
+    var token_type = req.body.token_type;
+    var credential_url = "";
+    var token_url = "";
+    if(token_type=="des"){
+        credential_url = "token/des/credentials.json";
+        token_url = "token/des/token.json";
+    }
+    else if(token_type=="treasury"){
+        credential_url = "token/treasury/credentials.json";
+        token_url = "token/treasury/token.json";
+    }
+    else{
+        // credential_url = "./token/default/credentials.json";
+        // token_url = "./token/default/token.json";
+        credential_url = "credentials.json";
+        token_url = "token.json";
+    }
+  // Load client secrets from a local file.
+  fs.readFile(credential_url, (err, content) => {
+      if (err) return console.log('Error loading client secret file:', err);
+    //   authorize(JSON.parse(content), createFolder);
+
+        // code use to check for adding folder uploading of files   
+      authorize(JSON.parse(content), checkFiles);
+  });
+  
+  /**
+   * Create an OAuth2 client with the given credentials, and then execute the
+   * given callback function.
+   * @param {Object} credentials The authorization client credentials.
+   * @param {function} callback The callback to call with the authorized client.
+   */
+//   function checkFiles(auth){
+//     console.log('Success')
+//   }
+  function authorize(credentials, callback) {
+      const { client_secret, client_id, redirect_uris } = credentials.installed;
+      const oAuth2Client = new google.auth.OAuth2(
+          client_id, client_secret, redirect_uris[0]);
+
+      // Check if we have previously stored a token.
+      fs.readFile(token_url, (err, token) => {
+          if (err) return getAccessToken(oAuth2Client, callback);
+          oAuth2Client.setCredentials(JSON.parse(token));
+
+          callback(oAuth2Client);//list files and upload file
+          // createFolder(oAuth2Client);
+          //callback(oAuth2Client, '0B79LZPgLDaqESF9HV2V3YzYySkE');//get file
+
+      });
+  }
+
+  /**
+   * Get and store new token after prompting for user authorization, and then
+   * execute the given callback with the authorized OAuth2 client.
+   * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+   * @param {getEventsCallback} callback The callback for the authorized client.
+   */
+  function getAccessToken(oAuth2Client, callback) {
+      const authUrl = oAuth2Client.generateAuthUrl({
+          access_type: 'offline',
+          scope: SCOPES,
+      });
+      console.log('Authorize this app by visiting this url:', authUrl);
+      const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+      });
+      rl.question('Enter the code from that page here: ', (code) => {
+          rl.close();
+          oAuth2Client.getToken(code, (err, token) => {
+              if (err) { sendBackToPHP(400,err);return console.error('Error retrieving access token', err)};
+              oAuth2Client.setCredentials(token);
+              // Store the token to disk for later program executions
+              fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+                  if (err) return console.error(err);
+                  console.log('Token stored to', TOKEN_PATH);
+              });
+              callback(oAuth2Client);
+          });
+      });
+  }
+  async function checkFiles(auth) {
+    const drive = google.drive({ version: 'v3', auth });
+    searchFiles(drive, '',auth);
+  }
+   async function searchFiles(drive, pageToken,auth) {
+    drive.files.list({
+        // mimeType: 'application/vnd.google-apps.folder',
+        q: "mimeType: 'application/vnd.google-apps.folder'",
+        pageToken: pageToken ? pageToken : '',
+        fields: 'nextPageToken, files(id,name,parents,mimeType,owners)',
+        // fields: 'nextPageToken, files(*)',
+        spaces:'drive'
+    }, (err, res) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        const files = res.data.files;
+        // const checkFolder = files.filter(data =>data.owners[0].displayName != 'Treasury Office')
+        const findFile = files.find(data=>{return data.id==folder_id})
+        var previousParents = findFile.parents.join(',');
+        // console.log(previousParents)
+        // sendBackToPHP(previousParents)
+        // return false;
+        // console.log(checkFolder)
+        const updateGdrive = async ()  => {
+            return new Promise((resolve,reject)=>{
+                drive.files.update({
+                    fileId: folder_id,
+                    addParents: parent_id,
+                    removeParents: previousParents,
+                    fields: 'id, parents'
+                  }, function (err, file) {
+                    if (err) {
+                      // Handle error
+                    //   sendBackToPHP(err)
+                    reject(err)
+                    } else {
+                      // File moved.
+                      // console.log(s)
+                    //   sendBackToPHP('success')
+                      resolve('success')
+                    }
+                });
+            })
+        }
+        updateGdrive().then((result)=>sendBackToPHP(result)).catch(error=>sendBackToPHP(error));
+        
+    });
+  }
+  function sendBackToPHP(id){
+      res.send(id);
+  }
+})
 router.get("/sample",(req,res)=>{
     // res.send('Welcome to Google Drive Api');
     res.json(JSON.stringify({status:'success',msg:'hello'}))

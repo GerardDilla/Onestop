@@ -1047,7 +1047,7 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			$result = $this->gdrive_uploader->uploadWithDifferentDriveID(array("main_folder_id"=>"1aNXXe7fO_amTVsXYFMz8yz36NqeYCXnu","token_type"=>"treasury","folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
+			$result = $this->gdrive_uploader->uploadWithDifferentDriveID(array("main_folder_id"=>"1lLObKQNw6GZqFu5x-qtoFtkXyaK60pzH","token_type"=>"","folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
 			$decode_result = json_decode($result, true);
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {

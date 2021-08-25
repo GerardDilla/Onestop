@@ -13,8 +13,8 @@ class Main extends MY_Controller
 	{
 		parent::__construct();
 		$this->studentdata = array();
-		// $this->load->library('gdrive_uploader', array('folder_id' => '1_Ui30Jb_-N9ENG1XatjdT2GzVHXzmuRi'));
-		$this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
+		$this->load->library('gdrive_uploader', array('folder_id' => '1_Ui30Jb_-N9ENG1XatjdT2GzVHXzmuRi'));
+		// $this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
 		$this->reference_number = $this->session->userdata('reference_no');
 	}
 	public function generageToken($name){
@@ -758,10 +758,34 @@ class Main extends MY_Controller
 		$this->data['requirements'] = $getRequirementsList;
 		$this->default_template($this->view_directory->ValidationOfTobeFollowedDocuments());
 	}
+	function validationOfDocumentChecker($data){
+		$checkRequirement = $this->mainmodel->checkRequirement($data['rq_name']);
+		if (!empty($checkRequirement)) {
+			if ($checkRequirement['status'] == "to follow") {
+				$this->mainmodel->updateRequirementLog(array(
+					'requirements_date' => date("Y-m-d H:i:s"),
+					'file_submitted' => $data['name'],
+					'file_type' => $data['type'],
+					'status' => $data['status'],
+				), $data['rq_name']);
+			}
+		} else {
+			$this->mainmodel->newRequirementLog(array(
+				'requirements_name' => $data['rq_name'],
+				'requirements_date' => date("Y-m-d H:i:s"),
+				'status' => $data['status'],
+				'reference_no' => $this->reference_number,
+				'file_submitted' => $data['name'],
+				'file_type' => $data['type'],
+				'if_married' => $data['rq_name'] == 'marriage_certificate' ? $this->input->post('if_married') : 0
+			));
+		}
+	}
 	public function validationDocumentsProcess()
 	{
 		// $this->tokenHandler('requirements');
-
+		// print_r($_
+		
 		$user_fullname = $this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') . ' ' . $this->session->userdata('last_name');
 		date_default_timezone_set('Asia/manila');
 		// $ref_no = $this->session->userdata('reference_no');
@@ -785,6 +809,19 @@ class Main extends MY_Controller
 		$error_count = 0;
 		$error_files = array();
 		$validate_count = 0;
+		$to_follow_array = array();
+		// $config['file_name'] = 'report_card_' . $this->reference_number . '' . date("YmdHis");
+		// $this->load->library('upload', $config);
+		// $this->upload->initialize($config);
+		// $this->upload->overwrite = true;
+		// if ($this->upload->do_upload('report_card')) {
+		// 	echo 'success<br>';
+		// }
+		// else{
+		// 	echo json_encode(array("msg" => $this->upload->display_errors()));
+		// }
+		// echo 'hrllo';
+		// exit;
 		try {
 			$email_data = array(
 				'send_to' => $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name'),
@@ -794,7 +831,6 @@ class Main extends MY_Controller
 				'title' => 'Student Requirements',
 				'message' => 'Email/ValidationOfDocument'
 			);
-
 			foreach ($getRequirementsList as $list) {
 				$id_name = $list['id_name'];
 				$checkRequirement = $this->mainmodel->checkRequirement($id_name);
@@ -804,77 +840,97 @@ class Main extends MY_Controller
 				$this->upload->overwrite = true;
 				$req_status = 'to follow';
 				$status_col = empty($checkRequirement) ? '' : $checkRequirement['status'];
-				if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "") {
+				if ($this->input->post('check_' . $list['id_name']) == null&&$status_col!='pending') {
 					++$validate_count;
 					$req_status = 'pending';
 					if ($this->upload->do_upload($id_name)) {
-						++$upload_count;
+						
 						$uploaded_data = $this->upload->data();
 						array_push($array_files, array(
 							"name" => $uploaded_data['orig_name'],
 							"type" => $uploaded_data['file_type'],
-							'rq_name' => $list['rq_name']
+							"rq_name" => $id_name,
+							"status" => 'pending'
 						));
 						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+						
 					} else {
 						++$error_count;
 						array_push($error_files, $list['id_name']);
-					}
-				} else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to follow") {
-					++$validate_count;
-					$req_status = 'pending';
-					if ($this->upload->do_upload($id_name)) {
-						$uploaded_data = $this->upload->data();
-						++$upload_count;
-						array_push($array_files, array(
-							"name" => $uploaded_data['orig_name'],
-							"type" => $uploaded_data['file_type'],
-							'rq_name' => $list['rq_name']
-						));
-						array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-					} else {
-						++$error_count;
-						array_push($error_files, $list['id_name']);
-						// echo json_encode(array("msg" => $this->upload->display_errors()));
-						// $this->session->set_flashdata('error', $this->upload->display_errors());
-
-						// redirect($_SERVER['HTTP_REFERER']);
-						// exit;
+						echo json_encode(array("msg" => $this->upload->display_errors()));
 					}
 				}
-
-
-
-				$file_type = "";
-				$orig_name = "";
-				if ($this->input->post('check_' . $list['id_name']) == null) {
-					$file_type = empty($uploaded_data['file_type']) ? '' : $uploaded_data['file_type'];
-					$orig_name = empty($uploaded_data['orig_name']) ? '' : $uploaded_data['orig_name'];
-				}
-				if (!empty($checkRequirement)) {
-					if ($checkRequirement['status'] == "to follow") {
-						$this->mainmodel->updateRequirementLog(array(
-							'requirements_date' => date("Y-m-d H:i:s"),
-							'file_submitted' => $orig_name,
-							'file_type' => $file_type,
-							'status' => $req_status,
-						), $id_name);
-					}
-					$row = $row . "<tr><td>" . $checkRequirement['requirements_name'] . "</td><td>" . date("M. j,Y g:ia") . "</td></tr>";
-				} else {
-					$this->mainmodel->newRequirementLog(array(
-						'requirements_name' => $id_name,
-						'requirements_date' => date("Y-m-d H:i:s"),
-						'status' => $req_status,
-						'reference_no' => $this->reference_number,
-						'file_submitted' => $orig_name,
-						'file_type' => $file_type,
-						'if_married' => $id_name == 'marriage_certificate' ? $this->input->post('if_married') : 0
+				else{
+					array_push($to_follow_array, array(
+						"name" => '',
+						"type" => '',
+						"rq_name" => $id_name,
+						"status" => 'to follow'
 					));
 				}
+				// } else if ($this->input->post('check_' . $list['id_name']) == null && $status_col == "to follow") {
+				// 	++$validate_count;
+				// 	$req_status = 'pending';
+				// 	if ($this->upload->do_upload($id_name)) {
+				// 		$uploaded_data = $this->upload->data();
+				// 		++$upload_count;
+				// 		array_push($array_files, array(
+				// 			"name" => $uploaded_data['orig_name'],
+				// 			"type" => $uploaded_data['file_type'],
+				// 			'rq_name' => $list['rq_name']
+				// 		));
+				// 		array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
+				// 	} else {
+				// 		++$error_count;
+				// 		array_push($error_files, $list['id_name']);
+				// 		echo json_encode(array("msg" => $this->upload->display_errors()));
+				// 	}
+				// }
+
+
+
+				// $file_type = "";
+				// $orig_name = "";
+				// if ($this->input->post('check_' . $list['id_name']) == null) {
+				// 	$file_type = empty($uploaded_data['file_type']) ? '' : $uploaded_data['file_type'];
+				// 	$orig_name = empty($uploaded_data['orig_name']) ? '' : $uploaded_data['orig_name'];
+				// }
+				// if (!empty($checkRequirement)) {
+				// 	if ($checkRequirement['status'] == "to follow") {
+				// 		$this->mainmodel->updateRequirementLog(array(
+				// 			'requirements_date' => date("Y-m-d H:i:s"),
+				// 			'file_submitted' => $orig_name,
+				// 			'file_type' => $file_type,
+				// 			'status' => $req_status,
+				// 		), $id_name);
+				// 	}
+				// 	// $row = $row . "<tr><td>" . $checkRequirement['requirements_name'] . "</td><td>" . date("M. j,Y g:ia") . "</td></tr>";
+				// } else {
+				// 	$this->mainmodel->newRequirementLog(array(
+				// 		'requirements_name' => $id_name,
+				// 		'requirements_date' => date("Y-m-d H:i:s"),
+				// 		'status' => $req_status,
+				// 		'reference_no' => $this->reference_number,
+				// 		'file_submitted' => $orig_name,
+				// 		'file_type' => $file_type,
+				// 		'if_married' => $id_name == 'marriage_certificate' ? $this->input->post('if_married') : 0
+				// 	));
+				// }
 				// 
 
 			}
+			
+
+
+			foreach($array_files as $af){
+				// $this->validationOfDocumentChecker($af);
+				echo '<pre>'.print_r($af,1).'</pre>';
+			}
+			foreach($to_follow_array as $tf){
+				echo '<pre>'.print_r($tf,1).'</pre>';
+				// $this->validationOfDocumentChecker($tf);
+			}
+			exit;
 			$getRequirementsLogPerRefNo = $this->mainmodel->getRequirementsLogPerRefNo();
 			foreach ($getRequirementsLogPerRefNo as $reqloglist) {
 				if ($reqloglist['requirements_name'] != "proof_of_payment") {
@@ -887,10 +943,30 @@ class Main extends MY_Controller
 					));
 				}
 			}
-			$all_uploadeddata = array("folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $array_files);
-			if ($error_count == 0 && $upload_count > 0) {
+			// $gdrive_folder_name = $this->reference_number . '/' . $user_fullname;
+			$gdrive_folder_name = 'TEST ACCOUNT';
+			$all_uploadeddata = array("folder_name" => $gdrive_folder_name, "data" => $array_files);
+			$total_uploaded = count($array_filestodelete);
+			$summary_array = array(
+				'upload_count' => $total_uploaded,
+				'validate_count' => $validate_count,
+				'error_count' => $error_count,
+				'error_files' => $error_files,
+				'array_filestodelete' => $array_filestodelete,
+				'array_completefiles' => $array_completefiles,
+				'array_files' => $array_files,
+				'to_follow_array' => $to_follow_array
+			);
+			
+			// echo $error_count.'<br>'.$upload_count;
+			// echo '<pre>'.print_r($summary_array,1).'</pre>';exit;
+			if ($error_count == 0 && $total_uploaded > 0) {
 				$result = $this->gdrive_uploader->index($all_uploadeddata);
 				$decode_result = json_decode($result, true);
+				// echo '<pre>'.print_r($decode_result,1).'</pre>';
+				// // echo $result;
+				// exit;
+				
 				if (!empty($result)) {
 					if ($decode_result['msg'] == "success") {
 						$this->sdca_mailer->sendHtmlEmail($email_data['send_to'], $email_data['reply_to'], $email_data['sender_name'], $email_data['send_to_email'], $email_data['title'], $email_data['message'], array(
@@ -929,11 +1005,11 @@ class Main extends MY_Controller
 					$this->session->set_flashdata('error', 'Gdrive Uploader is Offline');
 					redirect($_SERVER['HTTP_REFERER']);
 				}
-			} else if ($upload_count == 0) {
+			} else if ($total_uploaded == 0&&$error_count==0) {
 				$this->session->set_flashdata('success', 'Successfully submitted!!');
 				redirect($_SERVER['HTTP_REFERER']);
 			} else {
-				$this->mainmodel->revertIfErrorInRequirementUpload();
+				// $this->mainmodel->revertIfErrorInRequirementUpload();
 				$this->session->set_flashdata('error', 'Files Upload Error: ' . $error_count . ' files failed to upload!! failed on -');
 				$error_files2 = implode(',', $error_files);
 				$this->session->set_flashdata('error_files', $error_files2);
@@ -947,6 +1023,7 @@ class Main extends MY_Controller
 			// echo json_encode(array("msg" => $e));
 		}
 	}
+	
 	// Payment Notification
 	public function notifyWhenPaymentSubmitted($ref_no = "", $amount = "", $email = "")
 	{

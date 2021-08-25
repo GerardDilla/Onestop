@@ -14,7 +14,7 @@ const multer = require('multer');
 const { pathToFileURL } = require('url');
 const { exit } = require('process');
 const { ENOTEMPTY } = require('constants');
-
+// const async 
 const storage = multer.diskStorage({
     destination: (req,res,cb) => {
         cb(null,`${__dirname}/assets/`);
@@ -386,10 +386,10 @@ router.post("/get_id",(req,res)=>{
         token_url = "token/treasury/token.json";
     }
     else{
-        // credential_url = "token/default/credentials.json";
-        // token_url = "token/default/token.json";
-        credential_url = "credentials.json";
-        token_url = "token.json";
+        credential_url = "token/registrar/credentials.json";
+        token_url = "token/registrar/token.json";
+        // credential_url = "credentials.json";
+        // token_url = "token.json";
     }
   // Load client secrets from a local file.
   fs.readFile(credential_url, (err, content) => {
@@ -473,7 +473,7 @@ router.post("/get_id",(req,res)=>{
     }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
-        // console.log(files);
+        console.log(files);
         // const found_all = files.filter( ({parents}) => { return [parents] == '1kLW5Gwogxz1llDOAjWwsYwIjNSbSTD0g'});
         // console.log(found_all)
         if(file_name!=""){
@@ -636,6 +636,166 @@ router.post('/move',(req,res)=>{
     });
   }
   function sendBackToPHP(id){
+      res.send(id);
+  }
+})
+router.post("/give-permission",(req,res)=>{
+    const folder_id = req.body.folder_id;
+    const TOKEN_PATH = 'token/default/token.json';
+    const SCOPES = ['https://www.googleapis.com/auth/drive'];
+    var token_type = req.body.token_type;
+    var credential_url = "";
+    var token_url = "";
+    if(token_type=="des"){
+        credential_url = "token/des/credentials.json";
+        token_url = "token/des/token.json";
+    }
+    else if(token_type=="treasury"){
+        credential_url = "token/treasury/credentials.json";
+        token_url = "token/treasury/token.json";
+    }
+    else{
+        credential_url = "token/registrar/credentials.json";
+        token_url = "token/registrar/token.json";
+        // credential_url = "credentials.json";
+        // token_url = "token.json";
+    }
+  // Load client secrets from a local file.
+  fs.readFile(credential_url, (err, content) => {
+      if (err) return console.log('Error loading client secret file:', err);
+    //   authorize(JSON.parse(content), createFolder);
+
+        // code use to check for adding folder uploading of files   
+      authorize(JSON.parse(content), changePermission);
+  });
+  
+  /**
+   * Create an OAuth2 client with the given credentials, and then execute the
+   * given callback function.
+   * @param {Object} credentials The authorization client credentials.
+   * @param {function} callback The callback to call with the authorized client.
+   */
+//   function checkFiles(auth){
+//     console.log('Success')
+//   }
+  function authorize(credentials, callback) {
+      const { client_secret, client_id, redirect_uris } = credentials.installed;
+      const oAuth2Client = new google.auth.OAuth2(
+          client_id, client_secret, redirect_uris[0]);
+
+      // Check if we have previously stored a token.
+      fs.readFile(token_url, (err, token) => {
+          if (err) return getAccessToken(oAuth2Client, callback);
+          oAuth2Client.setCredentials(JSON.parse(token));
+
+          callback(oAuth2Client);//list files and upload file
+          // createFolder(oAuth2Client);
+          //callback(oAuth2Client, '0B79LZPgLDaqESF9HV2V3YzYySkE');//get file
+
+      });
+  }
+
+  /**
+   * Get and store new token after prompting for user authorization, and then
+   * execute the given callback with the authorized OAuth2 client.
+   * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+   * @param {getEventsCallback} callback The callback for the authorized client.
+   */
+  function getAccessToken(oAuth2Client, callback) {
+      const authUrl = oAuth2Client.generateAuthUrl({
+          access_type: 'offline',
+          scope: SCOPES,
+      });
+      console.log('Authorize this app by visiting this url:', authUrl);
+      const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+      });
+      rl.question('Enter the code from that page here: ', (code) => {
+          rl.close();
+          oAuth2Client.getToken(code, (err, token) => {
+              if (err) { sendBackToPHP(400,err);return console.error('Error retrieving access token', err)};
+              oAuth2Client.setCredentials(token);
+              // Store the token to disk for later program executions
+              fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+                  if (err) return console.error(err);
+                  console.log('Token stored to', TOKEN_PATH);
+              });
+              callback(oAuth2Client);
+          });
+      });
+  }
+  async function checkFiles(auth) {
+    const drive = google.drive({ version: 'v3', auth });
+    searchFiles(drive, '',auth);
+  }
+   async function searchFiles(drive, pageToken,auth) {
+    drive.files.list({
+        // corpora: 'user',
+        // pageSize: 10,
+        // q: "mimeType: *",
+        // parents: '1qNLUOCw7SfhS6STY7doHCjug_piEswDT',
+        pageToken: pageToken ? pageToken : '',
+        fields: 'nextPageToken, files(id,name,parents)',
+        // fields: 'nextPageToken, files(*)',
+        spaces:'drive'
+    }, (err, res) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        const files = res.data.files;
+        console.log(files);
+        // const found_all = files.filter( ({parents}) => { return [parents] == '1kLW5Gwogxz1llDOAjWwsYwIjNSbSTD0g'});
+        // console.log(found_all)
+        if(file_name!=""){
+            const found = files.find((element) =>{ return element.name == file_name && [element.parents]==folder_id});
+            
+            if(found==null){
+                sendBackToPHP('');
+                console.log(`Get Id: Cant find ${file_name}`)
+            }
+            else{
+                sendBackToPHP(found.id);
+                console.log(`Get Id: ${found.id}`)
+            }
+        }
+        else{
+            console.log('hello')
+            const found = files.filter( ({parents}) => [parents] == folder_id);
+            sendBackToPHP(JSON.stringify(found));
+        }
+        
+    });
+  }
+  async function changePermission(auth){
+    const drive = google.drive({ version: 'v3', auth });
+    // var  = folder_id;
+    var permission = [
+        {
+            'type': 'anyone',
+            'role': 'reader',
+            'emailAddress': 'default'
+        }]
+        // const
+        const getPermi = async () => {
+            return new Promise((resolve,reject)=>{
+                drive.permissions.create({
+                    resource: permission,
+                    fileId: folder_id,
+                    fields: 'id',
+                }, function (err, res) {
+                    if (err) {
+                    // Handle error...
+                        reject(err)
+                    } else {
+                    // console.log('Permission ID: ', res.id)
+                        resolve('Permission ID: ', res.id)
+                    }
+                });
+            })
+        }
+        getPermi().then(result=>{sendBackToPHP(result)}).catch(err=>sendBackToPHP(err))
+  }
+  function sendBackToPHP(id){
+      console.log(id)
       res.send(id);
   }
 })

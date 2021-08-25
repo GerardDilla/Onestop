@@ -43,8 +43,10 @@ else if(token_type=="treasury"){
     token_url = "token/treasury/token.json";
 }
 else{
-    credential_url = "token/registrar/credentials.json";
-    token_url = "token/registrar/token.json";
+    // credential_url = "token/registrar/credentials.json";
+    // token_url = "token/registrar/token.json";
+    credential_url = "token/default/credentials.json";
+    token_url = "token/default/token.json";
     // credential_url = "credentials.json";
     // token_url = "token.json";
 }

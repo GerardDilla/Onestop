@@ -8,11 +8,10 @@
     }
 </style>
 <section class="section col-sm-12">
-    <?php if (empty($proof_of_payment)) { ?>
         <form id="proof_of_payment_form" action="<?php echo base_url('index.php/Main/uploadProofOfPaymentProcess'); ?>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="payment_type" value="online_payment">
             <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
-            <div class="card" style="margin:none;">
+            <div class="card" style="margin:none;<?= empty($proof_of_payment)?'':'display:none;';?>" id="proofOfPaymentDiv">
                 <div class="card-header">
                     <div class="col-md-12 row">
                         <div class="col-lg-4 ">
@@ -24,7 +23,12 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-8" align="right">&nbsp;<button type="button" class="payment-page btn btn-sm btn-danger" id="submit-button">Submit</button></div>
+                        <div class="col-md-8" align="right">
+                            <?php if(!empty($proof_of_payment)):?>
+                            <button type="button" class="btn btn-secondary" id="goBackToList"><i class="bi bi-backspace-reverse"></i> Go Back</button>
+                            <?php endif;?>
+                            &nbsp;<button type="button" class="payment-page btn btn-danger" id="submit-button">Submit</button>
+                        </div>
                         <!-- <button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button> -->
                     </div>
                     <div class="col-md-12">
@@ -89,34 +93,11 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="col-md-4 col-lg-4 col-sm-12" style="margin:0;padding:0;">
-                    <div class="col-md-12 payment-header">BILLS PAYMENT FACILITIES</div>
-                    <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/sm-department-store-logo.jpg'); ?>"></div>
-                    <div class="col-md-12 payment-body" ><p><strong>SM Bacoor</strong></p></div>
-
-                    <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/hypermarket.jfif'); ?>"></div>
-                    <div class="col-md-12 payment-body" ><p><strong>Imus & Molino</strong></p></div>
-
-                    <div class="col-md-12 payment-body" ><img class="payment-logo" src="<?php echo base_url('assets/images/bank/savemore.png'); ?>"></div>
-                    <div class="col-md-12 payment-body" ><p><strong>Zapote</strong></p></div>
-                </div> -->
                         <div class="col-md-3 col-lg-3 col-sm-12" style="margin:0;padding:0;">
                             <div class="col-md-12 payment-header">SDCA ONLINE PAYMENT</div>
                             <div class="col-md-12 payment-body" style="margin-top:30px;"><a href="https://stdominiccollege.edu.ph/SDCAPayment/" class="btn btn-success btn-lg btn-semi-round" target="_blank">Pay Here</a></div>
                         </div>
                     </div>
-                    <!-- <div class="col-md-12 row payment-online">
-                <div class="col-lg-5 col-md-5 account-name-card payment-head"><img class="sdcalogo" src="<?php echo base_url('assets/images/logo/sdcalogo.png'); ?>"></div>
-                <div class="col-lg-5 col-md-5 account-name-card payment-head-text"><span>Online Payment Accounts</span></div>
-                <div class="col-lg-5 col-md-5  col-sm-12 payment-card"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/bdo.png'); ?>" style="height:67px;"><br><br><span class="account_number">ACCOUNT NUMBER: <br>0000-7016-1291</span><br><font class="account-title">Savings Account</font></div>
-                <div class="col-lg-5 col-md-5 col-sm-12 payment-card"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/aub-2.jpg'); ?>"><br><br><span class="account_number">ACCOUNT NUMBER: <br>120-01-890142-6</span><br><font class="account-title">Savings Account</font></div>
-                <div class="col-lg-5 col-md-5 col-sm-12 payment-card"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/eastwest-bank-logo-2.jpg'); ?>"><br><br><span class="account_number">ACCOUNT NUMBER: <br>2000-0065-6417</span><br><font class="account-title">Savings / Checking Account</font></div>
-                <div class="col-lg-5 col-md-5 col-sm-12 payment-card"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/rcbc1.png'); ?>"><br><br><span class="account_number">ACCOUNT NUMBER: <br>0013-4500-0867</span><br><font class="account-title">Savings Account</font></div>
-                <div class="col-lg-5 col-md-5 col-sm-12 payment-card"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/ub-2.jpg'); ?>"><br><br><span class="account_number">ACCOUNT NUMBER: <br>0004-70001-2500</span><br><font class="account-title">Savings Account</font></div>
-                <div class="col-lg-5 col-md-5 col-sm-12 payment-card"><img class="payment-logo" src="<?php echo base_url('assets/images/bank/Gcash-logo-type.png'); ?>"></div>
-                <div class="col-lg-5 col-md-5 col-sm-12 payment-card"><font class="sdca_online">SDCA ONLINE PAYMENT SYSTEM</font><br><br><font style="font-weight:bold;color:black;font-size:19px">Type the link below to your browser to explore:</font><br><a class="sdca-link" href="https://stdominiccollege.edu.ph/SDCAPayment/" target="_blank">https://stdominiccollege.edu.ph/SDCAPayment/</a></div>
-                <div class="col-lg-5 col-md-5 col-sm-12 account-name-card"><div class="col-md-12 account-name">ACCOUNT NAME: <br>ST. DOMINIC COLLEGE OF ASIA, INC.</div></div>
-            </div> -->
                     <div class="col-md-12 row payment-page">
                         <div class="col-md-2 form-group online-payment">
                             <label class="input-label"><b>Bank Type</b></label>
@@ -181,11 +162,10 @@
                 </div>
             </div>
         </form>
-    <?php } else {
-    ?>
-        <div class="card" style="margin:none;">
-            <div class="card-header">
-                <!-- <button class="btn btn-info">Submit</button> -->
+        <?php if (!empty($proof_of_payment)) : ?>
+        <div class="card" style="margin:none;" id="proofOfPaymentList">
+            <div class="card-header" align="right">
+                <button type="button" class="btn btn-secondary" id="addProofOfPayment"><i class="bi bi-plus-circle-dotted"></i> Add Proof of Payment</button>
             </div>
             <div class="card-body">
                 <table class="table table-light mb-0">
@@ -212,7 +192,7 @@
                 </table>
             </div>
         </div>
-    <?php } ?>
+    <?php endif; ?>
 </section>
 <div id="view_image" data-izimodal-group="" data-izimodal-loop="" style="display:none;" data-izimodal-title="">
     <div class="col-md-12 row" style="padding:10px 10% 10px 10%;">
@@ -309,7 +289,14 @@
     //     console.log('Link:'+storagedata.getData());
     // },7000)
     // var image_url = "";
-
+    $('#addProofOfPayment').click(function(){
+        $('#proofOfPaymentList').hide();
+        $('#proofOfPaymentDiv').show();
+    })
+    $('#goBackToList').click(function(){
+        $('#proofOfPaymentDiv').hide();
+        $('#proofOfPaymentList').show(); 
+    })
     $(".number-format").click(function() {
         $(this).select();
     });

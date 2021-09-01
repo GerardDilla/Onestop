@@ -1,4 +1,4 @@
-
+var env = 'development';
 "use strict";
 // const { Router } = require("express");
 const fs = require('fs');
@@ -43,12 +43,14 @@ else if(token_type=="treasury"){
     token_url = "token/treasury/token.json";
 }
 else{
-    // credential_url = "token/registrar/credentials.json";
-    // token_url = "token/registrar/token.json";
-    credential_url = "token/default/credentials.json";
-    token_url = "token/default/token.json";
-    // credential_url = "credentials.json";
-    // token_url = "token.json";
+    if(env=="production"){
+        credential_url = "token/registrar/credentials.json";
+        token_url = "token/registrar/token.json";
+    }
+    else{
+        credential_url = "token/default/credentials.json";
+        token_url = "token/default/token.json";
+    }
 }
 console.log(main_folder_id);
 // var folder_name = "requirements";
@@ -388,10 +390,14 @@ router.post("/get_id",(req,res)=>{
         token_url = "token/treasury/token.json";
     }
     else{
-        credential_url = "token/registrar/credentials.json";
-        token_url = "token/registrar/token.json";
-        // credential_url = "credentials.json";
-        // token_url = "token.json";
+        if(env=="production"){
+            credential_url = "token/registrar/credentials.json";
+            token_url = "token/registrar/token.json";
+        }
+        else{
+            credential_url = "token/default/credentials.json";
+            token_url = "token/default/token.json";
+        }
     }
   // Load client secrets from a local file.
   fs.readFile(credential_url, (err, content) => {
@@ -473,39 +479,55 @@ router.post("/get_id",(req,res)=>{
         // fields: 'nextPageToken, files(*)',
         spaces:'drive'
     }, (err, res) => {
-        if (err) return console.log('The API returned an error: ' + err);
+        if (err) {
+            console.log('The API returned an error: ' + err);
+            sendBackToPHP(400,err);
+        }
         const files = res.data.files;
-        console.log(files);
+        // console.log(files);
         // const found_all = files.filter( ({parents}) => { return [parents] == '1kLW5Gwogxz1llDOAjWwsYwIjNSbSTD0g'});
         // console.log(found_all)
         if(file_name!=""){
-            const found = files.find((element) =>{ return element.name == file_name && [element.parents]==folder_id});
-            
+            if(folder_id!=""){
+                var found = files.find((element) =>{ return element.name == file_name && [element.parents]==folder_id});
+            }
+            else{
+                var found = files.find((element) =>{ return element.name == file_name});
+            }
             if(found==null){
-                sendBackToPHP('');
+                sendBackToPHP(200,'');
                 console.log(`Get Id: Cant find ${file_name}`)
             }
             else{
-                sendBackToPHP(found.id);
+                sendBackToPHP(200,found.id);
                 console.log(`Get Id: ${found.id}`)
             }
         }
         else{
-            console.log('hello')
             const found = files.filter( ({parents}) => [parents] == folder_id);
-            sendBackToPHP(JSON.stringify(found));
+            // sendBackToPHP(JSON.stringify(found));
+            sendBackToPHP(200,found);
         }
         
     });
   }
-  function sendBackToPHP(id){
-      res.send(id);
-  }
+    function sendBackToPHP(status,data){
+        if(status==400){
+            res.status(400).send(JSON.stringify(ApiError.badRequest(data)));
+            return;
+        }
+        else{
+            res.status(200).send(JSON.stringify({msg:'success',id:data}));
+        }
+    
+    }
 })
 // move folder
 router.post('/move',(req,res)=>{
     const parent_id = req.body.parent_id;
-    const folder_id = req.body.folder_id;
+    // const folder_id = req.body.folder_id;
+    const folder_name = req.body.folder_name;
+    const file_name = req.body.file_name;
     const TOKEN_PATH = 'token/default/token.json';
     const SCOPES = ['https://www.googleapis.com/auth/drive'];
     var token_type = req.body.token_type;
@@ -520,10 +542,14 @@ router.post('/move',(req,res)=>{
         token_url = "token/treasury/token.json";
     }
     else{
-        // credential_url = "./token/default/credentials.json";
-        // token_url = "./token/default/token.json";
-        credential_url = "credentials.json";
-        token_url = "token.json";
+        if(env=="production"){
+            credential_url = "token/registrar/credentials.json";
+            token_url = "token/registrar/token.json";
+        }
+        else{
+            credential_url = "token/default/credentials.json";
+            token_url = "token/default/token.json";
+        }
     }
   // Load client secrets from a local file.
   fs.readFile(credential_url, (err, content) => {
@@ -597,7 +623,7 @@ router.post('/move',(req,res)=>{
    async function searchFiles(drive, pageToken,auth) {
     drive.files.list({
         // mimeType: 'application/vnd.google-apps.folder',
-        q: "mimeType: 'application/vnd.google-apps.folder'",
+        // q: "mimeType: 'application/vnd.google-apps.folder'",
         pageToken: pageToken ? pageToken : '',
         fields: 'nextPageToken, files(id,name,parents,mimeType,owners)',
         // fields: 'nextPageToken, files(*)',
@@ -606,17 +632,18 @@ router.post('/move',(req,res)=>{
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
         // const checkFolder = files.filter(data =>data.owners[0].displayName != 'Treasury Office')
-        const findFile = files.find(data=>{return data.id==folder_id})
+        const findFile = files.find(data=>{return data.name==file_name})
+        const findFolder = files.find(data=>{return data.name==folder_name&&data.parents.join(',') == parent_id})
         var previousParents = findFile.parents.join(',');
-        // console.log(previousParents)
-        // sendBackToPHP(previousParents)
+        // console.log(findFolder)
+        // // sendBackToPHP(previousParents)
         // return false;
         // console.log(checkFolder)
-        const updateGdrive = async ()  => {
+        const updateGdrive = async (parent,file_id)  => {
             return new Promise((resolve,reject)=>{
                 drive.files.update({
-                    fileId: folder_id,
-                    addParents: parent_id,
+                    fileId: file_id,
+                    addParents: parent,
                     removeParents: previousParents,
                     fields: 'id, parents'
                   }, function (err, file) {
@@ -633,8 +660,38 @@ router.post('/move',(req,res)=>{
                 });
             })
         }
-        updateGdrive().then((result)=>sendBackToPHP(result)).catch(error=>sendBackToPHP(error));
-        
+        const createFolder = async () => {
+            return new Promise((resolve,reject)=>{
+                const drive = google.drive({ version: 'v3', auth});
+                var fileMetadata = {
+                'name': folder_name,
+                'mimeType': 'application/vnd.google-apps.folder',
+                parents: [parent_id]
+                };
+                var pageToken = null;
+                drive.files.create({
+                        resource: fileMetadata,
+                        fields: 'id'
+                    }, function (err, file) {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(file.data.id)
+                    }
+                });
+            })
+        }
+        if(findFolder==null){
+            createFolder().then((result)=>{
+                updateGdrive(result,findFile.id).then((result)=>sendBackToPHP(result)).catch(error=>sendBackToPHP(error));
+            }).catch(error=>sendBackToPHP(error));
+        }else{
+            if(findFile==null){
+                sendBackToPHP(`ERR:Cant find file - ${file_name}!`);
+                return;
+            }
+            updateGdrive(findFolder.id,findFile.id).then((result)=>sendBackToPHP(result)).catch(error=>sendBackToPHP(error));
+        }
     });
   }
   function sendBackToPHP(id){
@@ -657,10 +714,14 @@ router.post("/give-permission",(req,res)=>{
         token_url = "token/treasury/token.json";
     }
     else{
-        credential_url = "token/registrar/credentials.json";
-        token_url = "token/registrar/token.json";
-        // credential_url = "credentials.json";
-        // token_url = "token.json";
+        if(env=="production"){
+            credential_url = "token/registrar/credentials.json";
+            token_url = "token/registrar/token.json";
+        }
+        else{
+            credential_url = "token/default/credentials.json";
+            token_url = "token/default/token.json";
+        }
     }
   // Load client secrets from a local file.
   fs.readFile(credential_url, (err, content) => {

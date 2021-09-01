@@ -1008,7 +1008,7 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPayment()
 	{
-		// if($this->session->userdata('reference_no')!=27021){
+		// if($this->session->userdata('reference_no')!=27020){
 		// 	echo '<strong>This module is on maintenance.</strong>';
 		// 	exit;
 		// }
@@ -1029,8 +1029,6 @@ class Main extends MY_Controller
 			// $this->data['payment_type'] = empty($this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])) ? '' : $this->mainmodel->getProofOfPaymentInfo($checkRequirement['id'])['payment_type'];
 			$this->data['proof_of_payment'] = $getProofOfPaymentList;
 		}
-		// echo '<pre>'.print_r($getProofOfPaymentList,1).'</pre>';
-		// exit;
 		$this->default_template($this->view_directory->uploadProofOfPayment());
 	}
 	//  get data from ajax proof of payment module
@@ -1044,13 +1042,15 @@ class Main extends MY_Controller
 		// $this->tokenHandler('proof_of_payment');
 		$user_fullname = $this->session->userdata('last_name').', '.$this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') ;
 		// $ref_no = $this->session->userdata('reference_no');
+		$payment_term = $this->input->post('payment_term');
 		$id_name = "proof_of_payment";
 		$config['upload_path'] = './express/assets/';
 		$config['allowed_types'] = '*';
-		$config['file_name'] =  'DP' . $this->reference_number . '' . date("YmdHis");
+		$config['file_name'] =  $payment_term . $this->reference_number . '' . date("YmdHis");
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 		$this->upload->overwrite = true;
+		
 		$uploaded = array();
 		$array_filestodelete = array();
 		$checkRequirement = $this->mainmodel->checkRequirement('proof_of_payment');
@@ -1066,7 +1066,8 @@ class Main extends MY_Controller
 				'rq_name' => 'Proof of Payment'
 			));
 			array_push($array_filestodelete, 'express/assets/' . $uploaded_data['orig_name']);
-			$result = $this->gdrive_uploader->uploadWithDifferentDriveID(array("main_folder_id"=>"1lLObKQNw6GZqFu5x-qtoFtkXyaK60pzH","token_type"=>"","folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
+			// $result = $this->gdrive_uploader->uploadWithDifferentDriveID(array("main_folder_id"=>"1Hrg19tx5YgsxFJ2T--HblVRmoJtfnhhj","token_type"=>"","folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
+			$result = $this->gdrive_uploader->uploadWithDifferentDriveID(array("main_folder_id"=>"1aNXXe7fO_amTVsXYFMz8yz36NqeYCXnu","token_type"=>"treasury","folder_name" => $this->reference_number . '/' . $user_fullname, "data" => $uploaded));
 			$decode_result = json_decode($result, true);
 			$files = glob('express/assets/*'); // get all file names
 			foreach ($files as $file) {
@@ -1108,7 +1109,8 @@ class Main extends MY_Controller
 						'payment_reference_no' => $this->input->post('reference_number'),
 						'ref_no' => $this->reference_number,
 						'amount_paid' => $this->input->post('amount_paid'),
-						'gdrive_folder_id' => $decode_result['id']
+						'gdrive_folder_id' => $decode_result['id'],
+						'term' => $payment_term
 					));
 					// }
 				} else {

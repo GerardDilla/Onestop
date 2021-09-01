@@ -70,6 +70,8 @@ class Ose_api extends CI_Controller
 		#Fixed Units
 		$this->grad_units = 31;
 		$this->nongrad_units = 31;
+		$this->load->library('gdrive_uploader', array('folder_id' => '1_Ui30Jb_-N9ENG1XatjdT2GzVHXzmuRi'));
+		// $this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
 	}
 	public function subjects()
 	{
@@ -1338,4 +1340,5 @@ class Ose_api extends CI_Controller
 	
 	
 	}
+	
 }

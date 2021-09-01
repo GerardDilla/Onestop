@@ -7,10 +7,18 @@
         text-indent:5px;
     }
 </style>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
+<script type="text/javascript" src="<?php echo base_url('assets/js/numeral.min.js');?>"></script>
 <section class="section col-sm-12">
         <form id="proof_of_payment_form" action="<?php echo base_url('index.php/Main/uploadProofOfPaymentProcess'); ?>" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="payment_type" value="online_payment">
+            <input type="hidden" name="payment_type" value="Online Payment">
             <input type="hidden" name="b3df6e650330df4c0e032e16141f" value="<?= $csrf_token ?>">
+            <input type="hidden" name="payment_term" value="DP">
             <div class="card" style="margin:none;<?= empty($proof_of_payment)?'':'display:none;';?>" id="proofOfPaymentDiv">
                 <div class="card-header">
                     <div class="col-md-12 row">
@@ -23,6 +31,18 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- <div class="col-lg-4 ">
+                            <div class="form-group payment-type-div">
+                                <label class="input-label payment-page"><b>Payment Term</b></label>
+                                <select class="form-select payment-page" name="payment_term">
+                                    <option value="DP">Downpayment</option>
+                                    <option value="PT">Prelim Term</option>
+                                    <option value="MT">Mid Term</option>
+                                    <option value="FT">Final Term</option>
+                                    <option value="FP">Fully Paid</option>
+                                </select>
+                            </div>
+                        </div> -->
                         <div class="col-md-8" align="right">
                             <?php if(!empty($proof_of_payment)):?>
                             <button type="button" class="btn btn-secondary" id="goBackToList"><i class="bi bi-backspace-reverse"></i> Go Back</button>
@@ -168,7 +188,7 @@
                 <button type="button" class="btn btn-secondary" id="addProofOfPayment"><i class="bi bi-plus-circle-dotted"></i> Add Proof of Payment</button>
             </div>
             <div class="card-body">
-                <table class="table table-light mb-0">
+                <table class="table data-table table-striped table-responsive">
                     <thead>
                         <tr>
                             <th>Payment Type</th>
@@ -181,7 +201,7 @@
                         {
                         ?>
                         <tr>
-                            <td><?= $list['payment_type']=='online_payment'?'Online Payment':'Over the Counter'; ?></td>
+                            <td><?= $list['payment_type']=='Online Payment'?'Online Payment':'Over the Counter'; ?></td>
                             <td style="text-align:center;"><button class="btn btn-sm btn-info" onclick="viewImage('<?= $list['id'];?>')">View</button></td>
                             <td style="text-align:center;"><?php echo date("F j, Y, g:i a", strtotime($list['requirements_date'])); ?></td>
                         </tr>
@@ -289,6 +309,25 @@
     //     console.log('Link:'+storagedata.getData());
     // },7000)
     // var image_url = "";
+    $('.data-table').DataTable({
+        "ordering": false,
+        "bPaginate": false,
+        "bLengthChange": false,
+        "searching":false,
+        "responsive":true,
+        lengthMenu:[[8,10,25,50,-1],[8,10,25,50,"All"]],
+    });
+    $('.number-format').on('focusout',function(){
+        $(this).val(numeral(this.value).format('0,0.00'));
+    })
+    $('.number-format').on('focus',function(){
+        $(this).val(this.value.replace(/,/g, ""));
+    })
+    $('.number-format').on('keyup',function(){
+        $(this).val(this.value.replace(/[^\d.-]/g, ''))
+        // $(this).val(parseFloat(this.value).toFixed(2));
+        // $(this).val(this.value.replace(/[^a-zA-Z ]/g, ''))
+    })
     $('#addProofOfPayment').click(function(){
         $('#proofOfPaymentList').hide();
         $('#proofOfPaymentDiv').show();
@@ -332,8 +371,60 @@
         }
 
         if (count == 0) {
-            $('#submit-button').attr('disabled', 'disabled');
-            $('#proof_of_payment_form')[0].submit();
+            iziToast.show({
+                theme: 'light',
+                title: 'Are you sure?',
+                // message: 'Are you sure?',
+                position: 'topCenter', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+                progressBarColor: '#cc0000',
+                overlay:true,
+                timeout:false,
+                titleSize:21,
+                buttons: [
+                    ['<button>Yes</button>', function (instance, toast) {
+                        // alert("Hello world!");
+                        $('body').waitMe({
+                            effect: 'win8',
+                            text: 'Please wait...',
+                            bg: 'rgba(255,255,255,0.7)',
+                            color: '#cc0000',
+                            maxSize: '',
+                            waitTime: -1,
+                            textPos: 'vertical',
+                            fontSize: '',
+                            source: '',
+                            onClose: function() {
+
+                            }
+                        });
+                        $('#submit-button').attr('disabled', 'disabled');
+                        $('.number-format').val($('.number-format').val().replace(/,/g, ""));
+                        $('#proof_of_payment_form')[0].submit();
+                        instance.hide({
+                            transitionOut: 'fadeOutUp',
+                            onClosing: function(instance, toast, closedBy){
+
+                            }
+                        }, toast, 'buttonName');
+                    }, true], // true to focus
+                    ['<button>No</button>', function (instance, toast) {
+                        instance.hide({
+                            transitionOut: 'fadeOutUp',
+                            onClosing: function(instance, toast, closedBy){
+
+                            }
+                        }, toast, 'buttonName');
+                    }]
+                ],
+                onOpening: function(instance, toast){
+
+                },
+                onClosing: function(instance, toast, closedBy){
+
+                }
+            });
+            // $('#submit-button').attr('disabled', 'disabled');
+            // $('#proof_of_payment_form')[0].submit();
         } else {
             iziToast.error({
                 title: 'Error: ',
@@ -483,7 +574,7 @@
             dataType: 'json',
             success: function(response) {
                 console.log(response);
-                if(response.payment_type=='online_payment'){
+                if(response.payment_type=='Online Payment'){
                     $('.online_payment').show();
                     $('.over_counter').hide();
                 }

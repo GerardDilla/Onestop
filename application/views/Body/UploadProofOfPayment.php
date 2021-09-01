@@ -26,8 +26,12 @@
                             <div class="form-group payment-type-div">
                                 <label class="input-label payment-page"><b>Payment Type</b></label>
                                 <select class="form-select payment-page" name="payment-type">
-                                    <option value="online_payment">Online Payment</option>x
-                                    <option value="over_the_counter">Over the Counter</option>
+                                    <!-- <option value="online_payment">Online Payment</option>x
+                                    <option value="over_the_counter">Over the Counter</option> -->
+                                    <option value="online_payment">Bank Deposit</option>
+                                    <option value="Online Fund Transfer">Online Fund Transfer</option>
+                                    <option value="Scan QR">Scan QR</option>
+                                    <option value="Partner Cash-in">Partner Cash-in</option>
                                 </select>
                             </div>
                         </div>
@@ -119,15 +123,15 @@
                         </div>
                     </div>
                     <div class="col-md-12 row payment-page">
-                        <div class="col-md-2 form-group online-payment">
-                            <label class="input-label"><b>Bank Type</b></label>
+                        <div class="col-md-2 form-group">
+                            <label class="input-label"><b class="bank-name-label">Bank Type</b></label>
                             <select required class="form-select" name="bank_type">
                                 <option value="">Choose</option>
-                                <option value="aub">AUB</option>
-                                <option value="rcbc">RCBC</option>
-                                <option value="bdo">BDO</option>
-                                <option value="eastwest">Eastwest</option>
-                                <option value="union bank">Union Bank</option>
+                                <option value="AUB">AUB</option>
+                                <option value="RCBC">RCBC</option>
+                                <option value="BDO">BDO</option>
+                                <option value="Eastwest">Eastwest</option>
+                                <option value="Union Bank">Union Bank</option>
                             </select>
                             <div class="invalid-feedback">
                                 This is required.
@@ -495,7 +499,7 @@
         $('#upload-proof-button').hide();
         $('.payment-type-div').show();
         if (payment == "online_payment") {
-            $('input[name=payment_type]').val('Online Payment');
+            $('input[name=payment_type]').val('Bank Deposit');
             $('.payment-page').show();
             $('.payment-type').hide();
             $('.online-payment').show();
@@ -524,9 +528,62 @@
             $('.online-payment select').attr('required', false)
             $('.other-payment input.form-control').attr('required', true)
         } else {
-            $('.payment-type').show();
-            $('.payment-page').hide();
-            $('#upload-proof-button').show();
+            // $('.payment-type').show();
+            // $('.payment-page').hide();
+            // $('#upload-proof-button').show();
+
+            $("#payment-title").text(payment);
+            $('input[name=payment_type]').val(payment);
+            $('.payment-page').show();
+            $('.payment-type-div').show();
+            // $('.payment-type').hide();
+            $('.other-payment').show();
+            $('.online-payment').hide();
+            $('.online-payment input.form-control').attr('required', false)
+            $('.online-payment select').attr('required', false)
+            $('.other-payment input.form-control').attr('required', true)
+            $('input[name=payment-type]').empty();
+            console.log(payment)
+            if(payment=="Online Fund Transfer"){
+                var option = `
+                <option value="">Choose</option>
+                <option value="InstaPay">InstaPay</option>
+                <option value="PesoNet">PesoNet</option>
+                `;
+                $('.bank-name-label').text('Payment Method');
+                $('input[name=payment-type]').append(option);
+            }
+            else if(payment=="Scan QR"){
+                var option = `
+                <option value="">Choose</option>
+                <option value="GCASH">AUB</option>
+                <option value="Other QR Payment">Other QR Payment</option>
+                `;
+                $('.bank-name-label').text('Payment Method');
+                $('input[name=payment-type]').append(option);
+            }
+            else if(payment=="Partner Cash-in"){
+                var option = `
+                <option value="">Choose</option>
+                <option value="SM">SM</option>
+                <option value="7/11">7/11</option>
+                <option value="Other Remittance Center">Other Remittance Center</option>
+                `;
+                $('.bank-name-label').text('Payment Method');
+                $('input[name=payment-type]').append(option);
+            }
+            else{
+                var option = `
+                <option value="">Choose</option>
+                <option value="AUB">AUB</option>
+                <option value="RCBC">RCBC</option>
+                <option value="BDO">BDO</option>
+                <option value="Eastwest">Eastwest</option>
+                <option value="Union Bank">Union Bank</option>
+                `;
+                $('.bank-name-label').text('Bank Name');
+                $('input[name=payment-type]').append(option);
+            }
         }
     }
 

@@ -1008,10 +1008,10 @@ class Main extends MY_Controller
 	}
 	public function uploadProofOfPayment()
 	{
-		if($this->session->userdata('reference_no')!=27020){
-			echo '<image src="'.base_url('assets/images/we_are_down.png').'" height="100%" width="100%">';
-			exit;
-		}
+		// if($this->session->userdata('reference_no')!=27020){
+		// 	echo '<image src="'.base_url('assets/images/we_are_down.png').'" height="100%" width="100%">';
+		// 	exit;
+		// }
 		// token proof of payment
 		$token = hash('tiger192,3', uniqid());
 		$this->data['csrf_token'] = $token;

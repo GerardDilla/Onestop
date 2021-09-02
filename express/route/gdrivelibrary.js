@@ -1,4 +1,4 @@
-var env = 'development';
+var env = 'production';
 "use strict";
 // const { Router } = require("express");
 const fs = require('fs');

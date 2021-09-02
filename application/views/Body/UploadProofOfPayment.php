@@ -29,6 +29,7 @@
                                     <!-- <option value="online_payment">Online Payment</option>x
                                     <option value="over_the_counter">Over the Counter</option> -->
                                     <option value="online_payment">Bank Deposit</option>
+                                    <option value="SDCA Online Payment">SDCA Online Payment</option>
                                     <option value="Online Fund Transfer">Online Fund Transfer</option>
                                     <option value="Scan QR">Scan QR</option>
                                     <option value="Partner Cash-in">Partner Cash-in</option>
@@ -122,8 +123,8 @@
                             <div class="col-md-12 payment-body" style="margin-top:30px;"><a href="https://stdominiccollege.edu.ph/SDCAPayment/" class="btn btn-success btn-lg btn-semi-round" target="_blank">Pay Here</a></div>
                         </div>
                     </div>
-                    <div class="col-md-12 row payment-page">
-                        <div class="col-md-2 form-group">
+                    <div class="col-md-12 row payment-page ">
+                        <div class="col-md-2 form-group bank-name-div">
                             <label class="input-label"><b class="bank-name-label">Bank Type</b></label>
                             <select required class="form-select" name="bank_type">
                                 <option value="">Choose</option>
@@ -371,9 +372,14 @@
             }
         })
         if ($('input[name=images]').val() == "") {
+            iziToast.error({
+                title: 'Error: ',
+                message: 'You need to choose a file!!',
+                position: 'topRight',
+            });
             ++count;
         }
-
+        
         if (count == 0) {
             iziToast.show({
                 theme: 'light',
@@ -429,12 +435,6 @@
             });
             // $('#submit-button').attr('disabled', 'disabled');
             // $('#proof_of_payment_form')[0].submit();
-        } else {
-            iziToast.error({
-                title: 'Error: ',
-                message: 'You need to choose a file!!',
-                position: 'topRight',
-            });
         }
     });
     $('#view_image').iziModal({
@@ -498,6 +498,9 @@
     function choosePayment(payment) {
         $('#upload-proof-button').hide();
         $('.payment-type-div').show();
+        $('.bank-name-div').show();
+        $('select[name=bank_type]').attr('required',true);
+        console.log(payment)
         if (payment == "online_payment") {
             $('input[name=payment_type]').val('Bank Deposit');
             $('.payment-page').show();
@@ -507,6 +510,18 @@
             $('.online-payment input.form-control').attr('required', true)
             $('.online-payment select').attr('required', true)
             $('.other-payment input.form-control').attr('required', false)
+            $('input[name=reference_number]').val('');
+            var option = `
+                <option value="">Choose</option>
+                <option value="AUB">AUB</option>
+                <option value="RCBC">RCBC</option>
+                <option value="BDO">BDO</option>
+                <option value="Eastwest">Eastwest</option>
+                <option value="Union Bank">Union Bank</option>
+                `;
+            $('.bank-name-label').text('Bank Name');
+            $('select[name=bank_type]').empty();
+            $('select[name=bank_type]').append(option);
         } else if (payment == "over_the_counter") {
             // $("#payment-title").text('Over the Counter');
             $('input[name=payment_type]').val('Over the Counter');
@@ -531,7 +546,6 @@
             // $('.payment-type').show();
             // $('.payment-page').hide();
             // $('#upload-proof-button').show();
-
             $("#payment-title").text(payment);
             $('input[name=payment_type]').val(payment);
             $('.payment-page').show();
@@ -539,11 +553,13 @@
             // $('.payment-type').hide();
             $('.other-payment').show();
             $('.online-payment').hide();
-            $('.online-payment input.form-control').attr('required', false)
-            $('.online-payment select').attr('required', false)
+            // $('.online-payment input.form-control').attr('required', false)
+            // $('.online-payment select').attr('required', false)
             $('.other-payment input.form-control').attr('required', true)
-            $('input[name=payment-type]').empty();
-            console.log(payment)
+            $('.online-payment input.form-control').attr('required', false)
+            
+
+            $('select[name=bank_type]').empty();
             if(payment=="Online Fund Transfer"){
                 var option = `
                 <option value="">Choose</option>
@@ -551,16 +567,16 @@
                 <option value="PesoNet">PesoNet</option>
                 `;
                 $('.bank-name-label').text('Payment Method');
-                $('input[name=payment-type]').append(option);
+                $('select[name=bank_type]').append(option);
             }
             else if(payment=="Scan QR"){
                 var option = `
                 <option value="">Choose</option>
-                <option value="GCASH">AUB</option>
+                <option value="GCASH">GCASH</option>
                 <option value="Other QR Payment">Other QR Payment</option>
                 `;
                 $('.bank-name-label').text('Payment Method');
-                $('input[name=payment-type]').append(option);
+                $('select[name=bank_type]').append(option);
             }
             else if(payment=="Partner Cash-in"){
                 var option = `
@@ -570,19 +586,12 @@
                 <option value="Other Remittance Center">Other Remittance Center</option>
                 `;
                 $('.bank-name-label').text('Payment Method');
-                $('input[name=payment-type]').append(option);
+                $('select[name=bank_type]').append(option);
             }
-            else{
-                var option = `
-                <option value="">Choose</option>
-                <option value="AUB">AUB</option>
-                <option value="RCBC">RCBC</option>
-                <option value="BDO">BDO</option>
-                <option value="Eastwest">Eastwest</option>
-                <option value="Union Bank">Union Bank</option>
-                `;
-                $('.bank-name-label').text('Bank Name');
-                $('input[name=payment-type]').append(option);
+            else if(payment=="SDCA Online Payment"){
+                $('select[name=bank_type]').attr('required',false);
+                $('select[name=bank_type]').val('');
+                $('.bank-name-div').hide();
             }
         }
     }
@@ -641,7 +650,7 @@
                 }
                 $('input[name=view_payment_type]').val(response.payment_type='online_payment'?'Online Payment':'Over the Counter');
                 $('input[name=view_payment_reference]').val(response.payment_reference_no);
-                $('input[name=view_bank_type]').val(response.bank_type.toUpperCase());
+                $('input[name=view_bank_type]').val(response.bank_type);
                 $('input[name=view_card_number]').val(response.acc_num);
                 $('input[name=view_acc_holder_name]').val(response.acc_holder_name);
                 $('input[name=view_amount_paid]').val(response.amount_paid);

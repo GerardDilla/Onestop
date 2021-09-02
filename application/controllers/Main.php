@@ -1109,8 +1109,8 @@ class Main extends MY_Controller
 						'payment_reference_no' => $this->input->post('reference_number'),
 						'ref_no' => $this->reference_number,
 						'amount_paid' => $this->input->post('amount_paid'),
-						'gdrive_folder_id' => $decode_result['id'],
-						'term' => $payment_term
+						'gdrive_folder_id' => $decode_result['id']
+						// 'term' => $payment_term
 					));
 					// }
 				} else {

@@ -206,7 +206,7 @@
                         {
                         ?>
                         <tr>
-                            <td><?= $list['payment_type']=='Online Payment'?'Online Payment':'Over the Counter'; ?></td>
+                            <td><?= $list['payment_type']; ?></td>
                             <td style="text-align:center;"><button class="btn btn-sm btn-info" onclick="viewImage('<?= $list['id'];?>')">View</button></td>
                             <td style="text-align:center;"><?php echo date("F j, Y, g:i a", strtotime($list['requirements_date'])); ?></td>
                         </tr>
@@ -229,7 +229,7 @@
             <label class="form-label">Payment Reference Number</label>
             <input type="text" name="view_payment_reference" class="form-control" value="" readonly>
         </div>
-        <div class="form-group col-md-12 online_payment">
+        <div class="form-group col-md-12">
             <label class="form-label">Bank Type</label>
             <input type="text" name="view_bank_type" class="form-control" value="" readonly>
         </div>
@@ -598,10 +598,10 @@
 
     function OnloadImage() {
         $('body').waitMe({
-            effect: 'bounce',
-            text: '',
+            effect: 'win8',
+            text: 'Please wait...',
             bg: 'rgba(255,255,255,0.7)',
-            color: '#000',
+            color: '#cc0000',
             maxSize: '',
             waitTime: -1,
             textPos: 'vertical',
@@ -620,10 +620,10 @@
 
     function viewImage(id) {
         $('body').waitMe({
-            effect: 'bounce',
-            text: '',
+            effect: 'win8',
+            text: 'Please wait...',
             bg: 'rgba(255,255,255,0.7)',
-            color: '#000',
+            color: '#cc0000',
             maxSize: '',
             waitTime: -1,
             textPos: 'vertical',
@@ -640,7 +640,7 @@
             dataType: 'json',
             success: function(response) {
                 console.log(response);
-                if(response.payment_type=='Online Payment'){
+                if(response.payment_type=='Bank Deposit'){
                     $('.online_payment').show();
                     $('.over_counter').hide();
                 }
@@ -648,14 +648,18 @@
                     $('.over_counter').show();
                     $('.online_payment').hide();
                 }
-                $('input[name=view_payment_type]').val(response.payment_type='online_payment'?'Online Payment':'Over the Counter');
+                $('input[name=view_payment_type]').val(response.payment_type);
                 $('input[name=view_payment_reference]').val(response.payment_reference_no);
                 $('input[name=view_bank_type]').val(response.bank_type);
                 $('input[name=view_card_number]').val(response.acc_num);
                 $('input[name=view_acc_holder_name]').val(response.acc_holder_name);
-                $('input[name=view_amount_paid]').val(response.amount_paid);
+                $('input[name=view_amount_paid]').val(numeral(response.amount_paid).format('0,0.00'));
                 $('input[name=view_file_type]').val(response.file_type);
                 $('input[name=date_submitted]').val(response.requirements_date);
+
+                if(response.payment_type=='SDCA Online Payment'){
+                    $('input[name=view_bank_type]').val(response.payment_type);
+                }
                 // view_payment_type
                 // view_payment_reference
                 // view_bank_type

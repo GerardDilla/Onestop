@@ -471,11 +471,11 @@ router.post("/get_id",(req,res)=>{
    async function searchFiles(drive, pageToken,auth) {
     drive.files.list({
         // corpora: 'user',
-        // pageSize: 10,
+        pageSize: 1000,
         // q: "mimeType: *",
         // parents: '1qNLUOCw7SfhS6STY7doHCjug_piEswDT',
-        pageToken: pageToken ? pageToken : '',
-        fields: 'nextPageToken, files(id,name,parents)',
+        // pageToken: pageToken ? pageToken : '',
+        fields: 'nextPageToken, files(id,name,parents,owners)',
         // fields: 'nextPageToken, files(*)',
         spaces:'drive'
     }, (err, res) => {
@@ -484,9 +484,9 @@ router.post("/get_id",(req,res)=>{
             sendBackToPHP(400,err);
         }
         const files = res.data.files;
-        // console.log(files);
-        // const found_all = files.filter( ({parents}) => { return [parents] == '1kLW5Gwogxz1llDOAjWwsYwIjNSbSTD0g'});
-        // console.log(found_all)
+        // const findTreasuryFiles = files.filter(data=>{ return data.owners[0].emailAddress=="treasuryoffice@sdca.edu.ph"})
+        const findTreasuryFiles = files.filter(data=>{ return data.id =="1EXg9Zm48v8f2wDPDAbGEJr7khT_bAavz"})
+        return false;
         if(file_name!=""){
             if(folder_id!=""){
                 var found = files.find((element) =>{ return element.name == file_name && [element.parents]==folder_id});
@@ -517,7 +517,8 @@ router.post("/get_id",(req,res)=>{
             return;
         }
         else{
-            res.status(200).send(JSON.stringify({msg:'success',id:data}));
+            // res.status(200).send(JSON.stringify({msg:'success',id:data}));
+            res.status(200).send(data);
         }
     
     }

@@ -28,7 +28,7 @@ class SDCA_API extends CI_Controller
     public function uploadProofOfPaymentProcess()
 	{
         // $http_back = "http://localhost/SDCAPORTAL/index.php/ProofOfPayment";
-        $http_back = "https://stdominiccollege.edu.ph/SDCAPORTAL/index.php/ProofOfPayment";
+        $http_back = "https://stdominiccollege.edu.ph/sdcap/index.php/ProofOfPayment";
 		$this->load->model('MainModel','mainmodel');
 		// $this->tokenHandler('proof_of_payment');
 		$user_fullname = $this->session->userdata('last_name').', '.$this->session->userdata('first_name') . ' ' . $this->session->userdata('middle_name') ;

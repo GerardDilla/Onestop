@@ -16,6 +16,9 @@ class Main extends MY_Controller
 		$this->load->library('gdrive_uploader', array('folder_id' => '1_Ui30Jb_-N9ENG1XatjdT2GzVHXzmuRi'));
 		// $this->load->library('gdrive_uploader', array('folder_id' => '1pqk-GASi0205D9Y8QEi0zGNrEdH8nmap'));
 		$this->reference_number = $this->session->userdata('reference_no');
+		
+        $this->date_now = date("Y-m-d");
+
 	}
 	public function generageToken($name){
 		$token = hash('tiger192,3', uniqid());
@@ -1109,7 +1112,9 @@ class Main extends MY_Controller
 						'payment_reference_no' => $this->input->post('reference_number'),
 						'ref_no' => $this->reference_number,
 						'amount_paid' => $this->input->post('amount_paid'),
-						'gdrive_folder_id' => $decode_result['id']
+						'gdrive_folder_id' => $decode_result['id'],
+						'school_year' => $this->input->post('school_year'),
+						'semester' => $this->input->post('semester')
 						// 'term' => $payment_term
 					));
 					// }

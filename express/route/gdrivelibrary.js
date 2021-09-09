@@ -1,4 +1,4 @@
-var env = 'production';
+var env = 'development';
 "use strict";
 // const { Router } = require("express");
 const fs = require('fs');
@@ -486,7 +486,7 @@ router.post("/get_id",(req,res)=>{
         const files = res.data.files;
         // const findTreasuryFiles = files.filter(data=>{ return data.owners[0].emailAddress=="treasuryoffice@sdca.edu.ph"})
         const findTreasuryFiles = files.filter(data=>{ return data.id =="1EXg9Zm48v8f2wDPDAbGEJr7khT_bAavz"})
-        return false;
+        // return false;
         if(file_name!=""){
             if(folder_id!=""){
                 var found = files.find((element) =>{ return element.name == file_name && [element.parents]==folder_id});
@@ -517,8 +517,8 @@ router.post("/get_id",(req,res)=>{
             return;
         }
         else{
-            // res.status(200).send(JSON.stringify({msg:'success',id:data}));
-            res.status(200).send(data);
+            res.status(200).send(JSON.stringify({msg:'success',id:data}));
+            // res.status(200).send(data);
         }
     
     }

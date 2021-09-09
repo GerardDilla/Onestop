@@ -100,7 +100,9 @@ class SDCA_API extends CI_Controller
 						'payment_reference_no' => $this->input->post('reference_number'),
 						'ref_no' => $this->reference_number,
 						'amount_paid' => $this->input->post('amount_paid'),
-						'gdrive_folder_id' => $decode_result['id']
+						'gdrive_folder_id' => $decode_result['id'],
+						'school_year' => $this->input->post('school_year'),
+						'semester' => $this->input->post('semester')
 						// 'term' => $payment_term
 					));
 					// }

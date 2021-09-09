@@ -22,6 +22,12 @@
             <div class="card" style="margin:none;<?= empty($proof_of_payment)?'':'display:none;';?>" id="proofOfPaymentDiv">
                 <div class="card-header">
                     <div class="col-md-12 row">
+                        <div class="col-md-12" align="right">
+                            <?php if(!empty($proof_of_payment)):?>
+                            <button type="button" class="btn btn-secondary" id="goBackToList"><i class="bi bi-backspace-reverse"></i> Go Back</button>
+                            <?php endif;?>
+                            &nbsp;<button type="button" class="payment-page btn btn-danger" id="submit-button">Submit</button>
+                        </div>
                         <div class="col-lg-4 ">
                             <div class="form-group payment-type-div">
                                 <label class="input-label payment-page"><b>Payment Type</b></label>
@@ -36,6 +42,43 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-4 ">
+                            <div class="form-group payment-type-div">
+                                <label class="input-label payment-page"><b>School Year</b></label>
+                                <select class="form-select payment-page" name="school_year" required>
+                                    <!-- <option value="online_payment">Online Payment</option>x
+                                    <option value="over_the_counter">Over the Counter</option> -->
+                                    <option value="">Choose School Year</option>
+                                    <option value="<?= date("Y",strtotime('-7 year')).'-'.date("Y",strtotime('-6 year'));?>"><?= date("Y",strtotime('-7 year')).'-'.date("Y",strtotime('-6 year'));?></option>
+                                    <option value="<?= date("Y",strtotime('-6 year')).'-'.date("Y",strtotime('-5 year'));?>"><?= date("Y",strtotime('-6 year')).'-'.date("Y",strtotime('-5 year'));?></option>
+                                    <option value="<?= date("Y",strtotime('-5 year')).'-'.date("Y",strtotime('-4 year'));?>"><?= date("Y",strtotime('-5 year')).'-'.date("Y",strtotime('-4 year'));?></option>
+                                    <option value="<?= date("Y",strtotime('-4 year')).'-'.date("Y",strtotime('-3 year'));?>"><?= date("Y",strtotime('-4 year')).'-'.date("Y",strtotime('-3 year'));?></option>
+                                    <option value="<?= date("Y",strtotime('-3 year')).'-'.date("Y",strtotime('-2 year'));?>"><?= date("Y",strtotime('-3 year')).'-'.date("Y",strtotime('-2 year'));?></option>
+                                    <option value="<?= date("Y",strtotime('-2 year')).'-'.date("Y",strtotime('-1 year'));?>"><?= date("Y",strtotime('-2 year')).'-'.date("Y",strtotime('-1 year'));?></option>
+                                    <option value="<?= date("Y",strtotime('-1 year')).'-'.date("Y");?>"><?= date("Y",strtotime('-1 year')).'-'.date("Y");?></option>
+                                    <option value="<?= date("Y").'-'.date("Y",strtotime('+1 year'));?>"><?= date("Y").'-'.date("Y",strtotime('+1 year'));?></option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    This is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class="form-group payment-type-div">
+                                <label class="input-label payment-page"><b>Semester</b></label>
+                                <select class="form-select payment-page" name="semester" required>
+                                    <!-- <option value="online_payment">Online Payment</option>x
+                                    <option value="over_the_counter">Over the Counter</option> -->
+                                    <option value="">Choose Semester</option>
+                                    <option value="FIRST">FIRST</option>
+                                    <option value="SECOND">SECOND</option>
+                                    <option value="SUMMER">SUMMER</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    This is required.
+                                </div>
+                            </div>
+                        </div>
                         <!-- <div class="col-lg-4 ">
                             <div class="form-group payment-type-div">
                                 <label class="input-label payment-page"><b>Payment Term</b></label>
@@ -48,12 +91,6 @@
                                 </select>
                             </div>
                         </div> -->
-                        <div class="col-md-8" align="right">
-                            <?php if(!empty($proof_of_payment)):?>
-                            <button type="button" class="btn btn-secondary" id="goBackToList"><i class="bi bi-backspace-reverse"></i> Go Back</button>
-                            <?php endif;?>
-                            &nbsp;<button type="button" class="payment-page btn btn-danger" id="submit-button">Submit</button>
-                        </div>
                         <!-- <button style="display:none;" type="button" onclick="choosePayment('cancel')" class="payment-page btn btn-sm btn-secondary" >Cancel</button> -->
                     </div>
                     <div class="col-md-12">
@@ -193,7 +230,7 @@
                 <button type="button" class="btn btn-secondary" id="addProofOfPayment"><i class="bi bi-plus-circle-dotted"></i> Add Proof of Payment</button>
             </div>
             <div class="card-body">
-                <table class="table data-table table-striped table-responsive">
+                <table class="table data-table table-striped">
                     <thead>
                         <tr>
                             <th>Payment Type</th>

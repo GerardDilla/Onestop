@@ -18,10 +18,9 @@ class Forms extends MY_Controller
 		// $this->data['DigitalCitizenship'] = 'Body/CitizenshipAndId/DigitalCitizenship';
 		// $this->data['IdApplication'] = 'Body/CitizenshipAndId/IdApplication';
 		$id_app = $this->FormsModel->check_student_id($this->reference_number);
-		empty($id_app['count']) ? $this->data['id_app'] = true : $this->data['id_app'] = false;
+		$this->data['id_app'] = $id_app['count'] >= '1' ? '1' : '0';
 		$digital = $this->FormsModel->check_student_digital($this->reference_number);
-		empty($digital['count']) ? $this->data['digital'] = true : $this->data['digital'] = false;
-
+		$this->data['digital'] = $digital['count'] >= '1' ? '1' : '0';
 		$this->default_template($this->view_directory->digitalAndIdForms());
 		// $this->digital_citizenship();
 		// $this->id_application();
@@ -31,13 +30,34 @@ class Forms extends MY_Controller
 	{
 		$config['upload_path'] = './express/assets/';
 		$config['allowed_types'] = '*';
+		$first_name = $this->input->post('first_name');
+		$middle_name = $this->input->post('middle_name');
+		$last_name = $this->input->post('last_name');
+		$accounts = $this->input->post('concern');
+		$ref_no = $this->input->post('ref_no');
+		$std_num = $this->input->post('std_num');
+		$gurdian_name = $this->input->post('gurdian_name');
+		$gurdian_address = $this->input->post('gurdian_address');
+		$gurdian_number = $this->input->post('gurdian_number');
+		$gurdian_relationship = $this->input->post('gurdian_relationship');
+		// die($last_name);
+		//
+		$array = array (
+			'First_Name'=>$first_name,
+			'Middle_Name'=>$middle_name,
+			'Last_Name'=>$last_name,
+			'Guardian_Name'=>$gurdian_name,
+			'Guardian_Address'=>$gurdian_address,
+			'Guardian_Contact'=>$gurdian_number,
+			'Guardian_Relationship'=>$gurdian_relationship,
+
+		);
+		$this->FormsModel->update_student_info($this->reference_number,$array);
+		
 		//DIGITAL
 		$digital_id = $this->FormsModel->check_student_digital($this->reference_number);
 		$check_data = empty($digital_id['count']) ? "no_data" : $digital_id['count'];
 		if ($check_data == 'no_data') {
-			$first_name = $this->input->post('digital-first_name');
-			$middle_name = $this->input->post('digital-middle_name');
-			$last_name = $this->input->post('digital-last_name');
 			$array = array(
 				'reference_number' => $this->reference_number,
 				'first_name' => $first_name,
@@ -45,7 +65,6 @@ class Forms extends MY_Controller
 				'last_name' => $last_name,
 			);
 			$digital_id = $this->FormsModel->digital_citizenship($array);
-			$accounts = $this->input->post('concern');
 			foreach (empty($accounts) ?: $accounts as $account) {
 				$array_account = array(
 					'digital_id' => $digital_id,
@@ -68,9 +87,6 @@ class Forms extends MY_Controller
 		$array_filestodelete = array();
 		$error_count = 0;
 		if ($check_data == 'no_data') {
-			$first_name = $this->input->post('id-first_name');
-			$middle_name = $this->input->post('id-middle_name');
-			$last_name = $this->input->post('id-last_name');
 			$config['file_name'] = 'id_picture_' . $this->reference_number . '' . date("YmdHis");
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);
